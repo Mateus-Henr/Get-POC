@@ -1,10 +1,14 @@
 # Projeto-Desenvolvimento-POO
 
 ## Autores:
+
 Miguel Antônio Ribeiro e Silva - 4680
-Alan Gabriel
-Mateus Henrique -
-João Victor Graciano Belfort - 
+
+Alan Gabriel Martins Silva - 4663
+
+Mateus Henrique Vieira \Figueiredo - 4707
+
+João Victor Graciano Belfort de Andrade - 4694
 
 ## Objetivos
 
