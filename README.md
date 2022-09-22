@@ -1,3 +1,8 @@
 # Projeto-Desenvolvimento-POO
 
-O projeto de desenvolvimento desta disciplina visa desenvolver, em linguagem Java, um sistema para gerenciamento de Trabalhos de Concclusão de Curso
+##Autores
+
+
+O projeto de desenvolvimento desta disciplina visa desenvolver, em linguagem Java, um sistema para gerenciamento de Trabalhos de Conclusão de Curso.
+Ao longo do período, várias classes e módulos serão criados visando utilizar ao máximo todas as especifidades e  peculiaridades da Programação Orientada a Objetos.
+Bancos de Dados e bibliotecas gráficas nos auxiliarão no desenvolvimento do trabalho e pretendemos com isso, criar um programa simples, prático, minimalista e  interativo com o usuário, possibilitando seu uso, nos contextos reais das Universidades.
