@@ -1,7 +1,12 @@
 # Projeto-Desenvolvimento-POO
 
-##Autores
+## Autores:
+Miguel Antônio Ribeiro e Silva - 4680
+Alan Gabriel
+Mateus Henrique -
+João Victor Graciano Belfort - 
 
+## Objetivos
 
 O projeto de desenvolvimento desta disciplina visa desenvolver, em linguagem Java, um sistema para gerenciamento de Trabalhos de Conclusão de Curso.
 Ao longo do período, várias classes e módulos serão criados visando utilizar ao máximo todas as especifidades e  peculiaridades da Programação Orientada a Objetos.
