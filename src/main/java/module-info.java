@@ -3,6 +3,8 @@ module com.example.demo {
     requires javafx.fxml;
 
 
-    opens com.example.demo to javafx.fxml;
-    exports com.example.demo;
+    opens com.ufv.project to javafx.fxml;
+    exports com.ufv.project;
+    exports com.ufv.project.controller;
+    opens com.ufv.project.controller to javafx.fxml;
 }
