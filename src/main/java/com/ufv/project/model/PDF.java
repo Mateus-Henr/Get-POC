@@ -15,6 +15,11 @@ public class PDF
         this.lastModificationDate = lastModificationDate;
     }
 
+    public int getId()
+    {
+        return id;
+    }
+
     public String getContent()
     {
         return content;

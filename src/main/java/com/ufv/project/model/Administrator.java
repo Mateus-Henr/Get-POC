@@ -1,5 +1,7 @@
 package com.ufv.project.model;
 
+import com.ufv.project.persistence.Singleton;
+
 public class Administrator extends User
 {
     public Administrator(String username, String name, String password)
@@ -9,17 +11,17 @@ public class Administrator extends User
 
     public User getUser(String username)
     {
-        return null;
+        return Singleton.getInstance().getUser(username);
     }
 
-    public User removeUser(String username)
+    public boolean removeUser(String username)
     {
-        return null;
+        return Singleton.getInstance().removeUser(username);
     }
 
-    public User addUser(User user)
+    public boolean addUser(User user)
     {
-        return null;
+        return Singleton.getInstance().addUser(user);
     }
 
 }

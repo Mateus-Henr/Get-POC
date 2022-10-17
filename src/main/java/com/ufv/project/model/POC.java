@@ -29,4 +29,9 @@ public class POC
         this.advisor = advisor;
     }
 
+    public int getId()
+    {
+        return id;
+    }
+
 }

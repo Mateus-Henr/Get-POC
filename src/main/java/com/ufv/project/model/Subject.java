@@ -13,6 +13,11 @@ public class Subject
         this.description = description;
     }
 
+    public int getId()
+    {
+        return id;
+    }
+
     public String getName()
     {
         return name;

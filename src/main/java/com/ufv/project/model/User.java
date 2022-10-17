@@ -1,5 +1,7 @@
 package com.ufv.project.model;
 
+import com.ufv.project.persistence.Singleton;
+
 public class User
 {
     protected String username;
@@ -18,9 +20,18 @@ public class User
         return username;
     }
 
-    public void setUsername(String username)
+    public boolean changeUsername(String newUsername)
     {
-        this.username = username;
+        User foundUser = Singleton.getInstance().getUser(newUsername);
+
+        if (foundUser == null)
+        {
+            this.username = newUsername;
+
+            return true;
+        }
+
+        return false;
     }
 
     public String getName()
