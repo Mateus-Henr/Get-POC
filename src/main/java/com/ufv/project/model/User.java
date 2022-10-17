@@ -2,38 +2,35 @@ package com.ufv.project.model;
 
 public class User
 {
-    protected int id;
-    protected String firstName;
-    protected String lastName;
-    protected final int CPF;
-    protected String password; // Remove
+    protected String username;
+    protected String name;
+    protected String password;
 
-    public User(String firstName, String lastName, int CPF, String password)
+    public User(String username, String name, String password)
     {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.CPF = CPF;
+        this.username = username;
+        this.name = name;
         this.password = password;
     }
 
-    public String getFirstName()
+    public String getUsername()
     {
-        return firstName;
+        return username;
     }
 
-    public void setFirstName(String firstName)
+    public void setUsername(String username)
     {
-        this.firstName = firstName;
+        this.username = username;
     }
 
-    public String getLastName()
+    public String getName()
     {
-        return lastName;
+        return name;
     }
 
-    public void setLastName(String lastName)
+    public void setName(String name)
     {
-        this.lastName = lastName;
+        this.name = name;
     }
 
     public String getPassword()

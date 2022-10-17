@@ -1,32 +1,32 @@
 package com.ufv.project.model;
 
-import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
+// Worth looking into Builder design pattern implementation for this class.
 public class POC
 {
     private final int id;
     private String title;
-    private ArrayList<String> authors;
-    private String advisorName;
     private LocalDate defenseDate;
-    private ArrayList<String> keywords;
+    private List<String> keywords;
     private String summary;
-    private File pdfFile;
-    private User registrant;
+    private Field field;
+    private PDF pdf;
+    private Professor registrant;
+    private Professor advisor;
+    private List<Professor> coAdvisors;
 
-    public POC(int id, String title, ArrayList<String> authors, String advisorName, LocalDate defenseDate, ArrayList<String> keywords, String summary, File pdfFile, User registrant)
+    public POC(int id, String title, LocalDate defenseDate, String summary, Field field, PDF pdf, Professor registrant, Professor advisor)
     {
         this.id = id;
         this.title = title;
-        this.authors = authors;
-        this.advisorName = advisorName;
         this.defenseDate = defenseDate;
-        this.keywords = keywords;
         this.summary = summary;
-        this.pdfFile = pdfFile;
+        this.field = field;
+        this.pdf = pdf;
         this.registrant = registrant;
+        this.advisor = advisor;
     }
 
 }
