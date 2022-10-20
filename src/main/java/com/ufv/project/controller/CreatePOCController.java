@@ -1,7 +1,7 @@
 package com.ufv.project.controller;
 
 import com.ufv.project.model.*;
-import com.ufv.project.persistence.Singleton;
+import com.ufv.project.db.Singleton;
 import javafx.fxml.FXML;
 
 import java.time.LocalDate;

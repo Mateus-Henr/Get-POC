@@ -1,21 +1,34 @@
-package com.ufv.project.persistence;
+package com.ufv.project.db;
 
-import com.ufv.project.model.POC;
-import com.ufv.project.model.User;
+import com.ufv.project.model.*;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class Singleton
 {
-    private final List<User> userList;
-    private final List<POC> pocList;
+    private final ObservableList<User> userList;
+    private final ObservableList<POC> pocList;
 
     private Singleton()
     {
-        userList = new ArrayList<>();
-        pocList = new ArrayList<>();
+        userList = FXCollections.observableArrayList();
+        pocList = FXCollections.observableArrayList();
+
+        pocList.add(new POC.POCBuilder()
+                .title("My")
+                .defenseDate(LocalDate.now())
+                .advisor(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()))
+                .coAdvisors(new ArrayList<>())
+                .registrant(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()))
+                .pdf(new PDF(1, "ada", LocalDate.now()))
+                .field(new Field(1, "sa"))
+                .summary("dadasdasdas")
+                .keywords(new ArrayList<>())
+                .build());
     }
 
     private static class RegistryHolder
@@ -29,14 +42,14 @@ public class Singleton
         return RegistryHolder.INSTANCE;
     }
 
-    public List<User> getUserList()
+    public ObservableList<User> getUserList()
     {
-        return Collections.unmodifiableList(userList);
+        return FXCollections.unmodifiableObservableList(userList);
     }
 
-    public List<POC> getPocList()
+    public ObservableList<POC> getPocList()
     {
-        return Collections.unmodifiableList(pocList);
+        return FXCollections.unmodifiableObservableList(pocList);
     }
 
     public boolean addUser(User user)

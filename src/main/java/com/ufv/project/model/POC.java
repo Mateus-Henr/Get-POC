@@ -104,6 +104,12 @@ public class POC
         this.advisor = advisor;
     }
 
+    @Override
+    public String toString()
+    {
+        return title;
+    }
+
     public static class POCBuilder
     {
         private int id;
