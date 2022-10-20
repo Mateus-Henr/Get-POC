@@ -3,29 +3,15 @@ package com.ufv.project.controller;
 import com.ufv.project.model.*;
 import com.ufv.project.persistence.Singleton;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 
 import java.time.LocalDate;
 
-public class HelloController
+public class CreatePOCController
 {
     @FXML
-    private Label welcomeText;
-
-    @FXML
-    protected void onHelloButtonClick()
+    public boolean onAddPOC(String username, POC poc)
     {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
-
-    private User getUserFromDatabase(String username)
-    {
-        return Singleton.getInstance().getUser(username);
-    }
-
-    public boolean addPOC(String username, POC poc)
-    {
-        User user = getUserFromDatabase(username);
+        User user = Singleton.getInstance().getUser(username);
 
         if (user == null)
         {
@@ -40,9 +26,10 @@ public class HelloController
         return false;
     }
 
+    @FXML
     public boolean updatePOCTitle(String studentUsername, String newTitle)
     {
-        User user = getUserFromDatabase(studentUsername);
+        User user = Singleton.getInstance().getUser(studentUsername);
 
         if (user == null)
         {
@@ -66,7 +53,7 @@ public class HelloController
 
     public boolean updatePOCDefenseDate(String studentUsername, LocalDate newDefenseDate)
     {
-        User user = getUserFromDatabase(studentUsername);
+        User user = Singleton.getInstance().getUser(studentUsername);
 
         if (user == null)
         {
@@ -90,7 +77,7 @@ public class HelloController
 
     public boolean updatePOCSummary(String studentUsername, String newSummary)
     {
-        User user = getUserFromDatabase(studentUsername);
+        User user = Singleton.getInstance().getUser(studentUsername);
 
         if (user == null)
         {
@@ -114,7 +101,7 @@ public class HelloController
 
     public boolean updatePOCField(String studentUsername, Field newField)
     {
-        User user = getUserFromDatabase(studentUsername);
+        User user = Singleton.getInstance().getUser(studentUsername);
 
         if (user == null)
         {
@@ -163,40 +150,6 @@ public class HelloController
 
     public boolean removePOC(String studentUsername)
     {
-        return false;
-    }
-
-    public User getUser(String username)
-    {
-        return Singleton.getInstance().getUser(username);
-    }
-
-    public boolean removeUser(String username)
-    {
-        return Singleton.getInstance().removeUser(username);
-    }
-
-    public boolean addUser(User user)
-    {
-        return Singleton.getInstance().addUser(user);
-    }
-
-    public boolean changeUsername(String currUsername, String newUsername)
-    {
-        User user = Singleton.getInstance().getUser(currUsername);
-
-        if (user == null)
-        {
-            return false;
-        }
-
-        if (!Singleton.getInstance().isUserInDatabase(newUsername))
-        {
-            user.setUsername(newUsername);
-
-            return true;
-        }
-
         return false;
     }
 
