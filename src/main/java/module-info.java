@@ -4,7 +4,9 @@ module com.ufv.project
     requires javafx.fxml;
 
     opens com.ufv.project to javafx.fxml;
+    opens com.ufv.project.model to javafx.fxml;
     exports com.ufv.project;
     exports com.ufv.project.controller;
+    exports com.ufv.project.model;
     opens com.ufv.project.controller to javafx.fxml;
 }

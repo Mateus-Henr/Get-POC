@@ -39,14 +39,19 @@ public class POC
         return title;
     }
 
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
     public LocalDate getDefenseDate()
     {
         return defenseDate;
     }
 
-    public List<String> getKeywords()
+    public void setDefenseDate(LocalDate defenseDate)
     {
-        return keywords;
+        this.defenseDate = defenseDate;
     }
 
     public String getSummary()
@@ -54,9 +59,19 @@ public class POC
         return summary;
     }
 
+    public void setSummary(String summary)
+    {
+        this.summary = summary;
+    }
+
     public Field getField()
     {
         return field;
+    }
+
+    public void setField(Field field)
+    {
+        this.field = field;
     }
 
     public PDF getPdf()
@@ -64,9 +79,19 @@ public class POC
         return pdf;
     }
 
+    public void setPdf(PDF pdf)
+    {
+        this.pdf = pdf;
+    }
+
     public Professor getRegistrant()
     {
         return registrant;
+    }
+
+    public void setRegistrant(Professor registrant)
+    {
+        this.registrant = registrant;
     }
 
     public Professor getAdvisor()
@@ -74,9 +99,9 @@ public class POC
         return advisor;
     }
 
-    public List<Professor> getCoAdvisors()
+    public void setAdvisor(Professor advisor)
     {
-        return coAdvisors;
+        this.advisor = advisor;
     }
 
     public static class POCBuilder

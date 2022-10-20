@@ -8,14 +8,9 @@ public class Student extends User
 
     public Student(String username, String name, String password, String registration, String email)
     {
-        super(username, name, password);
+        super(username, name, password, UserTypesEnum.STUDENT);
         this.registration = registration;
         this.email = email;
-    }
-
-    public POC searchPOC(String title, String summary, String author, String advisor, String area)
-    {
-        return null;
     }
 
     public String getRegistration()
@@ -46,6 +41,19 @@ public class Student extends User
     public void setPoc(POC poc)
     {
         this.poc = poc;
+    }
+
+
+    @Override
+    public boolean canModifyUsers()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canModifyPOCs()
+    {
+        return false;
     }
 
 }

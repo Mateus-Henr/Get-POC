@@ -41,7 +41,14 @@ public class Singleton
 
     public boolean addUser(User user)
     {
-        return userList.add(user);
+        boolean userAlreadyExists = isUserInDatabase(user.getUsername());
+
+        if (!userAlreadyExists)
+        {
+            return userList.add(user);
+        }
+
+        return false;
     }
 
     public User getUser(String username)
@@ -83,6 +90,11 @@ public class Singleton
     public boolean removePOC(int pocId)
     {
         return pocList.removeIf(poc -> poc.getId() == pocId);
+    }
+
+    public boolean isUserInDatabase(String username)
+    {
+        return getUser(username) != null;
     }
 
 }
