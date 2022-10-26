@@ -4,6 +4,7 @@ import com.ufv.project.model.*;
 import com.ufv.project.db.Singleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,7 +17,7 @@ public class LoginController
     private TextField usernameField;
 
     @FXML
-    private TextField passwordField;
+    private PasswordField passwordField;
 
     @FXML
     private Button loginButton;
@@ -56,23 +57,24 @@ public class LoginController
         }
     }
 
-    public boolean changeUsername(String currUsername, String newUsername)
-    {
-        User user = Singleton.getInstance().getUser(currUsername);
 
-        if (user == null)
-        {
-            return false;
-        }
-
-        if (!Singleton.getInstance().isUserInDatabase(newUsername))
-        {
-            user.setUsername(newUsername);
-
-            return true;
-        }
-
-        return false;
-    }
+//    public boolean changeUsername(String currUsername, String newUsername)
+//    {
+//        User user = Singleton.getInstance().getUser(currUsername);
+//
+//        if (user == null)
+//        {
+//            return false;
+//        }
+//
+//        if (!Singleton.getInstance().isUserInDatabase(newUsername))
+//        {
+//            user.setUsername(newUsername);
+//
+//            return true;
+//        }
+//
+//        return false;
+//    }
 
 }

@@ -8,6 +8,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.PasswordField?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="com.ufv.project.controller.LoginController"
@@ -18,7 +19,7 @@
 
     <VBox GridPane.columnIndex="0">
         <TextField fx:id="usernameField" promptText="Username"/>
-        <TextField fx:id="passwordField" promptText="Password"/>
+        <PasswordField fx:id="passwordField"  promptText="Password"/>
         <Button fx:id="loginButton" onMouseClicked="#onLoginButtonClick">LOGIN</Button>
         <Text>Forgot your password?</Text>
     </VBox>
