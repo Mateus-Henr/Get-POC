@@ -43,7 +43,6 @@ public class Student extends User
         this.poc = poc;
     }
 
-
     @Override
     public boolean canModifyUsers()
     {

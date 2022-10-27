@@ -28,7 +28,7 @@ public class LoginController
     @FXML
     public void initialize()
     {
-        File file = new File("src/main/resources/com/ufv/project/POC_Main_Image.PNG");
+        File file = new File("src/main/resources/com/ufv/project/images/POC_Main_Image.PNG");
         Image image = new Image(file.toURI().toString());
         mainImage.setImage(image);
 

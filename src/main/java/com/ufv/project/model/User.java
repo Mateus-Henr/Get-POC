@@ -2,10 +2,10 @@ package com.ufv.project.model;
 
 public class User
 {
-    protected String username;
-    protected String name;
-    protected String password;
-    protected UserTypesEnum userType;
+    private String username;
+    private String name;
+    private String password;
+    private final UserTypesEnum userType;
 
     public User(String username, String name, String password, UserTypesEnum userType)
     {
