@@ -5,6 +5,7 @@ import com.ufv.project.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class Singleton
                 .advisor(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()))
                 .coAdvisors(new ArrayList<>())
                 .registrant(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()))
-                .pdf(new PDF(1, "ada", LocalDate.now()))
+                .pdf(new PDF(1, new File(""), LocalDate.now()))
                 .field(new Field(1, "sa"))
                 .summary("dadasdasdas")
                 .keywords(new ArrayList<>())

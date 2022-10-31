@@ -2,9 +2,12 @@
 
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ufv.project.controller.AnalyzePOCController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.ufv.project.controller.AnalyzePOCController"
+          prefHeight="400.0" prefWidth="600.0">
+    <Label GridPane.rowIndex="0" GridPane.columnIndex="0">Search for a POC</Label>
+    <TextField GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="searchField"/>
+</GridPane>

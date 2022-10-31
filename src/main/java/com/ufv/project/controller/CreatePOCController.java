@@ -1,140 +1,86 @@
 package com.ufv.project.controller;
 
 import com.ufv.project.model.*;
-import com.ufv.project.db.Singleton;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 
-import java.time.LocalDate;
+import java.io.File;
 
 public class CreatePOCController
 {
     @FXML
-    public boolean onAddPOC(String username, POC poc)
+    private GridPane gridPane;
+
+    @FXML
+    private TextField title;
+
+    @FXML
+    private ComboBox<Student> authorComboBox;
+
+    @FXML
+    private ComboBox<Professor> advisorComboBox;
+
+    @FXML
+    private ComboBox<Professor> coAdvisorComboBox;
+
+    @FXML
+    private DatePicker datePicker;
+
+    @FXML
+    private ComboBox<Field> fieldComboBox;
+
+    @FXML
+    private ListView<String> keywordList;
+
+    @FXML
+    private Button addPOCButton;
+
+    @FXML
+    public void initialize()
     {
-        User user = Singleton.getInstance().getUser(username);
+        // Disables button until every field has been populated.
+        addPOCButton.disableProperty().bind(
+                title.textProperty().isEmpty()
+                        .or(authorComboBox.valueProperty().isNull())
+                        .or(advisorComboBox.valueProperty().isNull())
+                        .or(coAdvisorComboBox.valueProperty().isNull())
+                        .or(datePicker.valueProperty().isNull())
+                        .or(fieldComboBox.valueProperty().isNull())
+                        .or(Bindings.isEmpty(keywordList.getItems()))
+        );
+    }
 
-        if (user == null)
-        {
-            return false;
-        }
 
-        if (user.canModifyPOCs())
-        {
-            return Singleton.getInstance().addPOC(poc);
-        }
+    @FXML
+    public void handlePOCAdding()
+    {
 
-        return false;
     }
 
     @FXML
-    public boolean updatePOCTitle(String studentUsername, String newTitle)
+    public void handlePDFChoosing()
     {
-        User user = Singleton.getInstance().getUser(studentUsername);
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Save PDF File");
 
-        if (user == null)
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
+
+        File file = chooser.showOpenDialog(gridPane.getScene().getWindow());
+
+        if (file != null)
         {
-            return false;
+            System.out.println(file.getName());
         }
-
-        if (user.canModifyPOCs() && user.getUserType() == UserTypesEnum.STUDENT)
-        {
-            POC poc = ((Student) user).getPoc();
-
-            if (poc != null)
-            {
-                poc.setTitle(newTitle);
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
-    public boolean updatePOCDefenseDate(String studentUsername, LocalDate newDefenseDate)
+    @FXML
+    public boolean handlePOCUpdate()
     {
-        User user = Singleton.getInstance().getUser(studentUsername);
 
-        if (user == null)
-        {
-            return false;
-        }
 
-        if (user.canModifyPOCs() && user.getUserType() == UserTypesEnum.STUDENT)
-        {
-            POC poc = ((Student) user).getPoc();
-
-            if (poc != null)
-            {
-                poc.setDefenseDate(newDefenseDate);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean updatePOCSummary(String studentUsername, String newSummary)
-    {
-        User user = Singleton.getInstance().getUser(studentUsername);
-
-        if (user == null)
-        {
-            return false;
-        }
-
-        if (user.canModifyPOCs() && user.getUserType() == UserTypesEnum.STUDENT)
-        {
-            POC poc = ((Student) user).getPoc();
-
-            if (poc != null)
-            {
-                poc.setSummary(newSummary);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean updatePOCField(String studentUsername, Field newField)
-    {
-        User user = Singleton.getInstance().getUser(studentUsername);
-
-        if (user == null)
-        {
-            return false;
-        }
-
-        if (user.canModifyPOCs() && user.getUserType() == UserTypesEnum.STUDENT)
-        {
-            POC poc = ((Student) user).getPoc();
-
-            if (poc != null)
-            {
-                poc.setField(newField);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean updatePOCPDF(String studentUsername, PDF newPDF)
-    {
-        return false;
-    }
-
-    public boolean updatePOCRegistrant(String studentUsername, Professor newRegistrant)
-    {
-        return false;
-    }
-
-    public boolean updatePOCAdvisor(String studentUsername, Professor newAdvisor)
-    {
         return false;
     }
 

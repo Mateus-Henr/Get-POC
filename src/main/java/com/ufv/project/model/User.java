@@ -1,6 +1,6 @@
 package com.ufv.project.model;
 
-public class User
+public abstract class User
 {
     private String username;
     private String name;
@@ -50,14 +50,8 @@ public class User
         return userType;
     }
 
-    public boolean canModifyUsers()
-    {
-        return false;
-    }
+    public abstract boolean canModifyUsers();
 
-    public boolean canModifyPOCs()
-    {
-        return false;
-    }
+    public abstract boolean canModifyPOCs();
 
 }

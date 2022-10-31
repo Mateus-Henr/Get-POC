@@ -1,14 +1,15 @@
 package com.ufv.project.model;
 
+import java.io.File;
 import java.time.LocalDate;
 
 public class PDF
 {
     private final int id;
-    private String content;
+    private File content;
     private LocalDate lastModificationDate;
 
-    public PDF(int id, String content, LocalDate lastModificationDate)
+    public PDF(int id, File content, LocalDate lastModificationDate)
     {
         this.id = id;
         this.content = content;
@@ -20,12 +21,12 @@ public class PDF
         return id;
     }
 
-    public String getContent()
+    public File getContent()
     {
         return content;
     }
 
-    public void setContent(String content)
+    public void setContent(File content)
     {
         this.content = content;
     }
