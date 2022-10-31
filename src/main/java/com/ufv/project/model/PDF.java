@@ -36,9 +36,9 @@ public class PDF
         return lastModificationDate;
     }
 
-    public void setLastModificationDate(LocalDate lastModificationDate)
+    public void setLastModificationDate()
     {
-        this.lastModificationDate = lastModificationDate;
+        this.lastModificationDate = LocalDate.now();
     }
 
 }

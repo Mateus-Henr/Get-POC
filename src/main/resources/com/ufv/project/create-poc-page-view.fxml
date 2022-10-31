@@ -1,17 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ListView?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ufv.project.controller.CreatePOCController"
       prefHeight="400.0" prefWidth="600.0"
       alignment="CENTER">
+
+    <Label>Personal Information</Label>
+    <VBox>
+        <HBox>
+            <Label>Username:</Label>
+            <Text fx:id="usernameText"/>
+        </HBox>
+        <HBox>
+            <Label>Email:</Label>
+            <Text fx:id="emailText"/>
+        </HBox>
+        <HBox>
+            <Label>Name:</Label>
+            <Text fx:id="nameText"/>
+        </HBox>
+    </VBox>
+
+    <Label>Create POC</Label>
     <GridPane fx:id="gridPane" alignment="CENTER">
         <TextField fx:id="title" promptText="Title" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
         <ComboBox fx:id="authorComboBox" promptText="Author(s)" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
