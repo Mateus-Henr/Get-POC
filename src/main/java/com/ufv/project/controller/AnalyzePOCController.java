@@ -9,7 +9,7 @@ public class AnalyzePOCController
     private TextField searchField;
 
     @FXML
-    public void onDisplayContents(String studentUsername)
+    public void onDisplayContents()
     {
 
     }
