@@ -1,14 +1,14 @@
 package com.ufv.project.controller;
 
 import com.ufv.project.db.Singleton;
+import com.ufv.project.db.UserDataSingleton;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -23,13 +23,11 @@ public class CreatePOCController
 
     // ---- Personal information ----
     @FXML
-    private Text usernameText;
+    private VBox userData;
 
     @FXML
-    private Text emailText;
+    private PersonalInfoController userDataController;
 
-    @FXML
-    private Text nameText;
     // ------------------------------
 
     // --------- Create POC ---------
@@ -65,7 +63,7 @@ public class CreatePOCController
     public void initialize()
     {
         // Sets title to the page.
-        ((Stage) gridPane.getScene().getWindow()).setTitle("Create POC");
+//        ((Stage) gridPane.getScene().getWindow()).setTitle("Create POC");
 
         // Disables button until every field has been populated.
         addPOCButton.disableProperty().bind(
@@ -80,10 +78,13 @@ public class CreatePOCController
                         .or(Bindings.isEmpty(keywordList.getItems()))
         );
 
+        userDataController.setController(this);
+
         // Sets values according to the current user.
-        usernameText.setText("Matt");
-        emailText.setText("...@gmail.com");
-        nameText.setText("Me");
+        System.out.println(UserDataSingleton.getInstance().getUsername());
+        userDataController.setUsernameText(UserDataSingleton.getInstance().getUsername());
+        userDataController.setEmailText(UserDataSingleton.getInstance().getEmail());
+        userDataController.setNameText(UserDataSingleton.getInstance().getName());
     }
 
     @FXML

@@ -5,10 +5,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.text.Text?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Hyperlink?>
+
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:id="gridPane"
@@ -20,9 +20,9 @@
 
     <VBox GridPane.columnIndex="0">
         <TextField fx:id="usernameField" promptText="Username"/>
-        <PasswordField fx:id="passwordField"  promptText="Password"/>
+        <PasswordField fx:id="passwordField" promptText="Password"/>
         <Button fx:id="loginButton" onMouseClicked="#onLoginButtonClick">LOGIN</Button>
-        <Text>Forgot your password?</Text>
+        <Hyperlink>Forgot your password?</Hyperlink>
     </VBox>
 
     <VBox GridPane.columnIndex="1">

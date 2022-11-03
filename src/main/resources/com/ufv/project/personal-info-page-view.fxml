@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.ufv.project.controller.PersonalInfoController"
+            prefHeight="400.0" prefWidth="600.0">
+    <Label>Personal Information</Label>
+    <VBox>
+        <HBox>
+            <Label>Username:</Label>
+            <Text fx:id="usernameText"/>
+        </HBox>
+        <HBox>
+            <Label>Email:</Label>
+            <Text fx:id="emailText"/>
+        </HBox>
+        <HBox>
+            <Label>Name:</Label>
+            <Text fx:id="nameText"/>
+        </HBox>
+    </VBox>
+</VBox>

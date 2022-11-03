@@ -6,30 +6,15 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ListView?>
-
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.text.Text?>
+
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ufv.project.controller.CreatePOCController"
       prefHeight="400.0" prefWidth="600.0"
       alignment="CENTER">
 
-    <Label>Personal Information</Label>
-    <VBox>
-        <HBox>
-            <Label>Username:</Label>
-            <Text fx:id="usernameText"/>
-        </HBox>
-        <HBox>
-            <Label>Email:</Label>
-            <Text fx:id="emailText"/>
-        </HBox>
-        <HBox>
-            <Label>Name:</Label>
-            <Text fx:id="nameText"/>
-        </HBox>
-    </VBox>
+    <fx:include fx:id="userData" source="personal-info-page-view.fxml"/>
 
     <Label>Create POC</Label>
     <GridPane fx:id="gridPane" alignment="CENTER">
