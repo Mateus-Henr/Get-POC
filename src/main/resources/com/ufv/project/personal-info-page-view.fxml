@@ -5,9 +5,9 @@
 <?import javafx.scene.text.Text?>
 
 <VBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ufv.project.controller.PersonalInfoController"
-            prefHeight="400.0" prefWidth="600.0">
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.ufv.project.controller.PersonalInfoController"
+      prefHeight="400.0" prefWidth="600.0">
     <Label>Personal Information</Label>
     <VBox>
         <HBox>

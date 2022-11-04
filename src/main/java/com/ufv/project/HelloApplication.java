@@ -32,9 +32,9 @@ public class HelloApplication extends Application
 
     public void setMockupData()
     {
-        UserDataSingleton.getInstance().setUsername(new Text("Matt"));
-        UserDataSingleton.getInstance().setEmail(new Text("m@gmail.com"));
-        UserDataSingleton.getInstance().setName(new Text("Mateus"));
+        UserDataSingleton.getInstance().setUsername("Matt");
+        UserDataSingleton.getInstance().setEmail("m@gmail.com");
+        UserDataSingleton.getInstance().setName("Mateus");
     }
 
 }

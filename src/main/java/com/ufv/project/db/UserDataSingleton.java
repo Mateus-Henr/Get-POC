@@ -1,12 +1,10 @@
 package com.ufv.project.db;
 
-import javafx.scene.text.Text;
-
 public class UserDataSingleton
 {
-    private Text username;
-    private Text email;
-    private Text name;
+    private String username;
+    private String email;
+    private String name;
 
     private UserDataSingleton()
     {
@@ -24,32 +22,32 @@ public class UserDataSingleton
         return UserDataSingleton.RegistryHolder.INSTANCE;
     }
 
-    public Text getUsername()
+    public String getUsername()
     {
         return username;
     }
 
-    public void setUsername(Text username)
+    public void setUsername(String username)
     {
         this.username = username;
     }
 
-    public Text getEmail()
+    public String getEmail()
     {
         return email;
     }
 
-    public void setEmail(Text email)
+    public void setEmail(String email)
     {
         this.email = email;
     }
 
-    public Text getName()
+    public String getName()
     {
         return name;
     }
 
-    public void setName(Text name)
+    public void setName(String name)
     {
         this.name = name;
     }

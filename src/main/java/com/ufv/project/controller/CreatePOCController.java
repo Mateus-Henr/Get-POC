@@ -78,10 +78,7 @@ public class CreatePOCController
                         .or(Bindings.isEmpty(keywordList.getItems()))
         );
 
-        userDataController.setController(this);
-
         // Sets values according to the current user.
-        System.out.println(UserDataSingleton.getInstance().getUsername());
         userDataController.setUsernameText(UserDataSingleton.getInstance().getUsername());
         userDataController.setEmailText(UserDataSingleton.getInstance().getEmail());
         userDataController.setNameText(UserDataSingleton.getInstance().getName());

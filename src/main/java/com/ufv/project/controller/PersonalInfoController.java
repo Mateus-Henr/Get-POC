@@ -16,42 +16,37 @@ public class PersonalInfoController
 
     public void initialize()
     {
-        this.nameText = new Text("Matt");
+
     }
 
-    public Text getUsernameText()
+    public String getUsernameText()
     {
-        return usernameText;
+        return usernameText.getText();
     }
 
-    public void setUsernameText(Text usernameText)
+    public void setUsernameText(String username)
     {
-        this.usernameText = usernameText;
+        usernameText.setText(username);
     }
 
-    public Text getEmailText()
+    public String getEmailText()
     {
-        return emailText;
+        return emailText.getText();
     }
 
-    public void setEmailText(Text emailText)
+    public void setEmailText(String email)
     {
-        this.emailText = emailText;
+        emailText.setText(email);
     }
 
-    public Text getNameText()
+    public String getNameText()
     {
-        return nameText;
+        return nameText.getText();
     }
 
-    public void setNameText(Text nameText)
+    public void setNameText(String name)
     {
-        this.nameText = nameText;
-    }
-
-    public void setController(CreatePOCController createPOCController)
-    {
-
+        nameText.setText(name);
     }
 
 }
