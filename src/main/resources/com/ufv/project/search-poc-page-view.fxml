@@ -3,11 +3,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ufv.project.controller.SearchPOCController"
-            prefHeight="400.0" prefWidth="600.0">
-    <left>
-        <ListView fx:id="pocListView"/>
-    </left>
-</BorderPane>
+<?import javafx.scene.image.ImageView?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.ufv.project.controller.SearchPOCController"
+      prefHeight="400.0" prefWidth="600.0">
+
+    <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
+
+    <TextField fx:id="searchPOCTextField" promptText="POC"/>
+    <ImageView fx:id="noPOCImage" visible="false"/>
+    <ListView fx:id="pocListView"/>
+</VBox>

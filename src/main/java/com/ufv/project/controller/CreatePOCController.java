@@ -1,6 +1,5 @@
 package com.ufv.project.controller;
 
-import com.ufv.project.HelloApplication;
 import com.ufv.project.db.Singleton;
 import com.ufv.project.db.UserDataSingleton;
 import com.ufv.project.model.*;
@@ -11,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.time.LocalDate;

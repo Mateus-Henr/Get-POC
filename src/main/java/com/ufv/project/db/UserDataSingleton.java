@@ -1,10 +1,14 @@
 package com.ufv.project.db;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 public class UserDataSingleton
 {
     private String username;
     private String email;
     private String name;
+    private ImageView userIcon;
 
     private UserDataSingleton()
     {
@@ -50,6 +54,16 @@ public class UserDataSingleton
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public Image getUserIcon()
+    {
+        return userIcon.getImage();
+    }
+
+    public void setUserIcon(Image userIcon)
+    {
+        this.userIcon.setImage(userIcon);
     }
 
 }

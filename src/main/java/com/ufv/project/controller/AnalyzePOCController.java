@@ -5,6 +5,11 @@ import javafx.scene.control.TextField;
 
 public class AnalyzePOCController
 {
+    // ---------- Top Menu ----------
+    @FXML
+    private TopMenuController topMenuController;
+    // ------------------------------
+
     @FXML
     private TextField searchField;
 
@@ -13,4 +18,5 @@ public class AnalyzePOCController
     {
 
     }
+
 }
