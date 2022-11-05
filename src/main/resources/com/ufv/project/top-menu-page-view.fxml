@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.ufv.project.controller.TopMenuController"
+            prefHeight="400.0" prefWidth="600.0">
+    <left>
+        <ImageView fx:id="pocIcon"/>
+    </left>
+    <right>
+        <ImageView fx:id="userPicture"/>
+        <Text fx:id="userRole"/>
+    </right>
+</BorderPane>

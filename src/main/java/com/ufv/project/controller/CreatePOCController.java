@@ -1,14 +1,17 @@
 package com.ufv.project.controller;
 
+import com.ufv.project.HelloApplication;
 import com.ufv.project.db.Singleton;
 import com.ufv.project.db.UserDataSingleton;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -21,13 +24,17 @@ public class CreatePOCController
     private GridPane gridPane;
     // ------------------------------
 
+    // ---------- Top Menu ----------
+    @FXML
+    private TopMenuController topMenuController;
+    // ------------------------------
+
     // ---- Personal information ----
     @FXML
     private VBox userData;
 
     @FXML
     private PersonalInfoController userDataController;
-
     // ------------------------------
 
     // --------- Create POC ---------
@@ -62,9 +69,6 @@ public class CreatePOCController
     @FXML
     public void initialize()
     {
-        // Sets title to the page.
-//        ((Stage) gridPane.getScene().getWindow()).setTitle("Create POC");
-
         // Disables button until every field has been populated.
         addPOCButton.disableProperty().bind(
                 Bindings.createBooleanBinding(() ->
@@ -77,6 +81,10 @@ public class CreatePOCController
                         .or(fieldComboBox.valueProperty().isNull())
                         .or(Bindings.isEmpty(keywordList.getItems()))
         );
+
+        // Sets values to top menu.
+        topMenuController.setUserPicture(new Image(new File("src/main/resources/com/ufv/project/images/anonymous_user.png").toURI().toString()));
+        topMenuController.setUserRole("Teacher");
 
         // Sets values according to the current user.
         userDataController.setUsernameText(UserDataSingleton.getInstance().getUsername());

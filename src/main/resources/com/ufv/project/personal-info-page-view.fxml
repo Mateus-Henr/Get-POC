@@ -7,8 +7,9 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ufv.project.controller.PersonalInfoController"
+      alignment="CENTER"
       prefHeight="400.0" prefWidth="600.0">
-    <Label>Personal Information</Label>
+    <Text fx:id="nameText"/>
     <VBox>
         <HBox>
             <Label>Username:</Label>
@@ -17,10 +18,6 @@
         <HBox>
             <Label>Email:</Label>
             <Text fx:id="emailText"/>
-        </HBox>
-        <HBox>
-            <Label>Name:</Label>
-            <Text fx:id="nameText"/>
         </HBox>
     </VBox>
 </VBox>
