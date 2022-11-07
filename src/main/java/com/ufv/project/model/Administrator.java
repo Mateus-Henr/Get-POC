@@ -18,4 +18,5 @@ public class Administrator extends User
     {
         return true;
     }
+
 }
