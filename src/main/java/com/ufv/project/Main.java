@@ -15,7 +15,7 @@ public class Main extends Application
     {
         setMockupData();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("search-poc-page-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("create-poc-page-view.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setTitle("Get-POC App");

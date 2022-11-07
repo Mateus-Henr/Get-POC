@@ -4,11 +4,15 @@ import com.ufv.project.db.Singleton;
 import com.ufv.project.db.UserDataSingleton;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -61,8 +65,13 @@ public class CreatePOCController
     private Button choosePDFButton;
 
     @FXML
+    private Text pdfFilepath;
+
+    @FXML
     private Button addPOCButton;
     // ------------------------------
+
+    private File pdfFile;
 
     @FXML
     public void initialize()
@@ -78,10 +87,13 @@ public class CreatePOCController
                         .or(datePicker.valueProperty().isNull())
                         .or(fieldComboBox.valueProperty().isNull())
                         .or(Bindings.isEmpty(keywordList.getItems()))
+                        .or(Bindings.createBooleanBinding(() ->
+                                        pdfFilepath.getText().trim().isEmpty(),
+                                pdfFilepath.textProperty()))
         );
 
         // Sets values to top menu.
-        topMenuController.setUserPicture(new Image(new File("src/main/resources/com/ufv/project/images/anonymous_user.png").toURI().toString()));
+        topMenuController.setUserIcon(new Image(new File("src/main/resources/com/ufv/project/images/anonymous_user.png").toURI().toString()));
         topMenuController.setUserRole("Teacher");
 
         // Sets values according to the current user.
@@ -118,7 +130,7 @@ public class CreatePOCController
 
         if (file != null)
         {
-            System.out.println(file.getName());
+            pdfFilepath.setText(file.getName());
         }
     }
 

@@ -13,27 +13,31 @@ public class TopMenuController
     private ImageView pocIcon;
 
     @FXML
-    private ImageView userPicture;
+    private ImageView userIcon;
 
     @FXML
     private Text userRole;
 
     public void initialize()
     {
-        // Initialize image.
-        File file = new File("src/main/resources/com/ufv/project/images/POC_Main_Image.PNG");
-        Image image = new Image(file.toURI().toString());
-        pocIcon.setImage(image);
+        // Initialize default main image.
+        pocIcon.setImage(new Image(new File("src/main/resources/com/ufv/project/images/POC_Main_Image.PNG").toURI().toString()));
+
+        // Initialize default user image.
+        userIcon.setImage(new Image(new File("src/main/resources/com/ufv/project/images/anonymous_user.png").toURI().toString()));
+
+        // Initialize user role.
+        userRole.setText("Unknown");
     }
 
-    public ImageView getUserPicture()
+    public ImageView getUserIcon()
     {
-        return userPicture;
+        return userIcon;
     }
 
-    public void setUserPicture(Image userPicture)
+    public void setUserIcon(Image userIcon)
     {
-        this.userPicture.setImage(userPicture);
+        this.userIcon.setImage(userIcon);
     }
 
     public Text getUserRole()
