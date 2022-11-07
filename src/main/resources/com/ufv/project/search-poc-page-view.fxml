@@ -11,7 +11,10 @@
 
     <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
 
-    <TextField fx:id="searchPOCTextField" promptText="POC"/>
+    <HBox>
+        <TextField fx:id="searchPOCTextField" promptText="POC"/>
+        <Button onMouseClicked="#handlePOCSearching">Search</Button>
+    </HBox>
     <ImageView fx:id="noPOCImage" visible="false"/>
     <ListView fx:id="pocListView"/>
 </VBox>

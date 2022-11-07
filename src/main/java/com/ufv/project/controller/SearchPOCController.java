@@ -8,6 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 
 import java.io.File;
 
@@ -32,6 +33,15 @@ public class SearchPOCController
     @FXML
     public void initialize()
     {
+        // Set event handling to text box when pressing the "ENTER" key.
+        searchPOCTextField.setOnKeyPressed(keyEvent ->
+        {
+            if (keyEvent.getCode().equals(KeyCode.ENTER) && !searchPOCTextField.getText().trim().isEmpty())
+            {
+                handlePOCSearching();
+            }
+        });
+
         // Take away focus from the box.
         searchPOCTextField.setFocusTraversable(false);
 
