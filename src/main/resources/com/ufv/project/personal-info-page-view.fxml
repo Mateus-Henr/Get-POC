@@ -2,23 +2,21 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.ufv.project.controller.PersonalInfoController"
-      alignment="CENTER"
-      prefHeight="400.0" prefWidth="600.0">
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.PersonalInfoController">
+   <Separator prefWidth="200.0" />
 
-    <Text fx:id="nameText"/>
+    <Text fx:id="nameText" />
     <VBox>
         <HBox>
-            <Label>Username:</Label>
-            <Text fx:id="usernameText"/>
+            <Label text="Username:">Username:</Label>
+            <Text fx:id="usernameText" />
         </HBox>
         <HBox>
             <Label>Email:</Label>
-            <Text fx:id="emailText"/>
+            <Text fx:id="emailText" />
         </HBox>
     </VBox>
+   <Separator prefWidth="200.0" />
 </VBox>
