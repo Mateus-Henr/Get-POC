@@ -106,23 +106,11 @@ public class CreatePOCController
 
         // Get data from db.
         ObservableList<Professor> professors = Singleton.getInstance().getProfessorList();
+        authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(Singleton.getInstance().getStudentList()));
 
         // Set data for choosing.
         advisorComboBox.setItems(professors);
-
-        // Initializing menu items.
-        List<MenuItem> items = new ArrayList<>();
-
-        for (Professor professor : professors)
-        {
-            CheckMenuItem menuItem = new CheckMenuItem();
-
-            menuItem.setText(professor.getName());
-
-            items.add(menuItem);
-        }
-
-        coAdvisorMenuButton.getItems().addAll(items);
+        coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
     }
 
     @FXML
@@ -176,6 +164,22 @@ public class CreatePOCController
         {
             pdfFilepathText.setText("");
         }
+    }
+
+    public List<MenuItem> initializeCheckMenuItemsFromList(List<? extends User> userList)
+    {
+        List<MenuItem> items = new ArrayList<>();
+
+        for (User user : userList)
+        {
+            CheckMenuItem menuItem = new CheckMenuItem();
+
+            menuItem.setText(user.getName() + " " + user.getUsername());
+
+            items.add(menuItem);
+        }
+
+        return items;
     }
 
 }

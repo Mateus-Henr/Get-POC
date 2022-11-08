@@ -54,9 +54,16 @@ public class Singleton
 
     public ObservableList<Professor> getProfessorList()
     {
-        return FXCollections.observableList(userList.stream()
+        return FXCollections.unmodifiableObservableList(FXCollections.observableList(userList.stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.PROFESSOR)
-                .map(user -> (Professor) user).toList());
+                .map(user -> (Professor) user).toList()));
+    }
+
+    public ObservableList<Professor> getStudentList()
+    {
+        return FXCollections.unmodifiableObservableList(FXCollections.observableList(userList.stream()
+                .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)
+                .map(user -> (Professor) user).toList()));
     }
 
     public ObservableList<POC> getPocList()
