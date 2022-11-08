@@ -12,7 +12,9 @@
         <ImageView fx:id="pocIcon"/>
     </left>
     <right>
-        <ImageView fx:id="userIcon"/>
-        <Text fx:id="userRole"/>
+        <HBox>
+            <ImageView fx:id="userIcon" fitWidth="50" fitHeight="50"/>
+            <Text fx:id="userRole"/>
+        </HBox>
     </right>
 </BorderPane>

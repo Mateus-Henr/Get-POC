@@ -4,6 +4,7 @@ import com.ufv.project.db.Singleton;
 import com.ufv.project.db.UserDataSingleton;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CreatePOCController
 {
@@ -45,13 +47,13 @@ public class CreatePOCController
     private TextField title;
 
     @FXML
-    private ComboBox<Student> authorComboBox;
+    private MenuButton authorMenuButton;
 
     @FXML
     private ComboBox<Professor> advisorComboBox;
 
     @FXML
-    private ComboBox<Professor> coAdvisorComboBox;
+    private MenuButton coAdvisorMenuButton;
 
     @FXML
     private DatePicker datePicker;
@@ -94,13 +96,21 @@ public class CreatePOCController
         );
 
         // Sets values to top menu.
-        topMenuController.setUserIcon(new Image(new File("src/main/resources/com/ufv/project/images/anonymous_user.png").toURI().toString()));
+        topMenuController.setUserIcon(new Image(new File("src/main/resources/com/ufv/project/images/teacher.png").toURI().toString()));
         topMenuController.setUserRole("Teacher");
 
         // Sets values according to the current user.
         userDataController.setUsernameText(UserDataSingleton.getInstance().getUsername());
         userDataController.setEmailText(UserDataSingleton.getInstance().getEmail());
         userDataController.setNameText(UserDataSingleton.getInstance().getName());
+
+        // Get data from db.
+        ObservableList<Professor> professors = Singleton.getInstance().getProfessorList();
+        authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(Singleton.getInstance().getStudentList()));
+
+        // Set data for choosing.
+        advisorComboBox.setItems(professors);
+        coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
     }
 
     @FXML
@@ -154,6 +164,22 @@ public class CreatePOCController
         {
             pdfFilepathText.setText("");
         }
+    }
+
+    public List<MenuItem> initializeCheckMenuItemsFromList(List<? extends User> userList)
+    {
+        List<MenuItem> items = new ArrayList<>();
+
+        for (User user : userList)
+        {
+            CheckMenuItem menuItem = new CheckMenuItem();
+
+            menuItem.setText(user.getName() + " " + user.getUsername());
+
+            items.add(menuItem);
+        }
+
+        return items;
     }
 
 }
