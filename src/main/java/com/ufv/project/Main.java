@@ -10,13 +10,12 @@ import java.io.IOException;
 
 public class Main extends Application
 {
-
     @Override
     public void start(Stage stage) throws IOException
     {
         setMockupData();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("search-poc-page-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login-page-view.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setTitle("Get-POC App");

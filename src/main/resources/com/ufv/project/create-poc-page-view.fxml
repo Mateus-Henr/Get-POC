@@ -8,6 +8,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Label?>
 
+<?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ufv.project.controller.CreatePOCController"
@@ -30,7 +31,8 @@
         <Button fx:id="choosePDFButton" onMouseClicked="#handlePDFChoosing" GridPane.rowIndex="0"
                 GridPane.columnIndex="2">Choose...
         </Button>
-        <Button fx:id="addPOCButton" onMouseClicked="#handlePOCAdding" GridPane.rowIndex="1" GridPane.columnIndex="2">
+        <Text fx:id="pdfFilepathText" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+        <Button fx:id="addPOCButton" onMouseClicked="#handlePOCAdding" GridPane.rowIndex="2" GridPane.columnIndex="2">
             Add POC
         </Button>
     </GridPane>
