@@ -18,6 +18,7 @@ public class TopMenuController
     @FXML
     private Text userRole;
 
+    @FXML
     public void initialize()
     {
         // Initialize default main image.
