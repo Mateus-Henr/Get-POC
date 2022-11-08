@@ -15,229 +15,220 @@ CREATE SCHEMA IF NOT EXISTS `Get_POC` DEFAULT CHARACTER SET utf8 ;
 USE `Get_POC` ;
 
 -- -----------------------------------------------------
--- Table `Get_POC`.`area`
+-- Table `Get_POC`.`TB_Area`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`area` (
-  `idarea` INT NOT NULL,
-  `nome` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`idarea`))
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_Area` (
+  `ID` INT NOT NULL,
+  `Name` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Get_POC`.`PDF`
+-- Table `Get_POC`.`TB_PDF`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`PDF` (
-  `idPDF` INT NOT NULL,
-  `data_criacao` DATE NOT NULL,
-  `conteudo` LONGTEXT NOT NULL,
-  PRIMARY KEY (`idPDF`))
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_PDF` (
+  `ID` INT NOT NULL,
+  `Creation_Date` DATE NOT NULL,
+  `Content` LONGTEXT NOT NULL,
+  PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Get_POC`.`user`
+-- Table `Get_POC`.`TB_User`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`user` (
-  `username` VARCHAR(100) NOT NULL,
-  `senha` VARCHAR(45) NOT NULL,
-  `nome` VARCHAR(100) NOT NULL,
-  `tipo` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`username`))
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_User` (
+  `ID` VARCHAR(100) NOT NULL,
+  `Password` VARCHAR(100) NOT NULL,
+  `Name` VARCHAR(100) NOT NULL,
+  `Type` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Get_POC`.`professor`
+-- Table `Get_POC`.`TB_Teacher`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`professor` (
-  `email` VARCHAR(100) NOT NULL,
-  `user_username` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`user_username`),
-  CONSTRAINT `fk_professor_user1`
-    FOREIGN KEY (`user_username`)
-    REFERENCES `Get_POC`.`user` (`username`)
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_Teacher` (
+  `Email` VARCHAR(100) NOT NULL,
+  `TB_User_ID` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`TB_User_ID`),
+  CONSTRAINT `fk_teacher_user1`
+    FOREIGN KEY (`TB_User_ID`)
+    REFERENCES `Get_POC`.`TB_User` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Get_POC`.`POC`
+-- Table `Get_POC`.`TB_POC`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`POC` (
-  `idPOC` INT NOT NULL,
-  `titulo` VARCHAR(100) NOT NULL,
-  `data_defesa` DATE NOT NULL,
-  `resumo` TINYTEXT NOT NULL,
-  `area_idarea` INT NOT NULL,
-  `PDF_idPDF` INT NOT NULL,
-  `prof_cadastrante` VARCHAR(100) NOT NULL,
-  `prof_orientador` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`idPOC`),
-  INDEX `fk_POC_area1_idx` (`area_idarea` ASC) VISIBLE,
-  INDEX `fk_POC_PDF1_idx` (`PDF_idPDF` ASC) VISIBLE,
-  INDEX `fk_POC_professor1_idx` (`prof_cadastrante` ASC) VISIBLE,
-  INDEX `fk_POC_professor2_idx` (`prof_orientador` ASC) VISIBLE,
-  CONSTRAINT `fk_POC_area1`
-    FOREIGN KEY (`area_idarea`)
-    REFERENCES `Get_POC`.`area` (`idarea`)
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_POC` (
+  `ID` INT NOT NULL,
+  `Title` VARCHAR(100) NOT NULL,
+  `Defense_Date` DATE NOT NULL,
+  `Summary` TINYTEXT NOT NULL,
+  `TB_Area_ID` INT NOT NULL,
+  `TB_PDF_ID` INT NOT NULL,
+  `Teacher_Registrant` VARCHAR(100) NOT NULL,
+  `Teacher_Advisor` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`ID`),
+  INDEX `fk_TB_POC_area1_idx` (`TB_Area_ID` ASC) VISIBLE,
+  INDEX `fk_TB_POC_PDF1_idx` (`TB_PDF_ID` ASC) VISIBLE,
+  INDEX `fk_TB_POC_teacher1_idx` (`Teacher_Registrant` ASC) VISIBLE,
+  INDEX `fk_TB_POC_teacher2_idx` (`Teacher_Advisor` ASC) VISIBLE,
+  CONSTRAINT `fk_TB_POC_area1`
+    FOREIGN KEY (`TB_Area_ID`)
+    REFERENCES `Get_POC`.`TB_Area` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_POC_PDF1`
-    FOREIGN KEY (`PDF_idPDF`)
-    REFERENCES `Get_POC`.`PDF` (`idPDF`)
+  CONSTRAINT `fk_TB_POC_PDF1`
+    FOREIGN KEY (`TB_PDF_ID`)
+    REFERENCES `Get_POC`.`TB_PDF` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_POC_professor1`
-    FOREIGN KEY (`prof_cadastrante`)
-    REFERENCES `Get_POC`.`professor` (`user_username`)
+  CONSTRAINT `fk_TB_POC_teacher1`
+    FOREIGN KEY (`Teacher_Registrant`)
+    REFERENCES `Get_POC`.`TB_Teacher` (`TB_User_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_POC_professor2`
-    FOREIGN KEY (`prof_orientador`)
-    REFERENCES `Get_POC`.`professor` (`user_username`)
+  CONSTRAINT `fk_TB_POC_teacher2`
+    FOREIGN KEY (`Teacher_Advisor`)
+    REFERENCES `Get_POC`.`TB_Teacher` (`TB_User_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Get_POC`.`aluno`
+-- Table `Get_POC`.`TB_Student`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`aluno` (
-  `email` VARCHAR(100) NOT NULL,
-  `matricula` VARCHAR(45) NOT NULL,
-  `POC_feito` INT NULL,
-  `user_username` VARCHAR(100) NOT NULL,
-  INDEX `fk_aluno_POC1_idx` (`POC_feito` ASC) VISIBLE,
-  PRIMARY KEY (`user_username`),
-  UNIQUE INDEX `matricula_UNIQUE` (`matricula` ASC) VISIBLE,
-  CONSTRAINT `fk_aluno_POC1`
-    FOREIGN KEY (`POC_feito`)
-    REFERENCES `Get_POC`.`POC` (`idPOC`)
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_Student` (
+  `Email` VARCHAR(100) NOT NULL,
+  `Registration` VARCHAR(100) NOT NULL,
+  `POC` INT NULL,
+  `TB_User_ID` VARCHAR(100) NOT NULL,
+  INDEX `fk_TB_Student_POC1_idx` (`POC` ASC) VISIBLE,
+  PRIMARY KEY (`TB_User_ID`),
+  UNIQUE INDEX `Registration_UNIQUE` (`Registration` ASC) VISIBLE,
+  CONSTRAINT `fk_TB_Student_POC1`
+    FOREIGN KEY (`POC`)
+    REFERENCES `Get_POC`.`TB_POC` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_aluno_user1`
-    FOREIGN KEY (`user_username`)
-    REFERENCES `Get_POC`.`user` (`username`)
+  CONSTRAINT `fk_TB_Student_user1`
+    FOREIGN KEY (`TB_User_ID`)
+    REFERENCES `Get_POC`.`TB_User` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Get_POC`.`disciplina`
+-- Table `Get_POC`.`TB_Discipline`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`disciplina` (
-  `iddisciplina` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(100) NOT NULL,
-  `descricao` TINYTEXT NOT NULL,
-  PRIMARY KEY (`iddisciplina`))
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_Discipline` (
+  `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(100) NOT NULL,
+  `Description` TINYTEXT NOT NULL,
+  PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Get_POC`.`palavra_chave`
+-- Table `Get_POC`.`TB_Keyword`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`palavra_chave` (
-  `idpalavra_chave` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`idpalavra_chave`))
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_Keyword` (
+  `ID` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`ID`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Get_POC`.`POC_has_palavra_chave`
+-- Table `Get_POC`.`POC_has_Keyword
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`POC_has_palavra_chave` (
-  `POC_idPOC` INT NOT NULL,
-  `palavra_chave_idpalavra_chave` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`POC_idPOC`, `palavra_chave_idpalavra_chave`),
-  INDEX `fk_POC_has_palavra_chave_palavra_chave1_idx` (`palavra_chave_idpalavra_chave` ASC) VISIBLE,
-  INDEX `fk_POC_has_palavra_chave_POC1_idx` (`POC_idPOC` ASC) VISIBLE,
-  CONSTRAINT `fk_POC_has_palavra_chave_POC1`
-    FOREIGN KEY (`POC_idPOC`)
-    REFERENCES `Get_POC`.`POC` (`idPOC`)
+
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_POC_has_Keyword` (
+  `TB_POC_ID` INT NOT NULL,
+  `TB_Keyword_ID` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`TB_POC_ID`, `TB_Keyword_ID`),
+  INDEX `fk_TB_POC_has_Keyword_keyword1_idx` (`TB_Keyword_ID` ASC) VISIBLE,
+  INDEX `fk_TB_POC_has_Keyword_POC1_idx` (`TB_POC_ID` ASC) VISIBLE,
+  CONSTRAINT `TB_fk_POC_has_Keyword_POC1`
+    FOREIGN KEY (`TB_POC_ID`)
+    REFERENCES `Get_POC`.`TB_POC` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_POC_has_palavra_chave_palavra_chave1`
-    FOREIGN KEY (`palavra_chave_idpalavra_chave`)
-    REFERENCES `Get_POC`.`palavra_chave` (`idpalavra_chave`)
+  CONSTRAINT `fk_TB_POC_has_Keyword_keyeword1`
+    FOREIGN KEY (`TB_Keyword_ID`)
+    REFERENCES `Get_POC`.`TB_Keyword` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `Get_POC`.`TB_Teacher_has_Discipline`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_Teacher_has_Discipline` (
+  `TB_Discipline_ID` INT UNSIGNED NOT NULL,
+  `TB_Teacher_User_ID` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`TB_Discipline_ID`, `TB_Teacher_User_ID`),
+  INDEX `fk_TB_Teacher_has_Discipline_teacher1_idx` (`TB_Teacher_User_ID` ASC) VISIBLE,
+  INDEX `fk_TB_Teacher_has_Discipline_discipline1_idx` (`TB_Discipline_ID` ASC) VISIBLE,
+  CONSTRAINT `fk_TB_Teacher_has_Discipline_discipline1`
+    FOREIGN KEY (`TB_Discipline_ID`)
+    REFERENCES `Get_POC`.`TB_Discipline` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_TB_Teacher_has_Discipline_teacher1`
+    FOREIGN KEY (`TB_Teacher_User_ID`)
+    REFERENCES `Get_POC`.`TB_Teacher` (`TB_User_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Get_POC`.`table1`
+-- Table `Get_POC`.`TB_Teacher_Co-advises_POC`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`table1` (
-  `idtable1` INT NOT NULL,
-  PRIMARY KEY (`idtable1`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Get_POC`.`leciona_lecionada`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`leciona_lecionada` (
-  `disciplina_iddisciplina` INT UNSIGNED NOT NULL,
-  `professor_user_username` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`disciplina_iddisciplina`, `professor_user_username`),
-  INDEX `fk_disciplina_has_professor_professor1_idx` (`professor_user_username` ASC) VISIBLE,
-  INDEX `fk_disciplina_has_professor_disciplina1_idx` (`disciplina_iddisciplina` ASC) VISIBLE,
-  CONSTRAINT `fk_disciplina_has_professor_disciplina1`
-    FOREIGN KEY (`disciplina_iddisciplina`)
-    REFERENCES `Get_POC`.`disciplina` (`iddisciplina`)
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_Teacher_Co-advises_POC` (
+  `TB_Teacher_User_ID` VARCHAR(100) NOT NULL,
+  `TB_POC_ID` INT NOT NULL,
+  PRIMARY KEY (`TB_Teacher_User_ID`, `TB_POC_ID`),
+  INDEX `fk_TB_Teacher_Co-advises_POC_POC1_idx` (`TB_POC_ID` ASC) VISIBLE,
+  INDEX `fk_TB_Teacher_Co-advises_POC_teacher1_idx` (`TB_Teacher_User_ID` ASC) VISIBLE,
+  CONSTRAINT `fk_TB_Teacher_Co-advises_POC_teacher1`
+    FOREIGN KEY (`TB_Teacher_User_ID`)
+    REFERENCES `Get_POC`.`TB_Teacher_ID` (`TB_User_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_disciplina_has_professor_professor1`
-    FOREIGN KEY (`professor_user_username`)
-    REFERENCES `Get_POC`.`professor` (`user_username`)
+  CONSTRAINT `fk_TB_Teacher_Co-advises_POC_POC1`
+    FOREIGN KEY (`TB_POC_ID`)
+    REFERENCES `Get_POC`.`TB_POC` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Get_POC`.`coorientacao`
+-- Table `Get_POC`.`TB_User_Manages_User`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`coorientacao` (
-  `prof_co_orienta` VARCHAR(100) NOT NULL,
-  `POC_coorientado` INT NOT NULL,
-  PRIMARY KEY (`prof_co_orienta`, `POC_coorientado`),
-  INDEX `fk_professor_has_POC_POC1_idx` (`POC_coorientado` ASC) VISIBLE,
-  INDEX `fk_professor_has_POC_professor1_idx` (`prof_co_orienta` ASC) VISIBLE,
-  CONSTRAINT `fk_professor_has_POC_professor1`
-    FOREIGN KEY (`prof_co_orienta`)
-    REFERENCES `Get_POC`.`professor` (`user_username`)
+CREATE TABLE IF NOT EXISTS `Get_POC`.`TB_User_Manages_User` (
+  `TB_User_Administrator_ID` VARCHAR(100),
+  `TB_User_Administered_ID` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`TB_User_Administrator_ID`, `TB_User_Administered_ID`),
+  INDEX `fk_TB_User_Manages_User_user2_idx` (`TB_User_Administered_ID` ASC) VISIBLE,
+  INDEX `fk_TB_User_Manages_User_user1_idx` (`TB_User_Administrator_ID` ASC) VISIBLE,
+  CONSTRAINT `fk_TB_User_Manages_User_user1`
+    FOREIGN KEY (`TB_User_Administrator_ID`)
+    REFERENCES `Get_POC`.`TB_User` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_professor_has_POC_POC1`
-    FOREIGN KEY (`POC_coorientado`)
-    REFERENCES `Get_POC`.`POC` (`idPOC`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Get_POC`.`administra`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Get_POC`.`administra` (
-  `administrador_username` VARCHAR(100) NOT NULL,
-  `administrado_username` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`administrador_username`, `administrado_username`),
-  INDEX `fk_user_has_user_user2_idx` (`administrado_username` ASC) VISIBLE,
-  INDEX `fk_user_has_user_user1_idx` (`administrador_username` ASC) VISIBLE,
-  CONSTRAINT `fk_user_has_user_user1`
-    FOREIGN KEY (`administrador_username`)
-    REFERENCES `Get_POC`.`user` (`username`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_user_user2`
-    FOREIGN KEY (`administrado_username`)
-    REFERENCES `Get_POC`.`user` (`username`)
+  CONSTRAINT `fk_TB_User_Manages_User_user2`
+    FOREIGN KEY (`TB_User_Administered_ID`)
+    REFERENCES `Get_POC`.`TB_User` (`ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
