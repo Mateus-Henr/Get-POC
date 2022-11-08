@@ -4,20 +4,17 @@ import com.ufv.project.model.*;
 import com.ufv.project.db.Singleton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.File;
-import java.io.IOException;
 
 public class LoginController
 {
@@ -39,6 +36,24 @@ public class LoginController
     @FXML
     public void initialize()
     {
+        // Set event handling to text box when pressing the "ENTER" key.
+        usernameField.setOnKeyPressed(keyEvent ->
+        {
+            if (keyEvent.getCode().equals(KeyCode.ENTER) && areFieldsValid())
+            {
+                onLoginButtonClick();
+            }
+        });
+
+        // Set event handling to text box when pressing the "ENTER" key.
+        passwordField.setOnKeyPressed(keyEvent ->
+        {
+            if (keyEvent.getCode().equals(KeyCode.ENTER) && areFieldsValid())
+            {
+                onLoginButtonClick();
+            }
+        });
+
         // Initialize image.
         File file = new File("src/main/resources/com/ufv/project/images/POC_Main_Image.PNG");
         Image image = new Image(file.toURI().toString());
@@ -82,6 +97,11 @@ public class LoginController
         {
             // Validation failed call fail style.
         }
+    }
+
+    public boolean areFieldsValid()
+    {
+        return !usernameField.getText().trim().isEmpty() && !passwordField.getText().trim().isEmpty();
     }
 
 }
