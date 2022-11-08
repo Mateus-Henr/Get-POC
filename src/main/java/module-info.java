@@ -2,6 +2,8 @@ module com.ufv.project
 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
+    requires mysql.connector.j;
 
     opens com.ufv.project to javafx.fxml;
     opens com.ufv.project.model to javafx.fxml;
