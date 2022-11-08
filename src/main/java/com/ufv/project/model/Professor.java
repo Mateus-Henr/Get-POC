@@ -26,4 +26,10 @@ public class Professor extends User
         return true;
     }
 
+    @Override
+    public String toString()
+    {
+        return super.getName();
+    }
+
 }

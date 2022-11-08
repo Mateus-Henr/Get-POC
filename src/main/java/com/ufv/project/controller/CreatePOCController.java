@@ -4,6 +4,7 @@ import com.ufv.project.db.Singleton;
 import com.ufv.project.db.UserDataSingleton;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CreatePOCController
 {
@@ -45,13 +47,13 @@ public class CreatePOCController
     private TextField title;
 
     @FXML
-    private ComboBox<Student> authorComboBox;
+    private MenuButton authorMenuButton;
 
     @FXML
     private ComboBox<Professor> advisorComboBox;
 
     @FXML
-    private ComboBox<Professor> coAdvisorComboBox;
+    private MenuButton coAdvisorMenuButton;
 
     @FXML
     private DatePicker datePicker;
@@ -101,6 +103,26 @@ public class CreatePOCController
         userDataController.setUsernameText(UserDataSingleton.getInstance().getUsername());
         userDataController.setEmailText(UserDataSingleton.getInstance().getEmail());
         userDataController.setNameText(UserDataSingleton.getInstance().getName());
+
+        // Get data from db.
+        ObservableList<Professor> professors = Singleton.getInstance().getProfessorList();
+
+        // Set data for choosing.
+        advisorComboBox.setItems(professors);
+
+        // Initializing menu items.
+        List<MenuItem> items = new ArrayList<>();
+
+        for (Professor professor : professors)
+        {
+            CheckMenuItem menuItem = new CheckMenuItem();
+
+            menuItem.setText(professor.getName());
+
+            items.add(menuItem);
+        }
+
+        coAdvisorMenuButton.getItems().addAll(items);
     }
 
     @FXML

@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Singleton
 {
@@ -30,6 +31,9 @@ public class Singleton
                 .summary("dadasdasdas")
                 .keywords(new ArrayList<>())
                 .build());
+
+        userList.add(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()));
+        userList.add(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()));
     }
 
     private static class RegistryHolder
@@ -46,6 +50,13 @@ public class Singleton
     public ObservableList<User> getUserList()
     {
         return FXCollections.unmodifiableObservableList(userList);
+    }
+
+    public ObservableList<Professor> getProfessorList()
+    {
+        return FXCollections.observableList(userList.stream()
+                .filter(user -> user.getUserType() == UserTypesEnum.PROFESSOR)
+                .map(user -> (Professor) user).toList());
     }
 
     public ObservableList<POC> getPocList()

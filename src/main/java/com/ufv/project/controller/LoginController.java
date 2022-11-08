@@ -45,7 +45,7 @@ public class LoginController
             }
         });
 
-        // Set event handling to text box when pressing the "ENTER" key.
+        // Set event handling to password box when pressing the "ENTER" key.
         passwordField.setOnKeyPressed(keyEvent ->
         {
             if (keyEvent.getCode().equals(KeyCode.ENTER) && areFieldsValid())
