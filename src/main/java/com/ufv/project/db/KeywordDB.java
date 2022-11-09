@@ -4,7 +4,7 @@ import java.sql.*;
 
 import static com.ufv.project.db.ConnectDB.connect;
 
-public class tb_keyword {
+public class KeywordDB {
 
     /*
      * TB_Keyword table names

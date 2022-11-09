@@ -4,7 +4,7 @@ import java.sql.*;
 
 import static com.ufv.project.db.ConnectDB.connect;
 
-public class tb_discipline {
+public class DisciplineDB {
 
     public static String TABLE_DISCIPLINE = "TB_Discipline";
     public static String COLUMN_DISCIPLINE_ID = "ID";

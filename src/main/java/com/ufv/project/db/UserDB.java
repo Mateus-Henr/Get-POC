@@ -5,7 +5,7 @@ import static com.ufv.project.db.ConnectDB.connect;
 
 import java.sql.*;
 
-public class tb_user {
+public class UserDB {
 
     /*
      *   TB_User table columns names

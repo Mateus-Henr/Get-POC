@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 import static com.ufv.project.db.ConnectDB.connect;
 
-public class tb_PDF {
+public class PdfDB {
 
     /*
      * TB_PDF table columns names

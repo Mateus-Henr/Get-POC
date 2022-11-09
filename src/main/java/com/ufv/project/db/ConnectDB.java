@@ -1,17 +1,7 @@
 package com.ufv.project.db;
 
 
-import java.io.File;
 import java.sql.*;
-import java.util.Calendar;
-
-import static com.ufv.project.db.tb_area.*;
-import static com.ufv.project.db.tb_discipline.*;
-import static com.ufv.project.db.tb_PDF.*;
-import static com.ufv.project.db.tb_keyword.*;
-import static com.ufv.project.db.tb_user.*;
-import static com.ufv.project.db.tb_teacher.*;
-import static com.ufv.project.db.tb_poc.*;
 
 
 public class ConnectDB {
@@ -133,6 +123,7 @@ public class ConnectDB {
             System.out.println("Connection failed");
             return;
         }
+
 
 
         close(conn);

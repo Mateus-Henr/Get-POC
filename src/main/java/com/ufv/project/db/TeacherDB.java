@@ -3,9 +3,9 @@ package com.ufv.project.db;
 import java.sql.*;
 
 import static com.ufv.project.db.ConnectDB.connect;
-import static com.ufv.project.db.tb_user.*;
+import static com.ufv.project.db.UserDB.*;
 
-public class tb_teacher
+public class TeacherDB
 {
     /*
      *  TB_Teacher table columns names

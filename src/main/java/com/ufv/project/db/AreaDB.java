@@ -4,7 +4,7 @@ import java.sql.*;
 
 import static com.ufv.project.db.ConnectDB.connect;
 
-public class tb_area {
+public class AreaDB {
 
     /*
      *   TB_Area table columns names

@@ -1,11 +1,10 @@
 package com.ufv.project.db;
 
 import java.sql.*;
-import java.util.Calendar;
 
 import static com.ufv.project.db.ConnectDB.connect;
 
-public class tb_poc {
+public class PocDB {
 
     /*
      * TB_POC table columns names
