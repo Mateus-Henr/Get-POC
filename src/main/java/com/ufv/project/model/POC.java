@@ -8,6 +8,7 @@ public class POC
 {
     private final int id;
     private String title;
+    private List<Student> authors;
     private LocalDate defenseDate;
     private List<String> keywords;
     private String summary;
@@ -26,6 +27,7 @@ public class POC
     {
         this.id = pocBuilder.id;
         this.title = pocBuilder.title;
+        this.authors = pocBuilder.authors;
         this.defenseDate = pocBuilder.defenseDate;
         this.summary = pocBuilder.summary;
         this.field = pocBuilder.field;
@@ -52,6 +54,26 @@ public class POC
     public void setDefenseDate(LocalDate defenseDate)
     {
         this.defenseDate = defenseDate;
+    }
+
+    public List<Student> getAuthors()
+    {
+        return authors;
+    }
+
+    public void setAuthors(List<Student> authors)
+    {
+        this.authors = authors;
+    }
+
+    public List<String> getKeywords()
+    {
+        return keywords;
+    }
+
+    public void setKeywords(List<String> keywords)
+    {
+        this.keywords = keywords;
     }
 
     public String getSummary()
@@ -104,6 +126,16 @@ public class POC
         this.advisor = advisor;
     }
 
+    public List<Professor> getCoAdvisors()
+    {
+        return coAdvisors;
+    }
+
+    public void setCoAdvisors(List<Professor> coAdvisors)
+    {
+        this.coAdvisors = coAdvisors;
+    }
+
     @Override
     public String toString()
     {
@@ -114,6 +146,7 @@ public class POC
     {
         private int id;
         private String title;
+        private List<Student> authors;
         private LocalDate defenseDate;
         private List<String> keywords;
         private String summary;
@@ -125,8 +158,13 @@ public class POC
 
         public POCBuilder()
         {
-            keywords = new ArrayList<>();
-            coAdvisors = new ArrayList<>();
+
+        }
+
+        public POCBuilder id(int id)
+        {
+            this.id = id;
+            return this;
         }
 
         public POCBuilder title(String title)
@@ -138,6 +176,12 @@ public class POC
         public POCBuilder defenseDate(LocalDate defenseDate)
         {
             this.defenseDate = defenseDate;
+            return this;
+        }
+
+        public POCBuilder authors(List<Student> authors)
+        {
+            this.authors = authors;
             return this;
         }
 
