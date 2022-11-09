@@ -4,32 +4,30 @@ import com.ufv.project.model.Subject;
 
 import java.sql.*;
 
-import static com.ufv.project.db.ConnectDB.connect;
-
 public class SubjectDB
 {
 
-    public static String TABLE_SUBJECT = "TB_Subject";
-    public static String COLUMN_SUBJECT_ID = "ID";
-    public static String COLUMN_SUBJECT_NAME = "Name";
-    public static String COLUMN_SUBJECT_DESCRIPTION = "Description";
+    private static final String TABLE_SUBJECT = "TB_Subject";
+    private static final String COLUMN_SUBJECT_ID = "ID";
+    private static final String COLUMN_SUBJECT_NAME = "Name";
+    private static final String COLUMN_SUBJECT_DESCRIPTION = "Description";
 
-    public static int COLUMN_SUBJECT_ID_INDEX = 1;
-    public static int COLUMN_SUBJECT_NAME_INDEX = 2;
-    public static int COLUMN_SUBJECT_DESCRIPTION_INDEX = 3;
+    private static final int COLUMN_SUBJECT_ID_INDEX = 1;
+    private static final int COLUMN_SUBJECT_NAME_INDEX = 2;
+    private static final int COLUMN_SUBJECT_DESCRIPTION_INDEX = 3;
 
-    public static String GET_SUBJECT = "SELECT  * FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_ID + " = ?";
+    private static final String GET_SUBJECT = "SELECT  * FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_ID + " = ?";
 
-    public static String GET_SUBJECT_DESCRIPTION = "SELECT " + COLUMN_SUBJECT_DESCRIPTION + " FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_ID + " = ?";
+    private static final String GET_SUBJECT_DESCRIPTION = "SELECT " + COLUMN_SUBJECT_DESCRIPTION + " FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_ID + " = ?";
 
-    public static String SET_SUBJECT_NAME = "UPDATE " + TABLE_SUBJECT + " SET " + COLUMN_SUBJECT_NAME + " = ? WHERE " + COLUMN_SUBJECT_ID + " = ?";
-    public static String SET_SUBJECT_DESCRIPTION = "UPDATE " + TABLE_SUBJECT + " SET " + COLUMN_SUBJECT_DESCRIPTION + " = ? WHERE " + COLUMN_SUBJECT_ID + " = ?";
+    private static final String SET_SUBJECT_NAME = "UPDATE " + TABLE_SUBJECT + " SET " + COLUMN_SUBJECT_NAME + " = ? WHERE " + COLUMN_SUBJECT_ID + " = ?";
+    private static final String SET_SUBJECT_DESCRIPTION = "UPDATE " + TABLE_SUBJECT + " SET " + COLUMN_SUBJECT_DESCRIPTION + " = ? WHERE " + COLUMN_SUBJECT_ID + " = ?";
 
-    public static String INSERT_SUBJECT = "INSERT INTO " + TABLE_SUBJECT + " (" + COLUMN_SUBJECT_ID + ", " + COLUMN_SUBJECT_NAME + ", " + COLUMN_SUBJECT_DESCRIPTION + ") VALUES (?, ?, ?)";
+    private static final String INSERT_SUBJECT = "INSERT INTO " + TABLE_SUBJECT + " (" + COLUMN_SUBJECT_ID + ", " + COLUMN_SUBJECT_NAME + ", " + COLUMN_SUBJECT_DESCRIPTION + ") VALUES (?, ?, ?)";
 
-    public static String DELETE_SUBJECT = "DELETE FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_ID + " = ?";
+    private static final String DELETE_SUBJECT = "DELETE FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_ID + " = ?";
 
-    public static String PRINT_SUBJECTS = "SELECT * FROM " + TABLE_SUBJECT;
+    private static final String PRINT_SUBJECTS = "SELECT * FROM " + TABLE_SUBJECT;
 
     private PreparedStatement getSubject;
     private PreparedStatement insertSubject;
@@ -54,36 +52,50 @@ public class SubjectDB
     {
         getSubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
 
-        ResultSet resultSet = getSubject.executeQuery();
-
-        if (resultSet.next())
+        try (ResultSet resultSet = getSubject.executeQuery())
         {
-            return new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX),
-                    resultSet.getString(COLUMN_SUBJECT_NAME),
-                    resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX));
+            if (resultSet.next())
+            {
+                return new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX),
+                        resultSet.getString(COLUMN_SUBJECT_NAME),
+                        resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX));
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
         }
 
         return null;
     }
 
-    public int insertSubject(Subject subjectToInsert)
+    public int insertSubject(Subject subjectToInsert) throws SQLException
     {
-        ResultSet resultSet = insertField.executeQuery();
+        insertSubject.setInt(COLUMN_SUBJECT_ID_INDEX, subjectToInsert.getId());
+        insertSubject.setString(COLUMN_SUBJECT_NAME_INDEX, subjectToInsert.getName());
+        insertSubject.setString(COLUMN_SUBJECT_DESCRIPTION_INDEX, subjectToInsert.getDescription());
 
-        if (resultSet.next())
+        try (ResultSet resultSet = insertSubject.executeQuery())
         {
-            return resultSet.getInt(COLUMN_FIELD_ID_INDEX);
+            if (resultSet.next())
+            {
+                return resultSet.getInt(COLUMN_SUBJECT_ID_INDEX);
+            }
+            else
+            {
+                System.out.println("Error when inserting area.");
+            }
         }
-        else
+        catch (SQLException e)
         {
-            System.out.println("Error when inserting area.");
+            e.printStackTrace();
         }
 
         return -1;
 
     }
 
-    public static void dropDiscipline(int id)
+    public void dropDiscipline(int id)
     {
         /*
          * This method drops a discipline from the database
@@ -102,7 +114,7 @@ public class SubjectDB
         }
     }
 
-    public static void printAllDisciplines()
+    private static final void printAllDisciplines()
     {
         /*
          * This method prints all disciplines from the database
@@ -125,7 +137,7 @@ public class SubjectDB
         }
     }
 
-    public static void printDisciplineById(int id)
+    private static final void printDisciplineById(int id)
     {
         /*
          * This method prints a discipline in the database

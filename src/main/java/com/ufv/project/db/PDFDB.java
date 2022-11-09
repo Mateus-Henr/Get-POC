@@ -67,13 +67,18 @@ public class PDFDB
     {
         getPDF.setInt(COLUMN_PDF_ID_INDEX, id);
 
-        ResultSet resultSet = getPDF.executeQuery();
-
-        if (resultSet.next())
+        try (ResultSet resultSet = getPDF.executeQuery())
         {
-            return new PDF(resultSet.getInt(COLUMN_PDF_ID_INDEX),
-                    new File(resultSet.getString(COLUMN_PDF_CONTENT_INDEX)),
-                    resultSet.getDate(COLUMN_PDF_CREATION_DATE_INDEX).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            if (resultSet.next())
+            {
+                return new PDF(resultSet.getInt(COLUMN_PDF_ID_INDEX),
+                        new File(resultSet.getString(COLUMN_PDF_CONTENT_INDEX)),
+                        resultSet.getDate(COLUMN_PDF_CREATION_DATE_INDEX).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
         }
 
         return null;
@@ -83,15 +88,20 @@ public class PDFDB
     {
         insertPDF.setInt(COLUMN_PDF_ID_INDEX, pdfToInsert.getId());
 
-        ResultSet resultSet = insertPDF.executeQuery();
-
-        if (resultSet.next())
+        try (ResultSet resultSet = insertPDF.executeQuery())
         {
-            return resultSet.getInt(COLUMN_PDF_ID_INDEX);
+            if (resultSet.next())
+            {
+                return resultSet.getInt(COLUMN_PDF_ID_INDEX);
+            }
+            else
+            {
+                System.out.println("Error when inserting PDF.");
+            }
         }
-        else
+        catch (SQLException e)
         {
-            System.out.println("Error when inserting PDF.");
+            e.printStackTrace();
         }
 
         return -1;
@@ -101,17 +111,22 @@ public class PDFDB
     {
         deletePDF.setInt(COLUMN_PDF_ID_INDEX, idToDelete);
 
-        ResultSet resultSet = deletePDF.executeQuery();
-
-        if (resultSet.next())
+        try (ResultSet resultSet = deletePDF.executeQuery())
         {
-            return new PDF(resultSet.getInt(COLUMN_PDF_ID_INDEX),
-                    new File(resultSet.getString(COLUMN_PDF_CONTENT_INDEX)),
-                    resultSet.getDate(COLUMN_PDF_CREATION_DATE_INDEX).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            if (resultSet.next())
+            {
+                return new PDF(resultSet.getInt(COLUMN_PDF_ID_INDEX),
+                        new File(resultSet.getString(COLUMN_PDF_CONTENT_INDEX)),
+                        resultSet.getDate(COLUMN_PDF_CREATION_DATE_INDEX).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            }
+            else
+            {
+                System.out.println("Error when deleting PDF.");
+            }
         }
-        else
+        catch (SQLException e)
         {
-            System.out.println("Error when deleting PDF.");
+            e.printStackTrace();
         }
 
         return null;

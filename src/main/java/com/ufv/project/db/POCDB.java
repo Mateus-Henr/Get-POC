@@ -78,21 +78,26 @@ public class POCDB
     {
         getPOC.setInt(COLUMN_POC_ID_INDEX, id);
 
-        ResultSet resultSet = getPOC.executeQuery();
-
-        if (resultSet.next())
+        try (ResultSet resultSet = getPOC.executeQuery())
         {
-            return new POC.POCBuilder()
-                    .title(resultSet.getString(COLUMN_POC_TITLE_INDEX))
-                    .defenseDate(resultSet.getDate(COLUMN_POC_DEFENSE_DATE_INDEX).toLocalDate())
-                    .advisor(getPOCAdvisorByPOCID(id))
-                    .coAdvisors(getPOCCoAdvisorByPOCID(id))
-                    .registrant(getPOCRegistrantByPOCID(id))
-                    .pdf(getPOCPDFByPOCID(id))
-                    .field(getPOCFieldByPOCID(id))
-                    .summary(resultSet.getString(COLUMN_POC_SUMMARY_INDEX))
-                    .keywords(getPOCKeywordsByPOCID(id))
-                    .build();
+            if (resultSet.next())
+            {
+                return new POC.POCBuilder()
+                        .title(resultSet.getString(COLUMN_POC_TITLE_INDEX))
+                        .defenseDate(resultSet.getDate(COLUMN_POC_DEFENSE_DATE_INDEX).toLocalDate())
+                        .advisor(getPOCAdvisorByPOCID(id))
+                        .coAdvisors(getPOCCoAdvisorByPOCID(id))
+                        .registrant(getPOCRegistrantByPOCID(id))
+                        .pdf(getPOCPDFByPOCID(id))
+                        .field(getPOCFieldByPOCID(id))
+                        .summary(resultSet.getString(COLUMN_POC_SUMMARY_INDEX))
+                        .keywords(getPOCKeywordsByPOCID(id))
+                        .build();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
         }
 
         return null;
@@ -140,15 +145,20 @@ public class POCDB
         insertPOC.setString(COLUMN_POC_TITLE_INDEX, poc.getTitle());
         // Add the rest.
 
-        ResultSet resultSet = insertPOC.executeQuery();
-
-        if (resultSet.next())
+        try (ResultSet resultSet = insertPOC.executeQuery())
         {
-            return resultSet.getInt(COLUMN_POC_ID);
+            if (resultSet.next())
+            {
+                return resultSet.getInt(COLUMN_POC_ID);
+            }
+            else
+            {
+                System.out.println("Error when inserting area.");
+            }
         }
-        else
+        catch (SQLException e)
         {
-            System.out.println("Error when inserting area.");
+            e.printStackTrace();
         }
 
         return -1;
@@ -158,25 +168,30 @@ public class POCDB
     {
         deletePOC.setInt(COLUMN_POC_ID_INDEX, id);
 
-        ResultSet resultSet = deletePOC.executeQuery();
-
-        if (resultSet.next())
+        try (ResultSet resultSet = deletePOC.executeQuery())
         {
-            return new POC.POCBuilder()
-                    .title(resultSet.getString(COLUMN_POC_TITLE_INDEX))
-                    .defenseDate(resultSet.getDate(COLUMN_POC_DEFENSE_DATE_INDEX).toLocalDate())
-                    .advisor(getPOCAdvisorByPOCID(id))
-                    .coAdvisors(getPOCCoAdvisorByPOCID(id))
-                    .registrant(getPOCRegistrantByPOCID(id))
-                    .pdf(getPOCPDFByPOCID(id))
-                    .field(getPOCFieldByPOCID(id))
-                    .summary(resultSet.getString(COLUMN_POC_SUMMARY_INDEX))
-                    .keywords(getPOCKeywordsByPOCID(id))
-                    .build();
+            if (resultSet.next())
+            {
+                return new POC.POCBuilder()
+                        .title(resultSet.getString(COLUMN_POC_TITLE_INDEX))
+                        .defenseDate(resultSet.getDate(COLUMN_POC_DEFENSE_DATE_INDEX).toLocalDate())
+                        .advisor(getPOCAdvisorByPOCID(id))
+                        .coAdvisors(getPOCCoAdvisorByPOCID(id))
+                        .registrant(getPOCRegistrantByPOCID(id))
+                        .pdf(getPOCPDFByPOCID(id))
+                        .field(getPOCFieldByPOCID(id))
+                        .summary(resultSet.getString(COLUMN_POC_SUMMARY_INDEX))
+                        .keywords(getPOCKeywordsByPOCID(id))
+                        .build();
+            }
+            else
+            {
+                System.out.println("Error when deleting field.");
+            }
         }
-        else
+        catch (SQLException e)
         {
-            System.out.println("Error when deleting field.");
+            e.printStackTrace();
         }
 
         return null;

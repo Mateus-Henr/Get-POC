@@ -57,12 +57,18 @@ public class FieldDB
     {
         getField.setInt(COLUMN_FIELD_ID_INDEX, id);
 
-        ResultSet resultSet = getField.executeQuery();
-
-        if (resultSet.next())
+        try (ResultSet resultSet = getField.executeQuery()
         {
-            return new Field(resultSet.getInt(COLUMN_FIELD_ID), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
+            if (resultSet.next())
+            {
+                return new Field(resultSet.getInt(COLUMN_FIELD_ID), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
+            }
         }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
 
         return null;
     }
@@ -71,15 +77,20 @@ public class FieldDB
     {
         insertField.setString(COLUMN_FIELD_ID_INDEX, field.getName());
 
-        ResultSet resultSet = insertField.executeQuery();
-
-        if (resultSet.next())
+        try (ResultSet resultSet = insertField.executeQuery())
         {
-            return resultSet.getInt(COLUMN_FIELD_ID_INDEX);
+            if (resultSet.next())
+            {
+                return resultSet.getInt(COLUMN_FIELD_ID_INDEX);
+            }
+            else
+            {
+                System.out.println("Error when inserting area.");
+            }
         }
-        else
+        catch (SQLException e)
         {
-            System.out.println("Error when inserting area.");
+            e.printStackTrace();
         }
 
         return -1;
@@ -89,15 +100,20 @@ public class FieldDB
     {
         deleteField.setInt(COLUMN_FIELD_NAME_INDEX, id);
 
-        ResultSet resultSet = deleteField.executeQuery()
-
-        if (resultSet.next())
+        try (ResultSet resultSet = deleteField.executeQuery())
         {
-            return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
+            if (resultSet.next())
+            {
+                return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
+            }
+            else
+            {
+                System.out.println("Error when deleting field.");
+            }
         }
-        else
+        catch (SQLException e)
         {
-            System.out.println("Error when deleting field.");
+            e.printStackTrace();
         }
 
         return null;
