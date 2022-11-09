@@ -36,6 +36,8 @@ public class POC
         this.advisor = pocBuilder.advisor;
     }
 
+
+
     public String getTitle()
     {
         return title;

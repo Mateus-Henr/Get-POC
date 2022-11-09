@@ -1,6 +1,5 @@
 package com.ufv.project.db;
 
-import com.ufv.project.Main;
 import com.ufv.project.model.Field;
 
 import java.sql.*;
@@ -54,7 +53,7 @@ public class FieldDB
         }
     }
 
-    public Field getField(int id) throws SQLException
+    public Field getFieldByID(int id) throws SQLException
     {
         getField.setInt(COLUMN_FIELD_ID_INDEX, id);
 
@@ -86,25 +85,19 @@ public class FieldDB
         return -1;
     }
 
-    public Field deleteField(int id) throws SQLException
+    public Field deleteFieldByID(int id) throws SQLException
     {
         deleteField.setInt(COLUMN_FIELD_NAME_INDEX, id);
 
-        try (Statement statement = conn.createStatement();
-             ResultSet resultSet = deleteField.executeQuery())
+        ResultSet resultSet = deleteField.executeQuery()
+
+        if (resultSet.next())
         {
-            if (resultSet.next())
-            {
-                return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
-            }
-            else
-            {
-                System.out.println("Error when deleting field.");
-            }
+            return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
         }
-        catch (SQLException e)
+        else
         {
-            System.out.println("Query failed: " + e.getMessage());
+            System.out.println("Error when deleting field.");
         }
 
         return null;

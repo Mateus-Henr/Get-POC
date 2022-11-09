@@ -1,5 +1,6 @@
 package com.ufv.project.controller;
 
+import com.ufv.project.Main;
 import com.ufv.project.db.Singleton;
 import com.ufv.project.model.POC;
 import javafx.beans.value.ChangeListener;
@@ -12,11 +13,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.Stack;
+import java.util.function.Function;
 
 public class SearchPOCController
 {
+    // ----------- Layout -----------
+    @FXML
+    private VBox vBox;
+    // ------------------------------
+
     // ---------- Top Menu ----------
     @FXML
     private TopMenuController topMenuController;
@@ -56,9 +66,8 @@ public class SearchPOCController
             @Override
             public void changed(ObservableValue<? extends POC> observableValue, POC poc, POC t1)
             {
-                POC pocToShow = pocListView.getSelectionModel().getSelectedItem();
-//
-//                FXMLLoader fxmlLoader = FXMLLoader.load();
+                ((AnalyzePOCController) Main.loadStage("analyze-poc-page-view.fxml")).setData(pocListView.getSelectionModel().getSelectedItem());
+                Main.closeCurrentStage(vBox);
             }
         });
     }

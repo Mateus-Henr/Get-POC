@@ -4,9 +4,11 @@ import com.ufv.project.db.UserDataSingleton;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.function.Function;
 
 public class Main extends Application
 {
@@ -34,6 +36,38 @@ public class Main extends Application
         UserDataSingleton.getInstance().setEmail("m@gmail.com");
         UserDataSingleton.getInstance().setName("Mateus");
 //        UserDataSingleton.getInstance().setUserIcon();
+    }
+
+    public static Object loadStage(String filename)
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(filename));
+
+        try
+        {
+            Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+            Stage stage = new Stage();
+
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return fxmlLoader.getController();
+    }
+
+    public static void closeCurrentStage(Pane pane)
+    {
+        Scene scene = pane.getScene();
+
+        if (scene == null)
+        {
+            return;
+        }
+
+        ((Stage) scene.getWindow()).close();
     }
 
 }

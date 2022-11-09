@@ -44,6 +44,13 @@ public class AnalyzePOCController
     @FXML
     private Hyperlink pdfFilepathText;
 
+
+    @FXML
+    public void initialize()
+    {
+
+    }
+
     @FXML
     public void onDisplayContents()
     {

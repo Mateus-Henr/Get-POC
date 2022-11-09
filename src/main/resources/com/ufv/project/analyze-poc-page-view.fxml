@@ -9,38 +9,33 @@
 <?import javafx.scene.control.Hyperlink?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
+          fx:id="vBox"
           fx:controller="com.ufv.project.controller.AnalyzePOCController"
           prefHeight="400.0" prefWidth="600.0">
 
-    <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
+    <fx:include fx:id="topMenu" source="top-menu-page-view.fxml" GridPane.rowIndex="0" GridPane.fillWidth=""/>
 
-    <Label GridPane.rowIndex="0" GridPane.columnIndex="0">Search for a POC</Label>
-    <TextField GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="searchField"/>
-    <GridPane fx:id="gridPane" alignment="CENTER">
+    <Label>Title</Label>
+    <Text fx:id="titleText" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
 
-        <Label>Title</Label>
-        <Text fx:id="titleText" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <Label>Author(s)</Label>
+    <ListView fx:id="authorListView" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
 
-        <Label>Author(s)</Label>
-        <ListView fx:id="authorListView" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <Label>Advisor:</Label>
+    <Text fx:id="advisorText" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
 
-        <Label>Advisor:</Label>
-        <Text fx:id="advisorText" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <Label>Co-Advisors:</Label>
+    <ListView fx:id="coAdvisorListView" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
 
-        <Label>Co-Advisors:</Label>
-        <ListView fx:id="coAdvisorListView" GridPane.rowIndex="3" GridPane.columnIndex="0">Co-Advisors</ListView>
-
-        <Label>Field:</Label>
+    <Label>Field:</Label>
         <Text fx:id="fieldText" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-        <Label>Date:</Label>
-        <Text fx:id="dateText" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <Label>Date:</Label>
+    <Text fx:id="dateText" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-        <Label>Keywords:</Label>
-        <ListView fx:id="keywordList" editable="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    <Label>Keywords:</Label>
+    <ListView fx:id="keywordList" editable="true" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-        <Label>PDF file:</Label>
-        <Hyperlink fx:id="pdfFilepathText" GridPane.rowIndex="0" GridPane.columnIndex="2">Choose...</Hyperlink>
-
-    </GridPane>
+    <Label>PDF file:</Label>
+    <Hyperlink fx:id="pdfFilepathText" GridPane.rowIndex="1" GridPane.columnIndex="2">Choose...</Hyperlink>
 </GridPane>
