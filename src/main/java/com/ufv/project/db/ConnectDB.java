@@ -36,10 +36,6 @@ public class ConnectDB {
     public static String COLUMN_TEACHER_ID = "TB_User_ID";
 
 
-
-
-
-
     /*
      * TB_POC table columns names
      */
@@ -122,23 +118,6 @@ public class ConnectDB {
         }
     }
 
-    public static void addphoto(int i,  Blob file) throws SQLException {
-        //inserir na tabela photo
-        try{
-            String sql = "INSERT INTO Photo (ID, Photo) VALUES (?,?)";
-            Connection conn = connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, 1);
-            pstmt.setBlob(2, file);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-        }
-    }
-
-
-
 
     public static void main(String[] args) throws SQLException {
         try {
@@ -154,29 +133,6 @@ public class ConnectDB {
             System.out.println("Connection failed");
             return;
         }
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         close(conn);

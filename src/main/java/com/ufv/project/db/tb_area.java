@@ -13,6 +13,19 @@ public class tb_area {
     public static final String COLUMN_AREA_ID = "ID";
     public static final String COLUMN_AREA_NAME = "Name";
 
+    public static final String INSERT_AREA = "INSERT INTO " + TABLE_AREA + " (" + COLUMN_AREA_ID + ", " + COLUMN_AREA_NAME + ") VALUES (?, ?)";
+
+    public static final String DELETE_AREA = "DELETE FROM " + TABLE_AREA + " WHERE " + COLUMN_AREA_ID + " = ?";
+
+    public static final String PRINT_AREAS = "SELECT * FROM " + TABLE_AREA;
+
+    public static final String GET_AREA_NAME = "SELECT " + COLUMN_AREA_NAME + " FROM " + TABLE_AREA + " WHERE " + COLUMN_AREA_ID + " = ?";
+
+    public static final String SET_AREA_NAME = "UPDATE " + TABLE_AREA + " SET " + COLUMN_AREA_NAME + " = ? WHERE " + COLUMN_AREA_ID + " = ?";
+
+
+
+
     /*
     * Getters
      */
@@ -20,9 +33,9 @@ public class tb_area {
         /*
          * This method returns the name of an area
          */
-        String sql = "SELECT " + COLUMN_AREA_NAME + " FROM " + TABLE_AREA + " WHERE " + COLUMN_AREA_ID + " = ?";
+
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(GET_AREA_NAME)) {
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -37,9 +50,9 @@ public class tb_area {
         /*
          * This method updates the name of an area
          */
-        String sql = "UPDATE " + TABLE_AREA + " SET " + COLUMN_AREA_NAME + " = ? WHERE " + COLUMN_AREA_ID + " = ?";
+
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(SET_AREA_NAME)) {
             pstmt.setString(1, name);
             pstmt.setInt(2, id);
             pstmt.executeUpdate();
@@ -56,13 +69,8 @@ public class tb_area {
         /*
          * This method adds an area to the database
          */
-
-        String sql = "INSERT INTO " +
-                TABLE_AREA + " (" + COLUMN_AREA_ID + ", " +
-                COLUMN_AREA_NAME + ") VALUES (?, ?)";
-
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(INSERT_AREA)) {
             pstmt.setInt(1, id);
             pstmt.setString(2, name);
             pstmt.executeUpdate();
@@ -76,9 +84,8 @@ public class tb_area {
          * This method drops an area from the database
          */
 
-        String sql = "DELETE FROM " + TABLE_AREA + " WHERE " + COLUMN_AREA_ID + " = ?";
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(DELETE_AREA)) {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -86,14 +93,14 @@ public class tb_area {
         }
     }
 
-    public static void printAllAreas() {
+    public static void printAreas() {
         /*
          * This method prints all areas in the database
          */
-        String sql = "SELECT * FROM " + TABLE_AREA;
+
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             ResultSet rs = stmt.executeQuery(PRINT_AREAS)) {
             while (rs.next()) {
                 System.out.println(rs.getString(COLUMN_AREA_ID) + "\t" +
                         rs.getString(COLUMN_AREA_NAME));
@@ -111,6 +118,6 @@ public class tb_area {
                 + "\tName: " + getAreaName(id));
     }
 
-
+    //area exists
 
 }

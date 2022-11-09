@@ -6,24 +6,34 @@ import static com.ufv.project.db.ConnectDB.connect;
 
 public class tb_discipline {
 
-    /*
-     *  TB_Discipline table columns names
-     */
     public static String TABLE_DISCIPLINE = "TB_Discipline";
     public static String COLUMN_DISCIPLINE_ID = "ID";
     public static String COLUMN_DISCIPLINE_NAME = "Name";
     public static String COLUMN_DISCIPLINE_DESCRIPTION = "Description";
+
+    public static String GET_DISCIPLINE_NAME = "SELECT " + COLUMN_DISCIPLINE_NAME + " FROM " + TABLE_DISCIPLINE + " WHERE " + COLUMN_DISCIPLINE_ID + " = ?";
+
+    public static String GET_DISCIPLINE_DESCRIPTION = "SELECT " + COLUMN_DISCIPLINE_DESCRIPTION + " FROM " + TABLE_DISCIPLINE + " WHERE " + COLUMN_DISCIPLINE_ID + " = ?";
+
+    public static String SET_DISCIPLINE_NAME = "UPDATE " + TABLE_DISCIPLINE + " SET " + COLUMN_DISCIPLINE_NAME + " = ? WHERE " + COLUMN_DISCIPLINE_ID + " = ?";
+    public static String SET_DISCIPLINE_DESCRIPTION = "UPDATE " + TABLE_DISCIPLINE + " SET " + COLUMN_DISCIPLINE_DESCRIPTION + " = ? WHERE " + COLUMN_DISCIPLINE_ID + " = ?";
+
+    public static String INSERT_DISCIPLINE = "INSERT INTO " + TABLE_DISCIPLINE + " (" + COLUMN_DISCIPLINE_ID + ", " + COLUMN_DISCIPLINE_NAME + ", " + COLUMN_DISCIPLINE_DESCRIPTION + ") VALUES (?, ?, ?)";
+
+    public static String DELETE_DISCIPLINE = "DELETE FROM " + TABLE_DISCIPLINE + " WHERE " + COLUMN_DISCIPLINE_ID + " = ?";
+
+    public static String PRINT_DISCIPLINES = "SELECT * FROM " + TABLE_DISCIPLINE;
+
 
     /*
      * Getters and Setters
      */
     public static String getDisciplineName(int id) {
         /*
-         * This method returns the name of an discipline
+         * This method returns the name of a discipline
          */
-        String sql = "SELECT " + COLUMN_DISCIPLINE_NAME + " FROM " + TABLE_DISCIPLINE + " WHERE " + COLUMN_DISCIPLINE_ID + " = ?";
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(GET_DISCIPLINE_NAME)) {
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -39,9 +49,8 @@ public class tb_discipline {
         /*
          * This method returns the description of an discipline
          */
-        String sql = "SELECT " + COLUMN_DISCIPLINE_DESCRIPTION + " FROM " + TABLE_DISCIPLINE + " WHERE " + COLUMN_DISCIPLINE_ID + " = ?";
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(GET_DISCIPLINE_DESCRIPTION)) {
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -57,9 +66,9 @@ public class tb_discipline {
         /*
          * This method updates a discipline name in the database
          */
-        String sql = "UPDATE " + TABLE_DISCIPLINE + " SET " + COLUMN_DISCIPLINE_NAME + " = ? WHERE " + COLUMN_DISCIPLINE_ID + " = ?";
+
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(SET_DISCIPLINE_NAME)) {
             pstmt.setString(1, name);
             pstmt.setInt(2, id);
             pstmt.executeUpdate();
@@ -72,9 +81,9 @@ public class tb_discipline {
         /*
          * This method updates a discipline description in the database
          */
-        String sql = "UPDATE " + TABLE_DISCIPLINE + " SET " + COLUMN_DISCIPLINE_DESCRIPTION + " = ? WHERE " + COLUMN_DISCIPLINE_ID + " = ?";
+
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(SET_DISCIPLINE_DESCRIPTION)) {
             pstmt.setString(1, description);
             pstmt.setInt(2, id);
             pstmt.executeUpdate();
@@ -84,7 +93,7 @@ public class tb_discipline {
     }
 
     /*
-    * Methods
+     * Methods
      */
 
 
@@ -93,12 +102,9 @@ public class tb_discipline {
          * This method adds a discipline to the database
          */
 
-        String sql = "INSERT INTO " +
-                TABLE_DISCIPLINE + " (" + COLUMN_DISCIPLINE_ID + ", " +
-                COLUMN_DISCIPLINE_NAME + ", " + COLUMN_DISCIPLINE_DESCRIPTION + ") VALUES (?, ?, ?)";
 
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(INSERT_DISCIPLINE)) {
             pstmt.setInt(1, id);
             pstmt.setString(2, name);
             pstmt.setString(3, description);
@@ -114,9 +120,9 @@ public class tb_discipline {
          * This method drops a discipline from the database
          */
 
-        String sql = "DELETE FROM " + TABLE_DISCIPLINE + " WHERE " + COLUMN_DISCIPLINE_ID + " = ?";
+
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(DELETE_DISCIPLINE)) {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -129,10 +135,9 @@ public class tb_discipline {
          * This method prints all disciplines from the database
          */
 
-        String sql = "SELECT * FROM " + TABLE_DISCIPLINE;
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             ResultSet rs = stmt.executeQuery(PRINT_DISCIPLINES)) {
             while (rs.next()) {
                 System.out.println(rs.getInt(COLUMN_DISCIPLINE_ID) + "\t" +
                         rs.getString(COLUMN_DISCIPLINE_NAME) + "\t" +
@@ -152,5 +157,6 @@ public class tb_discipline {
                 "Description: " + getDisciplineDescription(id));
     }
 
+    //verify if keyword exists
 
 }

@@ -178,7 +178,10 @@ public class tb_user {
                 "Name: " + getUserName(id) + "\n" +
                 "Type: " + getUserType(id));
         }
-    }
+
+    //public static boolean existUser(String id){
+
+}
 
 
 

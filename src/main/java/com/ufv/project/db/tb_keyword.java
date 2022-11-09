@@ -13,6 +13,12 @@ public class tb_keyword {
     public static String TABLE_KEYWORD = "TB_Keyword";
     public static String COLUMN_KEYWORD_ID = "ID";
 
+    public static String INSERT_KEYWORD = "INSERT INTO " + TABLE_KEYWORD + " (" + COLUMN_KEYWORD_ID + ") VALUES (?)";
+
+    public static String DELETE_KEYWORD = "DELETE FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORD_ID + " = ?";
+
+    public static String PRINT_KEYWORDS = "SELECT * FROM " + TABLE_KEYWORD;
+
     /*
      * Keyword methods
      */
@@ -22,11 +28,9 @@ public class tb_keyword {
          * This method adds a keyword to the database
          */
 
-        String sql = "INSERT INTO " +
-                TABLE_KEYWORD + " (" + COLUMN_KEYWORD_ID + ") VALUES (?)";
 
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(INSERT_KEYWORD)) {
             pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -39,9 +43,9 @@ public class tb_keyword {
          * This method drops a keyword from the database
          */
 
-        String sql = "DELETE FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORD_ID + " = ?";
+
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(DELETE_KEYWORD)) {
             pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -53,10 +57,10 @@ public class tb_keyword {
         /*
          * This method prints all keywords in the database
          */
-        String sql = "SELECT * FROM " + TABLE_KEYWORD;
+
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             ResultSet rs = stmt.executeQuery(PRINT_KEYWORDS)) {
             while (rs.next()) {
                 System.out.println("ID: " + rs.getString(COLUMN_KEYWORD_ID));
             }
@@ -82,5 +86,5 @@ public class tb_keyword {
         }
     }
 
-
+    //verify if keyword exists
 }
