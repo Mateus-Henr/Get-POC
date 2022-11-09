@@ -4,7 +4,8 @@ package com.ufv.project.db;
 import java.sql.*;
 
 
-public class ConnectDB {
+public class ConnectDB
+{
 
     public static final String DB_NAME = "get_poc";
     public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME;
@@ -63,7 +64,7 @@ public class ConnectDB {
     public static String COLUMN_KEYWORD_ID = "ID";
 
     /*
-    * TB_POC table columns names
+     * TB_POC table columns names
      */
     public static String TABLE_POC = "TB_POC";
     public static String COLUMN_POC_ID = "ID";
@@ -76,14 +77,14 @@ public class ConnectDB {
     public static String COLUMN_POC_TEACHER_ADVISOR_ID = "Teacher_Advisor";
 
     /*
-    * TB_POC_has_Keyword table columns names
+     * TB_POC_has_Keyword table columns names
      */
     public static String TABLE_POC_HAS_KEYWORD = "TB_POC_has_Keyword";
     public static String COLUMN_POC_HAS_KEYWORD_POC_ID = "TB_POC_ID";
     public static String COLUMN_POC_HAS_KEYWORD_KEYWORD_ID = "TB_Keyword_ID";
 
     /*
-    * TB_Student table columns names
+     * TB_Student table columns names
      */
     public static String TABLE_STUDENT = "TB_Student";
     public static String COLUMN_STUDENT_EMAIL = "Email";
@@ -92,7 +93,7 @@ public class ConnectDB {
     public static String COLUMN_STUDENT_USER_ID = "TB_User_ID";
 
     /*
-    * TB_Teacher_co-advises-Poc table columns names
+     * TB_Teacher_co-advises-Poc table columns names
      */
 
     public static String TABLE_TEACHER_CO_ADVISES_POC = "TB_Teacher_co-advises_Poc";
@@ -100,29 +101,33 @@ public class ConnectDB {
     public static String COLUMN_TABLE_TEACHER_CO_ADVISES_POC_TEACHER_ID = "tb_teacher_TB_User_ID";
 
     /*
-    * TB_Teacher_has_Discipline table columns names
-    */
+     * TB_Teacher_has_Discipline table columns names
+     */
     public static String TABLE_TEACHER_HAS_DISCIPLINE = "TB_Teacher_has_Discipline";
     public static String COLUMN_TEACHER_HAS_DISCIPLINE_DISCIPLINE_ID = "TB_Discipline_ID";
     public static String COLUMN_TEACHER_HAS_DISCIPLINE_TEACHER_ID = "TB_Teacher_User_ID";
 
     /*
-    *TB_User_manages_User table columns names
+     *TB_User_manages_User table columns names
      */
     public static String TABLE_USER_MANAGES_USER = "TB_User_manages_User";
     public static String COLUMN_USER_MANAGES_USER_ADMINISTRATOR_ID = "TB_User_Administrator_ID";
     public static String COLUMN_USER_MANAGES_USER_ADMINISTERED_ID = "TB_User_Administered_ID";
 
     /*
-    * Methods
+     * Methods
      */
 
     // Connect to the database
 
-    public static Connection connect() {
-        try {
+    public static Connection connect()
+    {
+        try
+        {
             return DriverManager.getConnection(CONNECTION_STRING, USER, PASSWORD);
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Couldn't connect to database: " + e.getMessage());
             return null;
         }
@@ -130,72 +135,95 @@ public class ConnectDB {
 
     // Close the connection
 
-    public static void close(Connection conn) {
-        try {
-            if (conn != null) {
+    public static void close(Connection conn)
+    {
+        try
+        {
+            if (conn != null)
+            {
                 conn.close();
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Couldn't close connection: " + e.getMessage());
         }
     }
 
     // Print all users
-    public static void printUsers() {
+    public static void printUsers()
+    {
         String sql = "SELECT * FROM " + TABLE_USER;
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
+             ResultSet rs = stmt.executeQuery(sql))
+        {
+            while (rs.next())
+            {
                 System.out.println(rs.getString(COLUMN_USER_ID) + "\t" +
                         rs.getString(COLUMN_USER_PASSWORD) + "\t" +
                         rs.getString(COLUMN_USER_NAME) + "\t" +
                         rs.getString(COLUMN_USER_TYPE));
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Query failed: " + e.getMessage());
         }
     }
 
     // Print all teachers
-    public static void printTeachers() {
+    public static void printTeachers()
+    {
         String sql = "SELECT * FROM " + TABLE_TEACHER;
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
+             ResultSet rs = stmt.executeQuery(sql))
+        {
+            while (rs.next())
+            {
                 System.out.println(rs.getString(COLUMN_TEACHER_EMAIL) + "\t" +
                         rs.getString(COLUMN_TEACHER_ID));
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Query failed: " + e.getMessage());
         }
     }
 
     //
 
-    public static void printStudents() {
+    public static void printStudents()
+    {
         String sql = "SELECT * FROM " + TABLE_STUDENT;
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
+             ResultSet rs = stmt.executeQuery(sql))
+        {
+            while (rs.next())
+            {
                 System.out.println(rs.getString(COLUMN_STUDENT_EMAIL) + "\t" +
                         rs.getString(COLUMN_STUDENT_REGISTRATION) + "\t" +
                         rs.getInt(COLUMN_STUDENT_POC_ID) + "\t" +
                         rs.getString(COLUMN_STUDENT_USER_ID));
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Query failed: " + e.getMessage());
         }
     }
 
 
-
-    public static void main(String[] args) {
-        try {
+    public static void main(String[] args)
+    {
+        try
+        {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e)
+        {
             System.out.println("Couldn't find driver: " + e.getMessage());
 
         }

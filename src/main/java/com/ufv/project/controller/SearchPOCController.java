@@ -2,8 +2,11 @@ package com.ufv.project.controller;
 
 import com.ufv.project.db.Singleton;
 import com.ufv.project.model.POC;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -47,6 +50,17 @@ public class SearchPOCController
 
         // Hide list while user has not searched for the poc.
         pocListView.setVisible(false);
+
+        pocListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<POC>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends POC> observableValue, POC poc, POC t1)
+            {
+                POC pocToShow = pocListView.getSelectionModel().getSelectedItem();
+
+                FXMLLoader fxmlLoader = FXMLLoader.load();
+            }
+        });
     }
 
     @FXML
