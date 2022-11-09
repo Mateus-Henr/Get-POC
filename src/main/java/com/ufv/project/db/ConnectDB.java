@@ -80,20 +80,16 @@ public class ConnectDB
 
     private Connection conn;
 
-
-    public boolean open()
+    public static Connection open()
     {
         try
         {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
-
-            return true;
-
+            return DriverManager.getConnection(CONNECTION_STRING);
         }
         catch (SQLException e)
         {
             System.out.println("Couldn't connect to database " + e.getMessage());
-            return false;
+            return null;
         }
     }
 

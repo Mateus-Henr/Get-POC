@@ -2,86 +2,102 @@ package com.ufv.project.db;
 
 import java.sql.*;
 
-import static com.ufv.project.db.ConnectDB.connect;
-
-public class KeywordDB {
+public class KeywordDB
+{
 
     /*
      * TB_Keyword table names
      */
+    public static final String TABLE_KEYWORDS = "TB_Keywords";
+    public static final String COLUMN_KEYWORDS_ID = "ID";
 
-    public static String TABLE_KEYWORD = "TB_Keyword";
-    public static String COLUMN_KEYWORD_ID = "ID";
+    public static final String INSERT_KEYWORDS = "INSERT INTO " + TABLE_KEYWORDS + " (" + COLUMN_KEYWORDS_ID + ") VALUES (?)";
 
-    public static String INSERT_KEYWORD = "INSERT INTO " + TABLE_KEYWORD + " (" + COLUMN_KEYWORD_ID + ") VALUES (?)";
+    public static final String DELETE_KEYWORDS = "DELETE FROM " + TABLE_KEYWORDS + " WHERE " + COLUMN_KEYWORDS_ID + " = ?";
 
-    public static String DELETE_KEYWORD = "DELETE FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORD_ID + " = ?";
-
-    public static String PRINT_KEYWORDS = "SELECT * FROM " + TABLE_KEYWORD;
+    public static final String PRINT_KEYWORDS = "SELECT * FROM " + TABLE_KEYWORDS;
 
     /*
      * Keyword methods
      */
 
-    public static void addKeyword(String id) {
+    public static void addKeyword(String id)
+    {
         /*
          * This method adds a keyword to the database
          */
 
 
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(INSERT_KEYWORD)) {
+             PreparedStatement pstmt = conn.prepareStatement(INSERT_KEYWORDS))
+        {
             pstmt.setString(1, id);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Query failed: " + e.getMessage());
         }
     }
 
-    public static void dropKeyword(String id) {
+    public static void dropKeyword(String id)
+    {
         /*
          * This method drops a keyword from the database
          */
 
 
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(DELETE_KEYWORD)) {
+             PreparedStatement pstmt = conn.prepareStatement(DELETE_KEYWORDS))
+        {
             pstmt.setString(1, id);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Query failed: " + e.getMessage());
         }
     }
 
-    public static void printAllKeywords() {
+    public static void printAllKeywords()
+    {
         /*
          * This method prints all keywords in the database
          */
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(PRINT_KEYWORDS)) {
-            while (rs.next()) {
-                System.out.println("ID: " + rs.getString(COLUMN_KEYWORD_ID));
+             ResultSet rs = stmt.executeQuery(PRINT_KEYWORDS))
+        {
+            while (rs.next())
+            {
+                System.out.println("ID: " + rs.getString(COLUMN_KEYWORDS_ID));
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Query failed: " + e.getMessage());
         }
     }
 
-    public static void printKeywordById(String id) {
+    public static void printKeywordById(String id)
+    {
         /*
          * This method prints a keyword in the database
          */
-        String sql = "SELECT * FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORD_ID + " = ?";
+        String sql = "SELECT * FROM " + TABLE_KEYWORDS + " WHERE " + COLUMN_KEYWORDS_ID + " = ?";
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql))
+        {
             pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                System.out.println("ID: " + rs.getString(COLUMN_KEYWORD_ID));
+            while (rs.next())
+            {
+                System.out.println("ID: " + rs.getString(COLUMN_KEYWORDS_ID));
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Query failed: " + e.getMessage());
         }
     }
