@@ -1,31 +1,13 @@
 package com.ufv.project.db;
 
-
-import java.io.File;
 import java.sql.*;
-import java.util.Calendar;
 
-import static com.ufv.project.db.tb_area.*;
-import static com.ufv.project.db.tb_discipline.*;
-import static com.ufv.project.db.tb_PDF.*;
-import static com.ufv.project.db.tb_keyword.*;
-import static com.ufv.project.db.tb_user.*;
-import static com.ufv.project.db.tb_teacher.*;
-import static com.ufv.project.db.tb_poc.*;
-
-
-public class ConnectDB {
-
+public class ConnectDB
+{
     public static final String DB_NAME = "get_poc";
     public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME;
     public static final String USER = "root";
     public static final String PASSWORD = "123456";
-
-
-
-
-
-
 
     /*
      * TB_Teacher table columns names
@@ -34,11 +16,6 @@ public class ConnectDB {
     public static String TABLE_TEACHER = "TB_Teacher";
     public static String COLUMN_TEACHER_EMAIL = "Email";
     public static String COLUMN_TEACHER_ID = "TB_User_ID";
-
-
-
-
-
 
     /*
      * TB_POC table columns names
@@ -94,94 +71,83 @@ public class ConnectDB {
     /*
      * Methods
      */
-
-
-    public static Connection connect() {
+    public static Connection connect()
+    {
         /*
          * Connect to the database
          */
 
-        try {
+        try
+        {
             return DriverManager.getConnection(CONNECTION_STRING, USER, PASSWORD);
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Couldn't connect to database: " + e.getMessage());
             return null;
         }
     }
 
-    public static void close(Connection conn) {
+    public static void close(Connection conn)
+    {
         /*
          *  Close the database connection
          */
-        try {
-            if (conn != null) {
+        try
+        {
+            if (conn != null)
+            {
                 conn.close();
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Couldn't close connection: " + e.getMessage());
         }
     }
 
-    public static void addphoto(int i,  Blob file) throws SQLException {
+    public static void addPhoto(int i, Blob file)
+    {
         //inserir na tabela photo
-        try{
+        try
+        {
             String sql = "INSERT INTO Photo (ID, Photo) VALUES (?,?)";
             Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, 1);
             pstmt.setBlob(2, file);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println(e.getMessage());
 
         }
     }
 
 
-
-
-    public static void main(String[] args) throws SQLException {
-        try {
+    public static void main(String[] args) throws SQLException
+    {
+        try
+        {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e)
+        {
             System.out.println("Couldn't find driver: " + e.getMessage());
 
         }
 
-
         Connection conn = connect();
-        if (conn == null) {
+
+        if (conn == null)
+        {
             System.out.println("Connection failed");
             return;
         }
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         close(conn);
-
-
     }
 
 }
