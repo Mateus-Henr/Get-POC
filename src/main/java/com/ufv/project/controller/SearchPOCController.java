@@ -57,8 +57,8 @@ public class SearchPOCController
             public void changed(ObservableValue<? extends POC> observableValue, POC poc, POC t1)
             {
                 POC pocToShow = pocListView.getSelectionModel().getSelectedItem();
-
-                FXMLLoader fxmlLoader = FXMLLoader.load();
+//
+//                FXMLLoader fxmlLoader = FXMLLoader.load();
             }
         });
     }
