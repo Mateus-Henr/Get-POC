@@ -1,6 +1,7 @@
 package com.ufv.project.db;
 
 
+import java.io.File;
 import java.sql.*;
 import java.util.Calendar;
 
@@ -121,6 +122,21 @@ public class ConnectDB {
         }
     }
 
+    public static void addphoto(int i,  Blob file) throws SQLException {
+        //inserir na tabela photo
+        try{
+            String sql = "INSERT INTO Photo (ID, Photo) VALUES (?,?)";
+            Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, 1);
+            pstmt.setBlob(2, file);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+    }
+
 
 
 
@@ -138,8 +154,10 @@ public class ConnectDB {
             System.out.println("Connection failed");
             return;
         }
-
         
+
+
+
 
 
 
