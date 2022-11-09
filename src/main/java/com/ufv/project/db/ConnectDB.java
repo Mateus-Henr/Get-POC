@@ -139,8 +139,11 @@ public class ConnectDB {
             return;
         }
 
+        
 
-        addPoc(1, "POC 1", setDate(1999, 03, 04), "Summary 1", 1, 1, "nacif", "fabricio");
+
+
+
 
 
 
