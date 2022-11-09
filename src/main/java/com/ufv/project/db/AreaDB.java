@@ -1,11 +1,11 @@
 package com.ufv.project.db;
 
+import com.ufv.project.model.Field;
+
 import java.sql.*;
 
-import static com.ufv.project.db.ConnectDB.connect;
-
-public class AreaDB {
-
+public class AreaDB
+{
     /*
      *   TB_Area table columns names
      */
@@ -13,111 +13,146 @@ public class AreaDB {
     public static final String COLUMN_AREA_ID = "ID";
     public static final String COLUMN_AREA_NAME = "Name";
 
-    public static final String INSERT_AREA = "INSERT INTO " + TABLE_AREA + " (" + COLUMN_AREA_ID + ", " + COLUMN_AREA_NAME + ") VALUES (?, ?)";
+    public static final int COLUMN_AREA_ID_INDEX = 1;
+    public static final int COLUMN_AREA_NAME_INDEX = 2;
+
+
+    public static final String INSERT_AREA = "INSERT INTO " + TABLE_AREA + " (" + COLUMN_AREA_NAME + ") VALUES (?)";
 
     public static final String DELETE_AREA = "DELETE FROM " + TABLE_AREA + " WHERE " + COLUMN_AREA_ID + " = ?";
 
-    public static final String PRINT_AREAS = "SELECT * FROM " + TABLE_AREA;
+    public static final String GET_ALL_FIELDS = "SELECT * FROM " + TABLE_AREA;
 
     public static final String GET_AREA_NAME = "SELECT " + COLUMN_AREA_NAME + " FROM " + TABLE_AREA + " WHERE " + COLUMN_AREA_ID + " = ?";
 
-    public static final String SET_AREA_NAME = "UPDATE " + TABLE_AREA + " SET " + COLUMN_AREA_NAME + " = ? WHERE " + COLUMN_AREA_ID + " = ?";
+    public static final String UPDATE_AREA_NAME = "UPDATE " + TABLE_AREA + " SET " + COLUMN_AREA_NAME + " = ? WHERE " + COLUMN_AREA_ID + " = ?";
 
+    private PreparedStatement insertArea;
+    private PreparedStatement updateField;
+    private PreparedStatement deleteArea;
+    private PreparedStatement getArea;
 
+    private final Connection conn;
 
+    public AreaDB(Connection conn)
+    {
+        this.conn = conn;
 
-    /*
-    * Getters
-     */
-    public static String getAreaName(int id) {
-        /*
-         * This method returns the name of an area
-         */
+        try
+        {
+            insertArea = conn.prepareStatement(INSERT_AREA, Statement.RETURN_GENERATED_KEYS);
+            updateField = conn.prepareStatement(UPDATE_AREA_NAME);
+            deleteArea = conn.prepareStatement(DELETE_AREA);
+            getArea = conn.prepareStatement(GET_AREA_NAME);
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
 
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(GET_AREA_NAME)) {
-            pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                return rs.getString(COLUMN_AREA_NAME);
+    public String getAreaName(int id) throws SQLException
+    {
+        getArea.setInt(COLUMN_AREA_ID_INDEX, id);
+
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = getArea.executeQuery())
+        {
+            if (resultSet.next())
+            {
+                return resultSet.getString(COLUMN_AREA_NAME_INDEX);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Query failed: " + e.getMessage());
         }
+
         return null;
     }
-    public static void setAreaName(int id, String name) {
-        /*
-         * This method updates the name of an area
-         */
 
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(SET_AREA_NAME)) {
-            pstmt.setString(1, name);
-            pstmt.setInt(2, id);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
+    public void setAreaName(int id, String name) throws SQLException
+    {
+        updateField.setInt(COLUMN_AREA_ID_INDEX, id);
+        updateField.setString(COLUMN_AREA_NAME_INDEX, name);
+
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = updateField.executeQuery())
+        {
+            // Perform update.
+        }
+        catch (SQLException e)
+        {
             System.out.println("Query failed: " + e.getMessage());
         }
     }
 
-    /*
-     * Methods
-     */
+    public int addArea(String name) throws SQLException
+    {
+        insertArea.setString(COLUMN_AREA_ID_INDEX, name);
 
-    public static void addArea(int id, String name) {
-        /*
-         * This method adds an area to the database
-         */
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(INSERT_AREA)) {
-            pstmt.setInt(1, id);
-            pstmt.setString(2, name);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Query failed: " + e.getMessage());
+        ResultSet resultSet = insertArea.executeQuery();
+
+        if (resultSet.next())
+        {
+            return resultSet.getInt(COLUMN_AREA_ID_INDEX);
         }
+        else
+        {
+            System.out.println("Error when inserting area.");
+        }
+
+        return -1;
     }
 
-    public static void dropArea(int id) {
-        /*
-         * This method drops an area from the database
-         */
+    public Field dropArea(int id) throws SQLException
+    {
+        deleteArea.setInt(COLUMN_AREA_NAME_INDEX, id);
 
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(DELETE_AREA)) {
-            pstmt.setInt(1, id);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Query failed: " + e.getMessage());
-        }
-    }
-
-    public static void printAreas() {
-        /*
-         * This method prints all areas in the database
-         */
-
-        try (Connection conn = connect();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(PRINT_AREAS)) {
-            while (rs.next()) {
-                System.out.println(rs.getString(COLUMN_AREA_ID) + "\t" +
-                        rs.getString(COLUMN_AREA_NAME));
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = deleteArea.executeQuery())
+        {
+            if (resultSet.next())
+            {
+                return new Field(resultSet.getInt(COLUMN_AREA_ID_INDEX), resultSet.getString(COLUMN_AREA_NAME_INDEX));
             }
-        } catch (SQLException e) {
+            else
+            {
+                System.out.println("Error when deleting field.");
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Query failed: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    public void printAreas()
+    {
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(GET_ALL_FIELDS))
+        {
+            while (resultSet.next())
+            {
+                System.out.println(resultSet.getString(COLUMN_AREA_ID_INDEX) + "\t" +
+                        resultSet.getString(COLUMN_AREA_NAME_INDEX));
+            }
+        }
+        catch (SQLException e)
+        {
             System.out.println("Query failed: " + e.getMessage());
         }
     }
 
-    public static void printAreaById(int id) {
+    public void printAreaById(int id) throws SQLException
+    {
         /*
          * This method prints an area in the database
          */
         System.out.println("ID: " + id
                 + "\tName: " + getAreaName(id));
     }
-
-    //area exists
 
 }
