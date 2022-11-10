@@ -13,11 +13,6 @@ public class ConnectDB
     public static final String PASSWORD = "123456";
 
 
-
-
-
-
-
     /*
      * TB_Teacher table columns names
      */
@@ -80,7 +75,7 @@ public class ConnectDB
 
     private Connection conn;
 
-    public static boolean open()
+    public boolean open()
     {
         try
         {
@@ -90,7 +85,7 @@ public class ConnectDB
         catch (SQLException e)
         {
             System.out.println("Couldn't connect to database " + e.getMessage());
-            return null;
+            return false;
         }
     }
 

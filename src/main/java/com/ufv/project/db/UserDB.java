@@ -3,6 +3,7 @@ package com.ufv.project.db;
 import com.ufv.project.model.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDB
@@ -24,16 +25,21 @@ public class UserDB
     private static final int COLUMN_STUDENT_REGISTRATION_INDEX = 2;
 
 
+    private static final String GET_ALL_USERS = "SELECT * FROM " + TABLE_USER;
+
     private static final String INSERT_USER = "INSERT INTO " +
             TABLE_USER + " (" + COLUMN_USER_ID + ", " +
             COLUMN_USER_PASSWORD + ", " + COLUMN_USER_NAME + ", " + COLUMN_USER_TYPE + ") VALUES (?, ?, ?, ?)";
 
     private static final String GET_USER = "SELECT " + COLUMN_USER_NAME + " FROM " + TABLE_USER + " WHERE " + COLUMN_USER_ID + " = ?";
 
+    private static final String DELETE_USER = "DELETE FROM " + TABLE_USER + " WHERE " + COLUMN_USER_ID + " = ?";
+
     private Connection conn;
 
     private PreparedStatement getUser;
     private PreparedStatement insertUser;
+    private PreparedStatement deletedUser;
 
     public UserDB(Connection conn)
     {
@@ -43,6 +49,7 @@ public class UserDB
         {
             getUser = conn.prepareStatement(GET_USER);
             insertUser = conn.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
+            deletedUser = conn.prepareStatement(DELETE_USER);
         }
         catch (SQLException e)
         {
@@ -62,11 +69,7 @@ public class UserDB
 
                 if (userType == UserTypesEnum.PROFESSOR)
                 {
-                    return new Professor(resultSet.getString(COLUMN_USER_ID_INDEX),
-                            resultSet.getString(COLUMN_USER_NAME_INDEX),
-                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX),
-                            resultSet.getString(COLUMN_PROFESSOR_EMAIL_INDEX),
-                            getSubjectsTaughtByProfessorID(resultSet.getString(COLUMN_USER_ID_INDEX)));
+                    return new ProfessorDB(conn).getProfessorByUser();
                 }
                 else if (userType == UserTypesEnum.ADMIN)
                 {
@@ -94,76 +97,104 @@ public class UserDB
 
     public String insertUser(User user) throws SQLException
     {
-        UserTypesEnum userType = user.getUserType();
+        insertUser.setString(COLUMN_USER_ID_INDEX, user.getUsername());
+        insertUser.setString(COLUMN_USER_PASSWORD_INDEX, user.getPassword());
+        insertUser.setString(COLUMN_USER_NAME_INDEX, user.getName());
+        insertUser.setInt(COLUMN_USER_TYPE_INDEX, user.getUserType().ordinal());
 
-        if (userType == UserTypesEnum.PROFESSOR)
+        try (ResultSet resultSet = insertUser.executeQuery())
         {
-            return new ProfessorDB(conn).insertProfessor((Professor) user);
-        }
-        else if (userType == UserTypesEnum.STUDENT)
-        {
+            UserTypesEnum userType = user.getUserType();
+
+            if (resultSet.next())
+            {
+                if (userType == UserTypesEnum.PROFESSOR)
+                {
+                    return new ProfessorDB(conn).insertProfessor((Professor) user);
+                }
+                else if (userType == UserTypesEnum.STUDENT)
+                {
 //            return new StudentDB(conn).insertStudent((Student) user);
-        }
-        else if (userType == UserTypesEnum.ADMIN)
-        {
+                }
+                else if (userType == UserTypesEnum.ADMIN)
+                {
 //            return new AdministratorDB(conn).insertAdmin((Administrator) user);
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
         }
 
         return null;
     }
 
-    public int deleteUser(String id)
+    public int deleteUser(String id) throws SQLException
     {
-        /*
-         * This method drops a user from the database
-         */
+        deletedUser.setString(COLUMN_USER_ID_INDEX, id);
 
-        String sql = "DELETE FROM " + TABLE_USER + " WHERE " + COLUMN_USER_ID + " = ?";
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql))
+        try (ResultSet resultSet = deletedUser.executeQuery())
         {
-            pstmt.setString(1, id);
-            pstmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Query failed: " + e.getMessage());
-        }
-    }
+            UserTypesEnum userType = user.getUserType();
 
-    public static void printAllUsers()
-    {
-        /*
-         * This method prints all users in the database
-         */
-        String sql = "SELECT * FROM " + TABLE_USER;
-        try (Connection conn = connect();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql))
-        {
-            while (rs.next())
+            if (resultSet.next())
             {
-                System.out.println("ID: " + rs.getString(COLUMN_USER_ID) + "\n" +
-                        "Password: " + rs.getString(COLUMN_USER_PASSWORD) + "\n" +
-                        "Name: " + rs.getString(COLUMN_USER_NAME) + "\n" +
-                        "Type: " + rs.getString(COLUMN_USER_TYPE));
+                if (userType == UserTypesEnum.PROFESSOR)
+                {
+                    return new ProfessorDB(conn).insertProfessor((Professor) user);
+                }
+                else if (userType == UserTypesEnum.STUDENT)
+                {
+//            return new StudentDB(conn).insertStudent((Student) user);
+                }
+                else if (userType == UserTypesEnum.ADMIN)
+                {
+//            return new AdministratorDB(conn).insertAdmin((Administrator) user);
+                }
             }
         }
         catch (SQLException e)
         {
-            System.out.println("Query failed: " + e.getMessage());
+            e.printStackTrace();
         }
+
+        return null;
     }
 
-    public static void printUserById(String id)
+    public List<User> getAllUser()
     {
-        /*
-         * This method prints a user in the database
-         */
-        System.out.println("ID: " + id + "\n" +
-                "Password: " + getUserPassword(id) + "\n" +
-                "Name: " + getUserName(id) + "\n" +
-                "Type: " + getUserType(id));
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(GET_ALL_USERS))
+        {
+            List<User> users = new ArrayList<>();
+
+            while (resultSet.next())
+            {
+                UserTypesEnum userType = UserTypesEnum.values()[resultSet.getInt(COLUMN_USER_TYPE_INDEX)];
+
+                if (userType == UserTypesEnum.PROFESSOR)
+                {
+                    return new ProfessorDB(conn).getProfessorByUser((Professor) user);
+                }
+                else if (userType == UserTypesEnum.STUDENT)
+                {
+//            return new StudentDB(conn).insertStudent((Student) user);
+                }
+                else if (userType == UserTypesEnum.ADMIN)
+                {
+//            return new AdministratorDB(conn).insertAdmin((Administrator) user);
+                }
+            }
+
+            return subjects;
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Query failed: " + e.getMessage());
+        }
+
+        return null;
     }
 
 }

@@ -3,6 +3,7 @@ package com.ufv.project.db;
 import com.ufv.project.model.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProfessorDB
@@ -128,26 +129,26 @@ public class ProfessorDB
 
     public void getAllTeachers()
     {
-        Stri
-
-        try (Connection conn = connect();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql))
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(GET))
         {
-            while (rs.next())
+            List<Subject> subjects = new ArrayList<>();
+
+            while (resultSet.next())
             {
-                System.out.println(rs.getString(COLUMN_USER_ID) + "\t" +
-                        rs.getString(COLUMN_USER_PASSWORD) + "\t" +
-                        rs.getString(COLUMN_USER_NAME) + "\t" +
-                        rs.getString(COLUMN_USER_TYPE) + "\t" +
-                        rs.getString(COLUMN_PROFESSOR_EMAIL));
+                subjects.add(new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX),
+                        resultSet.getString(COLUMN_SUBJECT_NAME),
+                        resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX)));
             }
+
+            return subjects;
         }
         catch (SQLException e)
         {
             System.out.println("Query failed: " + e.getMessage());
         }
 
+        return null;
     }
 
 
