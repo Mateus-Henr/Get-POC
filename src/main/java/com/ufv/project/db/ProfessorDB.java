@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfessorDB
+/*public class ProfessorDB
 {
     private static final String TABLE_PROFESSOR = "TB_Teacher";
     private static final String COLUMN_PROFESSOR_EMAIL = "Email";
@@ -152,4 +152,4 @@ public class ProfessorDB
     }
 
 
-}
+}*/

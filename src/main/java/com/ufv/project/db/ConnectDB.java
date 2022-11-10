@@ -2,8 +2,10 @@ package com.ufv.project.db;
 
 
 import java.sql.*;
+import java.util.List;
 
-import com.ufv.project.db.SubjectDB;
+//import com.ufv.project.db.SubjectDB;
+import com.ufv.project.model.Field;
 import com.ufv.project.model.Subject;
 
 
@@ -56,13 +58,11 @@ public class ConnectDB
         connectDB.open();
         System.out.println("Connection to Mysql has been established.");
 
-        //add field on db
-        SubjectDB subjectDB = new SubjectDB(connectDB.conn);
-        Subject subject = new Subject(0, "teste", "teste");
 
-        int id = subjectDB.insertSubject(subject);
 
-        System.out.println("Subject inserted with id: " + id);
+
+
+
 
 
 

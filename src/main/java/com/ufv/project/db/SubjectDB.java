@@ -1,4 +1,4 @@
-package com.ufv.project.db;
+/*package com.ufv.project.db;
 
 import com.ufv.project.model.Subject;
 
@@ -77,24 +77,9 @@ public class SubjectDB
         insertSubject.setString(COLUMN_SUBJECT_NAME_INDEX, subjectToInsert.getName());
         insertSubject.setString(COLUMN_SUBJECT_DESCRIPTION_INDEX, subjectToInsert.getDescription());
 
-        try (ResultSet resultSet = insertSubject.executeQuery())
-        {
-            if (resultSet.next())
-            {
-                return resultSet.getInt(COLUMN_SUBJECT_ID_INDEX);
-            }
-            else
-            {
-                System.out.println("Error when inserting area.");
-            }
+        try (int resultSet = insertSubject.executeUpdate()){
+            
         }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        return -1;
-    }
 
     public Subject deleteSubject(int id) throws SQLException
     {
@@ -145,5 +130,5 @@ public class SubjectDB
         return null;
     }
 
-}
+}*/
 
