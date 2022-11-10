@@ -25,14 +25,17 @@ public class FieldDB
 
     public static final String GET_ALL_FIELDS = "SELECT * FROM " + TABLE_FIELD;
 
-    public static final String GET_FIELD_NAME = "SELECT " + COLUMN_FIELD_NAME + " FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
+    public static final String GET_FIELD = "SELECT * FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
 
     public static final String UPDATE_FIELD_NAME = "UPDATE " + TABLE_FIELD + " SET " + COLUMN_FIELD_NAME + " = ? WHERE " + COLUMN_FIELD_ID + " = ?";
 
+    public static final String QUERY_FIELD = "SELECT " + COLUMN_FIELD_ID + " FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_NAME + " = ?";
     private PreparedStatement insertField;
     private PreparedStatement updateField;
     private PreparedStatement deleteField;
     private PreparedStatement getField;
+
+    private PreparedStatement queryField;
 
     private final Connection conn;
 
@@ -45,7 +48,9 @@ public class FieldDB
             insertField = conn.prepareStatement(INSERT_FIELD, Statement.RETURN_GENERATED_KEYS);
             updateField = conn.prepareStatement(UPDATE_FIELD_NAME);
             deleteField = conn.prepareStatement(DELETE_FIELD);
-            getField = conn.prepareStatement(GET_FIELD_NAME);
+            getField = conn.prepareStatement(GET_FIELD);
+
+            queryField = conn.prepareStatement(QUERY_FIELD);
         }
         catch (SQLException e)
         {
@@ -68,57 +73,47 @@ public class FieldDB
         {
             e.printStackTrace();
         }
-
-
         return null;
     }
 
     public int insertField(Field field) throws SQLException
     {
-        insertField.setString(COLUMN_FIELD_ID_INDEX, field.getName());
+        queryField.setString(1, field.getName());
+        ResultSet resultSet = queryField.executeQuery();
 
-        System.out.println(field.getName());
-
-        try (ResultSet resultSet = insertField.executeQuery())
-        {
-            if (resultSet.next())
-            {
-                return resultSet.getInt(COLUMN_FIELD_ID_INDEX);
-            }
-            else
-            {
-                System.out.println("Error when inserting area.");
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
+       if (resultSet.next()) {
+            return resultSet.getInt(COLUMN_FIELD_ID_INDEX);
         }
 
-        return -1;
+        else{
+            insertField.setString(1, field.getName());
+            int affectedRows = insertField.executeUpdate();
+
+            if (affectedRows != 1)
+            {
+                throw new SQLException("Couldn't insert field!");
+            }
+
+            try (ResultSet generatedKeys = insertField.getGeneratedKeys())
+            {
+                if (generatedKeys.next())
+                {
+                    return generatedKeys.getInt(1);
+                }
+                else
+                {
+                    throw new SQLException("Couldn't get id for field");
+                }
+            }
+        }
     }
 
     public Field deleteFieldByID(int id) throws SQLException
     {
-        deleteField.setInt(COLUMN_FIELD_NAME_INDEX, id);
-
-        try (ResultSet resultSet = deleteField.executeQuery())
-        {
-            if (resultSet.next())
-            {
-                return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
-            }
-            else
-            {
-                System.out.println("Error when deleting field.");
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
+        Field field = getFieldByID(id);
+        deleteField.setInt(1, id);
+        deleteField.executeUpdate();
+        return field;
     }
 
     public List<Field> getAllFields()

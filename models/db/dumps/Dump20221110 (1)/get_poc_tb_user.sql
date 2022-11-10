@@ -16,30 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tb_teacher_has_discipline`
+-- Table structure for table `tb_user`
 --
 
-DROP TABLE IF EXISTS `tb_teacher_has_discipline`;
+DROP TABLE IF EXISTS `tb_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_teacher_has_discipline` (
-  `TB_Discipline_ID` int unsigned NOT NULL,
-  `TB_Teacher_User_ID` varchar(100) NOT NULL,
-  PRIMARY KEY (`TB_Discipline_ID`,`TB_Teacher_User_ID`),
-  KEY `fk_TB_Teacher_has_Discipline_teacher1_idx` (`TB_Teacher_User_ID`),
-  KEY `fk_TB_Teacher_has_Discipline_discipline1_idx` (`TB_Discipline_ID`),
-  CONSTRAINT `fk_TB_Teacher_has_Discipline_discipline1` FOREIGN KEY (`TB_Discipline_ID`) REFERENCES `tb_discipline` (`ID`),
-  CONSTRAINT `fk_TB_Teacher_has_Discipline_teacher1` FOREIGN KEY (`TB_Teacher_User_ID`) REFERENCES `tb_teacher` (`TB_User_ID`)
+CREATE TABLE `tb_user` (
+  `ID` varchar(100) NOT NULL,
+  `Password` varchar(100) NOT NULL,
+  `Name` varchar(100) NOT NULL,
+  `Type` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_teacher_has_discipline`
+-- Dumping data for table `tb_user`
 --
 
-LOCK TABLES `tb_teacher_has_discipline` WRITE;
-/*!40000 ALTER TABLE `tb_teacher_has_discipline` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_teacher_has_discipline` ENABLE KEYS */;
+LOCK TABLES `tb_user` WRITE;
+/*!40000 ALTER TABLE `tb_user` DISABLE KEYS */;
+INSERT INTO `tb_user` VALUES ('fabricio','123456','Fabrício','teacher'),('joao','123','João da Silva','Student'),('maria','123','Maria da Silva','Teacher'),('miguel','123','Miguel Antônio Ribeiro e Silva','Admin'),('nacif','123456','Nacif','teacher');
+/*!40000 ALTER TABLE `tb_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-09  8:06:56
+-- Dump completed on 2022-11-10 16:51:02

@@ -3,20 +3,17 @@ package com.ufv.project.db;
 import com.ufv.project.model.*;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProfessorDB
 {
-    private static final String TABLE_PROFESSOR = "TB_Teacher";
+    private static final String TABLE_PROFESSOR = "TB_Professor";
+
     private static final String COLUMN_PROFESSOR_EMAIL = "Email";
     private static final String COLUMN_USER_PROFESSOR_ID = "TB_User_ID";
 
-
     private static final int COLUMN_PROFESSOR_EMAIL_INDEX = 1;
     private static final int COLUMN_USER_PROFESSOR_ID_INDEX = 2;
-
-    private static final String GET_ALL_PROFESSORS = "SELECT * FROM " + TABLE_PROFESSOR;
 
     private static final String GET_PROFESSOR = "SELECT * FROM " + TABLE_PROFESSOR + " WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
 
@@ -49,7 +46,7 @@ public class ProfessorDB
         }
     }
 
-    public User getProfessorByID(String username, String name, String password) throws SQLException
+    protected User getProfessorByID(String username, String name, String password) throws SQLException
     {
         getProfessor.setString(1, username);
 
@@ -72,13 +69,12 @@ public class ProfessorDB
         return null;
     }
 
-    public List<Subject> getSubjectsTaughtByProfessorID(String id)
+    private List<Subject> getSubjectsTaughtByProfessorID(String id)
     {
         return null;
     }
 
-
-    public String insertProfessor(Professor professor) throws SQLException
+    protected String insertProfessor(Professor professor) throws SQLException
     {
         insertProfessor.setString(COLUMN_PROFESSOR_EMAIL_INDEX, professor.getEmail());
         insertProfessor.setString(COLUMN_USER_PROFESSOR_ID_INDEX, professor.getUsername());
@@ -102,7 +98,7 @@ public class ProfessorDB
         return null;
     }
 
-    public Professor deleteProfessor(String username, String name, String password) throws SQLException
+    protected Professor deleteProfessor(String username, String name, String password) throws SQLException
     {
         deleteProfessor.setString(1, username);
 
@@ -131,25 +127,14 @@ public class ProfessorDB
 
     public List<Professor> getAllProfessors()
     {
-        try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(GET_ALL_PROFESSORS))
-        {
-            List<Professor> professors = new ArrayList<>();
-
-            while (resultSet.next())
-            {
-                professors.add(new Professor(resultSet.));
-            }
-
-            return professors;
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Query failed: " + e.getMessage());
-        }
-
-        return null;
+        return new UserDB(conn).getAllUsers().stream()
+                .filter(user -> user.getUserType() == UserTypesEnum.PROFESSOR)
+                .map(user -> (Professor) user)
+                .toList();
     }
 
 
+
 }
+
+

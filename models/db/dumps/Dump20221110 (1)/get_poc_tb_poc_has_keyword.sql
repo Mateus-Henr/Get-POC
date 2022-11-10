@@ -16,28 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tb_pdf`
+-- Table structure for table `tb_poc_has_keyword`
 --
 
-DROP TABLE IF EXISTS `tb_pdf`;
+DROP TABLE IF EXISTS `tb_poc_has_keyword`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_pdf` (
-  `ID` int NOT NULL,
-  `Creation_Date` date NOT NULL,
-  `Content` longtext NOT NULL,
-  PRIMARY KEY (`ID`)
+CREATE TABLE `tb_poc_has_keyword` (
+  `TB_POC_ID` int NOT NULL,
+  `TB_Keyword_ID` int NOT NULL,
+  PRIMARY KEY (`TB_POC_ID`,`TB_Keyword_ID`),
+  KEY `fk_TB_POC_has_Keyword_keyword1_idx` (`TB_Keyword_ID`),
+  KEY `fk_TB_POC_has_Keyword_POC1_idx` (`TB_POC_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_pdf`
+-- Dumping data for table `tb_poc_has_keyword`
 --
 
-LOCK TABLES `tb_pdf` WRITE;
-/*!40000 ALTER TABLE `tb_pdf` DISABLE KEYS */;
-INSERT INTO `tb_pdf` VALUES (1,'2021-01-12','new content'),(2,'2019-02-02','This is a test');
-/*!40000 ALTER TABLE `tb_pdf` ENABLE KEYS */;
+LOCK TABLES `tb_poc_has_keyword` WRITE;
+/*!40000 ALTER TABLE `tb_poc_has_keyword` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_poc_has_keyword` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-09  8:06:57
+-- Dump completed on 2022-11-10 16:51:02

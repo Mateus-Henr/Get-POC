@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `tb_student`;
 CREATE TABLE `tb_student` (
   `Email` varchar(100) NOT NULL,
   `Registration` varchar(100) NOT NULL,
-  `POC` int DEFAULT NULL,
+  `POC` int NOT NULL,
   `TB_User_ID` varchar(100) NOT NULL,
   PRIMARY KEY (`TB_User_ID`),
   UNIQUE KEY `Registration_UNIQUE` (`Registration`),
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-09  8:06:56
+-- Dump completed on 2022-11-10 16:51:03
