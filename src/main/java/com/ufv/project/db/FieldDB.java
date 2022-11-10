@@ -11,7 +11,7 @@ public class FieldDB
     /*
      *   TB_Field table columns names
      */
-    public static final String TABLE_FIELD = "tb_area";
+    public static final String TABLE_FIELD = "tb_field";
     public static final String COLUMN_FIELD_ID = "ID";
     public static final String COLUMN_FIELD_NAME = "Name";
 
@@ -19,22 +19,17 @@ public class FieldDB
     public static final int COLUMN_FIELD_NAME_INDEX = 2;
 
 
-    public static final String INSERT_FIELD = "INSERT INTO " + TABLE_FIELD + " (" + COLUMN_FIELD_NAME + ") VALUES (?)";
+    public static final String INSERT_FIELD = "INSERT INTO " + TABLE_FIELD + " (" + COLUMN_FIELD_ID + ", " + COLUMN_FIELD_NAME + ") VALUES (?, ?)";
 
     public static final String DELETE_FIELD = "DELETE FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
 
-    public static final String GET_ALL_FIELDS = "SELECT * FROM " + TABLE_FIELD;
-
-    public static final String GET_FIELD = "SELECT * FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
-
+    public static final String QUERY_FIELDS = "SELECT * FROM " + TABLE_FIELD;
+    public static final String QUERY_FIELD = "SELECT * FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
     public static final String UPDATE_FIELD_NAME = "UPDATE " + TABLE_FIELD + " SET " + COLUMN_FIELD_NAME + " = ? WHERE " + COLUMN_FIELD_ID + " = ?";
 
-    public static final String QUERY_FIELD = "SELECT " + COLUMN_FIELD_ID + " FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_NAME + " = ?";
     private PreparedStatement insertField;
     private PreparedStatement updateField;
     private PreparedStatement deleteField;
-    private PreparedStatement getField;
-
     private PreparedStatement queryField;
 
     private final Connection conn;
@@ -48,8 +43,6 @@ public class FieldDB
             insertField = conn.prepareStatement(INSERT_FIELD, Statement.RETURN_GENERATED_KEYS);
             updateField = conn.prepareStatement(UPDATE_FIELD_NAME);
             deleteField = conn.prepareStatement(DELETE_FIELD);
-            getField = conn.prepareStatement(GET_FIELD);
-
             queryField = conn.prepareStatement(QUERY_FIELD);
         }
         catch (SQLException e)
@@ -58,68 +51,77 @@ public class FieldDB
         }
     }
 
-    public Field getFieldByID(int id) throws SQLException
+    public Field queryFieldByID(int id) throws SQLException
     {
-        getField.setInt(COLUMN_FIELD_ID_INDEX, id);
+        queryField.setInt(COLUMN_FIELD_ID_INDEX, id);
 
-        try (ResultSet resultSet = getField.executeQuery())
+        try (ResultSet resultSet = queryField.executeQuery())
         {
             if (resultSet.next())
             {
-                return new Field(resultSet.getInt(COLUMN_FIELD_ID), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
+                return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
+            }
+            else
+            {
+                return null;
             }
         }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
     }
 
-    public int insertField(Field field) throws SQLException
-    {
-        queryField.setString(1, field.getName());
-        ResultSet resultSet = queryField.executeQuery();
 
-       if (resultSet.next()) {
-            return resultSet.getInt(COLUMN_FIELD_ID_INDEX);
+    public int insertField(Field field) throws SQLException
+
+    {
+        insertField.setInt(COLUMN_FIELD_ID_INDEX, field.getId());
+        insertField.setString(COLUMN_FIELD_NAME_INDEX, field.getName());
+
+        int affectedRows = insertField.executeUpdate();
+
+        if (affectedRows != 1)
+        {
+            throw new SQLException("Couldn't insert field!");
         }
 
-        else{
-            insertField.setString(1, field.getName());
-            int affectedRows = insertField.executeUpdate();
-
-            if (affectedRows != 1)
+        try (ResultSet generatedKeys = insertField.getGeneratedKeys())
+        {
+            if (generatedKeys.next())
             {
-                throw new SQLException("Couldn't insert field!");
+                return generatedKeys.getInt(1);
             }
-
-            try (ResultSet generatedKeys = insertField.getGeneratedKeys())
+            else
             {
-                if (generatedKeys.next())
-                {
-                    return generatedKeys.getInt(1);
-                }
-                else
-                {
-                    throw new SQLException("Couldn't get id for field");
-                }
+                throw new SQLException("Couldn't get _id for field");
             }
         }
     }
 
     public Field deleteFieldByID(int id) throws SQLException
     {
-        Field field = getFieldByID(id);
+        Field field = queryFieldByID(id);
         deleteField.setInt(1, id);
         deleteField.executeUpdate();
         return field;
     }
 
-    public List<Field> getAllFields()
+    public Field updateField(Field field) throws SQLException
+    {
+
+        Field field1 = queryFieldByID(field.getId());
+        if (field1 == null)
+        {
+            return null;
+        }
+
+        updateField.setString(1, field.getName());
+        updateField.setInt(2, field.getId());
+        updateField.executeUpdate();
+        return field;
+    }
+
+    public List<Field> queryFields()
     {
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(GET_ALL_FIELDS))
+             ResultSet resultSet = statement.executeQuery(QUERY_FIELDS))
         {
             List<Field> fields = new ArrayList<>();
 

@@ -1,8 +1,11 @@
 package com.ufv.project.db;
 
+import com.ufv.project.model.Field;
 import com.ufv.project.model.Subject;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConnectDB
 {
@@ -57,10 +60,14 @@ public class ConnectDB
             return;
         }
 
-        System.out.println("Connection to Mysql has been established.");
 
-        SubjectDB subjectDB = new SubjectDB(connectDB.getConnection());
-        subjectDB.insertSubject(new Subject(0, "Name", "dsda"));
+
+
+
+
+
+
+
 
         connectDB.close();
     }
