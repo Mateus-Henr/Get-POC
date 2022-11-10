@@ -76,7 +76,7 @@ public class UserDB
                 }
                 else if (userType == UserTypesEnum.ADMIN)
                 {
-                    return new AdministratorDB(conn).getAdministratorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
+                    return new Administrator(resultSet.getString(COLUMN_USER_ID_INDEX),
                             resultSet.getString(COLUMN_USER_NAME_INDEX),
                             resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
                 }
@@ -119,7 +119,7 @@ public class UserDB
                 }
                 else if (userType == UserTypesEnum.ADMIN)
                 {
-                    return new AdministratorDB(conn).insertAdministrator((Administrator) user);
+                    return resultSet.getString(COLUMN_USER_ID_INDEX);
                 }
             }
         }
@@ -155,7 +155,7 @@ public class UserDB
                 }
                 else if (userType == UserTypesEnum.ADMIN)
                 {
-                    return new AdministratorDB(conn).getAdministratorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
+                    return new Administrator(resultSet.getString(COLUMN_USER_ID_INDEX),
                             resultSet.getString(COLUMN_USER_NAME_INDEX),
                             resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
                 }
@@ -194,7 +194,7 @@ public class UserDB
                 }
                 else if (userType == UserTypesEnum.ADMIN)
                 {
-                    users.add(new AdministratorDB(conn).getAdministratorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
+                    users.add(new Administrator(resultSet.getString(COLUMN_USER_ID_INDEX),
                             resultSet.getString(COLUMN_USER_NAME_INDEX),
                             resultSet.getString(COLUMN_USER_PASSWORD_INDEX)));
                 }
