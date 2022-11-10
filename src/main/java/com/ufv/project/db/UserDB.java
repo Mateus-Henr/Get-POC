@@ -166,7 +166,7 @@ public class UserDB
         return null;
     }
 
-    public List<User> getAllUser()
+    public List<User> getAllUsers()
     {
         try (Statement statement = conn.createStatement();
              ResultSet resultSet = statement.executeQuery(GET_ALL_USERS))
