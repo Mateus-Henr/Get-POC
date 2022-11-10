@@ -1,4 +1,4 @@
-/*package com.ufv.project.db;
+package com.ufv.project.db;
 
 import com.ufv.project.model.*;
 
@@ -15,6 +15,8 @@ public class ProfessorDB
 
     private static final int COLUMN_PROFESSOR_EMAIL_INDEX = 1;
     private static final int COLUMN_USER_PROFESSOR_ID_INDEX = 2;
+
+    private static final String GET_ALL_PROFESSORS = "SELECT * FROM " + TABLE_PROFESSOR;
 
     private static final String GET_PROFESSOR = "SELECT * FROM " + TABLE_PROFESSOR + " WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
 
@@ -47,21 +49,19 @@ public class ProfessorDB
         }
     }
 
-    public User getProfessorByUser(User user) throws SQLException
+    public User getProfessorByID(String username, String name, String password) throws SQLException
     {
-        String id = user.getUsername();
-
-        getProfessor.setString(COLUMN_PROFESSOR_ID_INDEX, id);
+        getProfessor.setString(1, username);
 
         try (ResultSet resultSet = getProfessor.executeQuery())
         {
             if (resultSet.next())
             {
-                return new Professor(id,
-                        user.getName(),
-                        user.getPassword(),
+                return new Professor(username,
+                        name,
+                        password,
                         resultSet.getString(COLUMN_PROFESSOR_EMAIL_INDEX),
-                        getSubjectsTaughtByProfessorID(id));
+                        getSubjectsTaughtByProfessorID(username));
             }
         }
         catch (SQLException e)
@@ -78,7 +78,7 @@ public class ProfessorDB
     }
 
 
-    protected String insertProfessor(Professor professor) throws SQLException
+    public String insertProfessor(Professor professor) throws SQLException
     {
         insertProfessor.setString(COLUMN_PROFESSOR_EMAIL_INDEX, professor.getEmail());
         insertProfessor.setString(COLUMN_USER_PROFESSOR_ID_INDEX, professor.getUsername());
@@ -102,17 +102,19 @@ public class ProfessorDB
         return null;
     }
 
-    protected void deleteProfessor(String id) throws SQLException
+    public Professor deleteProfessor(String username, String name, String password) throws SQLException
     {
-        deleteProfessor.setString(1, id);
+        deleteProfessor.setString(1, username);
 
         try (ResultSet resultSet = deleteProfessor.executeQuery())
         {
             if (resultSet.next())
             {
-                return new Professor(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX),
-                        resultSet.getString(COLUMN_SUBJECT_NAME),
-                        resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX));
+                return new Professor(username,
+                        name,
+                        password,
+                        resultSet.getString(COLUMN_PROFESSOR_EMAIL_INDEX),
+                        getSubjectsTaughtByProfessorID(username));
             }
             else
             {
@@ -127,21 +129,19 @@ public class ProfessorDB
         return null;
     }
 
-    public void getAllTeachers()
+    public List<Professor> getAllProfessors()
     {
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(GET))
+             ResultSet resultSet = statement.executeQuery(GET_ALL_PROFESSORS))
         {
-            List<Subject> subjects = new ArrayList<>();
+            List<Professor> professors = new ArrayList<>();
 
             while (resultSet.next())
             {
-                subjects.add(new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX),
-                        resultSet.getString(COLUMN_SUBJECT_NAME),
-                        resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX)));
+                professors.add(new Professor(resultSet.));
             }
 
-            return subjects;
+            return professors;
         }
         catch (SQLException e)
         {
@@ -152,4 +152,4 @@ public class ProfessorDB
     }
 
 
-}*/
+}

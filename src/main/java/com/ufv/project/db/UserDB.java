@@ -1,4 +1,4 @@
-/*package com.ufv.project.db;
+package com.ufv.project.db;
 
 import com.ufv.project.model.*;
 
@@ -39,7 +39,7 @@ public class UserDB
 
     private PreparedStatement getUser;
     private PreparedStatement insertUser;
-    private PreparedStatement deletedUser;
+    private PreparedStatement deleteUser;
 
     public UserDB(Connection conn)
     {
@@ -49,7 +49,7 @@ public class UserDB
         {
             getUser = conn.prepareStatement(GET_USER);
             insertUser = conn.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
-            deletedUser = conn.prepareStatement(DELETE_USER);
+            deleteUser = conn.prepareStatement(DELETE_USER);
         }
         catch (SQLException e)
         {
@@ -69,7 +69,9 @@ public class UserDB
 
                 if (userType == UserTypesEnum.PROFESSOR)
                 {
-                    return new ProfessorDB(conn).getProfessorByUser();
+                    return new ProfessorDB(conn).getProfessorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
+                            resultSet.getString(COLUMN_USER_NAME_INDEX),
+                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
                 }
                 else if (userType == UserTypesEnum.ADMIN)
                 {
@@ -130,19 +132,21 @@ public class UserDB
         return null;
     }
 
-    public int deleteUser(String id) throws SQLException
+    public User deleteUser(String id) throws SQLException
     {
-        deletedUser.setString(COLUMN_USER_ID_INDEX, id);
+        deleteUser.setString(COLUMN_USER_ID_INDEX, id);
 
-        try (ResultSet resultSet = deletedUser.executeQuery())
+        try (ResultSet resultSet = deleteUser.executeQuery())
         {
-            UserTypesEnum userType = user.getUserType();
+            UserTypesEnum userType = UserTypesEnum.values()[resultSet.getInt(COLUMN_USER_TYPE_INDEX)];
 
             if (resultSet.next())
             {
                 if (userType == UserTypesEnum.PROFESSOR)
                 {
-                    return new ProfessorDB(conn).insertProfessor((Professor) user);
+                    return new ProfessorDB(conn).getProfessorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
+                            resultSet.getString(COLUMN_USER_NAME_INDEX),
+                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
                 }
                 else if (userType == UserTypesEnum.STUDENT)
                 {
@@ -175,7 +179,9 @@ public class UserDB
 
                 if (userType == UserTypesEnum.PROFESSOR)
                 {
-                    return new ProfessorDB(conn).getProfessorByUser((Professor) user);
+                    users.add(new ProfessorDB(conn).getProfessorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
+                            resultSet.getString(COLUMN_USER_NAME_INDEX),
+                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX)));
                 }
                 else if (userType == UserTypesEnum.STUDENT)
                 {
@@ -185,9 +191,11 @@ public class UserDB
                 {
 //            return new AdministratorDB(conn).insertAdmin((Administrator) user);
                 }
+
+                return users;
             }
 
-            return subjects;
+            return users;
         }
         catch (SQLException e)
         {
@@ -197,4 +205,4 @@ public class UserDB
         return null;
     }
 
-}*/
+}
