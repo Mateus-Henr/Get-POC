@@ -46,7 +46,7 @@ public class ProfessorDB
         }
     }
 
-    public User getProfessorByID(String username, String name, String password) throws SQLException
+    protected User getProfessorByID(String username, String name, String password) throws SQLException
     {
         getProfessor.setString(1, username);
 
@@ -69,12 +69,12 @@ public class ProfessorDB
         return null;
     }
 
-    public List<Subject> getSubjectsTaughtByProfessorID(String id)
+    private List<Subject> getSubjectsTaughtByProfessorID(String id)
     {
         return null;
     }
 
-    public String insertProfessor(Professor professor) throws SQLException
+    protected String insertProfessor(Professor professor) throws SQLException
     {
         insertProfessor.setString(COLUMN_PROFESSOR_EMAIL_INDEX, professor.getEmail());
         insertProfessor.setString(COLUMN_USER_PROFESSOR_ID_INDEX, professor.getUsername());
@@ -98,7 +98,7 @@ public class ProfessorDB
         return null;
     }
 
-    public Professor deleteProfessor(String username, String name, String password) throws SQLException
+    protected Professor deleteProfessor(String username, String name, String password) throws SQLException
     {
         deleteProfessor.setString(1, username);
 

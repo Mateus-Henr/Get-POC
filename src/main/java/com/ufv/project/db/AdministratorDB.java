@@ -53,7 +53,7 @@ public class AdministratorDB
         }
     }
 
-    public User getAdministratorByID(String username, String name, String password) throws SQLException
+    protected User getAdministratorByID(String username, String name, String password) throws SQLException
     {
         getAdministrator.setString(1, username);
 
@@ -74,12 +74,7 @@ public class AdministratorDB
         return null;
     }
 
-    public List<Subject> getSubjectsTaughtByAdministratorID(String id)
-    {
-        return null;
-    }
-
-    public String insertAdministrator(Administrator administrator) throws SQLException
+    protected String insertAdministrator(Administrator administrator) throws SQLException
     {
         insertAdministrator.setString(COLUMN_USER_ADMINISTRATOR_ID_INDEX, administrator.getUsername());
 
@@ -102,7 +97,7 @@ public class AdministratorDB
         return null;
     }
 
-    public Administrator deleteAdministrator(String username, String name, String password) throws SQLException
+    protected Administrator deleteAdministrator(String username, String name, String password) throws SQLException
     {
         deleteAdministrator.setString(1, username);
 

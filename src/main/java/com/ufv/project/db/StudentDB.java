@@ -54,7 +54,7 @@ public class StudentDB
         }
     }
 
-    public User getStudentByID(String username, String name, String password) throws SQLException
+    protected User getStudentByID(String username, String name, String password) throws SQLException
     {
         getStudent.setString(1, username);
 
@@ -77,12 +77,7 @@ public class StudentDB
         return null;
     }
 
-    public List<Subject> getSubjectsTaughtByStudentID(String id)
-    {
-        return null;
-    }
-
-    public String insertStudent(Student student) throws SQLException
+    protected String insertStudent(Student student) throws SQLException
     {
         insertStudent.setString(COLUMN_STUDENT_REGISTRATION_INDEX, student.getRegistration());
         insertStudent.setString(COLUMN_STUDENT_EMAIL_INDEX, student.getEmail());
@@ -107,7 +102,7 @@ public class StudentDB
         return null;
     }
 
-    public Student deleteStudent(String username, String name, String password) throws SQLException
+    protected Student deleteStudent(String username, String name, String password) throws SQLException
     {
         deleteStudent.setString(1, username);
 
