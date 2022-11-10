@@ -16,26 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tb_keyword`
+-- Table structure for table `tb_field`
 --
 
-DROP TABLE IF EXISTS `tb_keyword`;
+DROP TABLE IF EXISTS `tb_field`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_keyword` (
-  `ID` varchar(100) NOT NULL,
+CREATE TABLE `tb_field` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(100) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_keyword`
+-- Dumping data for table `tb_field`
 --
 
-LOCK TABLES `tb_keyword` WRITE;
-/*!40000 ALTER TABLE `tb_keyword` DISABLE KEYS */;
-INSERT INTO `tb_keyword` VALUES ('Desenvolvimento'),('Implementação'),('Teste');
-/*!40000 ALTER TABLE `tb_keyword` ENABLE KEYS */;
+LOCK TABLES `tb_field` WRITE;
+/*!40000 ALTER TABLE `tb_field` DISABLE KEYS */;
+INSERT INTO `tb_field` VALUES (2,'CDC'),(3,'fif'),(4,'fi'),(5,'Científico-Tecnológico'),(6,'Científico-Tecnológico'),(7,'ola'),(8,'ola'),(9,'hello');
+/*!40000 ALTER TABLE `tb_field` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -47,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-09  8:06:55
+-- Dump completed on 2022-11-10 16:51:03

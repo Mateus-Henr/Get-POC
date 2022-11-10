@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `tb_poc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_poc` (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `Title` varchar(100) NOT NULL,
   `Defense_Date` date NOT NULL,
   `Summary` tinytext NOT NULL,
@@ -36,11 +36,11 @@ CREATE TABLE `tb_poc` (
   KEY `fk_TB_POC_PDF1_idx` (`TB_PDF_ID`),
   KEY `fk_TB_POC_teacher1_idx` (`Teacher_Registrant`),
   KEY `fk_TB_POC_teacher2_idx` (`Teacher_Advisor`),
-  CONSTRAINT `fk_TB_POC_area1` FOREIGN KEY (`TB_Area_ID`) REFERENCES `tb_area` (`ID`),
+  CONSTRAINT `fk_TB_POC_area1` FOREIGN KEY (`TB_Area_ID`) REFERENCES `tb_field` (`ID`),
   CONSTRAINT `fk_TB_POC_PDF1` FOREIGN KEY (`TB_PDF_ID`) REFERENCES `tb_pdf` (`ID`),
-  CONSTRAINT `fk_TB_POC_teacher1` FOREIGN KEY (`Teacher_Registrant`) REFERENCES `tb_teacher` (`TB_User_ID`),
-  CONSTRAINT `fk_TB_POC_teacher2` FOREIGN KEY (`Teacher_Advisor`) REFERENCES `tb_teacher` (`TB_User_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `fk_TB_POC_teacher1` FOREIGN KEY (`Teacher_Registrant`) REFERENCES `tb_professor` (`TB_User_ID`),
+  CONSTRAINT `fk_TB_POC_teacher2` FOREIGN KEY (`Teacher_Advisor`) REFERENCES `tb_professor` (`TB_User_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,7 +49,6 @@ CREATE TABLE `tb_poc` (
 
 LOCK TABLES `tb_poc` WRITE;
 /*!40000 ALTER TABLE `tb_poc` DISABLE KEYS */;
-INSERT INTO `tb_poc` VALUES (2,'POC 2','1999-04-04','Lorem ipsum leo dictumst aptent hendrerit ipsum rutrum dolor tincidunt sodales quis, condimentum sem viverra per a condimentum volutpat justo magna justo. vestibulum ornare nam cubilia sem, quam suspendisse ultricies. ',2,1,'nacif','fabricio'),(3,'Algoritmos estruturados baseados em X','1999-04-04','Summary 3',3,1,'nacif','fabricio');
 /*!40000 ALTER TABLE `tb_poc` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-09  8:06:56
+-- Dump completed on 2022-11-10 16:51:02

@@ -16,30 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tb_user_manages_user`
+-- Table structure for table `tb_professor_co-advises_poc`
 --
 
-DROP TABLE IF EXISTS `tb_user_manages_user`;
+DROP TABLE IF EXISTS `tb_professor_co-advises_poc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_user_manages_user` (
-  `TB_User_Administrator_ID` varchar(100) NOT NULL,
-  `TB_User_Administered_ID` varchar(100) NOT NULL,
-  PRIMARY KEY (`TB_User_Administrator_ID`,`TB_User_Administered_ID`),
-  KEY `fk_TB_User_Manages_User_user2_idx` (`TB_User_Administered_ID`),
-  KEY `fk_TB_User_Manages_User_user1_idx` (`TB_User_Administrator_ID`),
-  CONSTRAINT `fk_TB_User_Manages_User_user1` FOREIGN KEY (`TB_User_Administrator_ID`) REFERENCES `tb_user` (`ID`),
-  CONSTRAINT `fk_TB_User_Manages_User_user2` FOREIGN KEY (`TB_User_Administered_ID`) REFERENCES `tb_user` (`ID`)
+CREATE TABLE `tb_professor_co-advises_poc` (
+  `TB_POC_ID` int NOT NULL AUTO_INCREMENT,
+  `tb_teacher_TB_User_ID` varchar(100) NOT NULL,
+  PRIMARY KEY (`TB_POC_ID`,`tb_teacher_TB_User_ID`),
+  KEY `fk_TB_Teacher_Co-advises_POC_POC1_idx` (`TB_POC_ID`),
+  KEY `fk_tb_teacher_co-advises_poc_tb_teacher1_idx` (`tb_teacher_TB_User_ID`),
+  CONSTRAINT `fk_TB_Teacher_Co-advises_POC_POC1` FOREIGN KEY (`TB_POC_ID`) REFERENCES `tb_poc` (`ID`),
+  CONSTRAINT `fk_tb_teacher_co-advises_poc_teacher1` FOREIGN KEY (`tb_teacher_TB_User_ID`) REFERENCES `tb_professor` (`TB_User_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_user_manages_user`
+-- Dumping data for table `tb_professor_co-advises_poc`
 --
 
-LOCK TABLES `tb_user_manages_user` WRITE;
-/*!40000 ALTER TABLE `tb_user_manages_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tb_user_manages_user` ENABLE KEYS */;
+LOCK TABLES `tb_professor_co-advises_poc` WRITE;
+/*!40000 ALTER TABLE `tb_professor_co-advises_poc` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_professor_co-advises_poc` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-09  8:06:56
+-- Dump completed on 2022-11-10 16:51:02

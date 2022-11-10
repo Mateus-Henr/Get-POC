@@ -16,28 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tb_teacher`
+-- Table structure for table `tb_user_manages_user`
 --
 
-DROP TABLE IF EXISTS `tb_teacher`;
+DROP TABLE IF EXISTS `tb_user_manages_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_teacher` (
-  `Email` varchar(100) NOT NULL,
-  `TB_User_ID` varchar(100) NOT NULL,
-  PRIMARY KEY (`TB_User_ID`),
-  CONSTRAINT `fk_teacher_user1` FOREIGN KEY (`TB_User_ID`) REFERENCES `tb_user` (`ID`)
+CREATE TABLE `tb_user_manages_user` (
+  `TB_User_Administrator_ID` varchar(100) NOT NULL,
+  `TB_User_Administered_ID` varchar(100) NOT NULL,
+  PRIMARY KEY (`TB_User_Administrator_ID`,`TB_User_Administered_ID`),
+  KEY `fk_TB_User_Manages_User_user2_idx` (`TB_User_Administered_ID`),
+  KEY `fk_TB_User_Manages_User_user1_idx` (`TB_User_Administrator_ID`),
+  CONSTRAINT `fk_TB_User_Manages_User_user1` FOREIGN KEY (`TB_User_Administrator_ID`) REFERENCES `tb_user` (`ID`),
+  CONSTRAINT `fk_TB_User_Manages_User_user2` FOREIGN KEY (`TB_User_Administered_ID`) REFERENCES `tb_user` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_teacher`
+-- Dumping data for table `tb_user_manages_user`
 --
 
-LOCK TABLES `tb_teacher` WRITE;
-/*!40000 ALTER TABLE `tb_teacher` DISABLE KEYS */;
-INSERT INTO `tb_teacher` VALUES ('fabricio@ufv.br','fabricio'),('nacifj@ufv','Nacif');
-/*!40000 ALTER TABLE `tb_teacher` ENABLE KEYS */;
+LOCK TABLES `tb_user_manages_user` WRITE;
+/*!40000 ALTER TABLE `tb_user_manages_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_user_manages_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-09  8:06:55
+-- Dump completed on 2022-11-10 16:51:03

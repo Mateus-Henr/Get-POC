@@ -16,28 +16,26 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tb_discipline`
+-- Table structure for table `tb_keyword`
 --
 
-DROP TABLE IF EXISTS `tb_discipline`;
+DROP TABLE IF EXISTS `tb_keyword`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_discipline` (
-  `ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `Name` varchar(100) NOT NULL,
-  `Description` tinytext NOT NULL,
+CREATE TABLE `tb_keyword` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `word` varchar(100) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_discipline`
+-- Dumping data for table `tb_keyword`
 --
 
-LOCK TABLES `tb_discipline` WRITE;
-/*!40000 ALTER TABLE `tb_discipline` DISABLE KEYS */;
-INSERT INTO `tb_discipline` VALUES (1,'PROG 1','Programação 1, em Python e C'),(2,'Banco de Dados','Iniciação à banco de dados, em SQL'),(4,'Programação Orientada a Objetos','Iniciação à programação orientada a objetos, em Java');
-/*!40000 ALTER TABLE `tb_discipline` ENABLE KEYS */;
+LOCK TABLES `tb_keyword` WRITE;
+/*!40000 ALTER TABLE `tb_keyword` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_keyword` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -49,4 +47,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-09  8:06:56
+-- Dump completed on 2022-11-10 16:51:02

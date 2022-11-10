@@ -16,27 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tb_area`
+-- Table structure for table `tb_professor`
 --
 
-DROP TABLE IF EXISTS `tb_area`;
+DROP TABLE IF EXISTS `tb_professor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_area` (
-  `ID` int NOT NULL,
-  `Name` varchar(100) NOT NULL,
-  PRIMARY KEY (`ID`)
+CREATE TABLE `tb_professor` (
+  `Email` varchar(100) NOT NULL,
+  `TB_User_ID` varchar(100) NOT NULL,
+  PRIMARY KEY (`TB_User_ID`),
+  CONSTRAINT `fk_teacher_user1` FOREIGN KEY (`TB_User_ID`) REFERENCES `tb_user` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tb_area`
+-- Dumping data for table `tb_professor`
 --
 
-LOCK TABLES `tb_area` WRITE;
-/*!40000 ALTER TABLE `tb_area` DISABLE KEYS */;
-INSERT INTO `tb_area` VALUES (1,'Computação'),(2,'Matemática'),(3,'Alimentos'),(4,'Química'),(5,'Biologia'),(6,'Estatística');
-/*!40000 ALTER TABLE `tb_area` ENABLE KEYS */;
+LOCK TABLES `tb_professor` WRITE;
+/*!40000 ALTER TABLE `tb_professor` DISABLE KEYS */;
+INSERT INTO `tb_professor` VALUES ('fabricio@ufv.br','fabricio'),('nacifj@ufv','Nacif');
+/*!40000 ALTER TABLE `tb_professor` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -48,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-09  8:06:56
+-- Dump completed on 2022-11-10 16:51:02
