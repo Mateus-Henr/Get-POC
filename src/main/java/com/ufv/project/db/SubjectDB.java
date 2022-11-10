@@ -6,8 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubjectDB {
-
+public class SubjectDB
+{
     private static final String TABLE_SUBJECT = "TB_Subject";
     private static final String COLUMN_SUBJECT_ID = "ID";
     private static final String COLUMN_SUBJECT_NAME = "Name";
@@ -32,88 +32,118 @@ public class SubjectDB {
 
     private Connection conn;
 
-    public SubjectDB(Connection conn) {
+    public SubjectDB(Connection conn)
+    {
         this.conn = conn;
 
-        try {
+        try
+        {
             insertSubject = conn.prepareStatement(INSERT_SUBJECT, Statement.RETURN_GENERATED_KEYS);
-           //updateSubject = conn.prepareStatement(SET_SUBJECT_NAME);
+            //updateSubject = conn.prepareStatement(SET_SUBJECT_NAME);
             deleteSubject = conn.prepareStatement(DELETE_SUBJECT);
             getSubject = conn.prepareStatement(GET_ALL_SUBJECTS);
 
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
     }
 
-    public Subject getSubjectById(int id) throws SQLException {
+    public Subject getSubjectById(int id) throws SQLException
+    {
         getSubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
 
-        try (ResultSet resultSet = getSubject.executeQuery()) {
-            if (resultSet.next()) {
+        try (ResultSet resultSet = getSubject.executeQuery())
+        {
+            if (resultSet.next())
+            {
                 return new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX),
                         resultSet.getString(COLUMN_SUBJECT_NAME),
                         resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX));
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
 
         return null;
     }
 
-    public int insertSubject(Subject subjectToInsert) throws SQLException {
+    public int insertSubject(Subject subjectToInsert) throws SQLException
+    {
         insertSubject.setInt(COLUMN_SUBJECT_ID_INDEX, subjectToInsert.getId());
         insertSubject.setString(COLUMN_SUBJECT_NAME_INDEX, subjectToInsert.getName());
         insertSubject.setString(COLUMN_SUBJECT_DESCRIPTION_INDEX, subjectToInsert.getDescription());
 
-        try (ResultSet resultSet = insertSubject.executeQuery()) {
-            if (resultSet.next()) {
+        try (ResultSet resultSet = insertSubject.executeQuery())
+        {
+            if (resultSet.next())
+            {
                 return resultSet.getInt(COLUMN_SUBJECT_ID_INDEX);
-            } else {
+            }
+            else
+            {
                 System.out.println("Error when inserting area.");
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
 
         return -1;
-
     }
 
-    public Subject deleteSubject(int id) throws SQLException {
+    public Subject deleteSubject(int id) throws SQLException
+    {
         deleteSubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
-        try (ResultSet resultSet = deleteSubject.executeQuery()) {
-            if (resultSet.next()) {
+
+        try (ResultSet resultSet = deleteSubject.executeQuery())
+        {
+            if (resultSet.next())
+            {
                 return new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX),
                         resultSet.getString(COLUMN_SUBJECT_NAME),
                         resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX));
-            } else {
+            }
+            else
+            {
                 System.out.println("Error when deleting discipline.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-
         }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
-    private List<Subject> getAllSubjects() {
+    private List<Subject> getAllSubjects()
+    {
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(GET_ALL_SUBJECTS)) {
+             ResultSet resultSet = statement.executeQuery(GET_ALL_SUBJECTS))
+        {
             List<Subject> subjects = new ArrayList<>();
 
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 subjects.add(new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX),
                         resultSet.getString(COLUMN_SUBJECT_NAME),
                         resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX)));
             }
 
             return subjects;
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Query failed: " + e.getMessage());
         }
+
         return null;
     }
+
 }
 

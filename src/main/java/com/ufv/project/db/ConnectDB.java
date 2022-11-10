@@ -80,11 +80,12 @@ public class ConnectDB
 
     private Connection conn;
 
-    public static Connection open()
+    public static boolean open()
     {
         try
         {
-            return DriverManager.getConnection(CONNECTION_STRING);
+            conn = DriverManager.getConnection(CONNECTION_STRING);
+            return true;
         }
         catch (SQLException e)
         {

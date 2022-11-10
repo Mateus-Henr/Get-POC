@@ -1,164 +1,135 @@
 package com.ufv.project.db;
 
+import com.ufv.project.model.*;
+
 import java.sql.*;
+import java.util.List;
 
 public class ProfessorDB
 {
-    /*
-     *  TB_Teacher table columns names
-     */
-    public static String TABLE_TEACHER = "TB_Teacher";
-    public static String COLUMN_TEACHER_EMAIL = "Email";
-    public static String COLUMN_TEACHER_ID = "TB_User_ID";
-
-    /*
-     * Getters and Setters
-     */
+    private static final String TABLE_PROFESSOR = "TB_Teacher";
+    private static final String COLUMN_PROFESSOR_EMAIL = "Email";
+    private static final String COLUMN_USER_PROFESSOR_ID = "TB_User_ID";
 
 
-    public static String getTeacherEmail(String id)
+    private static final int COLUMN_PROFESSOR_EMAIL_INDEX = 1;
+    private static final int COLUMN_USER_PROFESSOR_ID_INDEX = 2;
+
+    private static final String GET_PROFESSOR = "SELECT * FROM " + TABLE_PROFESSOR + " WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
+
+    private static final String INSERT_PROFESSOR = "INSERT INTO " +
+            TABLE_PROFESSOR + " (" + COLUMN_PROFESSOR_EMAIL + ", " +
+            COLUMN_USER_PROFESSOR_ID + ") VALUES (?, ?)";
+
+    private static final String DELETE_PROFESSOR = "DELETE FROM " + TABLE_PROFESSOR + " WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
+
+    private PreparedStatement getProfessor;
+    private PreparedStatement insertProfessor;
+    private PreparedStatement updateProfessor;
+    private PreparedStatement deleteProfessor;
+
+    private Connection conn;
+
+    public ProfessorDB(Connection conn)
     {
-        String email = null;
+        this.conn = conn;
+
         try
         {
-            Connection conn = connect();
-            Statement statement = conn.createStatement();
-            ResultSet results = statement.executeQuery("SELECT " + COLUMN_TEACHER_EMAIL + " FROM " + TABLE_TEACHER + " WHERE " + COLUMN_TEACHER_ID + " = '" + id + "'");
-            while (results.next())
+            getProfessor = conn.prepareStatement(GET_PROFESSOR);
+            insertProfessor = conn.prepareStatement(INSERT_PROFESSOR);
+            deleteProfessor = conn.prepareStatement(DELETE_PROFESSOR);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public User getProfessorByUser(User user) throws SQLException
+    {
+        String id = user.getUsername();
+
+        getProfessor.setString(COLUMN_PROFESSOR_ID_INDEX, id);
+
+        try (ResultSet resultSet = getProfessor.executeQuery())
+        {
+            if (resultSet.next())
             {
-                email = results.getString(COLUMN_TEACHER_EMAIL);
+                return new Professor(id,
+                        user.getName(),
+                        user.getPassword(),
+                        resultSet.getString(COLUMN_PROFESSOR_EMAIL_INDEX),
+                        getSubjectsTaughtByProfessorID(id));
             }
-            results.close();
-            statement.close();
-            conn.close();
         }
         catch (SQLException e)
         {
-            System.out.println("Something went wrong: " + e.getMessage());
+            e.printStackTrace();
         }
-        return email;
+
+        return null;
     }
 
-    public static void setTeacherPassword(String id, String password)
+    public List<Subject> getSubjectsTaughtByProfessorID(String id)
     {
-        try
+        return null;
+    }
+
+
+    protected String insertProfessor(Professor professor) throws SQLException
+    {
+        insertProfessor.setString(COLUMN_PROFESSOR_EMAIL_INDEX, professor.getEmail());
+        insertProfessor.setString(COLUMN_USER_PROFESSOR_ID_INDEX, professor.getUsername());
+
+        try (ResultSet resultSet = insertProfessor.executeQuery())
         {
-            Connection conn = connect();
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("UPDATE " + TABLE_USER + " SET " + COLUMN_USER_PASSWORD + " = '" + password + "' WHERE " + COLUMN_USER_ID + " = '" + id + "'");
-            statement.close();
-            conn.close();
+            if (resultSet.next())
+            {
+                return professor.getUsername();
+            }
+            else
+            {
+                System.out.println("Error when inserting area.");
+            }
         }
         catch (SQLException e)
         {
-            System.out.println("Something went wrong: " + e.getMessage());
+            e.printStackTrace();
         }
+
+        return null;
     }
 
-    public static void setTeacherName(String id, String name)
+    protected void deleteProfessor(String id) throws SQLException
     {
-        try
+        deleteProfessor.setString(1, id);
+
+        try (ResultSet resultSet = deleteProfessor.executeQuery())
         {
-            Connection conn = connect();
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("UPDATE " + TABLE_USER + " SET " + COLUMN_USER_NAME + " = '" + name + "' WHERE " + COLUMN_USER_ID + " = '" + id + "'");
-            statement.close();
-            conn.close();
+            if (resultSet.next())
+            {
+                return new Professor(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX),
+                        resultSet.getString(COLUMN_SUBJECT_NAME),
+                        resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX));
+            }
+            else
+            {
+                System.out.println("Error when deleting discipline.");
+            }
         }
         catch (SQLException e)
         {
-            System.out.println("Something went wrong: " + e.getMessage());
+            e.printStackTrace();
         }
+
+        return null;
     }
 
-    public static void setTeacherEmail(String id, String email)
+    public void getAllTeachers()
     {
-        try
-        {
-            Connection conn = connect();
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("UPDATE " + TABLE_TEACHER + " SET " + COLUMN_TEACHER_EMAIL + " = '" + email + "' WHERE " + COLUMN_TEACHER_ID + " = '" + id + "'");
-            statement.close();
-            conn.close();
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Something went wrong: " + e.getMessage());
-        }
-    }
+        Stri
 
-    public static void setTeacherType(String id, String type)
-    {
-        try
-        {
-            Connection conn = connect();
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("UPDATE " + TABLE_USER + " SET " + COLUMN_USER_TYPE + " = '" + type + "' WHERE " + COLUMN_USER_ID + " = '" + id + "'");
-            statement.close();
-            conn.close();
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Something went wrong: " + e.getMessage());
-        }
-    }
-
-    /*
-     * Methods
-     */
-    public static void addTeacher(String id, String password, String name, String type, String email)
-    {
-        /*
-         * This method adds a teacher to the database
-         */
-
-        addUser(id, password, name, type);
-
-        String sql = "INSERT INTO " +
-                TABLE_TEACHER + " (" + COLUMN_TEACHER_ID + ", " +
-                COLUMN_TEACHER_EMAIL + ") VALUES (?, ?)";
-
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql))
-        {
-            pstmt.setString(1, id);
-            pstmt.setString(2, email);
-            pstmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Query failed: " + e.getMessage());
-        }
-    }
-
-    public static void dropTeacher(String id)
-    {
-        /*
-         * This method drops a teacher from the database
-         */
-
-        dropUser(id);
-
-        String sql = "DELETE FROM " + TABLE_TEACHER + " WHERE " + COLUMN_TEACHER_ID + " = ?";
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql))
-        {
-            pstmt.setString(1, id);
-            pstmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Query failed: " + e.getMessage());
-        }
-    }
-
-    public static void printAllTeachers()
-    {
-        /*
-         * This method prints all teachers in the database
-         */
-
-        String sql = "SELECT * FROM " + TABLE_TEACHER + " INNER JOIN " + TABLE_USER + " ON " + TABLE_TEACHER + "." + COLUMN_TEACHER_ID + " = " + TABLE_USER + "." + COLUMN_USER_ID;
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql))
@@ -169,7 +140,7 @@ public class ProfessorDB
                         rs.getString(COLUMN_USER_PASSWORD) + "\t" +
                         rs.getString(COLUMN_USER_NAME) + "\t" +
                         rs.getString(COLUMN_USER_TYPE) + "\t" +
-                        rs.getString(COLUMN_TEACHER_EMAIL));
+                        rs.getString(COLUMN_PROFESSOR_EMAIL));
             }
         }
         catch (SQLException e)
@@ -177,13 +148,6 @@ public class ProfessorDB
             System.out.println("Query failed: " + e.getMessage());
         }
 
-
-    }
-
-    public static void printTeacherById(String id)
-    {
-        printUserById(id);
-        System.out.println("Email: " + getTeacherEmail(id));
     }
 
 

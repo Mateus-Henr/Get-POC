@@ -14,6 +14,11 @@ public class Professor extends User
         this.subjectsTaught = subjectsTaught;
     }
 
+    public String getEmail()
+    {
+        return email;
+    }
+
     @Override
     public boolean canModifyUsers()
     {
