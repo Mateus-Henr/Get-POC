@@ -9,6 +9,7 @@ import java.util.List;
 public class UserDB
 {
     private static final String TABLE_USER = "TB_User";
+
     private static final String COLUMN_USER_ID = "ID";
     private static final String COLUMN_USER_PASSWORD = "Password";
     private static final String COLUMN_USER_NAME = "Name";
@@ -75,17 +76,15 @@ public class UserDB
                 }
                 else if (userType == UserTypesEnum.ADMIN)
                 {
-                    return new Administrator(resultSet.getString(COLUMN_USER_ID_INDEX),
+                    return new AdministratorDB(conn).getAdministratorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
                             resultSet.getString(COLUMN_USER_NAME_INDEX),
                             resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
                 }
                 else if (userType == UserTypesEnum.STUDENT)
                 {
-                    return new Student(resultSet.getString(COLUMN_USER_ID_INDEX),
+                    return new StudentDB(conn).getStudentByID(resultSet.getString(COLUMN_USER_ID_INDEX),
                             resultSet.getString(COLUMN_USER_NAME_INDEX),
-                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX),
-                            resultSet.getString(COLUMN_STUDENT_REGISTRATION_INDEX),
-                            resultSet.getString(COLUMN_STUDENT_EMAIL_INDEX));
+                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
                 }
             }
         }
@@ -116,11 +115,11 @@ public class UserDB
                 }
                 else if (userType == UserTypesEnum.STUDENT)
                 {
-//            return new StudentDB(conn).insertStudent((Student) user);
+                    return new StudentDB(conn).insertStudent((Student) user);
                 }
                 else if (userType == UserTypesEnum.ADMIN)
                 {
-//            return new AdministratorDB(conn).insertAdmin((Administrator) user);
+                    return new AdministratorDB(conn).insertAdministrator((Administrator) user);
                 }
             }
         }
@@ -150,11 +149,15 @@ public class UserDB
                 }
                 else if (userType == UserTypesEnum.STUDENT)
                 {
-//            return new StudentDB(conn).insertStudent((Student) user);
+                    return new StudentDB(conn).getStudentByID(resultSet.getString(COLUMN_USER_ID_INDEX),
+                            resultSet.getString(COLUMN_USER_NAME_INDEX),
+                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
                 }
                 else if (userType == UserTypesEnum.ADMIN)
                 {
-//            return new AdministratorDB(conn).insertAdmin((Administrator) user);
+                    return new AdministratorDB(conn).getAdministratorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
+                            resultSet.getString(COLUMN_USER_NAME_INDEX),
+                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
                 }
             }
         }
@@ -166,7 +169,7 @@ public class UserDB
         return null;
     }
 
-    public List<User> getAllUser()
+    public List<User> getAllUsers()
     {
         try (Statement statement = conn.createStatement();
              ResultSet resultSet = statement.executeQuery(GET_ALL_USERS))
@@ -185,14 +188,16 @@ public class UserDB
                 }
                 else if (userType == UserTypesEnum.STUDENT)
                 {
-//            return new StudentDB(conn).insertStudent((Student) user);
+                    users.add(new StudentDB(conn).getStudentByID(resultSet.getString(COLUMN_USER_ID_INDEX),
+                            resultSet.getString(COLUMN_USER_NAME_INDEX),
+                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX)));
                 }
                 else if (userType == UserTypesEnum.ADMIN)
                 {
-//            return new AdministratorDB(conn).insertAdmin((Administrator) user);
+                    users.add(new AdministratorDB(conn).getAdministratorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
+                            resultSet.getString(COLUMN_USER_NAME_INDEX),
+                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX)));
                 }
-
-                return users;
             }
 
             return users;
