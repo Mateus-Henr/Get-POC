@@ -17,7 +17,7 @@ public class PDFDB
 
     public static final String TABLE_PDF = "TB_PDF";
     public static final String COLUMN_PDF_ID = "ID";
-    public static final String COLUMN_PDF_CONTENT = "Content";
+    public static final String COLUMN_PDF_CONTENT = "Path";
     public static final String COLUMN_PDF_CREATION_DATE = "Creation_Date";
 
     public static final int COLUMN_PDF_ID_INDEX = 1;

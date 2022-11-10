@@ -2,10 +2,7 @@ package com.ufv.project.db;
 
 import java.sql.*;
 
-import static com.ufv.project.db.ConnectDB.connect;
-import static com.ufv.project.db.UserDB.*;
-
-public class TeacherDB
+public class ProfessorDB
 {
     /*
      *  TB_Teacher table columns names

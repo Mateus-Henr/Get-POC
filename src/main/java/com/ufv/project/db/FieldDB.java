@@ -57,7 +57,7 @@ public class FieldDB
     {
         getField.setInt(COLUMN_FIELD_ID_INDEX, id);
 
-        try (ResultSet resultSet = getField.executeQuery()
+        try (ResultSet resultSet = getField.executeQuery())
         {
             if (resultSet.next())
             {
