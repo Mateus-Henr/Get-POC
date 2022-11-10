@@ -11,7 +11,7 @@ public class FieldDB
     /*
      *   TB_Field table columns names
      */
-    public static final String TABLE_FIELD = "tb_Field";
+    public static final String TABLE_FIELD = "tb_area";
     public static final String COLUMN_FIELD_ID = "ID";
     public static final String COLUMN_FIELD_NAME = "Name";
 
@@ -76,6 +76,8 @@ public class FieldDB
     public int insertField(Field field) throws SQLException
     {
         insertField.setString(COLUMN_FIELD_ID_INDEX, field.getName());
+
+        System.out.println(field.getName());
 
         try (ResultSet resultSet = insertField.executeQuery())
         {

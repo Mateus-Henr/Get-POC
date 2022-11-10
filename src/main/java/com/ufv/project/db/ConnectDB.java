@@ -3,6 +3,9 @@ package com.ufv.project.db;
 
 import java.sql.*;
 
+import com.ufv.project.db.SubjectDB;
+import com.ufv.project.model.Subject;
+
 
 public class ConnectDB
 {
@@ -12,74 +15,16 @@ public class ConnectDB
     public static final String USER = "root";
     public static final String PASSWORD = "123456";
 
-
-    /*
-     * TB_Teacher table columns names
-     */
-
-    public static final String TABLE_TEACHER = "TB_Teacher";
-    public static final String COLUMN_TEACHER_EMAIL = "Email";
-    public static final String COLUMN_TEACHER_ID = "TB_User_ID";
-
-
-    /*
-     * TB_POC table columns names
-     */
-    public static final String TABLE_POC = "TB_POC";
-    public static final String COLUMN_POC_ID = "ID";
-    public static final String COLUMN_POC_TITLE = "Title";
-    public static final String COLUMN_POC_DEFENSE_DATE = "Defense_Date";
-    public static final String COLUMN_POC_SUMMARY = "Summary";
-    public static final String COLUMN_POC_AREA_ID = "TB_Area_ID";
-    public static final String COLUMN_POC_PDF_ID = "TB_PDF_ID";
-    public static final String COLUMN_POC_TEACHER_REGISTRANT_ID = "Teacher_Registrant";
-    public static final String COLUMN_POC_TEACHER_ADVISOR_ID = "Teacher_Advisor";
-
-    /*
-     * TB_POC_has_Keyword table columns names
-     */
-    public static final String TABLE_POC_HAS_KEYWORD = "TB_POC_has_Keyword";
-    public static final String COLUMN_POC_HAS_KEYWORD_POC_ID = "TB_POC_ID";
-    public static final String COLUMN_POC_HAS_KEYWORD_KEYWORD_ID = "TB_Keyword_ID";
-
-    /*
-     * TB_Student table columns names
-     */
-    public static final String TABLE_STUDENT = "TB_Student";
-    public static final String COLUMN_STUDENT_EMAIL = "Email";
-    public static final String COLUMN_STUDENT_REGISTRATION = "Registration";
-    public static final String COLUMN_STUDENT_POC_ID = "POC";
-    public static final String COLUMN_STUDENT_USER_ID = "TB_User_ID";
-
-    /*
-     * TB_Teacher_co-advises-Poc table columns names
-     */
-
-    public static final String TABLE_TEACHER_CO_ADVISES_POC = "TB_Teacher_co-advises_Poc";
-    public static final String COLUMN_TABLE_TEACHER_CO_ADVISES_POC_POC_ID = "TB_POC_ID";
-    public static final String COLUMN_TABLE_TEACHER_CO_ADVISES_POC_TEACHER_ID = "tb_teacher_TB_User_ID";
-
-    /*
-     * TB_Teacher_has_Discipline table columns names
-     */
-    public static final String TABLE_TEACHER_HAS_DISCIPLINE = "TB_Teacher_has_Discipline";
-    public static final String COLUMN_TEACHER_HAS_DISCIPLINE_DISCIPLINE_ID = "TB_Discipline_ID";
-    public static final String COLUMN_TEACHER_HAS_DISCIPLINE_TEACHER_ID = "TB_Teacher_User_ID";
-
-    /*
-     * TB_User_manages_User table columns names
-     */
-    public static final String TABLE_USER_MANAGES_USER = "TB_User_manages_User";
-    public static final String COLUMN_USER_MANAGES_USER_ADMINISTRATOR_ID = "TB_User_Administrator_ID";
-    public static final String COLUMN_USER_MANAGES_USER_ADMINISTERED_ID = "TB_User_Administered_ID";
-
     private Connection conn;
+
+
+
 
     public boolean open()
     {
         try
         {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn = DriverManager.getConnection(CONNECTION_STRING, USER, PASSWORD);
             return true;
         }
         catch (SQLException e)
@@ -105,18 +50,30 @@ public class ConnectDB
     }
 
 
-    public static void main(String[] args)
-    {
-        ConnectDB connectDB = new ConnectDB();
+    public static void main(String[] args) throws SQLException {
 
-        if (!connectDB.open())
-        {
-            System.out.println("Connection failed");
-            return;
-        }
+        ConnectDB connectDB = new ConnectDB();
+        connectDB.open();
+        System.out.println("Connection to Mysql has been established.");
+
+        //add field on db
+        SubjectDB subjectDB = new SubjectDB(connectDB.conn);
+        Subject subject = new Subject(0, "teste", "teste");
+
+        int id = subjectDB.insertSubject(subject);
+
+        System.out.println("Subject inserted with id: " + id);
+
+
+
+
 
 
         connectDB.close();
     }
+
+
+
+
 
 }
