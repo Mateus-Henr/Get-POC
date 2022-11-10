@@ -1,4 +1,4 @@
-package com.ufv.project.db;
+/*package com.ufv.project.db;
 
 import com.ufv.project.model.Subject;
 
@@ -17,12 +17,14 @@ public class SubjectDB
     private static final int COLUMN_SUBJECT_NAME_INDEX = 2;
     private static final int COLUMN_SUBJECT_DESCRIPTION_INDEX = 3;
 
-    private static final String GET_SUBJECT = "SELECT * FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_NAME + " = ?";
+    private static final String SET_SUBJECT_NAME = "UPDATE " + TABLE_SUBJECT + " SET " + COLUMN_SUBJECT_NAME + " = ? WHERE " + COLUMN_SUBJECT_ID + " = ?";
+
+    private static final String SET_SUBJECT_DESCRIPTION = "UPDATE " + TABLE_SUBJECT + " SET " + COLUMN_SUBJECT_DESCRIPTION + " = ? WHERE " + COLUMN_SUBJECT_ID + " = ?";
     private static final String INSERT_SUBJECT = "INSERT INTO " + TABLE_SUBJECT + " (" + COLUMN_SUBJECT_ID + ", " + COLUMN_SUBJECT_NAME + ", " + COLUMN_SUBJECT_DESCRIPTION + ") VALUES (?, ?, ?)";
     private static final String DELETE_SUBJECT = "DELETE FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_ID + " = ?";
     private static final String GET_ALL_SUBJECTS = "SELECT * FROM " + TABLE_SUBJECT;
 
-    private PreparedStatement querySubject;
+    private PreparedStatement getSubject;
     private PreparedStatement insertSubject;
 
     private PreparedStatement updateSubject;
@@ -39,7 +41,7 @@ public class SubjectDB
             insertSubject = conn.prepareStatement(INSERT_SUBJECT, Statement.RETURN_GENERATED_KEYS);
             //updateSubject = conn.prepareStatement(SET_SUBJECT_NAME);
             deleteSubject = conn.prepareStatement(DELETE_SUBJECT);
-            querySubject = conn.prepareStatement(GET_SUBJECT);
+            getSubject = conn.prepareStatement(GET_ALL_SUBJECTS);
 
         }
         catch (SQLException e)
@@ -50,9 +52,9 @@ public class SubjectDB
 
     public Subject getSubjectById(int id) throws SQLException
     {
-        querySubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
+        getSubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
 
-        try (ResultSet resultSet = querySubject.executeQuery())
+        try (ResultSet resultSet = getSubject.executeQuery())
         {
             if (resultSet.next())
             {
@@ -71,36 +73,13 @@ public class SubjectDB
 
     public int insertSubject(Subject subjectToInsert) throws SQLException
     {
-        querySubject.setString(1, subjectToInsert.getName());
-        ResultSet resultSet = querySubject.executeQuery();
-
-        if (resultSet.next())
-        {
-            return resultSet.getInt(COLUMN_SUBJECT_ID_INDEX);
-        }
-
         insertSubject.setInt(COLUMN_SUBJECT_ID_INDEX, subjectToInsert.getId());
         insertSubject.setString(COLUMN_SUBJECT_NAME_INDEX, subjectToInsert.getName());
         insertSubject.setString(COLUMN_SUBJECT_DESCRIPTION_INDEX, subjectToInsert.getDescription());
 
-        int affectedRows = insertSubject.executeUpdate();
-
-        if (affectedRows != 1)
-        {
-            throw new SQLException("Couldn't insert artist!");
+        try (int resultSet = insertSubject.executeUpdate()){
+            
         }
-
-        ResultSet generatedKeys = insertSubject.getGeneratedKeys();
-
-        if (generatedKeys.next())
-        {
-            return generatedKeys.getInt(1);
-        }
-        else
-        {
-            throw new SQLException("Couldn't get _id for artist");
-        }
-    }
 
     public Subject deleteSubject(int id) throws SQLException
     {
@@ -151,5 +130,5 @@ public class SubjectDB
         return null;
     }
 
-}
+}*/
 
