@@ -1,13 +1,8 @@
 package com.ufv.project.db;
 
-
-import java.sql.*;
-import java.util.List;
-
-//import com.ufv.project.db.SubjectDB;
-import com.ufv.project.model.Field;
 import com.ufv.project.model.Subject;
 
+import java.sql.*;
 
 public class ConnectDB
 {
@@ -18,9 +13,6 @@ public class ConnectDB
     public static final String PASSWORD = "123456";
 
     private Connection conn;
-
-
-
 
     public boolean open()
     {
@@ -51,23 +43,24 @@ public class ConnectDB
         }
     }
 
+    public Connection getConnection()
+    {
+        return conn;
+    }
 
     public static void main(String[] args) throws SQLException {
 
         ConnectDB connectDB = new ConnectDB();
-        connectDB.open();
+
+        if (!connectDB.open())
+        {
+            return;
+        }
+
         System.out.println("Connection to Mysql has been established.");
 
-
-
-
-
-
-
-
-
-
-
+        SubjectDB subjectDB = new SubjectDB(connectDB.getConnection());
+        subjectDB.insertSubject(new Subject(0, "Name", "dsda"));
 
         connectDB.close();
     }
