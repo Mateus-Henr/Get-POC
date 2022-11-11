@@ -1,7 +1,6 @@
 package com.ufv.project.db;
 
 import com.ufv.project.model.Student;
-import com.ufv.project.model.Subject;
 import com.ufv.project.model.User;
 import com.ufv.project.model.UserTypesEnum;
 

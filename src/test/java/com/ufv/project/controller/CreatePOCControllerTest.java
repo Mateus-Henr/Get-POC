@@ -1,30 +1,18 @@
 package com.ufv.project.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.ufv.project.db.Singleton;
-import com.ufv.project.db.UserDataSingleton;
-import com.ufv.project.model.*;
-import javafx.beans.binding.Bindings;
-import javafx.collections.ObservableList;
+import com.ufv.project.model.Field;
+import com.ufv.project.model.PDF;
+import com.ufv.project.model.POC;
+import com.ufv.project.model.Professor;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.IOException;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 class CreatePOCControllerTest {
     @FXML

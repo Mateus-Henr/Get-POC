@@ -1,4 +1,4 @@
-/*package com.ufv.project.controller;
+package com.ufv.project.controller;
 
 import com.ufv.project.Main;
 import com.ufv.project.db.Singleton;
@@ -7,18 +7,14 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.Stack;
-import java.util.function.Function;
 
 public class SearchPOCController
 {
@@ -93,4 +89,4 @@ public class SearchPOCController
         pocListView.setVisible(true);
     }
 
-}*/
+}

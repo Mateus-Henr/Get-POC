@@ -5,10 +5,7 @@ import com.ufv.project.model.PDF;
 import com.ufv.project.model.POC;
 import com.ufv.project.model.Professor;
 
-import java.io.File;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 

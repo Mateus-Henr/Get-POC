@@ -1,7 +1,5 @@
 package com.ufv.project.db;
 
-import com.ufv.project.model.User;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 

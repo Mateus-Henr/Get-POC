@@ -1,8 +1,14 @@
 package com.ufv.project.db;
 
-import com.ufv.project.model.*;
+import com.ufv.project.model.Professor;
+import com.ufv.project.model.Subject;
+import com.ufv.project.model.User;
+import com.ufv.project.model.UserTypesEnum;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class ProfessorDB
@@ -132,8 +138,6 @@ public class ProfessorDB
                 .map(user -> (Professor) user)
                 .toList();
     }
-
-
 
 }
 

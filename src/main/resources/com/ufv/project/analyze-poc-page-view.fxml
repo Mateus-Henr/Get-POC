@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Hyperlink?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:id="vBox"
@@ -28,7 +24,7 @@
     <ListView fx:id="coAdvisorListView" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
 
     <Label>Field:</Label>
-        <Text fx:id="fieldText" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+    <Text fx:id="fieldText" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
     <Label>Date:</Label>
     <Text fx:id="dateText" GridPane.rowIndex="1" GridPane.columnIndex="1"/>

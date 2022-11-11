@@ -1,7 +1,7 @@
-/*package com.ufv.project.controller;
+package com.ufv.project.controller;
 
-import com.ufv.project.model.*;
 import com.ufv.project.db.Singleton;
+import com.ufv.project.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -104,4 +104,4 @@ public class LoginController
         return !usernameField.getText().trim().isEmpty() && !passwordField.getText().trim().isEmpty();
     }
 
-}*/
+}

@@ -1,4 +1,4 @@
-/*package com.ufv.project.controller;
+package com.ufv.project.controller;
 
 import com.ufv.project.db.Singleton;
 import com.ufv.project.db.UserDataSingleton;
@@ -14,9 +14,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;*/
+import javafx.stage.Stage;
 
-/*import java.io.File;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -122,7 +122,7 @@ public class CreatePOCController
                 .advisor(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()))
                 .coAdvisors(new ArrayList<>())
                 .registrant(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()))
-                .pdf(new PDF(1, pdfFile, LocalDate.now()))
+                .pdf(new PDF(1, pdfFile.toString(), LocalDate.now()))
                 .field(new Field(1, "sa"))
                 .summary("dadasdasdas")
                 .keywords(new ArrayList<>())
@@ -182,4 +182,4 @@ public class CreatePOCController
         return items;
     }
 
-}*/
+}
