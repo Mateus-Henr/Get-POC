@@ -6,8 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDB
-{
+public class UserDB {
     private static final String TABLE_USER = "TB_User";
 
     private static final String COLUMN_USER_ID = "ID";
@@ -19,48 +18,37 @@ public class UserDB
     private static final int COLUMN_USER_PASSWORD_INDEX = 2;
     private static final int COLUMN_USER_NAME_INDEX = 3;
     private static final int COLUMN_USER_TYPE_INDEX = 4;
-
-    private static final String COLUMN_STUDENT_EMAIL = "Email";
-    private static final String COLUMN_STUDENT_REGISTRATION = "Registration";
-    private static final int COLUMN_STUDENT_EMAIL_INDEX = 1;
-    private static final int COLUMN_STUDENT_REGISTRATION_INDEX = 2;
-
-
-    private static final String GET_ALL_USERS = "SELECT * FROM " + TABLE_USER;
-
-    private static final String INSERT_USER = "INSERT INTO " +
-            TABLE_USER + " (" + COLUMN_USER_ID + ", " +
-            COLUMN_USER_PASSWORD + ", " + COLUMN_USER_NAME + ", " + COLUMN_USER_TYPE + ") VALUES (?, ?, ?, ?)";
-
-    private static final String GET_USER = "SELECT " + COLUMN_USER_NAME + " FROM " + TABLE_USER + " WHERE " + COLUMN_USER_ID + " = ?";
-
+    private static final String QUERY_USER = "SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_USER_ID + " = ?";
+    private static final String QUERY_USERS = "SELECT * FROM " + TABLE_USER;
+    public static final String INSERT_USER = "INSERT INTO " + TABLE_USER + " (" + COLUMN_USER_ID + ", " + COLUMN_USER_PASSWORD + ", " + COLUMN_USER_NAME + ", " + COLUMN_USER_TYPE + ") VALUES (?, ?, ?, ?)";
     private static final String DELETE_USER = "DELETE FROM " + TABLE_USER + " WHERE " + COLUMN_USER_ID + " = ?";
+    private static final String UPDATE_USER = "UPDATE " + TABLE_USER + " SET " + COLUMN_USER_PASSWORD + " = ?, " + COLUMN_USER_NAME + " = ?, " + COLUMN_USER_TYPE + " = ? WHERE " + COLUMN_USER_ID + " = ?";
 
     private Connection conn;
 
-    private PreparedStatement getUser;
+    private PreparedStatement queryUser;
+    private PreparedStatement queryUsers;
     private PreparedStatement insertUser;
     private PreparedStatement deleteUser;
+    private PreparedStatement updateUser;
 
-    public UserDB(Connection conn)
-    {
+    public UserDB(Connection conn) {
         this.conn = conn;
 
-        try
-        {
-            getUser = conn.prepareStatement(GET_USER);
+        try {
+            queryUser = conn.prepareStatement(QUERY_USER);
+            queryUsers = conn.prepareStatement(QUERY_USERS);
             insertUser = conn.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
             deleteUser = conn.prepareStatement(DELETE_USER);
-        }
-        catch (SQLException e)
-        {
+            updateUser = conn.prepareStatement(UPDATE_USER);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public User getUserByID(String id) throws SQLException
+    public User queryUserByID(String id) throws SQLException
     {
-        getUser.setString(COLUMN_USER_ID_INDEX, id);
+        queryUser.setString(COLUMN_USER_ID_INDEX, id);
 
         try (ResultSet resultSet = getUser.executeQuery())
         {
@@ -96,32 +84,37 @@ public class UserDB
         return null;
     }
 
-    public String insertUser(User user) throws SQLException
-    {
+    public String insertUser(User user) throws SQLException {
         insertUser.setString(COLUMN_USER_ID_INDEX, user.getUsername());
         insertUser.setString(COLUMN_USER_PASSWORD_INDEX, user.getPassword());
         insertUser.setString(COLUMN_USER_NAME_INDEX, user.getName());
-        insertUser.setInt(COLUMN_USER_TYPE_INDEX, user.getUserType().ordinal());
+        insertUser.setString(COLUMN_USER_TYPE_INDEX, user.getUserType().toString());
 
-        try (ResultSet resultSet = insertUser.executeQuery())
+        int affectedRows = insertUser.executeUpdate();
+        if (affectedRows != 1) {
+            throw new SQLException("Couldn't insert user!");
+        }
+
+        try (ResultSet resultSet = insertUser.getGeneratedKeys())
         {
             UserTypesEnum userType = user.getUserType();
 
-            if (resultSet.next())
-            {
-                if (userType == UserTypesEnum.PROFESSOR)
-                {
-                    return new ProfessorDB(conn).insertProfessor((Professor) user);
-                }
-                else if (userType == UserTypesEnum.STUDENT)
-                {
-                    return new StudentDB(conn).insertStudent((Student) user);
-                }
-                else if (userType == UserTypesEnum.ADMIN)
-                {
-                    return resultSet.getString(COLUMN_USER_ID_INDEX);
-                }
+            if (userType == UserTypesEnum.STUDENT){
+                System.out.println("Student");
             }
+            if (userType == UserTypesEnum.PROFESSOR)
+            {
+                return new ProfessorDB(conn).insertProfessor((Professor) user);
+            }
+            else if (userType == UserTypesEnum.STUDENT)
+            {
+                return new StudentDB(conn).insertStudent((Student) user);
+            }
+            else if (userType == UserTypesEnum.ADMIN)
+            {
+                return resultSet.getString(COLUMN_USER_ID_INDEX);
+            }
+
         }
         catch (SQLException e)
         {
@@ -130,6 +123,8 @@ public class UserDB
 
         return null;
     }
+    }
+
 
     public User deleteUser(String id) throws SQLException
     {

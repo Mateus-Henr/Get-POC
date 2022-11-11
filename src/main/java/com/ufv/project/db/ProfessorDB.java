@@ -21,13 +21,15 @@ public class ProfessorDB
     private static final int COLUMN_PROFESSOR_EMAIL_INDEX = 1;
     private static final int COLUMN_USER_PROFESSOR_ID_INDEX = 2;
 
-    private static final String GET_PROFESSOR = "SELECT * FROM " + TABLE_PROFESSOR + " WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
-
+    private static final String QUERY_PROFESSOR = "SELECT * FROM " + TABLE_PROFESSOR + " WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
+    private static final String QUERY_PROFESSORS = "SELECT * FROM " + TABLE_PROFESSOR;
     private static final String INSERT_PROFESSOR = "INSERT INTO " +
             TABLE_PROFESSOR + " (" + COLUMN_PROFESSOR_EMAIL + ", " +
             COLUMN_USER_PROFESSOR_ID + ") VALUES (?, ?)";
 
     private static final String DELETE_PROFESSOR = "DELETE FROM " + TABLE_PROFESSOR + " WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
+
+    private static final String UPDATE_PROFESSOR = "UPDATE " + TABLE_PROFESSOR + " SET " + COLUMN_PROFESSOR_EMAIL + " = ? WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
 
     private PreparedStatement getProfessor;
     private PreparedStatement insertProfessor;
@@ -36,7 +38,7 @@ public class ProfessorDB
 
     private Connection conn;
 
-    public ProfessorDB(Connection conn)
+    /*public ProfessorDB(Connection conn)
     {
         this.conn = conn;
 
@@ -50,7 +52,7 @@ public class ProfessorDB
         {
             e.printStackTrace();
         }
-    }
+    }*/
 
     protected User getProfessorByID(String username, String name, String password) throws SQLException
     {
@@ -131,13 +133,13 @@ public class ProfessorDB
         return null;
     }
 
-    public List<Professor> getAllProfessors()
+   /* public List<Professor> getAllProfessors()
     {
         return new UserDB(conn).getAllUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.PROFESSOR)
                 .map(user -> (Professor) user)
                 .toList();
-    }
+    }*/
 
 }
 

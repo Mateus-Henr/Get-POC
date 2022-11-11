@@ -1,10 +1,14 @@
 package com.ufv.project.db;
 
+import com.ufv.project.model.POC;
+import com.ufv.project.model.Student;
 import com.ufv.project.model.Subject;
+import com.ufv.project.model.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class ConnectDB
@@ -55,12 +59,12 @@ public class ConnectDB
         ConnectDB connectDB = new ConnectDB();
         connectDB.open();
 
-        SubjectDB subjectDB = new SubjectDB(connectDB.getConnection());
-        Subject g = subjectDB.deleteSubject(67);
-        System.out.println(g.getId() + " " + g.getName() + " " + g.getDescription());
-
-
+        StudentDB studentDB = new StudentDB(connectDB.getConnection());
 
     }
+
+
+
+
 }
 
