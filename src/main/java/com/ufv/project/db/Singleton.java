@@ -1,4 +1,4 @@
-package com.ufv.project.db;
+/*package com.ufv.project.db;
 
 import com.ufv.project.model.*;
 
@@ -9,7 +9,6 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-
 public class Singleton
 {
     private final ObservableList<User> userList;
@@ -129,4 +128,4 @@ public class Singleton
         return getUser(username) != null;
     }
 
-}
+}*/

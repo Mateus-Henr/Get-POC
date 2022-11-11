@@ -1,4 +1,4 @@
-package com.ufv.project.controller;
+/*package com.ufv.project.controller;
 
 import com.ufv.project.model.POC;
 import com.ufv.project.model.Professor;
@@ -66,7 +66,7 @@ public class AnalyzePOCController
         fieldText.setText(pocToShow.getTitle());
         dateText.setText(pocToShow.getDefenseDate().toString());
         keywordList.setItems(FXCollections.observableList(pocToShow.getKeywords()));
-        pdfFilepathText.setText(pocToShow.getPdf().getContent().getAbsolutePath());
+        pdfFilepathText.setText(pocToShow.getPdf().getPath().getAbsolutePath());
     }
 
-}
+}*/

@@ -1,4 +1,4 @@
-package com.ufv.project.controller;
+/*package com.ufv.project.controller;
 
 import com.ufv.project.model.*;
 import com.ufv.project.db.Singleton;
@@ -104,4 +104,4 @@ public class LoginController
         return !usernameField.getText().trim().isEmpty() && !passwordField.getText().trim().isEmpty();
     }
 
-}
+}*/

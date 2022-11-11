@@ -1,4 +1,4 @@
-package com.ufv.project.controller;
+/*package com.ufv.project.controller;
 
 import com.ufv.project.Main;
 import com.ufv.project.db.Singleton;
@@ -93,4 +93,4 @@ public class SearchPOCController
         pocListView.setVisible(true);
     }
 
-}
+}*/
