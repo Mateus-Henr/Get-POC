@@ -169,9 +169,8 @@ public class PDFDB
 
         if (affectedRows == 1)
         {
-            return pdfToUpdate;
+            return oldPDF;
         }
-
         return null;
     }
 

@@ -3,7 +3,7 @@ package com.ufv.project.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-public class Professor_has_fieldDB {
+public class Professor_has_subjectDB {
 
     public static final String TABLE_PROFESSOR_HAS_FIELD = "tb_teacher_has_discipline";
     public static final String COLUMN_PROFESSOR_HAS_FIELD_PROFESSOR_ID = "TB_teacher_User_id";
@@ -24,7 +24,7 @@ public class Professor_has_fieldDB {
 
     private final Connection conn;
 
-    public Professor_has_fieldDB(Connection conn) {
+    public Professor_has_subjectDB(Connection conn) {
         this.conn = conn;
         try {
             insertProfessorHasField = conn.prepareStatement(INSERT_PROFESSOR_HAS_FIELD);

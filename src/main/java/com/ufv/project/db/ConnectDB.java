@@ -1,8 +1,11 @@
 package com.ufv.project.db;
 
+import com.ufv.project.model.Subject;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ConnectDB
 {
@@ -47,16 +50,17 @@ public class ConnectDB
         return conn;
     }
 
-    public static void main(String[] args) throws SQLException
-    {
+    public static void main(String[] args) throws SQLException {
 
         ConnectDB connectDB = new ConnectDB();
         connectDB.open();
 
-        POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(connectDB.getConnection());
+        SubjectDB subjectDB = new SubjectDB(connectDB.getConnection());
+        Subject g = subjectDB.deleteSubject(67);
+        System.out.println(g.getId() + " " + g.getName() + " " + g.getDescription());
 
-        connectDB.close();
+
+
     }
-
 }
 
