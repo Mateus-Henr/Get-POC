@@ -22,9 +22,8 @@ public class Professor_has_subjectDB {
     private static final String QUERY_SUBJECTS_BY_PROFESSOR = "SELECT * FROM " + TABLE_PROFESSOR_HAS_SUBJECT + " WHERE " + COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID + " = ?";
     private static final String QUERY_PROFESSOR_HAS_SUBJECTS = "SELECT * FROM " + TABLE_PROFESSOR_HAS_SUBJECT;
     private static final String INSERT_PROFESSOR_HAS_SUBJECT = "INSERT INTO " + TABLE_PROFESSOR_HAS_SUBJECT + " (" + COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID + ", " + COLUMN_PROFESSOR_HAS_SUBJECT_SUBJECT_ID + ") VALUES (?, ?)";
-    private static final String DELETE_PROFESSOR_HAS_SUBJECT = "DELETE FROM " + TABLE_PROFESSOR_HAS_SUBJECT + " WHERE " + COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID + " = ?";
-    private static final String UPDATE_PROFESSOR_HAS_SUBJECT = "UPDATE " + TABLE_PROFESSOR_HAS_SUBJECT + " SET " + COLUMN_PROFESSOR_HAS_SUBJECT_SUBJECT_ID + " = ? WHERE " + COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID + " = ?";
-
+    private static final String DELETE_PROFESSOR_HAS_SUBJECT = "DELETE FROM " + TABLE_PROFESSOR_HAS_SUBJECT + " WHERE " + COLUMN_PROFESSOR_HAS_SUBJECT_SUBJECT_ID + " = ? AND " + COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID + " = ?";
+    private static final String UPDATE_PROFESSOR_HAS_SUBJECT = "UPDATE "  + TABLE_PROFESSOR_HAS_SUBJECT + " SET " + COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID  + " = ?, " + COLUMN_PROFESSOR_HAS_SUBJECT_SUBJECT_ID + " = ? WHERE " + COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID + " = ? AND " + COLUMN_PROFESSOR_HAS_SUBJECT_SUBJECT_ID + " = ?";
     private PreparedStatement querySubjectsByProfessor;
     private PreparedStatement queryProfessor_has_subjects;
     private PreparedStatement insertProfessor_has_subject;
@@ -75,6 +74,45 @@ public class Professor_has_subjectDB {
 
             if (affectedRows != 1) {
                 throw new SQLException("Couldn't insert professor_has_subject!");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+    }
+
+    public void deleteProfessorHasSubject(String professorID, int subjectID) throws SQLException {
+        try {
+            deleteProfessor_has_subject.setString(2, professorID);
+            deleteProfessor_has_subject.setInt(1, subjectID);
+            System.out.println(deleteProfessor_has_subject.toString());
+
+            int affectedRows = deleteProfessor_has_subject.executeUpdate();
+
+            if (affectedRows != 1) {
+                throw new SQLException("Couldn't delete professor_has_subject!");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateProfessorHasSubject(String oldProfesssorID, int oldsubjectID, String newProfessorID, int newSubjectID) throws SQLException {
+        try {
+            updateProfessor_has_subject.setString(1, newProfessorID);
+            System.out.println(updateProfessor_has_subject.toString());
+            updateProfessor_has_subject.setInt(2, newSubjectID);
+            System.out.println(updateProfessor_has_subject.toString());
+            updateProfessor_has_subject.setString(3, oldProfesssorID);
+            updateProfessor_has_subject.setInt(4, oldsubjectID);
+            System.out.println(updateProfessor_has_subject.toString());
+
+            int affectedRows = updateProfessor_has_subject.executeUpdate();
+
+            if (affectedRows != 1) {
+                throw new SQLException("Couldn't update professor_has_subject!");
             }
 
         } catch (SQLException e) {

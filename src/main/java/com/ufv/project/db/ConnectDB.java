@@ -55,20 +55,9 @@ public class ConnectDB {
         POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(connectDB.getConnection());
         UserDB userDB = new UserDB(connectDB.getConnection());
 
-        subjects.add(subjectDB.querySubjectByID(1));
-        System.out.println(subjects.get(0).getName());
-        subjects.add(subjectDB.querySubjectByID(2));
-        System.out.println(subjects.get(1).getName());
-        subjects.add(subjectDB.querySubjectByID(4));
-        System.out.println(subjects.get(2).getName());
-
-        //print all subjects
+        professor_has_subjectDB.updateProfessorHasSubject("pfw", 2, "nacif", 4);
 
 
-
-        User user = new Professor("pfw", "Mbcubsc", "123456", "ccwecow", subjects);
-        String username = userDB.insertUser(user);
-        System.out.println(username);
 
     }
 }
