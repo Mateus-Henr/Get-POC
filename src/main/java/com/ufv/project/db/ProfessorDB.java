@@ -93,36 +93,66 @@ public class ProfessorDB {
 
             return professor.getUsername();
     }
-}
 
+    protected Professor deleteProfessor(String username, String name, String password) throws SQLException {
 
-/* protected Professor deleteProfessor(String username, String name, String password) throws SQLException
-    {
+        Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
+        Professor professor2 = queryProfessor(username, name, password);
         deleteProfessor.setString(1, username);
 
-        try (ResultSet resultSet = deleteProfessor.executeQuery())
-        {
-            if (resultSet.next())
-            {
-                return new Professor(username,
-                        name,
-                        password,
-                        resultSet.getString(COLUMN_PROFESSOR_EMAIL_INDEX),
-                        getSubjectsTaughtByProfessorID(username));
-            }
-            else
-            {
-                System.out.println("Error when deleting discipline.");
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
+        for (Subject subject : professor2.getSubjectsTaught()) {
+            professor_has_subjectDB.deleteProfessorHasSubject(professor2.getUsername(), subject.getId());
         }
 
-        return null;
-    }*/
+        int affectedRows = deleteProfessor.executeUpdate();
 
+        if (affectedRows == 1) {
+            return professor2;
+        } else {
+            System.out.println("Couldn't delete professor!");
+            return null;
+        }
+    }
+
+    protected Professor updateProfessor(Professor professor) throws SQLException {
+        Professor oldprofessor = queryProfessor(professor.getUsername(), professor.getName(), professor.getPassword());
+
+        if (oldprofessor == null) {
+            System.out.println("Professor doesn't exist!");
+            return null;
+        }
+
+        Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
+
+        //Delete old subjects
+        for (Subject subject : oldprofessor.getSubjectsTaught()) {
+            professor_has_subjectDB.deleteProfessorHasSubject(oldprofessor.getUsername(), subject.getId());
+        }
+
+        //Insert new subjects
+        for (Subject subject : professor.getSubjectsTaught()) {
+            professor_has_subjectDB.InsertProfessorHasSubject(professor.getUsername(), subject.getId());
+        }
+
+        //Update professor
+        if(professor.getEmail() != null) {
+            updateProfessor.setString(1, professor.getEmail());
+        } else {
+            updateProfessor.setString(1, oldprofessor.getEmail());
+        }
+
+        updateProfessor.setString(2, professor.getUsername());
+
+        int affectedRows = updateProfessor.executeUpdate();
+
+        if (affectedRows == 1) {
+            return professor;
+        } else {
+            System.out.println("Couldn't update professor!");
+            return null;
+        }
+    }
+}
    /* public List<Professor> getAllProfessors()
     {
         return new UserDB(conn).getAllUsers().stream()

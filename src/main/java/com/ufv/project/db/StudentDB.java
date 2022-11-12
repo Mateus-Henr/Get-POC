@@ -142,10 +142,7 @@ public class StudentDB {
     }
 
    /*public List<Student> getAllStudents() {
-        return new UserDB(conn).getAllUsers().stream()
-                .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)
-                .map(user -> (Student) user)
-                .toList();
+        return new UserDB(conn)
     }*/
 
 }

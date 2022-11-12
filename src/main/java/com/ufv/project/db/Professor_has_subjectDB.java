@@ -68,7 +68,7 @@ public class Professor_has_subjectDB {
         try {
             insertProfessor_has_subject.setString(1, professorID);
             insertProfessor_has_subject.setInt(2, subjectID);
-            System.out.println(insertProfessor_has_subject.toString());
+
 
             int affectedRows = insertProfessor_has_subject.executeUpdate();
 
@@ -86,7 +86,7 @@ public class Professor_has_subjectDB {
         try {
             deleteProfessor_has_subject.setString(2, professorID);
             deleteProfessor_has_subject.setInt(1, subjectID);
-            System.out.println(deleteProfessor_has_subject.toString());
+
 
             int affectedRows = deleteProfessor_has_subject.executeUpdate();
 
@@ -102,12 +102,9 @@ public class Professor_has_subjectDB {
     public void updateProfessorHasSubject(String oldProfesssorID, int oldsubjectID, String newProfessorID, int newSubjectID) throws SQLException {
         try {
             updateProfessor_has_subject.setString(1, newProfessorID);
-            System.out.println(updateProfessor_has_subject.toString());
             updateProfessor_has_subject.setInt(2, newSubjectID);
-            System.out.println(updateProfessor_has_subject.toString());
             updateProfessor_has_subject.setString(3, oldProfesssorID);
             updateProfessor_has_subject.setInt(4, oldsubjectID);
-            System.out.println(updateProfessor_has_subject.toString());
 
             int affectedRows = updateProfessor_has_subject.executeUpdate();
 
