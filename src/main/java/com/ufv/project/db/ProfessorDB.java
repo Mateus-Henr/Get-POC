@@ -11,8 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ProfessorDB
-{
+public class ProfessorDB {
     private static final String TABLE_PROFESSOR = "TB_Professor";
 
     private static final String COLUMN_PROFESSOR_EMAIL = "Email";
@@ -31,82 +30,73 @@ public class ProfessorDB
 
     private static final String UPDATE_PROFESSOR = "UPDATE " + TABLE_PROFESSOR + " SET " + COLUMN_PROFESSOR_EMAIL + " = ? WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
 
-    private PreparedStatement getProfessor;
+    private PreparedStatement queryProfessor;
+    private PreparedStatement queryProfessors;
     private PreparedStatement insertProfessor;
     private PreparedStatement updateProfessor;
     private PreparedStatement deleteProfessor;
 
     private Connection conn;
 
-    /*public ProfessorDB(Connection conn)
-    {
+    public ProfessorDB(Connection conn) {
         this.conn = conn;
 
-        try
-        {
-            getProfessor = conn.prepareStatement(GET_PROFESSOR);
-            insertProfessor = conn.prepareStatement(INSERT_PROFESSOR);
+        try {
+            queryProfessor = conn.prepareStatement(QUERY_PROFESSOR);
+            queryProfessors = conn.prepareStatement(QUERY_PROFESSORS);
+            insertProfessor = conn.prepareStatement(INSERT_PROFESSOR, PreparedStatement.RETURN_GENERATED_KEYS);
             deleteProfessor = conn.prepareStatement(DELETE_PROFESSOR);
-        }
-        catch (SQLException e)
-        {
+            updateProfessor = conn.prepareStatement(UPDATE_PROFESSOR);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
-    protected User getProfessorByID(String username, String name, String password) throws SQLException
-    {
-        getProfessor.setString(1, username);
+    protected Professor queryProfessor(String username, String name, String password) throws SQLException {
+        Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
+        List<Subject> subjects = professor_has_subjectDB.querySubjectsByProfessor(username);
 
-        try (ResultSet resultSet = getProfessor.executeQuery())
-        {
-            if (resultSet.next())
-            {
+        queryProfessor.setString(1, username);
+
+        try (ResultSet resultSet = queryProfessor.executeQuery()) {
+            if (resultSet.next()) {
                 return new Professor(username,
                         name,
                         password,
                         resultSet.getString(COLUMN_PROFESSOR_EMAIL_INDEX),
-                        getSubjectsTaughtByProfessorID(username));
+                        subjects);
             }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
         }
 
         return null;
     }
 
-    private List<Subject> getSubjectsTaughtByProfessorID(String id)
-    {
+    private List<Subject> getSubjectsTaughtByProfessorID(String id) {
         return null;
     }
 
-    protected String insertProfessor(Professor professor) throws SQLException
-    {
-        insertProfessor.setString(COLUMN_PROFESSOR_EMAIL_INDEX, professor.getEmail());
-        insertProfessor.setString(COLUMN_USER_PROFESSOR_ID_INDEX, professor.getUsername());
+    protected String insertProfessor(Professor professor) throws SQLException {
+        insertProfessor.setString(1, professor.getEmail());
+        insertProfessor.setString(2, professor.getUsername());
 
-        try (ResultSet resultSet = insertProfessor.executeQuery())
-        {
-            if (resultSet.next())
-            {
-                return professor.getUsername();
-            }
-            else
-            {
-                System.out.println("Error when inserting area.");
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
+        Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
+
+            int affectedRows = insertProfessor.executeUpdate();
+
+        for (Subject subject : professor.getSubjectsTaught()) {
+            professor_has_subjectDB.InsertProfessorHasSubject(professor.getUsername(), subject.getId());
         }
 
-        return null;
+            if (affectedRows != 1) {
+                throw new SQLException("Couldn't insert professor!");
+            }
+
+            return professor.getUsername();
     }
+}
 
-    protected Professor deleteProfessor(String username, String name, String password) throws SQLException
+
+/* protected Professor deleteProfessor(String username, String name, String password) throws SQLException
     {
         deleteProfessor.setString(1, username);
 
@@ -131,7 +121,7 @@ public class ProfessorDB
         }
 
         return null;
-    }
+    }*/
 
    /* public List<Professor> getAllProfessors()
     {
@@ -141,6 +131,6 @@ public class ProfessorDB
                 .toList();
     }*/
 
-}
+
 
 

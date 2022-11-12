@@ -99,6 +99,8 @@ public class POC_has_KeywordDB
             insertPOC_has_Keyword.setInt(1, poc_id);
             insertPOC_has_Keyword.setInt(2, keyword_id);
 
+            System.out.println(insertPOC_has_Keyword.toString());
+
             int affectedRows = insertPOC_has_Keyword.executeUpdate();
 
             if (affectedRows != 1)

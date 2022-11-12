@@ -19,6 +19,11 @@ public class Professor extends User
         return email;
     }
 
+    public List<Subject> getSubjectsTaught()
+    {
+        return subjectsTaught;
+    }
+
     @Override
     public boolean canModifyUsers()
     {

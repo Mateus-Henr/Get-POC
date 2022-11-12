@@ -46,7 +46,7 @@ public class UserDB {
         }
     }
 
-    public User queryUserByID(String id) throws SQLException
+    /*public User queryUserByID(String id) throws SQLException
     {
         queryUser.setString(COLUMN_USER_ID_INDEX, id);
 
@@ -82,13 +82,15 @@ public class UserDB {
         }
 
         return null;
-    }
+    }*/
 
     public String insertUser(User user) throws SQLException {
+
         insertUser.setString(COLUMN_USER_ID_INDEX, user.getUsername());
         insertUser.setString(COLUMN_USER_PASSWORD_INDEX, user.getPassword());
         insertUser.setString(COLUMN_USER_NAME_INDEX, user.getName());
         insertUser.setString(COLUMN_USER_TYPE_INDEX, user.getUserType().toString());
+
 
         int affectedRows = insertUser.executeUpdate();
         if (affectedRows != 1) {
@@ -104,6 +106,7 @@ public class UserDB {
             }
             if (userType == UserTypesEnum.PROFESSOR)
             {
+                System.out.println("Professor");
                 return new ProfessorDB(conn).insertProfessor((Professor) user);
             }
             else if (userType == UserTypesEnum.STUDENT)
@@ -126,7 +129,7 @@ public class UserDB {
     }
 
 
-    public User deleteUser(String id) throws SQLException
+   /* public User deleteUser(String id) throws SQLException
     {
         deleteUser.setString(COLUMN_USER_ID_INDEX, id);
 
@@ -162,9 +165,9 @@ public class UserDB {
         }
 
         return null;
-    }
+    }*/
 
-    public List<User> getAllUsers()
+    /*public List<User> getAllUsers()
     {
         try (Statement statement = conn.createStatement();
              ResultSet resultSet = statement.executeQuery(GET_ALL_USERS))
@@ -203,6 +206,5 @@ public class UserDB {
         }
 
         return null;
-    }
+    }*/
 
-}
