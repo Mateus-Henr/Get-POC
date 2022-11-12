@@ -9,7 +9,7 @@ import java.util.List;
 /*public class POCDB
 {
 
-     * TB_POC table columns names
+      TB_POC table columns names
 
     private static final String TABLE_POC = "TB_POC";
     private static final String COLUMN_POC_ID = "ID";

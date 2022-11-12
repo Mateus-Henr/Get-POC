@@ -46,43 +46,35 @@ public class UserDB {
         }
     }
 
-    /*public User queryUserByID(String id) throws SQLException
-    {
+    public User queryUserByID(String id) throws SQLException {
         queryUser.setString(COLUMN_USER_ID_INDEX, id);
 
-        try (ResultSet resultSet = getUser.executeQuery())
-        {
-            if (resultSet.next())
-            {
-                UserTypesEnum userType = UserTypesEnum.values()[resultSet.getInt(COLUMN_USER_TYPE_INDEX)];
+        try (ResultSet resultSet = queryUser.executeQuery()) {
+            if (resultSet.next()) {
+                UserTypesEnum userType = UserTypesEnum.valueOf(resultSet.getString(COLUMN_USER_TYPE_INDEX));
+                System.out.println(userType);
 
-                if (userType == UserTypesEnum.PROFESSOR)
-                {
-                    return new ProfessorDB(conn).getProfessorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
-                            resultSet.getString(COLUMN_USER_NAME_INDEX),
-                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
-                }
-                else if (userType == UserTypesEnum.ADMIN)
-                {
+                if (userType == UserTypesEnum.PROFESSOR) {
+                    return new ProfessorDB(conn).queryProfessor(resultSet.getString(COLUMN_USER_ID_INDEX),
+                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX),
+                            resultSet.getString(COLUMN_USER_NAME_INDEX));
+
+                } else if (userType == UserTypesEnum.ADMIN) {
                     return new Administrator(resultSet.getString(COLUMN_USER_ID_INDEX),
                             resultSet.getString(COLUMN_USER_NAME_INDEX),
                             resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
-                }
-                else if (userType == UserTypesEnum.STUDENT)
-                {
-                    return new StudentDB(conn).getStudentByID(resultSet.getString(COLUMN_USER_ID_INDEX),
+                } else if (userType == UserTypesEnum.STUDENT) {
+                    return new StudentDB(conn).queryStudent(resultSet.getString(COLUMN_USER_ID_INDEX),
                             resultSet.getString(COLUMN_USER_NAME_INDEX),
                             resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
                 }
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return null;
-    }*/
+    }
 
     public String insertUser(User user) throws SQLException {
 
@@ -97,114 +89,103 @@ public class UserDB {
             throw new SQLException("Couldn't insert user!");
         }
 
-        try (ResultSet resultSet = insertUser.getGeneratedKeys())
-        {
+        try (ResultSet resultSet = insertUser.getGeneratedKeys()) {
             UserTypesEnum userType = user.getUserType();
 
-            if (userType == UserTypesEnum.STUDENT){
-                System.out.println("Student");
-            }
-            if (userType == UserTypesEnum.PROFESSOR)
-            {
-                System.out.println("Professor");
+            if (userType == UserTypesEnum.PROFESSOR) {
                 return new ProfessorDB(conn).insertProfessor((Professor) user);
-            }
-            else if (userType == UserTypesEnum.STUDENT)
-            {
+            } else if (userType == UserTypesEnum.STUDENT) {
                 return new StudentDB(conn).insertStudent((Student) user);
-            }
-            else if (userType == UserTypesEnum.ADMIN)
-            {
-                return resultSet.getString(COLUMN_USER_ID_INDEX);
+            } else if (userType == UserTypesEnum.ADMIN) {
+                String userID = user.getUsername();
+                return userID;
             }
 
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return null;
     }
+
+
+    public User deleteUserByID(String id) throws SQLException {
+        User user = queryUserByID(id);
+
+        if (user != null) {
+            if (user.getUserType() == UserTypesEnum.PROFESSOR) {
+                new ProfessorDB(conn).deleteProfessor(user.getUsername(), user.getName(), user.getPassword());
+            } else if (user.getUserType() == UserTypesEnum.STUDENT) {
+                new StudentDB(conn).deleteStudent(user.getUsername(), user.getName(), user.getPassword());
+            }
+
+            deleteUser.setString(COLUMN_USER_ID_INDEX, id);
+        }
+
+        int affectedRows = deleteUser.executeUpdate();
+
+        if (affectedRows != 1) {
+            throw new SQLException("Couldn't delete user!");
+        }
+
+        return user;
+
     }
 
+    public User updateUser(User user) throws SQLException {
 
-   /* public User deleteUser(String id) throws SQLException
-    {
-        deleteUser.setString(COLUMN_USER_ID_INDEX, id);
+        User user2 = queryUserByID(user.getUsername());
 
-        try (ResultSet resultSet = deleteUser.executeQuery())
-        {
-            UserTypesEnum userType = UserTypesEnum.values()[resultSet.getInt(COLUMN_USER_TYPE_INDEX)];
+        updateUser.setString(1, user.getPassword());
+        updateUser.setString(2, user.getName());
+        updateUser.setString(3, user.getUserType().toString());
+        updateUser.setString(4, user.getUsername());
 
-            if (resultSet.next())
-            {
-                if (userType == UserTypesEnum.PROFESSOR)
-                {
-                    return new ProfessorDB(conn).getProfessorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
-                            resultSet.getString(COLUMN_USER_NAME_INDEX),
-                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
-                }
-                else if (userType == UserTypesEnum.STUDENT)
-                {
-                    return new StudentDB(conn).getStudentByID(resultSet.getString(COLUMN_USER_ID_INDEX),
-                            resultSet.getString(COLUMN_USER_NAME_INDEX),
-                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
-                }
-                else if (userType == UserTypesEnum.ADMIN)
-                {
-                    return new Administrator(resultSet.getString(COLUMN_USER_ID_INDEX),
-                            resultSet.getString(COLUMN_USER_NAME_INDEX),
-                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
-                }
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
+        System.out.println(updateUser);
+
+        int affectedRows = updateUser.executeUpdate();
+
+        if (user.getUserType() == UserTypesEnum.PROFESSOR) {
+            new ProfessorDB(conn).updateProfessor((Professor) user);
+        } else if (user.getUserType() == UserTypesEnum.STUDENT) {
+            new StudentDB(conn).updateStudent((Student) user);
         }
 
-        return null;
-    }*/
+        if (affectedRows != 1) {
+            throw new SQLException("Couldn't update user!");
+        }
 
-    /*public List<User> getAllUsers()
-    {
-        try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery(GET_ALL_USERS))
-        {
-            List<User> users = new ArrayList<>();
 
-            while (resultSet.next())
-            {
-                UserTypesEnum userType = UserTypesEnum.values()[resultSet.getInt(COLUMN_USER_TYPE_INDEX)];
+        return user2;
+    }
 
-                if (userType == UserTypesEnum.PROFESSOR)
-                {
-                    users.add(new ProfessorDB(conn).getProfessorByID(resultSet.getString(COLUMN_USER_ID_INDEX),
-                            resultSet.getString(COLUMN_USER_NAME_INDEX),
-                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX)));
-                }
-                else if (userType == UserTypesEnum.STUDENT)
-                {
-                    users.add(new StudentDB(conn).getStudentByID(resultSet.getString(COLUMN_USER_ID_INDEX),
-                            resultSet.getString(COLUMN_USER_NAME_INDEX),
-                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX)));
-                }
-                else if (userType == UserTypesEnum.ADMIN)
-                {
+    public List<User> queryUsers() throws SQLException {
+        List<User> users = new ArrayList<>();
+
+        try (ResultSet resultSet = queryUsers.executeQuery()) {
+            while (resultSet.next()) {
+                UserTypesEnum userType = UserTypesEnum.valueOf(resultSet.getString(COLUMN_USER_TYPE_INDEX));
+
+
+                if (userType == UserTypesEnum.PROFESSOR) {
+                    users.add(new ProfessorDB(conn).queryProfessor(resultSet.getString(COLUMN_USER_ID_INDEX),
+                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX),
+                            resultSet.getString(COLUMN_USER_NAME_INDEX)));
+
+                } else if (userType == UserTypesEnum.ADMIN) {
                     users.add(new Administrator(resultSet.getString(COLUMN_USER_ID_INDEX),
                             resultSet.getString(COLUMN_USER_NAME_INDEX),
                             resultSet.getString(COLUMN_USER_PASSWORD_INDEX)));
+                } else if (userType == UserTypesEnum.STUDENT) {
+                    users.add(new StudentDB(conn).queryStudent(resultSet.getString(COLUMN_USER_ID_INDEX),
+                            resultSet.getString(COLUMN_USER_NAME_INDEX),
+                            resultSet.getString(COLUMN_USER_PASSWORD_INDEX)));
                 }
             }
-
-            return users;
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Query failed: " + e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        return null;
-    }*/
-
+        return users;
+    }
+}

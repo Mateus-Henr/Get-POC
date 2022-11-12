@@ -79,19 +79,20 @@ public class ProfessorDB {
         insertProfessor.setString(1, professor.getEmail());
         insertProfessor.setString(2, professor.getUsername());
 
+
         Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
 
-            int affectedRows = insertProfessor.executeUpdate();
+        int affectedRows = insertProfessor.executeUpdate();
 
         for (Subject subject : professor.getSubjectsTaught()) {
             professor_has_subjectDB.InsertProfessorHasSubject(professor.getUsername(), subject.getId());
         }
 
-            if (affectedRows != 1) {
-                throw new SQLException("Couldn't insert professor!");
-            }
+        if (affectedRows != 1) {
+            throw new SQLException("Couldn't insert professor!");
+        }
 
-            return professor.getUsername();
+        return professor.getUsername();
     }
 
     protected Professor deleteProfessor(String username, String name, String password) throws SQLException {
@@ -135,7 +136,7 @@ public class ProfessorDB {
         }
 
         //Update professor
-        if(professor.getEmail() != null) {
+        if (professor.getEmail() != null) {
             updateProfessor.setString(1, professor.getEmail());
         } else {
             updateProfessor.setString(1, oldprofessor.getEmail());
@@ -152,14 +153,42 @@ public class ProfessorDB {
             return null;
         }
     }
-}
-   /* public List<Professor> getAllProfessors()
-    {
-        return new UserDB(conn).getAllUsers().stream()
+    public List<Professor> getAllProfessors() throws SQLException {
+        return new UserDB(conn).queryUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.PROFESSOR)
                 .map(user -> (Professor) user)
                 .toList();
-    }*/
+    }
+
+    protected void close() throws SQLException {
+        if (queryProfessor != null) {
+            queryProfessor.close();
+        }
+
+        if (queryProfessors != null) {
+            queryProfessors.close();
+        }
+
+        if (insertProfessor != null) {
+            insertProfessor.close();
+        }
+
+        if (updateProfessor != null) {
+            updateProfessor.close();
+        }
+
+        if (deleteProfessor != null) {
+            deleteProfessor.close();
+        }
+
+        if (conn != null) {
+            conn.close();
+        }
+    }
+
+
+}
+
 
 
 

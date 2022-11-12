@@ -5,7 +5,6 @@ import com.ufv.project.model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,20 +53,24 @@ public class ConnectDB {
         ProfessorDB professorDB = new ProfessorDB(connectDB.getConnection());
         POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(connectDB.getConnection());
         UserDB userDB = new UserDB(connectDB.getConnection());
+        StudentDB studentDB = new StudentDB(connectDB.getConnection());
 
 
 
-        subjects.add(subjectDB.querySubjectByID(1));
-        System.out.println(subjects.get(0).getName());
-        subjects.add(subjectDB.querySubjectByID(2));
-        System.out.println(subjects.get(1).getName());
-        subjects.add(subjectDB.querySubjectByID(4));
-        System.out.println(subjects.get(2).getName());
+        List <Student> students = studentDB.getAllStudents();
+        for (Student student : students) {
+            System.out.println(student.getUsername());
+        }
 
 
-       Professor professor = new Professor("nacif", "Nacif", "123","@nacif", subjects);
-       Professor retonedProfessor = professorDB.updateProfessor(professor);
-         System.out.println(retonedProfessor.getName());
+
+
+
+
+
+
+
+
 
         connectDB.close();
 

@@ -117,4 +117,28 @@ public class Professor_has_subjectDB {
 
         }
     }
+
+    public void close() {
+        try {
+            if (querySubjectsByProfessor != null) {
+                querySubjectsByProfessor.close();
+            }
+            if (queryProfessor_has_subjects != null) {
+                queryProfessor_has_subjects.close();
+            }
+            if (insertProfessor_has_subject != null) {
+                insertProfessor_has_subject.close();
+            }
+            if (deleteProfessor_has_subject != null) {
+                deleteProfessor_has_subject.close();
+            }
+            if (updateProfessor_has_subject != null) {
+                updateProfessor_has_subject.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Couldn't close connection: " + e.getMessage());
+        }
+    }
+
+
 }

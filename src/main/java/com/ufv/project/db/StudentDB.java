@@ -1,12 +1,15 @@
 package com.ufv.project.db;
 
+import com.ufv.project.model.Professor;
 import com.ufv.project.model.Student;
+import com.ufv.project.model.User;
 import com.ufv.project.model.UserTypesEnum;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDB {
@@ -106,7 +109,7 @@ public class StudentDB {
 
     protected Student updateStudent(Student student) throws SQLException {
         Student student2 = queryStudent(student.getUsername(), student.getName(), student.getPassword());
-        if(student2 == null){
+        if (student2 == null) {
             System.out.println("Student not found");
             return null;
         }
@@ -117,13 +120,13 @@ public class StudentDB {
         if (student.getRegistration() != null) {
             student2.setRegistration(student.getRegistration());
         }
-         if(student.getPoc_id() != 0) {
-             student2.setPoc_id(student.getPoc_id());
-         }
+        if (student.getPoc_id() != 0) {
+            student2.setPoc_id(student.getPoc_id());
+        }
 
-         if (student.getUsername() != null) {
-             student2.setUsername(student.getUsername());
-         }
+        if (student.getUsername() != null) {
+            student2.setUsername(student.getUsername());
+        }
 
         updateStudent.setString(1, student2.getRegistration());
         updateStudent.setString(2, student2.getEmail());
@@ -141,8 +144,33 @@ public class StudentDB {
 
     }
 
-   /*public List<Student> getAllStudents() {
-        return new UserDB(conn)
-    }*/
+    protected void close() {
+        try {
+            if (queryStudent != null) {
+                queryStudent.close();
+            }
+            if (queryStudents != null) {
+                queryStudents.close();
+            }
+            if (insertStudent != null) {
+                insertStudent.close();
+            }
+            if (deleteStudent != null) {
+                deleteStudent.close();
+            }
+            if (updateStudent != null) {
+                updateStudent.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Student> getAllStudents() throws SQLException {
+        return new UserDB(conn).queryUsers().stream()
+                .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)
+                .map(user -> (Student) user)
+                .toList();
+    }
 
 }
