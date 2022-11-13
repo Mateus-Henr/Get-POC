@@ -18,7 +18,7 @@ public class POC_has_KeywordDB
     private static final String QUERY_ALL_POC_HAS_KEYWORD = "SELECT * FROM " + TABLE_POC_HAS_KEYWORD;
     private static final String INSERT_POC_HAS_KEYWORD = "INSERT INTO " + TABLE_POC_HAS_KEYWORD + " (" + COLUMN_POC_HAS_KEYWORD_POC_ID + ", " + COLUMN_POC_HAS_KEYWORD_KEYWORD_ID + ") VALUES (?, ?)";
     private static final String UPDATE_POC_HAS_KEYWORD = "UPDATE " + TABLE_POC_HAS_KEYWORD + " SET " + COLUMN_POC_HAS_KEYWORD_POC_ID + " = ?, " + COLUMN_POC_HAS_KEYWORD_KEYWORD_ID + " = ? WHERE " + COLUMN_POC_HAS_KEYWORD_POC_ID + " = ? AND " + COLUMN_POC_HAS_KEYWORD_KEYWORD_ID + " = ?";
-    private static final String DELETE_POC_HAS_KEYWORD = "DELETE FROM " + TABLE_POC_HAS_KEYWORD + " WHERE " + COLUMN_POC_HAS_KEYWORD_POC_ID + " = ? AND " + COLUMN_POC_HAS_KEYWORD_KEYWORD_ID + " = ?";
+    private static final String DELETE_POC_HAS_KEYWORD = "DELETE FROM " + TABLE_POC_HAS_KEYWORD + " WHERE " + COLUMN_POC_HAS_KEYWORD_POC_ID + " = ?";
 
     private Connection conn;
 
@@ -85,17 +85,23 @@ public class POC_has_KeywordDB
         }
     }
 
-    public void deletePOC_has_Keyword(int POCID, int keywordID) throws SQLException
+    public void deletePOC_has_Keyword(int POCID) throws SQLException
     {
+
         deletePOC_has_Keyword.setInt(1, POCID);
-        deletePOC_has_Keyword.setInt(2, keywordID);
+        System.out.println(deletePOC_has_Keyword.toString());
 
         int affectedRows = deletePOC_has_Keyword.executeUpdate();
+        System.out.println(affectedRows);
 
-        if (affectedRows != 1)
+        if (affectedRows == 0)
         {
             throw new SQLException("Couldn't delete POC_has_Keyword!");
         }
+
+
+
+
     }
 
     public void updatePOC_has_Keyword(int oldPOCID, int keywordID, int newPOCID, int newKeywordID) throws SQLException

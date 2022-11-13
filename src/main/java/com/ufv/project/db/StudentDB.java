@@ -29,6 +29,7 @@ public class StudentDB {
     private static final String UPDATE_STUDENT = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_REGISTRATION + " = ?, " + COLUMN_STUDENT_EMAIL + " = ?, " + COLUMN_STUDENT_POC + " = ? WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
     private static final String DELETE_STUDENT = "DELETE FROM " + TABLE_STUDENT + " WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
 
+    private static final String SET_STUDENT_POC_NULL = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_POC + " = NULL WHERE " + COLUMN_STUDENT_POC + " = ?";
     private Connection conn;
 
     private final PreparedStatement queryStudent;
@@ -37,6 +38,8 @@ public class StudentDB {
     private final PreparedStatement insertStudent;
     private final PreparedStatement updateStudent;
     private final PreparedStatement deleteStudent;
+
+    private final PreparedStatement setStudentPOCNull;
 
 
     public StudentDB(Connection conn) throws SQLException {
@@ -47,6 +50,7 @@ public class StudentDB {
         insertStudent = conn.prepareStatement(INSERT_STUDENT);
         updateStudent = conn.prepareStatement(UPDATE_STUDENT);
         deleteStudent = conn.prepareStatement(DELETE_STUDENT);
+        setStudentPOCNull = conn.prepareStatement(SET_STUDENT_POC_NULL);
     }
 
     protected Student queryStudent(String username, String name, String password) throws SQLException {
@@ -67,7 +71,7 @@ public class StudentDB {
         return null;
     }
 
-    protected List<Student> queryStudentsbyPocID(int pocID) throws SQLException {
+    protected List<Student> queryStudentsByPocID(int pocID) throws SQLException {
         return new UserDB(conn).queryUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)
                 .map(user -> (Student) user)
@@ -138,6 +142,12 @@ public class StudentDB {
         }
 
         return oldStudent;
+    }
+
+    protected void setStudentPOCNull(int pocID) throws SQLException {
+        setStudentPOCNull.setInt(1, pocID);
+        setStudentPOCNull.executeUpdate();
+
     }
 
     public List<Student> getAllStudents() throws SQLException {

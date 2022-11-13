@@ -28,11 +28,13 @@ public class POC
         this.title = pocBuilder.title;
         this.authors = pocBuilder.authors;
         this.defenseDate = pocBuilder.defenseDate;
+        this.keywords = pocBuilder.keywords;
         this.summary = pocBuilder.summary;
         this.field = pocBuilder.field;
         this.pdf = pocBuilder.pdf;
         this.registrant = pocBuilder.registrant;
         this.advisor = pocBuilder.advisor;
+        this.coAdvisors = pocBuilder.coAdvisors;
 
     }
 
