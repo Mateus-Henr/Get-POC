@@ -165,7 +165,6 @@ public class UserDB
         updateUser.setString(3, newUser.getUserType().toString());
         updateUser.setString(4, newUser.getUsername());
 
-        System.out.println(updateUser);
 
         int affectedRows = updateUser.executeUpdate();
 

@@ -41,19 +41,17 @@ public class Professor_co_advises_pocDB
         updateProfessor_co_advises_poc = conn.prepareStatement(UPDATE_PROFESSOR_CO_ADVISES_POC);
     }
 
-/*    public List<Professor> queryProfessorsByPocId(int pocId) throws SQLException {
-            ProfessorDB professorDB = new ProfessorDB(conn);
-            queryProfessorsByPocId.setInt(1, pocId);
-            ResultSet results = queryProfessorsByPocId.executeQuery();
-            List<Professor> professors = new ArrayList<>();
+   public List<Professor> queryProfessorsByPocId(int pocId) throws SQLException {
+        UserDB userDB = new UserDB(conn);
+        List<Professor> professors = new ArrayList<>();
+        queryProfessorsByPocId.setInt(1, pocId);
+        ResultSet resultSet = queryProfessorsByPocId.executeQuery();
+        while (resultSet.next()) {
+            professors.add((Professor) userDB.queryUserByID(resultSet.getString(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID)));
 
-            while (results.next()) {
-                professors.add(professorDB.queryProfessor(results.getString();
-
-            }
-
+        }
         return professors;
-    }*/
+    }
 
     public void insertProfessor_co_advises_poc(String professorID, int pocID) throws SQLException
     {

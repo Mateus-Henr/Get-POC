@@ -45,10 +45,12 @@ public class ProfessorDB
         updateProfessor = conn.prepareStatement(UPDATE_PROFESSOR);
     }
 
-    protected Professor queryProfessor(String username, String name, String password) throws SQLException
+    protected Professor queryProfessor(String username, String password, String name) throws SQLException
     {
         Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
         List<Subject> subjects = professor_has_subjectDB.querySubjectsByProfessor(username);
+
+
 
         queryProfessor.setString(1, username);
 

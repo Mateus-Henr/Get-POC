@@ -5,6 +5,7 @@ import com.ufv.project.model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,17 +67,59 @@ public class ConnectDB
         POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(connectDB.getConnection());
         UserDB userDB = new UserDB(connectDB.getConnection());
         StudentDB studentDB = new StudentDB(connectDB.getConnection());
+        FieldDB fieldDB = new FieldDB(connectDB.getConnection());
+        PDFDB pdfDB = new PDFDB(connectDB.getConnection());
+        Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(connectDB.getConnection());
 
 
-        List<Student> students = studentDB.getAllStudents();
+        POCDB pocDB = new POCDB(connectDB.getConnection());
 
+        List <Student> students = studentDB.queryStudentsbyPocID(1);
         for (Student student : students)
         {
-            System.out.println(student.getUsername());
+            System.out.println(student.getName());
+        }
+
+        List <Professor> professors = professor_co_advises_pocDB.queryProfessorsByPocId(1);
+        for (Professor professor : professors)
+        {
+            System.out.println(professors.get(0).getName());
         }
 
 
-        connectDB.close();
+
+
+
+
+
+
+
+
+        POC.POCBuilder pocBuilder = new POC.POCBuilder();
+        pocBuilder.id(1);
+        pocBuilder.title("POC 1");
+        pocBuilder.authors(studentDB.queryStudentsbyPocID(1));
+        pocBuilder.defenseDate(LocalDate.of(2020, 12, 12));
+        pocBuilder.keywords(poc_has_keywordDB.queryKeywordsByPOCID(1));
+        pocBuilder.summary("Summary 1");
+        pocBuilder.field(fieldDB.queryFieldByID(2));
+        pocBuilder.pdf(pdfDB.queryPDFByID(1));
+        pocBuilder.registrant( (Professor) userDB.queryUserByID("nacif"));
+        pocBuilder.advisor( (Professor) userDB.queryUserByID("jose"));
+        pocBuilder.coAdvisors(professors);
+
+        System.out.println(pocBuilder.build().getCoAdvisors().get(0).getName());
+        
+
+
+
+
+
+
+
+
+
+
     }
 
 }

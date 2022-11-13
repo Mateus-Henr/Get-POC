@@ -5,6 +5,7 @@ module com.ufv.project
     requires java.sql;
     requires mysql.connector.j;
     requires junit;
+    requires java.desktop;
 
     opens com.ufv.project to javafx.fxml;
     opens com.ufv.project.model to javafx.fxml;

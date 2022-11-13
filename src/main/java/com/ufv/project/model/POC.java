@@ -33,6 +33,7 @@ public class POC
         this.pdf = pocBuilder.pdf;
         this.registrant = pocBuilder.registrant;
         this.advisor = pocBuilder.advisor;
+
     }
 
 
@@ -159,7 +160,6 @@ public class POC
 
         public POCBuilder()
         {
-
         }
 
         public POCBuilder id(int id)
