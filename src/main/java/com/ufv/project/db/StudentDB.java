@@ -30,6 +30,8 @@ public class StudentDB {
     private static final String DELETE_STUDENT = "DELETE FROM " + TABLE_STUDENT + " WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
 
     private static final String SET_STUDENT_POC_NULL = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_POC + " = NULL WHERE " + COLUMN_STUDENT_POC + " = ?";
+
+    private static final String SET_STUDENT_POC = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_POC + " = ? WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
     private Connection conn;
 
     private final PreparedStatement queryStudent;
@@ -41,6 +43,8 @@ public class StudentDB {
 
     private final PreparedStatement setStudentPOCNull;
 
+    private final PreparedStatement setStudentPOC;
+
 
     public StudentDB(Connection conn) throws SQLException {
         this.conn = conn;
@@ -51,6 +55,7 @@ public class StudentDB {
         updateStudent = conn.prepareStatement(UPDATE_STUDENT);
         deleteStudent = conn.prepareStatement(DELETE_STUDENT);
         setStudentPOCNull = conn.prepareStatement(SET_STUDENT_POC_NULL);
+        setStudentPOC = conn.prepareStatement(SET_STUDENT_POC);
     }
 
     protected Student queryStudent(String username, String name, String password) throws SQLException {
@@ -148,6 +153,12 @@ public class StudentDB {
         setStudentPOCNull.setInt(1, pocID);
         setStudentPOCNull.executeUpdate();
 
+    }
+
+    protected void setStudentPOC(String studentID, int pocID) throws SQLException {
+        setStudentPOC.setInt(1, pocID);
+        setStudentPOC.setString(2, studentID);
+        setStudentPOC.executeUpdate();
     }
 
     public List<Student> getAllStudents() throws SQLException {

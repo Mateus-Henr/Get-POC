@@ -49,7 +49,7 @@ public class POC_has_KeywordDB
 
         while (results.next())
         {
-            keywords.add(keywordDB.queryKeywordByID(results.getInt(COLUMN_POC_HAS_KEYWORD_KEYWORD_ID_INDEX)));
+            keywords.add(keywordDB.queryKeywordByID(results.getString(COLUMN_POC_HAS_KEYWORD_KEYWORD_ID_INDEX)));
         }
 
         return keywords;
@@ -70,12 +70,12 @@ public class POC_has_KeywordDB
         }
     }
 
-    public void insertPOC_has_Keyword(int POCID, int keywordID) throws SQLException
+    public void insertPOC_has_Keyword(int POCID, String word) throws SQLException
     {
         insertPOC_has_Keyword.setInt(1, POCID);
-        insertPOC_has_Keyword.setInt(2, keywordID);
+        insertPOC_has_Keyword.setString(2, word);
 
-        System.out.println(insertPOC_has_Keyword.toString());
+
 
         int affectedRows = insertPOC_has_Keyword.executeUpdate();
 
@@ -89,10 +89,10 @@ public class POC_has_KeywordDB
     {
 
         deletePOC_has_Keyword.setInt(1, POCID);
-        System.out.println(deletePOC_has_Keyword.toString());
+
 
         int affectedRows = deletePOC_has_Keyword.executeUpdate();
-        System.out.println(affectedRows);
+        ;
 
         if (affectedRows == 0)
         {
@@ -104,12 +104,12 @@ public class POC_has_KeywordDB
 
     }
 
-    public void updatePOC_has_Keyword(int oldPOCID, int keywordID, int newPOCID, int newKeywordID) throws SQLException
+    public void updatePOC_has_Keyword(int oldPOCID, String keywordID, int newPOCID, String newKeywordID) throws SQLException
     {
         updatePOC_has_Keyword.setInt(1, newPOCID);
-        updatePOC_has_Keyword.setInt(2, newKeywordID);
+        updatePOC_has_Keyword.setString(2, newKeywordID);
         updatePOC_has_Keyword.setInt(3, oldPOCID);
-        updatePOC_has_Keyword.setInt(4, keywordID);
+        updatePOC_has_Keyword.setString(4, keywordID);
 
         int affectedRows = updatePOC_has_Keyword.executeUpdate();
 

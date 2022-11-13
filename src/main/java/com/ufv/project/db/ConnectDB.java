@@ -70,10 +70,45 @@ public class ConnectDB
         FieldDB fieldDB = new FieldDB(connectDB.getConnection());
         PDFDB pdfDB = new PDFDB(connectDB.getConnection());
         Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(connectDB.getConnection());
+        KeywordDB keywordDB = new KeywordDB(connectDB.getConnection());
+        POCDB pocDB = new POCDB(connectDB.getConnection());
+
+        List<Student> students = new ArrayList<>();
+        students.add(studentDB.queryStudent("Miguel", "MiguelRib", "123"));
 
 
-        User qqd = userDB.deleteUserByID("jose");
-        System.out.println(qqd.getUsername());
+
+        List <String> keywords = new ArrayList<>();
+        keywords.add("ola");
+        keywords.add("oi");
+
+
+        List<Professor> professors = new ArrayList<>();
+        professors.add(professorDB.queryProfessor("nacif", "123", "Nacif"));
+        professors.add(professorDB.queryProfessor("Fabricio", "1234", "Fabricio"));
+
+
+
+        POC.POCBuilder pocBuilder = new POC.POCBuilder();
+        pocBuilder.id(2);
+        pocBuilder.title("FEWWXWXWWX");
+        pocBuilder.authors(students);
+        pocBuilder.defenseDate(LocalDate.of(2021, 11, 12));
+        pocBuilder.keywords(keywords);
+        pocBuilder.summary("Summary wdqqwqdwqqd");
+        pocBuilder.field(fieldDB.queryFieldByID(4));
+        pocBuilder.pdf(pdfDB.queryPDFByID(3));
+        pocBuilder.registrant( (Professor) userDB.queryUserByID("fabricio"));
+        pocBuilder.advisor( (Professor) userDB.queryUserByID("nacif"));
+        pocBuilder.coAdvisors(professors);
+        POC poc = pocBuilder.build();
+
+       List<POC> pocs = new ArrayList<>();
+       pocs = pocDB.queryAllPOCs();
+       for (POC poc1 : pocs)
+         {
+             System.out.println(poc1.getId());
+         }
 
 
 

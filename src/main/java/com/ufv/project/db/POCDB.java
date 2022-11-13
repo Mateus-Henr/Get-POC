@@ -3,6 +3,7 @@ package com.ufv.project.db;
 import com.ufv.project.model.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class POCDB {
@@ -46,7 +47,7 @@ public class POCDB {
 
     private Connection conn;
 
-    public POCDB(Connection conn) {
+    public POCDB(Connection conn) throws SQLException {
         this.conn = conn;
         try {
             queryPOC = conn.prepareStatement(QUERY_POC);
@@ -82,7 +83,6 @@ public class POCDB {
         try {
             queryPOC.setInt(1, id);
             ResultSet results = queryPOC.executeQuery();
-            System.out.println(queryPOC.toString());
             if (results.next()) {
                 return new POC.POCBuilder()
                         .id(results.getInt(COLUMN_POC_ID_INDEX))
@@ -117,7 +117,6 @@ public class POCDB {
             insertPOC.setString(7, poc.getRegistrant().getUsername());
             insertPOC.setString(8, poc.getAdvisor().getUsername());
 
-            System.out.println("Inserting POC: " + insertPOC.toString());
 
             int affectedRows = insertPOC.executeUpdate();
             if (affectedRows != 1) {
@@ -162,8 +161,24 @@ public class POCDB {
         POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
         poc_has_keywordDB.deletePOC_has_Keyword(poc.getId());
         for (String keyword : poc.getKeywords()) {
-            poc_has_keywordDB.insertPOC_has_Keyword(poc.getId(), keyword;
+            poc_has_keywordDB.insertPOC_has_Keyword(poc.getId(), keyword);
         }
+
+        //Update Co-Advisors
+        Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
+        professor_co_advises_pocDB.deleteProfessor_co_advises_poc(poc.getId());
+        for (Professor professor : poc.getCoAdvisors()) {
+            professor_co_advises_pocDB.insertProfessor_co_advises_poc(professor.getUsername(), poc.getId());
+        }
+
+        //Update Authors
+        StudentDB studentDB = new StudentDB(conn);
+        studentDB.setStudentPOCNull(poc.getId());
+        for (Student student : poc.getAuthors()) {
+            studentDB.setStudentPOC(student.getUsername(), poc.getId());
+        }
+
+
         try {
             if (old != null) {
                 if (poc.getTitle() != null) {
@@ -218,5 +233,44 @@ public class POCDB {
 
 
             }
+            return null;
+        } catch (SQLException e) {
+            System.out.println("Update failed: " + e.getMessage());
+            return null;
+        }
+    }
+
+    //lista com todos pocs
+
+    public List<POC> queryAllPOCs() throws SQLException {
+
+        List<POC> pocs = new ArrayList<>();
+        ResultSet results = queryPOCs.executeQuery();
+
+        StudentDB studentDB = new StudentDB(conn);
+        FieldDB fieldDB = new FieldDB(conn);
+        PDFDB pdfDB = new PDFDB(conn);
+        UserDB userDB = new UserDB(conn);
+        Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
+
+        POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
+        while (results.next()) {
+            pocs.add(new POC.POCBuilder()
+                    .id(results.getInt(COLUMN_POC_ID))
+                    .title(results.getString(COLUMN_POC_TITLE))
+                    .authors(studentDB.queryStudentsByPocID(results.getInt(COLUMN_POC_ID)))
+                    .defenseDate(results.getDate(COLUMN_POC_DEFENSE_DATE).toLocalDate())
+                    .keywords(poc_has_keywordDB.queryKeywordsByPOCID(results.getInt(COLUMN_POC_ID)))
+                    .summary(results.getString(COLUMN_POC_SUMMARY))
+                    .field(fieldDB.queryFieldByID(results.getInt(COLUMN_POC_FIELD_ID)))
+                    .pdf(pdfDB.queryPDFByID(results.getInt(COLUMN_POC_PDF_ID)))
+                    .registrant((Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_REGISTRANT_ID)))
+                    .advisor((Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_ADVISOR_ID)))
+                    .coAdvisors(professor_co_advises_pocDB.queryProfessorsByPocId(results.getInt(COLUMN_POC_ID)))
+                    .build());
 
         }
+        return pocs;
+    }
+
+}

@@ -4,20 +4,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeywordDB
-{
+public class KeywordDB {
     private static final String TABLE_KEYWORD = "TB_keyword";
-    private static final String COLUMN_KEYWORDS_ID = "ID";
     private static final String COLUMN_KEYWORDS_WORD = "word";
 
-    private static final int COLUMN_KEYWORDS_ID_INDEX = 1;
-    private static final int COLUMN_KEYWORDS_WORD_INDEX = 2;
+    private static final int COLUMN_KEYWORDS_WORD_INDEX = 1;
 
-    private static final String QUERY_KEYWORD = "SELECT * FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORDS_ID + " = ?";
+    private static final String QUERY_KEYWORD = "SELECT * FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORDS_WORD + " = ?";
     private static final String QUERY_KEYWORDS = "SELECT * FROM " + TABLE_KEYWORD;
-    private static final String INSERT_KEYWORD = "INSERT INTO " + TABLE_KEYWORD + " (" + COLUMN_KEYWORDS_ID + " , " + COLUMN_KEYWORDS_WORD + ") VALUES (?,?)";
-    private static final String UPDATE_KEYWORD = "UPDATE " + TABLE_KEYWORD + " SET " + COLUMN_KEYWORDS_WORD + " = ? WHERE " + COLUMN_KEYWORDS_ID + " = ?";
-    private static final String DELETE_KEYWORD = "DELETE FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORDS_ID + " = ?";
+    private static final String INSERT_KEYWORD = "INSERT INTO " + TABLE_KEYWORD + " (" + COLUMN_KEYWORDS_WORD + ") VALUES (?)";
+    private static final String UPDATE_KEYWORD = "UPDATE " + TABLE_KEYWORD + " SET " + COLUMN_KEYWORDS_WORD + " = ?" + " WHERE " + COLUMN_KEYWORDS_WORD + " = ?";
+    private static final String DELETE_KEYWORD = "DELETE FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORDS_WORD + " = ?";
 
     private Connection conn;
 
@@ -27,8 +24,7 @@ public class KeywordDB
     private final PreparedStatement updateKeyword;
     private final PreparedStatement deleteKeyword;
 
-    public KeywordDB(Connection conn) throws SQLException
-    {
+    public KeywordDB(Connection conn) throws SQLException {
         this.conn = conn;
 
         queryKeyword = conn.prepareStatement(QUERY_KEYWORD);
@@ -38,14 +34,11 @@ public class KeywordDB
         updateKeyword = conn.prepareStatement(UPDATE_KEYWORD);
     }
 
-    public String queryKeywordByID(int id) throws SQLException
-    {
-        queryKeyword.setInt(COLUMN_KEYWORDS_ID_INDEX, id);
+    public String queryKeywordByID(String word) throws SQLException {
+        queryKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, word);
 
-        try (ResultSet resultSet = queryKeyword.executeQuery())
-        {
-            if (resultSet.next())
-            {
+        try (ResultSet resultSet = queryKeyword.executeQuery()) {
+            if (resultSet.next()) {
                 return resultSet.getString(COLUMN_KEYWORDS_WORD_INDEX);
             }
         }
@@ -53,14 +46,11 @@ public class KeywordDB
         return null;
     }
 
-    public List<String> queryKeywords() throws SQLException
-    {
-        try (ResultSet resultSet = queryKeywords.executeQuery())
-        {
+    public List<String> queryKeywords() throws SQLException {
+        try (ResultSet resultSet = queryKeywords.executeQuery()) {
             List<String> keywords = new ArrayList<>();
 
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 keywords.add(resultSet.getString(COLUMN_KEYWORDS_WORD_INDEX));
             }
 
@@ -69,73 +59,59 @@ public class KeywordDB
     }
 
 
-    public int insertKeyword(int id, String keyword) throws SQLException
-    {
-        insertKeyword.setInt(COLUMN_KEYWORDS_ID_INDEX, id);
+    public String insertKeyword(String keyword) throws SQLException {
         insertKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, keyword);
+
 
         int affectedRows = insertKeyword.executeUpdate();
 
-        if (affectedRows != 1)
-        {
-            throw new SQLException("Couldn't insert keyword!");
+        if (affectedRows != 1) {
+            throw new SQLException("Could not insert keyword");
         }
-
-        try (ResultSet generatedKeys = insertKeyword.getGeneratedKeys())
-        {
-            if (generatedKeys.next())
-            {
-                return generatedKeys.getInt(1);
-            }
-        }
-
-        throw new SQLException("Couldn't get _id for keyword");
+        return keyword;
     }
 
-    public int deleteKeyword(int id) throws SQLException
-    {
-        deleteKeyword.setInt(COLUMN_KEYWORDS_ID_INDEX, id);
+    public String deleteKeyword(String id) throws SQLException {
+        deleteKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, id);
 
-        return deleteKeyword.executeUpdate();
+
+        int affectedRows = deleteKeyword.executeUpdate();
+
+        if (affectedRows != 1) {
+            throw new SQLException("Could not delete keyword");
+        }
+
+        return id;
     }
 
-    public String updateKeyword(int id, String newKeyword) throws SQLException
-    {
-        String oldKeyword = queryKeywordByID(id);
-
-        updateKeyword.setInt(COLUMN_KEYWORDS_WORD_INDEX, id);
-        updateKeyword.setString(COLUMN_KEYWORDS_ID_INDEX, newKeyword);
+    public String updateKeyword(String oldkeyword, String newKeyword) throws SQLException {
+        updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, newKeyword);
+        updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX + 1, oldkeyword);
+        System.out.println(updateKeyword);
 
         int affectedRows = updateKeyword.executeUpdate();
 
-        if (affectedRows == 1)
-        {
-            return oldKeyword;
+        if (affectedRows != 1) {
+            throw new SQLException("Could not update keyword");
         }
 
-        return null;
+        return newKeyword;
     }
 
-    public void close() throws SQLException
-    {
-        if (queryKeyword != null)
-        {
+    public void close() throws SQLException {
+        if (queryKeyword != null) {
             queryKeyword.close();
         }
-        if (queryKeywords != null)
-        {
+        if (queryKeywords != null) {
             queryKeywords.close();
         }
-        if (insertKeyword != null)
-        {
+        if (insertKeyword != null) {
             insertKeyword.close();
         }
-        if (deleteKeyword != null)
-        {
+        if (deleteKeyword != null) {
             deleteKeyword.close();
         }
-        if (updateKeyword != null)
-        {
+        if (updateKeyword != null) {
             updateKeyword.close();
         }
     }

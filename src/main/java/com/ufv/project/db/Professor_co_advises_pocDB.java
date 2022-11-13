@@ -58,7 +58,7 @@ public class Professor_co_advises_pocDB
         insertProfessor_co_advises_poc.setString(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX, professorID);
         insertProfessor_co_advises_poc.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX, pocID);
 
-        System.out.println(insertProfessor_co_advises_poc.toString());
+
 
         int affectedRows = insertProfessor_co_advises_poc.executeUpdate();
 
