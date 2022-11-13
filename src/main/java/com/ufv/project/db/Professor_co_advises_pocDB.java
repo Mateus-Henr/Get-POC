@@ -24,32 +24,24 @@ public class Professor_co_advises_pocDB
     private static final String INSERT_PROFESSOR_CO_ADVISES_POC = "INSERT INTO " + TABLE_PROFESSOR_CO_ADVISES_POC + " (" + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + ", " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + ") VALUES (?, ?)";
     private static final String DELETE_PROFESSOR_CO_ADVISES_POC = "DELETE FROM " + TABLE_PROFESSOR_CO_ADVISES_POC + " WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + " = ? AND " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
 
-    private PreparedStatement queryProfessorsByPocId;
-    private PreparedStatement insertProfessor_co_advises_poc;
-    private PreparedStatement updateProfessor_co_advises_poc;
-    private PreparedStatement deleteProfessor_co_advises_poc;
+    private Connection conn;
 
-    private final Connection conn;
+    private final PreparedStatement queryProfessorsByPocId;
+    private final PreparedStatement insertProfessor_co_advises_poc;
+    private final PreparedStatement updateProfessor_co_advises_poc;
+    private final PreparedStatement deleteProfessor_co_advises_poc;
 
-    public Professor_co_advises_pocDB(Connection conn)
+    public Professor_co_advises_pocDB(Connection conn) throws SQLException
     {
         this.conn = conn;
-        try
-        {
-            queryProfessorsByPocId = conn.prepareStatement(QUERY_PROFESSORS_BY_POC_ID);
-            insertProfessor_co_advises_poc = conn.prepareStatement(INSERT_PROFESSOR_CO_ADVISES_POC);
-            deleteProfessor_co_advises_poc = conn.prepareStatement(DELETE_PROFESSOR_CO_ADVISES_POC);
-            updateProfessor_co_advises_poc = conn.prepareStatement(UPDATE_PROFESSOR_CO_ADVISES_POC);
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Error preparing statements: " + e.getMessage());
-            e.printStackTrace();
-        }
+
+        queryProfessorsByPocId = conn.prepareStatement(QUERY_PROFESSORS_BY_POC_ID);
+        insertProfessor_co_advises_poc = conn.prepareStatement(INSERT_PROFESSOR_CO_ADVISES_POC);
+        deleteProfessor_co_advises_poc = conn.prepareStatement(DELETE_PROFESSOR_CO_ADVISES_POC);
+        updateProfessor_co_advises_poc = conn.prepareStatement(UPDATE_PROFESSOR_CO_ADVISES_POC);
     }
 
-/*    public List<Professor> queryProfessorsByPocId(int pocId) {
-        try {
+/*    public List<Professor> queryProfessorsByPocId(int pocId) throws SQLException {
             ProfessorDB professorDB = new ProfessorDB(conn);
             queryProfessorsByPocId.setInt(1, pocId);
             ResultSet results = queryProfessorsByPocId.executeQuery();
@@ -60,99 +52,71 @@ public class Professor_co_advises_pocDB
 
             }
 
-        } catch (SQLException e) {
-            System.out.println("Query failed: " + e.getMessage());
-            return null;
-        }
-        return null;
+        return professors;
     }*/
 
-    public void insertProfessor_co_advises_poc(String professor_id, int poc_id)
+    public void insertProfessor_co_advises_poc(String professorID, int pocID) throws SQLException
     {
-        try
-        {
-            insertProfessor_co_advises_poc.setString(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX, professor_id);
-            insertProfessor_co_advises_poc.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX, poc_id);
-            System.out.println(insertProfessor_co_advises_poc.toString());
-            int affectedRows = insertProfessor_co_advises_poc.executeUpdate();
-            if (affectedRows != 1)
-            {
-                throw new SQLException("Couldn't insert professor_co_advises_poc");
-            }
-        }
-        catch (SQLException e)
-        {
+        insertProfessor_co_advises_poc.setString(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX, professorID);
+        insertProfessor_co_advises_poc.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX, pocID);
 
+        System.out.println(insertProfessor_co_advises_poc.toString());
+
+        int affectedRows = insertProfessor_co_advises_poc.executeUpdate();
+
+        if (affectedRows != 1)
+        {
+            throw new SQLException("Couldn't insert professor_co_advises_poc");
         }
     }
 
-    public void deleteProfessor_co_advises_poc(String professor_id, int poc_id)
+    public void deleteProfessor_co_advises_poc(String professor_id, int poc_id) throws SQLException
     {
-        try
-        {
-            deleteProfessor_co_advises_poc.setString(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX, professor_id);
-            deleteProfessor_co_advises_poc.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX, poc_id);
-            int affectedRows = deleteProfessor_co_advises_poc.executeUpdate();
-            if (affectedRows != 1)
-            {
-                throw new SQLException("Couldn't delete professor_co_advises_poc");
-            }
-        }
-        catch (SQLException e)
-        {
+        deleteProfessor_co_advises_poc.setString(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX, professor_id);
+        deleteProfessor_co_advises_poc.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX, poc_id);
 
+        int affectedRows = deleteProfessor_co_advises_poc.executeUpdate();
+
+        if (affectedRows != 1)
+        {
+            throw new SQLException("Couldn't delete professor_co_advises_poc");
         }
     }
 
-    public void updateProfessor_co_advises_poc(String professor_id, int poc_id, String new_professor_id, int new_poc_id)
+    public void updateProfessor_co_advises_poc(String professor_id, int poc_id, String new_professor_id, int new_poc_id) throws SQLException
     {
-        try
+        updateProfessor_co_advises_poc.setString(1, new_professor_id);
+        updateProfessor_co_advises_poc.setInt(2, new_poc_id);
+        updateProfessor_co_advises_poc.setString(3, professor_id);
+        updateProfessor_co_advises_poc.setInt(4, poc_id);
+
+        int affectedRows = updateProfessor_co_advises_poc.executeUpdate();
+
+        if (affectedRows != 1)
         {
-            updateProfessor_co_advises_poc.setString(1, new_professor_id);
-            updateProfessor_co_advises_poc.setInt(2, new_poc_id);
-            updateProfessor_co_advises_poc.setString(3, professor_id);
-            updateProfessor_co_advises_poc.setInt(4, poc_id);
-
-
-            int affectedRows = updateProfessor_co_advises_poc.executeUpdate();
-            if (affectedRows != 1)
-            {
-                throw new SQLException("Couldn't update professor_co_advises_poc");
-            }
-        }
-        catch (SQLException e)
-        {
-
+            throw new SQLException("Couldn't update professor_co_advises_poc");
         }
     }
 
 
-    public void close()
+    public void close() throws SQLException
     {
-        try
+        if (queryProfessorsByPocId != null)
         {
-            if (queryProfessorsByPocId != null)
-            {
-                queryProfessorsByPocId.close();
-            }
-            if (insertProfessor_co_advises_poc != null)
-            {
-                insertProfessor_co_advises_poc.close();
-            }
-            if (deleteProfessor_co_advises_poc != null)
-            {
-                deleteProfessor_co_advises_poc.close();
-            }
-            if (updateProfessor_co_advises_poc != null)
-            {
-                updateProfessor_co_advises_poc.close();
-            }
+            queryProfessorsByPocId.close();
         }
-        catch (SQLException e)
+        if (insertProfessor_co_advises_poc != null)
         {
-            System.out.println("Couldn't close connection: " + e.getMessage());
+            insertProfessor_co_advises_poc.close();
+        }
+        if (deleteProfessor_co_advises_poc != null)
+        {
+            deleteProfessor_co_advises_poc.close();
+        }
+        if (updateProfessor_co_advises_poc != null)
+        {
+            updateProfessor_co_advises_poc.close();
         }
     }
-
 
 }

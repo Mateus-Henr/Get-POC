@@ -24,150 +24,104 @@ public class Professor_has_subjectDB
     private static final String UPDATE_PROFESSOR_HAS_SUBJECT = "UPDATE " + TABLE_PROFESSOR_HAS_SUBJECT + " SET " + COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID + " = ?, " + COLUMN_PROFESSOR_HAS_SUBJECT_SUBJECT_ID + " = ? WHERE " + COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID + " = ? AND " + COLUMN_PROFESSOR_HAS_SUBJECT_SUBJECT_ID + " = ?";
     private static final String DELETE_PROFESSOR_HAS_SUBJECT = "DELETE FROM " + TABLE_PROFESSOR_HAS_SUBJECT + " WHERE " + COLUMN_PROFESSOR_HAS_SUBJECT_SUBJECT_ID + " = ? AND " + COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID + " = ?";
 
-    private PreparedStatement querySubjectsByProfessor;
-    private PreparedStatement queryProfessor_has_subjects;
-    private PreparedStatement insertProfessor_has_subject;
-    private PreparedStatement deleteProfessor_has_subject;
-    private PreparedStatement updateProfessor_has_subject;
-
     private final Connection conn;
 
-    public Professor_has_subjectDB(Connection conn)
+    private final PreparedStatement querySubjectsByProfessor;
+    private final PreparedStatement queryProfessor_has_subjects;
+    private final PreparedStatement insertProfessor_has_subject;
+    private final PreparedStatement deleteProfessor_has_subject;
+    private final PreparedStatement updateProfessor_has_subject;
+
+    public Professor_has_subjectDB(Connection conn) throws SQLException
     {
         this.conn = conn;
-        try
-        {
-            querySubjectsByProfessor = conn.prepareStatement(QUERY_SUBJECTS_BY_PROFESSOR);
-            queryProfessor_has_subjects = conn.prepareStatement(QUERY_PROFESSOR_HAS_SUBJECTS);
-            insertProfessor_has_subject = conn.prepareStatement(INSERT_PROFESSOR_HAS_SUBJECT, PreparedStatement.RETURN_GENERATED_KEYS);
-            deleteProfessor_has_subject = conn.prepareStatement(DELETE_PROFESSOR_HAS_SUBJECT);
-            updateProfessor_has_subject = conn.prepareStatement(UPDATE_PROFESSOR_HAS_SUBJECT);
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-        }
+
+        querySubjectsByProfessor = conn.prepareStatement(QUERY_SUBJECTS_BY_PROFESSOR);
+        queryProfessor_has_subjects = conn.prepareStatement(QUERY_PROFESSOR_HAS_SUBJECTS);
+        insertProfessor_has_subject = conn.prepareStatement(INSERT_PROFESSOR_HAS_SUBJECT, PreparedStatement.RETURN_GENERATED_KEYS);
+        deleteProfessor_has_subject = conn.prepareStatement(DELETE_PROFESSOR_HAS_SUBJECT);
+        updateProfessor_has_subject = conn.prepareStatement(UPDATE_PROFESSOR_HAS_SUBJECT);
     }
 
-    public List<Subject> querySubjectsByProfessor(String professorID)
+    public List<Subject> querySubjectsByProfessor(String professorID) throws SQLException
     {
-        try
+        SubjectDB subjectDB = new SubjectDB(conn);
+        querySubjectsByProfessor.setString(1, professorID);
+
+        ResultSet resultSet = querySubjectsByProfessor.executeQuery();
+        List<Subject> subjects = new ArrayList<>();
+
+        while (resultSet.next())
         {
-            SubjectDB subjectDB = new SubjectDB(conn);
-            querySubjectsByProfessor.setString(1, professorID);
-
-            ResultSet resultSet = querySubjectsByProfessor.executeQuery();
-            List<Subject> subjects = new ArrayList<>();
-
-            while (resultSet.next())
-            {
-                subjects.add(subjectDB.querySubjectByID(resultSet.getInt(COLUMN_PROFESSOR_HAS_SUBJECT_SUBJECT_ID)));
-            }
-
-            return subjects;
+            subjects.add(subjectDB.querySubjectByID(resultSet.getInt(COLUMN_PROFESSOR_HAS_SUBJECT_SUBJECT_ID)));
         }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+
+        return subjects;
     }
 
     public void insertProfessorHasSubject(String professorID, int subjectID) throws SQLException
     {
-        try
+        insertProfessor_has_subject.setString(1, professorID);
+        insertProfessor_has_subject.setInt(2, subjectID);
+
+        int affectedRows = insertProfessor_has_subject.executeUpdate();
+
+        if (affectedRows != 1)
         {
-            insertProfessor_has_subject.setString(1, professorID);
-            insertProfessor_has_subject.setInt(2, subjectID);
-
-
-            int affectedRows = insertProfessor_has_subject.executeUpdate();
-
-            if (affectedRows != 1)
-            {
-                throw new SQLException("Couldn't insert professor_has_subject!");
-            }
-
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
+            throw new SQLException("Couldn't insert professor_has_subject!");
         }
     }
 
     public void deleteProfessorHasSubject(String professorID, int subjectID) throws SQLException
     {
-        try
+        deleteProfessor_has_subject.setString(2, professorID);
+        deleteProfessor_has_subject.setInt(1, subjectID);
+
+
+        int affectedRows = deleteProfessor_has_subject.executeUpdate();
+
+        if (affectedRows != 1)
         {
-            deleteProfessor_has_subject.setString(2, professorID);
-            deleteProfessor_has_subject.setInt(1, subjectID);
-
-
-            int affectedRows = deleteProfessor_has_subject.executeUpdate();
-
-            if (affectedRows != 1)
-            {
-                throw new SQLException("Couldn't delete professor_has_subject!");
-            }
-
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
+            throw new SQLException("Couldn't delete professor_has_subject!");
         }
     }
 
-    public void updateProfessorHasSubject(String oldProfesssorID, int oldsubjectID, String newProfessorID, int newSubjectID) throws SQLException
+    public void updateProfessorHasSubject(String oldProfessorID, int oldSubjectID, String newProfessorID, int newSubjectID) throws SQLException
     {
-        try
+        updateProfessor_has_subject.setString(1, newProfessorID);
+        updateProfessor_has_subject.setInt(2, newSubjectID);
+        updateProfessor_has_subject.setString(3, oldProfessorID);
+        updateProfessor_has_subject.setInt(4, oldSubjectID);
+
+        int affectedRows = updateProfessor_has_subject.executeUpdate();
+
+        if (affectedRows != 1)
         {
-            updateProfessor_has_subject.setString(1, newProfessorID);
-            updateProfessor_has_subject.setInt(2, newSubjectID);
-            updateProfessor_has_subject.setString(3, oldProfesssorID);
-            updateProfessor_has_subject.setInt(4, oldsubjectID);
-
-            int affectedRows = updateProfessor_has_subject.executeUpdate();
-
-            if (affectedRows != 1)
-            {
-                throw new SQLException("Couldn't update professor_has_subject!");
-            }
-
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
+            throw new SQLException("Couldn't update professor_has_subject!");
         }
     }
 
-    public void close()
+    public void close() throws SQLException
     {
-        try
+        if (querySubjectsByProfessor != null)
         {
-            if (querySubjectsByProfessor != null)
-            {
-                querySubjectsByProfessor.close();
-            }
-            if (queryProfessor_has_subjects != null)
-            {
-                queryProfessor_has_subjects.close();
-            }
-            if (insertProfessor_has_subject != null)
-            {
-                insertProfessor_has_subject.close();
-            }
-            if (deleteProfessor_has_subject != null)
-            {
-                deleteProfessor_has_subject.close();
-            }
-            if (updateProfessor_has_subject != null)
-            {
-                updateProfessor_has_subject.close();
-            }
+            querySubjectsByProfessor.close();
         }
-        catch (SQLException e)
+        if (queryProfessor_has_subjects != null)
         {
-            System.out.println("Couldn't close connection: " + e.getMessage());
+            queryProfessor_has_subjects.close();
+        }
+        if (insertProfessor_has_subject != null)
+        {
+            insertProfessor_has_subject.close();
+        }
+        if (deleteProfessor_has_subject != null)
+        {
+            deleteProfessor_has_subject.close();
+        }
+        if (updateProfessor_has_subject != null)
+        {
+            updateProfessor_has_subject.close();
         }
     }
 

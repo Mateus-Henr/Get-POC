@@ -9,7 +9,7 @@ import java.util.List;
 public class FieldDB
 {
     /*
-     *   TB_Field table columns names
+     *   TB_Field table column's names
      */
     private static final String TABLE_FIELD = "tb_field";
     private static final String COLUMN_FIELD_ID = "ID";
@@ -24,30 +24,23 @@ public class FieldDB
     private static final String UPDATE_FIELD_NAME = "UPDATE " + TABLE_FIELD + " SET " + COLUMN_FIELD_NAME + " = ? WHERE " + COLUMN_FIELD_ID + " = ?";
     private static final String DELETE_FIELD = "DELETE FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
 
-    private PreparedStatement queryField;
-    private PreparedStatement queryFields;
-    private PreparedStatement insertField;
-    private PreparedStatement updateField;
-    private PreparedStatement deleteField;
+    private Connection conn;
 
-    private final Connection conn;
+    private final PreparedStatement queryField;
+    private final PreparedStatement queryFields;
+    private final PreparedStatement insertField;
+    private final PreparedStatement updateField;
+    private final PreparedStatement deleteField;
 
-    public FieldDB(Connection conn)
+    public FieldDB(Connection conn) throws SQLException
     {
         this.conn = conn;
 
-        try
-        {
-            queryField = conn.prepareStatement(QUERY_FIELD);
-            queryFields = conn.prepareStatement(QUERY_FIELDS);
-            insertField = conn.prepareStatement(INSERT_FIELD, Statement.RETURN_GENERATED_KEYS);
-            updateField = conn.prepareStatement(UPDATE_FIELD_NAME);
-            deleteField = conn.prepareStatement(DELETE_FIELD);
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-        }
+        queryField = conn.prepareStatement(QUERY_FIELD);
+        queryFields = conn.prepareStatement(QUERY_FIELDS);
+        insertField = conn.prepareStatement(INSERT_FIELD, Statement.RETURN_GENERATED_KEYS);
+        updateField = conn.prepareStatement(UPDATE_FIELD_NAME);
+        deleteField = conn.prepareStatement(DELETE_FIELD);
     }
 
     public Field queryFieldByID(int id) throws SQLException
@@ -61,15 +54,11 @@ public class FieldDB
                 return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
             }
         }
-        catch (SQLException e)
-        {
-            System.out.println("Query failed: " + e.getMessage());
-        }
 
         return null;
     }
 
-    public List<Field> queryFields()
+    public List<Field> queryFields() throws SQLException
     {
         try (ResultSet resultSet = queryFields.executeQuery())
         {
@@ -82,12 +71,6 @@ public class FieldDB
 
             return fields;
         }
-        catch (SQLException e)
-        {
-            System.out.println("Query failed: " + e.getMessage());
-        }
-
-        return null;
     }
 
     public int insertField(Field field) throws SQLException
@@ -110,7 +93,7 @@ public class FieldDB
             }
         }
 
-        throw new SQLException("Couldn't get _id for field");
+        throw new SQLException("Couldn't get _id for field.");
     }
 
     public Field deleteFieldByID(int id) throws SQLException
@@ -134,34 +117,27 @@ public class FieldDB
         return oldField;
     }
 
-    public void close()
+    public void close() throws SQLException
     {
-        try
+        if (queryField != null)
         {
-            if (queryField != null)
-            {
-                queryField.close();
-            }
-            if (queryFields != null)
-            {
-                queryFields.close();
-            }
-            if (insertField != null)
-            {
-                insertField.close();
-            }
-            if (deleteField != null)
-            {
-                deleteField.close();
-            }
-            if (updateField != null)
-            {
-                updateField.close();
-            }
+            queryField.close();
         }
-        catch (SQLException e)
+        if (queryFields != null)
         {
-            System.out.println(e.getMessage());
+            queryFields.close();
+        }
+        if (insertField != null)
+        {
+            insertField.close();
+        }
+        if (deleteField != null)
+        {
+            deleteField.close();
+        }
+        if (updateField != null)
+        {
+            updateField.close();
         }
     }
 

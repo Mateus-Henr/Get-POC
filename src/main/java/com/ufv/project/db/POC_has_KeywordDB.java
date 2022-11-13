@@ -20,58 +20,42 @@ public class POC_has_KeywordDB
     private static final String UPDATE_POC_HAS_KEYWORD = "UPDATE " + TABLE_POC_HAS_KEYWORD + " SET " + COLUMN_POC_HAS_KEYWORD_POC_ID + " = ?, " + COLUMN_POC_HAS_KEYWORD_KEYWORD_ID + " = ? WHERE " + COLUMN_POC_HAS_KEYWORD_POC_ID + " = ? AND " + COLUMN_POC_HAS_KEYWORD_KEYWORD_ID + " = ?";
     private static final String DELETE_POC_HAS_KEYWORD = "DELETE FROM " + TABLE_POC_HAS_KEYWORD + " WHERE " + COLUMN_POC_HAS_KEYWORD_POC_ID + " = ? AND " + COLUMN_POC_HAS_KEYWORD_KEYWORD_ID + " = ?";
 
-    private PreparedStatement queryKeywordsByPOCId;
-    private PreparedStatement queryAllPOC_has_Keyword;
-    private PreparedStatement insertPOC_has_Keyword;
-    private PreparedStatement updatePOC_has_Keyword;
-    private PreparedStatement deletePOC_has_Keyword;
+    private Connection conn;
 
-    private final Connection conn;
+    private final PreparedStatement queryKeywordsByPOCId;
+    private final PreparedStatement queryAllPOC_has_Keyword;
+    private final PreparedStatement insertPOC_has_Keyword;
+    private final PreparedStatement updatePOC_has_Keyword;
+    private final PreparedStatement deletePOC_has_Keyword;
 
-    public POC_has_KeywordDB(Connection conn)
+    public POC_has_KeywordDB(Connection conn) throws SQLException
     {
         this.conn = conn;
 
-        try
-        {
-            queryKeywordsByPOCId = conn.prepareStatement(QUERY_KEYWORDS_BY_POC_ID);
-            queryAllPOC_has_Keyword = conn.prepareStatement(QUERY_ALL_POC_HAS_KEYWORD);
-            insertPOC_has_Keyword = conn.prepareStatement(INSERT_POC_HAS_KEYWORD, Statement.RETURN_GENERATED_KEYS);
-            deletePOC_has_Keyword = conn.prepareStatement(DELETE_POC_HAS_KEYWORD);
-            updatePOC_has_Keyword = conn.prepareStatement(UPDATE_POC_HAS_KEYWORD);
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Couldn't prepare statement: " + e.getMessage());
-        }
+        queryKeywordsByPOCId = conn.prepareStatement(QUERY_KEYWORDS_BY_POC_ID);
+        queryAllPOC_has_Keyword = conn.prepareStatement(QUERY_ALL_POC_HAS_KEYWORD);
+        insertPOC_has_Keyword = conn.prepareStatement(INSERT_POC_HAS_KEYWORD, Statement.RETURN_GENERATED_KEYS);
+        deletePOC_has_Keyword = conn.prepareStatement(DELETE_POC_HAS_KEYWORD);
+        updatePOC_has_Keyword = conn.prepareStatement(UPDATE_POC_HAS_KEYWORD);
     }
 
-    public List<String> queryKeywordsByPOCID(int poc_id)
+    public List<String> queryKeywordsByPOCID(int POCID) throws SQLException
     {
-        try
+        KeywordDB keywordDB = new KeywordDB(conn);
+        queryKeywordsByPOCId.setInt(1, POCID);
+
+        ResultSet results = queryKeywordsByPOCId.executeQuery();
+        List<String> keywords = new ArrayList<>();
+
+        while (results.next())
         {
-            KeywordDB keywordDB = new KeywordDB(conn);
-            queryKeywordsByPOCId.setInt(1, poc_id);
-
-            ResultSet results = queryKeywordsByPOCId.executeQuery();
-            List<String> keywords = new ArrayList<>();
-
-            while (results.next())
-            {
-                keywords.add(keywordDB.queryKeywordByID(results.getInt(COLUMN_POC_HAS_KEYWORD_KEYWORD_ID_INDEX)));
-            }
-
-            return keywords;
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Query failed: " + e.getMessage());
+            keywords.add(keywordDB.queryKeywordByID(results.getInt(COLUMN_POC_HAS_KEYWORD_KEYWORD_ID_INDEX)));
         }
 
-        return null;
+        return keywords;
     }
 
-    public List<Integer> queryAllPOC_has_Keyword()
+    public List<Integer> queryAllPOC_has_Keyword() throws SQLException
     {
         try (ResultSet results = queryAllPOC_has_Keyword.executeQuery())
         {
@@ -84,107 +68,72 @@ public class POC_has_KeywordDB
 
             return poc_has_keyword;
         }
-        catch (SQLException e)
-        {
-            System.out.println("Couldn't query all POC_has_Keyword: " + e.getMessage());
-        }
-
-        return null;
     }
 
-    public void insertPOC_has_Keyword(int poc_id, int keyword_id)
+    public void insertPOC_has_Keyword(int POCID, int keywordID) throws SQLException
     {
-        try
+        insertPOC_has_Keyword.setInt(1, POCID);
+        insertPOC_has_Keyword.setInt(2, keywordID);
+
+        System.out.println(insertPOC_has_Keyword.toString());
+
+        int affectedRows = insertPOC_has_Keyword.executeUpdate();
+
+        if (affectedRows != 1)
         {
-            insertPOC_has_Keyword.setInt(1, poc_id);
-            insertPOC_has_Keyword.setInt(2, keyword_id);
-
-            System.out.println(insertPOC_has_Keyword.toString());
-
-            int affectedRows = insertPOC_has_Keyword.executeUpdate();
-
-            if (affectedRows != 1)
-            {
-                throw new SQLException("Couldn't insert POC_has_Keyword!");
-            }
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Couldn't insert POC_has_Keyword: " + e.getMessage());
+            throw new SQLException("Couldn't insert POC_has_Keyword!");
         }
     }
 
-    public void deletePOC_has_Keyword(int poc_id, int keyword_id)
+    public void deletePOC_has_Keyword(int POCID, int keywordID) throws SQLException
     {
-        try
-        {
-            deletePOC_has_Keyword.setInt(1, poc_id);
-            deletePOC_has_Keyword.setInt(2, keyword_id);
+        deletePOC_has_Keyword.setInt(1, POCID);
+        deletePOC_has_Keyword.setInt(2, keywordID);
 
-            int affectedRows = deletePOC_has_Keyword.executeUpdate();
+        int affectedRows = deletePOC_has_Keyword.executeUpdate();
 
-            if (affectedRows != 1)
-            {
-                throw new SQLException("Couldn't delete POC_has_Keyword!");
-            }
-        }
-        catch (SQLException e)
+        if (affectedRows != 1)
         {
-            System.out.println("Couldn't delete POC_has_Keyword: " + e.getMessage());
+            throw new SQLException("Couldn't delete POC_has_Keyword!");
         }
     }
 
-    public void updatePOC_has_Keyword(int poc_id, int keyword_id, int new_poc_id, int new_keyword_id)
+    public void updatePOC_has_Keyword(int oldPOCID, int keywordID, int newPOCID, int newKeywordID) throws SQLException
     {
-        try
+        updatePOC_has_Keyword.setInt(1, newPOCID);
+        updatePOC_has_Keyword.setInt(2, newKeywordID);
+        updatePOC_has_Keyword.setInt(3, oldPOCID);
+        updatePOC_has_Keyword.setInt(4, keywordID);
+
+        int affectedRows = updatePOC_has_Keyword.executeUpdate();
+
+        if (affectedRows != 1)
         {
-            updatePOC_has_Keyword.setInt(1, new_poc_id);
-            updatePOC_has_Keyword.setInt(2, new_keyword_id);
-            updatePOC_has_Keyword.setInt(3, poc_id);
-            updatePOC_has_Keyword.setInt(4, keyword_id);
-
-            int affectedRows = updatePOC_has_Keyword.executeUpdate();
-
-            if (affectedRows != 1)
-            {
-                throw new SQLException("Couldn't update POC_has_Keyword!");
-            }
+            throw new SQLException("Couldn't update POC_has_Keyword!");
         }
-        catch (SQLException e)
-        {
-            System.out.println("Couldn't update POC_has_Keyword: " + e.getMessage());
-        }
-
     }
 
-    public void close()
+    public void close() throws SQLException
     {
-        try
+        if (queryKeywordsByPOCId != null)
         {
-            if (queryKeywordsByPOCId != null)
-            {
-                queryKeywordsByPOCId.close();
-            }
-            if (queryAllPOC_has_Keyword != null)
-            {
-                queryAllPOC_has_Keyword.close();
-            }
-            if (insertPOC_has_Keyword != null)
-            {
-                insertPOC_has_Keyword.close();
-            }
-            if (deletePOC_has_Keyword != null)
-            {
-                deletePOC_has_Keyword.close();
-            }
-            if (updatePOC_has_Keyword != null)
-            {
-                updatePOC_has_Keyword.close();
-            }
+            queryKeywordsByPOCId.close();
         }
-        catch (SQLException e)
+        if (queryAllPOC_has_Keyword != null)
         {
-            System.out.println("Couldn't close connection: " + e.getMessage());
+            queryAllPOC_has_Keyword.close();
+        }
+        if (insertPOC_has_Keyword != null)
+        {
+            insertPOC_has_Keyword.close();
+        }
+        if (deletePOC_has_Keyword != null)
+        {
+            deletePOC_has_Keyword.close();
+        }
+        if (updatePOC_has_Keyword != null)
+        {
+            updatePOC_has_Keyword.close();
         }
     }
 

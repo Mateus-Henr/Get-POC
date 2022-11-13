@@ -27,31 +27,23 @@ public class PDFDB
     private static final String UPDATE_PDF = "UPDATE " + TABLE_PDF + " SET " + COLUMN_PDF_PATH + " = ?, " + COLUMN_PDF_CREATION_DATE + " = ? WHERE " + COLUMN_PDF_ID + " = ?";
     private static final String DELETE_PDF = "DELETE FROM " + TABLE_PDF + " WHERE " + COLUMN_PDF_ID + " = ?";
 
-    private PreparedStatement queryPDF;
-    private PreparedStatement queryPDFs;
-    private PreparedStatement insertPDF;
-    private PreparedStatement updatePDF;
-    private PreparedStatement deletePDF;
+    private final PreparedStatement queryPDF;
+    private final PreparedStatement queryPDFs;
+    private final PreparedStatement insertPDF;
+    private final PreparedStatement updatePDF;
+    private final PreparedStatement deletePDF;
 
     private Connection conn;
 
-    public PDFDB(Connection conn)
+    public PDFDB(Connection conn) throws SQLException
     {
         this.conn = conn;
 
-        try
-        {
-            queryPDF = conn.prepareStatement(QUERY_PDF);
-            queryPDFs = conn.prepareStatement(QUERY_PDFS);
-            insertPDF = conn.prepareStatement(INSERT_PDF, Statement.RETURN_GENERATED_KEYS);
-            deletePDF = conn.prepareStatement(DELETE_PDF);
-            updatePDF = conn.prepareStatement(UPDATE_PDF);
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-        }
-
+        queryPDF = conn.prepareStatement(QUERY_PDF);
+        queryPDFs = conn.prepareStatement(QUERY_PDFS);
+        insertPDF = conn.prepareStatement(INSERT_PDF, Statement.RETURN_GENERATED_KEYS);
+        deletePDF = conn.prepareStatement(DELETE_PDF);
+        updatePDF = conn.prepareStatement(UPDATE_PDF);
     }
 
     public PDF queryPDFByID(int id) throws SQLException
@@ -64,10 +56,6 @@ public class PDFDB
             {
                 return new PDF(results.getInt(COLUMN_PDF_ID_INDEX), results.getString(COLUMN_PDF_PATH_INDEX), results.getDate(COLUMN_PDF_CREATION_DATE_INDEX).toLocalDate());
             }
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Query failed: " + e.getMessage());
         }
 
         return null;
@@ -86,12 +74,6 @@ public class PDFDB
 
             return pdfs;
         }
-        catch (SQLException e)
-        {
-            System.out.println("Query failed: " + e.getMessage());
-        }
-
-        return null;
     }
 
     public int insertPDF(PDF pdfToInsert) throws SQLException
@@ -104,7 +86,7 @@ public class PDFDB
 
         if (affectedRows != 1)
         {
-            throw new SQLException("Couldn't insert pdf");
+            throw new SQLException("Couldn't insert PDF.");
         }
 
         try (ResultSet generatedKeys = insertPDF.getGeneratedKeys())
@@ -114,12 +96,8 @@ public class PDFDB
                 return generatedKeys.getInt(1);
             }
         }
-        catch (SQLException e)
-        {
-            System.out.println("Query failed: " + e.getMessage());
-        }
 
-        throw new SQLException("Couldn't get _id for pdf");
+        throw new SQLException("Couldn't get _id for PDF.");
     }
 
     public PDF deletePDF(PDF pdfToDelete) throws SQLException
@@ -136,34 +114,34 @@ public class PDFDB
         return null;
     }
 
-    public PDF updatePDF(PDF pdfToUpdate) throws SQLException
+    public PDF updatePDF(PDF newPDF) throws SQLException
     {
-        PDF oldPDF = queryPDFByID(pdfToUpdate.getId());
+        PDF oldPDF = queryPDFByID(newPDF.getId());
 
         if (oldPDF == null)
         {
             return null;
         }
 
-        if (pdfToUpdate.getPath() != null)
+        if (newPDF.getPath() != null)
         {
-            updatePDF.setString(1, pdfToUpdate.getPath());
+            updatePDF.setString(1, newPDF.getPath());
         }
         else
         {
             updatePDF.setString(1, oldPDF.getPath());
         }
 
-        if (pdfToUpdate.getLastModificationDate() != null)
+        if (newPDF.getLastModificationDate() != null)
         {
-            updatePDF.setDate(2, Date.valueOf(pdfToUpdate.getLastModificationDate()));
+            updatePDF.setDate(2, Date.valueOf(newPDF.getLastModificationDate()));
         }
         else
         {
             updatePDF.setDate(2, Date.valueOf(oldPDF.getLastModificationDate()));
         }
 
-        updatePDF.setInt(3, pdfToUpdate.getId());
+        updatePDF.setInt(3, newPDF.getId());
 
         int affectedRows = updatePDF.executeUpdate();
 
@@ -175,34 +153,27 @@ public class PDFDB
         return null;
     }
 
-    public void close()
+    public void close() throws SQLException
     {
-        try
+        if (queryPDF != null)
         {
-            if (queryPDF != null)
-            {
-                queryPDF.close();
-            }
-            if (queryPDFs != null)
-            {
-                queryPDFs.close();
-            }
-            if (insertPDF != null)
-            {
-                insertPDF.close();
-            }
-            if (deletePDF != null)
-            {
-                deletePDF.close();
-            }
-            if (updatePDF != null)
-            {
-                updatePDF.close();
-            }
+            queryPDF.close();
         }
-        catch (SQLException e)
+        if (queryPDFs != null)
         {
-            System.out.println(e.getMessage());
+            queryPDFs.close();
+        }
+        if (insertPDF != null)
+        {
+            insertPDF.close();
+        }
+        if (deletePDF != null)
+        {
+            deletePDF.close();
+        }
+        if (updatePDF != null)
+        {
+            updatePDF.close();
         }
     }
 

@@ -2,6 +2,7 @@ package com.ufv.project.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class User_manages_userDB
 {
@@ -18,28 +19,21 @@ public class User_manages_userDB
     private static final String UPDATE_USER_MANAGES_USER = "UPDATE " + TABLE_USER_MANAGES_USER + " SET " + COLUMN_USER_MANAGES_ADMINISTRATOR_ID + " = ?, " + COLUMN_USER_MANAGES_ADMINISTERED_ID + " = ? WHERE " + COLUMN_USER_MANAGES_ADMINISTRATOR_ID + " = ? AND " + COLUMN_USER_MANAGES_ADMINISTERED_ID + " = ?";
     private static final String DELETE_USER_MANAGES_USER = "DELETE FROM " + TABLE_USER_MANAGES_USER + " WHERE " + COLUMN_USER_MANAGES_ADMINISTRATOR_ID + " = ? AND " + COLUMN_USER_MANAGES_ADMINISTERED_ID + " = ?";
 
+    private Connection conn;
+
     private PreparedStatement getAllUserManagesUser;
     private PreparedStatement insertUserManagesUser;
     private PreparedStatement updateUserManagesUser;
     private PreparedStatement deleteUserManagesUser;
 
-    private final Connection conn;
-
-    public User_manages_userDB(Connection conn)
+    public User_manages_userDB(Connection conn) throws SQLException
     {
         this.conn = conn;
 
-        try
-        {
-            insertUserManagesUser = conn.prepareStatement(INSERT_USER_MANAGES_USER);
-            deleteUserManagesUser = conn.prepareStatement(DELETE_USER_MANAGES_USER);
-            getAllUserManagesUser = conn.prepareStatement(GET_ALL_USER_MANAGES_USER);
-            updateUserManagesUser = conn.prepareStatement(UPDATE_USER_MANAGES_USER);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        insertUserManagesUser = conn.prepareStatement(INSERT_USER_MANAGES_USER);
+        deleteUserManagesUser = conn.prepareStatement(DELETE_USER_MANAGES_USER);
+        getAllUserManagesUser = conn.prepareStatement(GET_ALL_USER_MANAGES_USER);
+        updateUserManagesUser = conn.prepareStatement(UPDATE_USER_MANAGES_USER);
     }
 
 

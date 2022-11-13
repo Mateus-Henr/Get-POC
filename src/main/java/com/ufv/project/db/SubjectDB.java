@@ -18,7 +18,6 @@ public class SubjectDB
     private static final int COLUMN_SUBJECT_DESCRIPTION_INDEX = 3;
 
     private static final String QUERY_SUBJECT = "SELECT * FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_ID + " = ?";
-
     private static final String QUERY_SUBJECTS = "SELECT * FROM " + TABLE_SUBJECT;
     private static final String INSERT_SUBJECT = "INSERT INTO " + TABLE_SUBJECT + " (" + COLUMN_SUBJECT_ID + ", " + COLUMN_SUBJECT_NAME + ", " + COLUMN_SUBJECT_DESCRIPTION + ") VALUES (?, ?, ?)";
     private static final String UPDATE_SUBJECT = "UPDATE " + TABLE_SUBJECT + " SET " + COLUMN_SUBJECT_NAME + " = ?, " + COLUMN_SUBJECT_DESCRIPTION + " = ? WHERE " + COLUMN_SUBJECT_ID + " = ?";
@@ -26,28 +25,21 @@ public class SubjectDB
 
     private Connection conn;
 
-    private PreparedStatement querySubject;
-    private PreparedStatement querySubjects;
-    private PreparedStatement insertSubject;
-    private PreparedStatement updateSubject;
-    private PreparedStatement deleteSubject;
+    private final PreparedStatement querySubject;
+    private final PreparedStatement querySubjects;
+    private final PreparedStatement insertSubject;
+    private final PreparedStatement updateSubject;
+    private final PreparedStatement deleteSubject;
 
-    public SubjectDB(Connection conn)
+    public SubjectDB(Connection conn) throws SQLException
     {
         this.conn = conn;
 
-        try
-        {
-            querySubject = conn.prepareStatement(QUERY_SUBJECT);
-            querySubjects = conn.prepareStatement(QUERY_SUBJECTS);
-            insertSubject = conn.prepareStatement(INSERT_SUBJECT, Statement.RETURN_GENERATED_KEYS);
-            updateSubject = conn.prepareStatement(UPDATE_SUBJECT);
-            deleteSubject = conn.prepareStatement(DELETE_SUBJECT);
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-        }
+        querySubject = conn.prepareStatement(QUERY_SUBJECT);
+        querySubjects = conn.prepareStatement(QUERY_SUBJECTS);
+        insertSubject = conn.prepareStatement(INSERT_SUBJECT, Statement.RETURN_GENERATED_KEYS);
+        updateSubject = conn.prepareStatement(UPDATE_SUBJECT);
+        deleteSubject = conn.prepareStatement(DELETE_SUBJECT);
     }
 
     public Subject querySubjectByID(int id) throws SQLException
@@ -60,10 +52,6 @@ public class SubjectDB
             {
                 return new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX), resultSet.getString(COLUMN_SUBJECT_NAME_INDEX), resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX));
             }
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
         }
 
         return null;
@@ -79,10 +67,6 @@ public class SubjectDB
             {
                 subjects.add(new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX), resultSet.getString(COLUMN_SUBJECT_NAME_INDEX), resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX)));
             }
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
         }
 
         return subjects;
@@ -168,34 +152,27 @@ public class SubjectDB
         return null;
     }
 
-    public void close()
+    public void close() throws SQLException
     {
-        try
+        if (querySubject != null)
         {
-            if (querySubject != null)
-            {
-                querySubject.close();
-            }
-            if (querySubjects != null)
-            {
-                querySubjects.close();
-            }
-            if (insertSubject != null)
-            {
-                insertSubject.close();
-            }
-            if (updateSubject != null)
-            {
-                updateSubject.close();
-            }
-            if (deleteSubject != null)
-            {
-                deleteSubject.close();
-            }
+            querySubject.close();
         }
-        catch (SQLException e)
+        if (querySubjects != null)
         {
-            System.out.println(e.getMessage());
+            querySubjects.close();
+        }
+        if (insertSubject != null)
+        {
+            insertSubject.close();
+        }
+        if (updateSubject != null)
+        {
+            updateSubject.close();
+        }
+        if (deleteSubject != null)
+        {
+            deleteSubject.close();
         }
     }
 

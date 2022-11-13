@@ -26,30 +26,23 @@ public class ProfessorDB
     private static final String UPDATE_PROFESSOR = "UPDATE " + TABLE_PROFESSOR + " SET " + COLUMN_PROFESSOR_EMAIL + " = ? WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
     private static final String DELETE_PROFESSOR = "DELETE FROM " + TABLE_PROFESSOR + " WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
 
-    private PreparedStatement queryProfessor;
-    private PreparedStatement queryProfessors;
-    private PreparedStatement insertProfessor;
-    private PreparedStatement updateProfessor;
-    private PreparedStatement deleteProfessor;
-
     private Connection conn;
 
-    public ProfessorDB(Connection conn)
+    private final PreparedStatement queryProfessor;
+    private final PreparedStatement queryProfessors;
+    private final PreparedStatement insertProfessor;
+    private final PreparedStatement updateProfessor;
+    private final PreparedStatement deleteProfessor;
+
+    public ProfessorDB(Connection conn) throws SQLException
     {
         this.conn = conn;
 
-        try
-        {
-            queryProfessor = conn.prepareStatement(QUERY_PROFESSOR);
-            queryProfessors = conn.prepareStatement(QUERY_PROFESSORS);
-            insertProfessor = conn.prepareStatement(INSERT_PROFESSOR, PreparedStatement.RETURN_GENERATED_KEYS);
-            deleteProfessor = conn.prepareStatement(DELETE_PROFESSOR);
-            updateProfessor = conn.prepareStatement(UPDATE_PROFESSOR);
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        queryProfessor = conn.prepareStatement(QUERY_PROFESSOR);
+        queryProfessors = conn.prepareStatement(QUERY_PROFESSORS);
+        insertProfessor = conn.prepareStatement(INSERT_PROFESSOR, PreparedStatement.RETURN_GENERATED_KEYS);
+        deleteProfessor = conn.prepareStatement(DELETE_PROFESSOR);
+        updateProfessor = conn.prepareStatement(UPDATE_PROFESSOR);
     }
 
     protected Professor queryProfessor(String username, String name, String password) throws SQLException
@@ -103,28 +96,24 @@ public class ProfessorDB
 
     protected Professor deleteProfessor(String username, String name, String password) throws SQLException
     {
-
         Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
-        Professor professor2 = queryProfessor(username, name, password);
+        Professor foundProfessor = queryProfessor(username, name, password);
 
         deleteProfessor.setString(1, username);
 
-        for (Subject subject : professor2.getSubjectsTaught())
+        for (Subject subject : foundProfessor.getSubjectsTaught())
         {
-            professor_has_subjectDB.deleteProfessorHasSubject(professor2.getUsername(), subject.getId());
+            professor_has_subjectDB.deleteProfessorHasSubject(foundProfessor.getUsername(), subject.getId());
         }
 
         int affectedRows = deleteProfessor.executeUpdate();
 
         if (affectedRows == 1)
         {
-            return professor2;
+            return foundProfessor;
         }
-        else
-        {
-            System.out.println("Couldn't delete professor!");
-            return null;
-        }
+
+        return null;
     }
 
     protected Professor updateProfessor(Professor professor) throws SQLException
@@ -133,7 +122,6 @@ public class ProfessorDB
 
         if (oldProfessor == null)
         {
-            System.out.println("Professor doesn't exist!");
             return null;
         }
 
@@ -169,11 +157,8 @@ public class ProfessorDB
         {
             return professor;
         }
-        else
-        {
-            System.out.println("Couldn't update professor!");
-            return null;
-        }
+
+        return null;
     }
 
     public List<Professor> getAllProfessors() throws SQLException
@@ -184,38 +169,31 @@ public class ProfessorDB
                 .toList();
     }
 
-    protected void close()
+    public void close() throws SQLException
     {
-        try
+        if (queryProfessor != null)
         {
-            if (queryProfessor != null)
-            {
-                queryProfessor.close();
-            }
-            if (queryProfessors != null)
-            {
-                queryProfessors.close();
-            }
-            if (insertProfessor != null)
-            {
-                insertProfessor.close();
-            }
-            if (updateProfessor != null)
-            {
-                updateProfessor.close();
-            }
-            if (deleteProfessor != null)
-            {
-                deleteProfessor.close();
-            }
-            if (conn != null)
-            {
-                conn.close();
-            }
+            queryProfessor.close();
         }
-        catch (SQLException e)
+        if (queryProfessors != null)
         {
-            System.out.println(e.getMessage());
+            queryProfessors.close();
+        }
+        if (insertProfessor != null)
+        {
+            insertProfessor.close();
+        }
+        if (updateProfessor != null)
+        {
+            updateProfessor.close();
+        }
+        if (deleteProfessor != null)
+        {
+            deleteProfessor.close();
+        }
+        if (conn != null)
+        {
+            conn.close();
         }
     }
 

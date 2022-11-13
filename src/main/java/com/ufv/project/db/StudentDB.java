@@ -27,34 +27,27 @@ public class StudentDB
 
     private static final String QUERY_STUDENT = "SELECT * FROM " + TABLE_STUDENT + " WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
     private static final String QUERY_STUDENTS = "SELECT * FROM " + TABLE_STUDENT;
-    private static final String UPDATE_STUDENT = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_REGISTRATION + " = ?, " + COLUMN_STUDENT_EMAIL + " = ?, " + COLUMN_STUDENT_POC + " = ? WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
     private static final String INSERT_STUDENT = "INSERT INTO " + TABLE_STUDENT + " (" + COLUMN_STUDENT_EMAIL + ", " + COLUMN_STUDENT_REGISTRATION + ", " + COLUMN_STUDENT_POC + ", " + COLUMN_USER_STUDENT_ID + ") VALUES (?, ?, ?, ?)";
+    private static final String UPDATE_STUDENT = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_REGISTRATION + " = ?, " + COLUMN_STUDENT_EMAIL + " = ?, " + COLUMN_STUDENT_POC + " = ? WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
     private static final String DELETE_STUDENT = "DELETE FROM " + TABLE_STUDENT + " WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
-
-    private PreparedStatement queryStudent;
-    private PreparedStatement queryStudents;
-    private PreparedStatement insertStudent;
-    private PreparedStatement deleteStudent;
-    private PreparedStatement updateStudent;
 
     private Connection conn;
 
-    public StudentDB(Connection conn)
+    private final PreparedStatement queryStudent;
+    private final PreparedStatement queryStudents;
+    private final PreparedStatement insertStudent;
+    private final PreparedStatement deleteStudent;
+    private final PreparedStatement updateStudent;
+
+    public StudentDB(Connection conn) throws SQLException
     {
         this.conn = conn;
 
-        try
-        {
-            queryStudent = conn.prepareStatement(QUERY_STUDENT);
-            queryStudents = conn.prepareStatement(QUERY_STUDENTS);
-            insertStudent = conn.prepareStatement(INSERT_STUDENT, PreparedStatement.RETURN_GENERATED_KEYS);
-            deleteStudent = conn.prepareStatement(DELETE_STUDENT);
-            updateStudent = conn.prepareStatement(UPDATE_STUDENT);
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        queryStudent = conn.prepareStatement(QUERY_STUDENT);
+        queryStudents = conn.prepareStatement(QUERY_STUDENTS);
+        insertStudent = conn.prepareStatement(INSERT_STUDENT, PreparedStatement.RETURN_GENERATED_KEYS);
+        deleteStudent = conn.prepareStatement(DELETE_STUDENT);
+        updateStudent = conn.prepareStatement(UPDATE_STUDENT);
     }
 
     protected Student queryStudent(String username, String name, String password) throws SQLException
@@ -74,10 +67,6 @@ public class StudentDB
                 );
             }
         }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
 
         return null;
     }
@@ -95,6 +84,7 @@ public class StudentDB
         {
             throw new SQLException("Couldn't insert student!");
         }
+
         return student.getUsername();
     }
 
@@ -120,7 +110,6 @@ public class StudentDB
 
         if (oldStudent == null)
         {
-            System.out.println("Student not found");
             return null;
         }
 
@@ -166,34 +155,27 @@ public class StudentDB
                 .toList();
     }
 
-    protected void close()
+    public void close() throws SQLException
     {
-        try
+        if (queryStudent != null)
         {
-            if (queryStudent != null)
-            {
-                queryStudent.close();
-            }
-            if (queryStudents != null)
-            {
-                queryStudents.close();
-            }
-            if (insertStudent != null)
-            {
-                insertStudent.close();
-            }
-            if (deleteStudent != null)
-            {
-                deleteStudent.close();
-            }
-            if (updateStudent != null)
-            {
-                updateStudent.close();
-            }
+            queryStudent.close();
         }
-        catch (SQLException e)
+        if (queryStudents != null)
         {
-            e.printStackTrace();
+            queryStudents.close();
+        }
+        if (insertStudent != null)
+        {
+            insertStudent.close();
+        }
+        if (deleteStudent != null)
+        {
+            deleteStudent.close();
+        }
+        if (updateStudent != null)
+        {
+            updateStudent.close();
         }
     }
 
