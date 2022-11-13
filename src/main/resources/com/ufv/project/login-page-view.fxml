@@ -8,7 +8,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.*?>
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+<VBox fx:id="mainPane"
+      fx:controller="com.ufv.project.controller.LoginController"
+      alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity"
       xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
                 prefWidth="655.0" style="-fx-background-color: #001524;" BorderPane.alignment="CENTER">
@@ -18,7 +21,7 @@
             <Pane layoutX="59.0" layoutY="145.0" prefHeight="28.0" prefWidth="212.0"
                   style="-fx-background-color: #FFECD1;">
                 <children>
-                    <TextField layoutX="3.0" layoutY="3.0" prefHeight="22.0" prefWidth="206.0"
+                    <TextField fx:id="usernameField" layoutX="3.0" layoutY="3.0" prefHeight="22.0" prefWidth="206.0"
                                promptText="E-mail ou Usuario" style="-fx-background-color: #001524;">
                         <font>
                             <Font name="Ubuntu Mono Bold" size="13.0"/>
@@ -26,13 +29,15 @@
                     </TextField>
                 </children>
             </Pane>
-            <PasswordField layoutX="63.0" layoutY="188.0" prefHeight="21.0" prefWidth="206.0" promptText="Senha"
+            <PasswordField fx:id="passwordField" layoutX="63.0" layoutY="188.0" prefHeight="21.0" prefWidth="206.0"
+                           promptText="Senha"
                            style="-fx-background-color: #001524; -fx-border-radius: 50;">
                 <font>
                     <Font name="Ubuntu Mono Bold" size="13.0"/>
                 </font>
             </PasswordField>
-            <Button defaultButton="true" layoutX="82.0" layoutY="233.0" mnemonicParsing="false" prefHeight="0.0"
+            <Button fx:id="loginButton" defaultButton="true" layoutX="82.0" layoutY="233.0" mnemonicParsing="false"
+                    prefHeight="0.0"
                     prefWidth="169.0" style="-fx-border-radius: 50; -fx-background-color: #FFECD1;" text="LOGIN"
                     textFill="#112a3b">
                 <font>
