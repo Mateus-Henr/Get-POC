@@ -129,9 +129,9 @@ public class ProfessorDB
 
     protected Professor updateProfessor(Professor professor) throws SQLException
     {
-        Professor oldprofessor = queryProfessor(professor.getUsername(), professor.getName(), professor.getPassword());
+        Professor oldProfessor = queryProfessor(professor.getUsername(), professor.getName(), professor.getPassword());
 
-        if (oldprofessor == null)
+        if (oldProfessor == null)
         {
             System.out.println("Professor doesn't exist!");
             return null;
@@ -140,9 +140,9 @@ public class ProfessorDB
         Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
 
         //Delete old subjects
-        for (Subject subject : oldprofessor.getSubjectsTaught())
+        for (Subject subject : oldProfessor.getSubjectsTaught())
         {
-            professor_has_subjectDB.deleteProfessorHasSubject(oldprofessor.getUsername(), subject.getId());
+            professor_has_subjectDB.deleteProfessorHasSubject(oldProfessor.getUsername(), subject.getId());
         }
 
         //Insert new subjects
@@ -158,7 +158,7 @@ public class ProfessorDB
         }
         else
         {
-            updateProfessor.setString(1, oldprofessor.getEmail());
+            updateProfessor.setString(1, oldProfessor.getEmail());
         }
 
         updateProfessor.setString(2, professor.getUsername());
@@ -184,36 +184,38 @@ public class ProfessorDB
                 .toList();
     }
 
-    protected void close() throws SQLException
+    protected void close()
     {
-        if (queryProfessor != null)
+        try
         {
-            queryProfessor.close();
+            if (queryProfessor != null)
+            {
+                queryProfessor.close();
+            }
+            if (queryProfessors != null)
+            {
+                queryProfessors.close();
+            }
+            if (insertProfessor != null)
+            {
+                insertProfessor.close();
+            }
+            if (updateProfessor != null)
+            {
+                updateProfessor.close();
+            }
+            if (deleteProfessor != null)
+            {
+                deleteProfessor.close();
+            }
+            if (conn != null)
+            {
+                conn.close();
+            }
         }
-
-        if (queryProfessors != null)
+        catch (SQLException e)
         {
-            queryProfessors.close();
-        }
-
-        if (insertProfessor != null)
-        {
-            insertProfessor.close();
-        }
-
-        if (updateProfessor != null)
-        {
-            updateProfessor.close();
-        }
-
-        if (deleteProfessor != null)
-        {
-            deleteProfessor.close();
-        }
-
-        if (conn != null)
-        {
-            conn.close();
+            System.out.println(e.getMessage());
         }
     }
 

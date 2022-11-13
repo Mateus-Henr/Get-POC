@@ -10,7 +10,6 @@ public class User_manages_userDB
     private static final String COLUMN_USER_MANAGES_ADMINISTRATOR_ID = "TB_User_Administrator_ID";
     private static final String COLUMN_USER_MANAGES_ADMINISTERED_ID = "TB_User_Administered_ID";
 
-
     private static final int COLUMN_USER_MANAGES_ADMINISTRATOR_ID_INDEX = 1;
     private static final int COLUMN_USER_MANAGES_ADMINISTERED_ID_INDEX = 2;
 

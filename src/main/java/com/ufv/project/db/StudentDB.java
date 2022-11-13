@@ -101,7 +101,7 @@ public class StudentDB
 
     protected Student deleteStudent(String username, String name, String password) throws SQLException
     {
-        Student student2 = queryStudent(username, name, password);
+        Student foundStudent = queryStudent(username, name, password);
         deleteStudent.setString(1, username);
 
         int affectedRows = deleteStudent.executeUpdate();
@@ -111,41 +111,42 @@ public class StudentDB
             throw new SQLException("Couldn't delete student!");
         }
 
-        return student2;
+        return foundStudent;
     }
 
-    protected Student updateStudent(Student student) throws SQLException
+    protected Student updateStudent(Student newStudent) throws SQLException
     {
-        Student student2 = queryStudent(student.getUsername(), student.getName(), student.getPassword());
+        Student oldStudent = queryStudent(newStudent.getUsername(), newStudent.getName(), newStudent.getPassword());
 
-        if (student2 == null)
+        if (oldStudent == null)
         {
             System.out.println("Student not found");
             return null;
         }
 
-        if (student.getEmail() != null)
+        if (newStudent.getEmail() != null)
         {
-            student2.setEmail(student.getEmail());
-        }
-        if (student.getRegistration() != null)
-        {
-            student2.setRegistration(student.getRegistration());
-        }
-        if (student.getPoc_id() != 0)
-        {
-            student2.setPoc_id(student.getPoc_id());
+            oldStudent.setEmail(newStudent.getEmail());
         }
 
-        if (student.getUsername() != null)
+        if (newStudent.getRegistration() != null)
         {
-            student2.setUsername(student.getUsername());
+            oldStudent.setRegistration(newStudent.getRegistration());
+        }
+        if (newStudent.getPoc_id() != 0)
+        {
+            oldStudent.setPoc_id(newStudent.getPoc_id());
         }
 
-        updateStudent.setString(1, student2.getRegistration());
-        updateStudent.setString(2, student2.getEmail());
-        updateStudent.setInt(3, student2.getPoc_id());
-        updateStudent.setString(4, student2.getUsername());
+        if (newStudent.getUsername() != null)
+        {
+            oldStudent.setUsername(newStudent.getUsername());
+        }
+
+        updateStudent.setString(1, oldStudent.getRegistration());
+        updateStudent.setString(2, oldStudent.getEmail());
+        updateStudent.setInt(3, oldStudent.getPoc_id());
+        updateStudent.setString(4, oldStudent.getUsername());
 
         int affectedRows = updateStudent.executeUpdate();
 
@@ -154,7 +155,7 @@ public class StudentDB
             throw new SQLException("Couldn't update student!");
         }
 
-        return student2;
+        return oldStudent;
     }
 
     public List<Student> getAllStudents() throws SQLException

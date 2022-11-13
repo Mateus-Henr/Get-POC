@@ -24,13 +24,13 @@ public class SubjectDB
     private static final String UPDATE_SUBJECT = "UPDATE " + TABLE_SUBJECT + " SET " + COLUMN_SUBJECT_NAME + " = ?, " + COLUMN_SUBJECT_DESCRIPTION + " = ? WHERE " + COLUMN_SUBJECT_ID + " = ?";
     private static final String DELETE_SUBJECT = "DELETE FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_ID + " = ?";
 
+    private Connection conn;
+
     private PreparedStatement querySubject;
     private PreparedStatement querySubjects;
     private PreparedStatement insertSubject;
     private PreparedStatement updateSubject;
     private PreparedStatement deleteSubject;
-
-    private Connection conn;
 
     public SubjectDB(Connection conn)
     {
@@ -116,7 +116,7 @@ public class SubjectDB
 
     public Subject deleteSubject(int id) throws SQLException
     {
-        Subject subject = querySubjectByID(id);
+        Subject foundSubject = querySubjectByID(id);
         deleteSubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
 
         int affectedRows = deleteSubject.executeUpdate();
@@ -126,45 +126,43 @@ public class SubjectDB
             throw new SQLException("Couldn't delete subject");
         }
 
-        return subject;
+        return foundSubject;
     }
 
-    public Subject updateSubject(Subject new_subject) throws SQLException
+    public Subject updateSubject(Subject newSubject) throws SQLException
     {
-        Subject old = querySubjectByID(new_subject.getId());
+        Subject foundSubject = querySubjectByID(newSubject.getId());
 
-        if (old == null)
+        if (foundSubject == null)
         {
             return null;
         }
 
-        if (new_subject.getName() != null)
+        if (newSubject.getName() != null)
         {
-            updateSubject.setString(1, new_subject.getName());
+            updateSubject.setString(1, newSubject.getName());
         }
-
         else
         {
-            updateSubject.setString(1, old.getName());
+            updateSubject.setString(1, foundSubject.getName());
         }
 
-        if (new_subject.getDescription() != null)
+        if (newSubject.getDescription() != null)
         {
-            updateSubject.setString(2, new_subject.getDescription());
+            updateSubject.setString(2, newSubject.getDescription());
         }
-
         else
         {
-            updateSubject.setString(2, old.getDescription());
+            updateSubject.setString(2, foundSubject.getDescription());
         }
 
-        updateSubject.setInt(3, new_subject.getId());
+        updateSubject.setInt(3, newSubject.getId());
 
         int affectedRows = updateSubject.executeUpdate();
 
         if (affectedRows == 1)
         {
-            return old;
+            return foundSubject;
         }
 
         return null;
