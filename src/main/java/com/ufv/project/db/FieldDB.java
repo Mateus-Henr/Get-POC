@@ -100,18 +100,37 @@ public class FieldDB
     {
         Field field = queryFieldByID(id);
 
+        if (field == null)
+        {
+            throw new SQLException("Field with ID: " + id + " doesn't exist.");
+        }
+
         deleteField.setInt(1, id);
         deleteField.executeUpdate();
 
         return field;
     }
 
-    public Field updateField(Field new_field) throws SQLException
+    public Field updateField(Field newField) throws SQLException
     {
-        Field oldField = queryFieldByID(new_field.getId());
+        Field oldField = queryFieldByID(newField.getId());
 
-        updateField.setString(1, new_field.getName());
-        updateField.setInt(2, new_field.getId());
+        if (oldField == null)
+        {
+            throw new SQLException("Field with ID " + newField.toString() + " doesn't exist.");
+        }
+
+        updateField.setInt(2, newField.getId());
+
+        if (newField.getName() == null)
+        {
+            updateField.setString(1, oldField.getName());
+        }
+        else
+        {
+            updateField.setString(1, newField.getName());
+        }
+
         updateField.executeUpdate();
 
         return oldField;

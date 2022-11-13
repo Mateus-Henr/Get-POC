@@ -22,34 +22,27 @@ public class UserDB
 
     private static final String QUERY_USER = "SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_USER_ID + " = ?";
     private static final String QUERY_USERS = "SELECT * FROM " + TABLE_USER;
-    public static final String INSERT_USER = "INSERT INTO " + TABLE_USER + " (" + COLUMN_USER_ID + ", " + COLUMN_USER_PASSWORD + ", " + COLUMN_USER_NAME + ", " + COLUMN_USER_TYPE + ") VALUES (?, ?, ?, ?)";
+    private static final String INSERT_USER = "INSERT INTO " + TABLE_USER + " (" + COLUMN_USER_ID + ", " + COLUMN_USER_PASSWORD + ", " + COLUMN_USER_NAME + ", " + COLUMN_USER_TYPE + ") VALUES (?, ?, ?, ?)";
     private static final String UPDATE_USER = "UPDATE " + TABLE_USER + " SET " + COLUMN_USER_PASSWORD + " = ?, " + COLUMN_USER_NAME + " = ?, " + COLUMN_USER_TYPE + " = ? WHERE " + COLUMN_USER_ID + " = ?";
     private static final String DELETE_USER = "DELETE FROM " + TABLE_USER + " WHERE " + COLUMN_USER_ID + " = ?";
 
     private Connection conn;
 
-    private PreparedStatement queryUser;
-    private PreparedStatement queryUsers;
-    private PreparedStatement insertUser;
-    private PreparedStatement updateUser;
-    private PreparedStatement deleteUser;
+    private final PreparedStatement queryUser;
+    private final PreparedStatement queryUsers;
+    private final PreparedStatement insertUser;
+    private final PreparedStatement updateUser;
+    private final PreparedStatement deleteUser;
 
-    public UserDB(Connection conn)
+    public UserDB(Connection conn) throws SQLException
     {
         this.conn = conn;
 
-        try
-        {
-            queryUser = conn.prepareStatement(QUERY_USER);
-            queryUsers = conn.prepareStatement(QUERY_USERS);
-            insertUser = conn.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
-            deleteUser = conn.prepareStatement(DELETE_USER);
-            updateUser = conn.prepareStatement(UPDATE_USER);
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        queryUser = conn.prepareStatement(QUERY_USER);
+        queryUsers = conn.prepareStatement(QUERY_USERS);
+        insertUser = conn.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
+        deleteUser = conn.prepareStatement(DELETE_USER);
+        updateUser = conn.prepareStatement(UPDATE_USER);
     }
 
     public User queryUserByID(String id) throws SQLException
@@ -81,10 +74,6 @@ public class UserDB
                             resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
                 }
             }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
         }
 
         return null;
@@ -128,7 +117,7 @@ public class UserDB
 
         if (foundUser == null)
         {
-            return null;
+            throw new SQLException("Couldn't find the user.");
         }
 
         if (foundUser.getUserType() == UserTypesEnum.PROFESSOR)
@@ -160,11 +149,35 @@ public class UserDB
     {
         User oldUser = queryUserByID(newUser.getUsername());
 
-        updateUser.setString(1, newUser.getPassword());
-        updateUser.setString(2, newUser.getName());
-        updateUser.setString(3, newUser.getUserType().toString());
-        updateUser.setString(4, newUser.getUsername());
+        if (oldUser == null)
+        {
+            throw new SQLException("User doesn't exist.");
+        }
 
+        if (newUser.getPassword() == null)
+        {
+            updateUser.setString(1, oldUser.getPassword());
+        }
+        else
+        {
+            updateUser.setString(1, newUser.getPassword());
+        }
+
+        if (newUser.getPassword() == null)
+        {
+            updateUser.setString(2, oldUser.getPassword());
+        }
+        else
+        {
+            updateUser.setString(2, newUser.getPassword());
+        }
+
+        if (newUser.getUserType() != oldUser.getUserType())
+        {
+            updateUser.setString(3, oldUser.getUserType().toString());
+        }
+
+        updateUser.setString(4, newUser.getUsername());
 
         int affectedRows = updateUser.executeUpdate();
 
@@ -218,12 +231,6 @@ public class UserDB
 
             return users;
         }
-        catch (SQLException e)
-        {
-            System.out.println("Couldn't query users: " + e.getMessage());
-        }
-
-        return null;
     }
 
 }
