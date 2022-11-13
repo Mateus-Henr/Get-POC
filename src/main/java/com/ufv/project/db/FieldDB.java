@@ -11,18 +11,18 @@ public class FieldDB
     /*
      *   TB_Field table columns names
      */
-    public static final String TABLE_FIELD = "tb_field";
-    public static final String COLUMN_FIELD_ID = "ID";
-    public static final String COLUMN_FIELD_NAME = "Name";
+    private static final String TABLE_FIELD = "tb_field";
+    private static final String COLUMN_FIELD_ID = "ID";
+    private static final String COLUMN_FIELD_NAME = "Name";
 
-    public static final int COLUMN_FIELD_ID_INDEX = 1;
-    public static final int COLUMN_FIELD_NAME_INDEX = 2;
+    private static final int COLUMN_FIELD_ID_INDEX = 1;
+    private static final int COLUMN_FIELD_NAME_INDEX = 2;
 
-    public static final String QUERY_FIELD = "SELECT * FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
-    public static final String QUERY_FIELDS = "SELECT * FROM " + TABLE_FIELD;
-    public static final String INSERT_FIELD = "INSERT INTO " + TABLE_FIELD + " (" + COLUMN_FIELD_ID + ", " + COLUMN_FIELD_NAME + ") VALUES (?, ?)";
-    public static final String UPDATE_FIELD_NAME = "UPDATE " + TABLE_FIELD + " SET " + COLUMN_FIELD_NAME + " = ? WHERE " + COLUMN_FIELD_ID + " = ?";
-    public static final String DELETE_FIELD = "DELETE FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
+    private static final String QUERY_FIELD = "SELECT * FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
+    private static final String QUERY_FIELDS = "SELECT * FROM " + TABLE_FIELD;
+    private static final String INSERT_FIELD = "INSERT INTO " + TABLE_FIELD + " (" + COLUMN_FIELD_ID + ", " + COLUMN_FIELD_NAME + ") VALUES (?, ?)";
+    private static final String UPDATE_FIELD_NAME = "UPDATE " + TABLE_FIELD + " SET " + COLUMN_FIELD_NAME + " = ? WHERE " + COLUMN_FIELD_ID + " = ?";
+    private static final String DELETE_FIELD = "DELETE FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
 
     private PreparedStatement queryField;
     private PreparedStatement queryFields;
@@ -164,6 +164,5 @@ public class FieldDB
             System.out.println(e.getMessage());
         }
     }
-
 
 }

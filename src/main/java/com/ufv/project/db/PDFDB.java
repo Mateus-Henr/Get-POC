@@ -30,8 +30,8 @@ public class PDFDB
     private PreparedStatement queryPDF;
     private PreparedStatement queryPDFs;
     private PreparedStatement insertPDF;
-    private PreparedStatement deletePDF;
     private PreparedStatement updatePDF;
+    private PreparedStatement deletePDF;
 
     private Connection conn;
 
@@ -171,6 +171,7 @@ public class PDFDB
         {
             return oldPDF;
         }
+
         return null;
     }
 
@@ -204,7 +205,6 @@ public class PDFDB
             System.out.println(e.getMessage());
         }
     }
-
 
 }
 

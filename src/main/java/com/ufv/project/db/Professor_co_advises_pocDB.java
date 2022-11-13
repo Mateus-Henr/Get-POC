@@ -9,37 +9,40 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Professor_co_advises_pocDB {
+public class Professor_co_advises_pocDB
+{
+    private static final String TABLE_PROFESSOR_CO_ADVISES_POC = "tb_professor_co_advises_poc";
+    private static final String COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID = "tb_teacher_tb_user_id";
+    private static final String COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID = "tb_poc_id";
 
-    public static final String TABLE_PROFESSOR_CO_ADVISES_POC = "tb_professor_co_advises_poc";
-    public static final String COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID = "tb_teacher_tb_user_id";
-    public static final String COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID = "tb_poc_id";
-
-    public static final int COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX = 1;
-    public static final int COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX = 2;
+    private static final int COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX = 1;
+    private static final int COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX = 2;
 
 
-    public static final String QUERY_PROFESSORS_BY_POC_ID = "SELECT * FROM " + TABLE_PROFESSOR_CO_ADVISES_POC + " WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
-    public static final String INSERT_PROFESSOR_CO_ADVISES_POC = "INSERT INTO " + TABLE_PROFESSOR_CO_ADVISES_POC + " (" + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + ", " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + ") VALUES (?, ?)";
-    public static final String DELETE_PROFESSOR_CO_ADVISES_POC = "DELETE FROM " + TABLE_PROFESSOR_CO_ADVISES_POC + " WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + " = ? AND " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
-    public static final String UPDATE_PROFESSOR_CO_ADVISES_POC = "UPDATE " + TABLE_PROFESSOR_CO_ADVISES_POC + " SET " + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + " = ?, " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ? WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + " = ? AND " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
-
+    private static final String QUERY_PROFESSORS_BY_POC_ID = "SELECT * FROM " + TABLE_PROFESSOR_CO_ADVISES_POC + " WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
+    private static final String UPDATE_PROFESSOR_CO_ADVISES_POC = "UPDATE " + TABLE_PROFESSOR_CO_ADVISES_POC + " SET " + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + " = ?, " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ? WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + " = ? AND " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
+    private static final String INSERT_PROFESSOR_CO_ADVISES_POC = "INSERT INTO " + TABLE_PROFESSOR_CO_ADVISES_POC + " (" + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + ", " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + ") VALUES (?, ?)";
+    private static final String DELETE_PROFESSOR_CO_ADVISES_POC = "DELETE FROM " + TABLE_PROFESSOR_CO_ADVISES_POC + " WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + " = ? AND " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
 
     private PreparedStatement queryProfessorsByPocId;
     private PreparedStatement insertProfessor_co_advises_poc;
-    private PreparedStatement deleteProfessor_co_advises_poc;
     private PreparedStatement updateProfessor_co_advises_poc;
+    private PreparedStatement deleteProfessor_co_advises_poc;
 
     private final Connection conn;
 
-    public Professor_co_advises_pocDB(Connection conn) {
+    public Professor_co_advises_pocDB(Connection conn)
+    {
         this.conn = conn;
-        try {
+        try
+        {
             queryProfessorsByPocId = conn.prepareStatement(QUERY_PROFESSORS_BY_POC_ID);
             insertProfessor_co_advises_poc = conn.prepareStatement(INSERT_PROFESSOR_CO_ADVISES_POC);
             deleteProfessor_co_advises_poc = conn.prepareStatement(DELETE_PROFESSOR_CO_ADVISES_POC);
             updateProfessor_co_advises_poc = conn.prepareStatement(UPDATE_PROFESSOR_CO_ADVISES_POC);
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Error preparing statements: " + e.getMessage());
             e.printStackTrace();
         }
@@ -64,35 +67,47 @@ public class Professor_co_advises_pocDB {
         return null;
     }*/
 
-    public void insertProfessor_co_advises_poc(String professor_id, int poc_id) {
-        try {
+    public void insertProfessor_co_advises_poc(String professor_id, int poc_id)
+    {
+        try
+        {
             insertProfessor_co_advises_poc.setString(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX, professor_id);
             insertProfessor_co_advises_poc.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX, poc_id);
             System.out.println(insertProfessor_co_advises_poc.toString());
             int affectedRows = insertProfessor_co_advises_poc.executeUpdate();
-            if (affectedRows != 1) {
+            if (affectedRows != 1)
+            {
                 throw new SQLException("Couldn't insert professor_co_advises_poc");
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
 
         }
     }
 
-    public void deleteProfessor_co_advises_poc(String professor_id, int poc_id) {
-        try {
+    public void deleteProfessor_co_advises_poc(String professor_id, int poc_id)
+    {
+        try
+        {
             deleteProfessor_co_advises_poc.setString(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX, professor_id);
             deleteProfessor_co_advises_poc.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX, poc_id);
             int affectedRows = deleteProfessor_co_advises_poc.executeUpdate();
-            if (affectedRows != 1) {
+            if (affectedRows != 1)
+            {
                 throw new SQLException("Couldn't delete professor_co_advises_poc");
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
 
         }
     }
 
-    public void updateProfessor_co_advises_poc(String professor_id, int poc_id, String new_professor_id, int new_poc_id) {
-        try {
+    public void updateProfessor_co_advises_poc(String professor_id, int poc_id, String new_professor_id, int new_poc_id)
+    {
+        try
+        {
             updateProfessor_co_advises_poc.setString(1, new_professor_id);
             updateProfessor_co_advises_poc.setInt(2, new_poc_id);
             updateProfessor_co_advises_poc.setString(3, professor_id);
@@ -100,35 +115,44 @@ public class Professor_co_advises_pocDB {
 
 
             int affectedRows = updateProfessor_co_advises_poc.executeUpdate();
-            if (affectedRows != 1) {
+            if (affectedRows != 1)
+            {
                 throw new SQLException("Couldn't update professor_co_advises_poc");
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
 
         }
     }
 
 
-    public void close() {
-        try {
-            if (queryProfessorsByPocId != null) {
+    public void close()
+    {
+        try
+        {
+            if (queryProfessorsByPocId != null)
+            {
                 queryProfessorsByPocId.close();
             }
-            if (insertProfessor_co_advises_poc != null) {
+            if (insertProfessor_co_advises_poc != null)
+            {
                 insertProfessor_co_advises_poc.close();
             }
-            if (deleteProfessor_co_advises_poc != null) {
+            if (deleteProfessor_co_advises_poc != null)
+            {
                 deleteProfessor_co_advises_poc.close();
             }
-            if (updateProfessor_co_advises_poc != null) {
+            if (updateProfessor_co_advises_poc != null)
+            {
                 updateProfessor_co_advises_poc.close();
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Couldn't close connection: " + e.getMessage());
         }
     }
-
-
 
 
 }

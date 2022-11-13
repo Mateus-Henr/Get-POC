@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConnectDB {
+public class ConnectDB
+{
     public static final String DB_NAME = "get_poc";
     public static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/" + DB_NAME;
     public static final String USER = "root";
@@ -16,31 +17,42 @@ public class ConnectDB {
 
     private Connection conn;
 
-    public boolean open() {
-        try {
+    public boolean open()
+    {
+        try
+        {
             conn = DriverManager.getConnection(CONNECTION_STRING, USER, PASSWORD);
             return true;
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Couldn't connect to database " + e.getMessage());
             return false;
         }
     }
 
-    public void close() {
-        try {
-            if (conn != null) {
+    public void close()
+    {
+        try
+        {
+            if (conn != null)
+            {
                 conn.close();
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println("Couldn't close connection: " + e.getMessage());
         }
     }
 
-    public Connection getConnection() {
+    public Connection getConnection()
+    {
         return conn;
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException
+    {
 
         ConnectDB connectDB = new ConnectDB();
         connectDB.open();
@@ -56,25 +68,15 @@ public class ConnectDB {
         StudentDB studentDB = new StudentDB(connectDB.getConnection());
 
 
+        List<Student> students = studentDB.getAllStudents();
 
-        List <Student> students = studentDB.getAllStudents();
-        for (Student student : students) {
+        for (Student student : students)
+        {
             System.out.println(student.getUsername());
         }
 
 
-
-
-
-
-
-
-
-
-
         connectDB.close();
-
-
-
     }
+
 }
