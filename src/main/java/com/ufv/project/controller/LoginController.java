@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -19,7 +20,7 @@ import java.io.File;
 public class LoginController
 {
     @FXML
-    private GridPane gridPane;
+    private VBox mainPane;
 
     @FXML
     private TextField usernameField;
@@ -29,9 +30,6 @@ public class LoginController
 
     @FXML
     private Button loginButton;
-
-    @FXML
-    private ImageView mainImage;
 
     @FXML
     public void initialize()
@@ -53,11 +51,6 @@ public class LoginController
                 onLoginButtonClick();
             }
         });
-
-        // Initialize image.
-        File file = new File("src/main/resources/com/ufv/project/images/POC_Main_Image.PNG");
-        Image image = new Image(file.toURI().toString());
-        mainImage.setImage(image);
 
         // Take away focus from boxes.
         usernameField.setFocusTraversable(false);
@@ -86,7 +79,7 @@ public class LoginController
                 stage.setScene(scene);
                 stage.show();
 
-                ((Stage) gridPane.getScene().getWindow()).close();
+                ((Stage) mainPane.getScene().getWindow()).close();
             }
             catch (Exception e)
             {
