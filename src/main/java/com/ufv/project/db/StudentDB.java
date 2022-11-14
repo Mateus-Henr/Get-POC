@@ -9,7 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class StudentDB {
+public class StudentDB
+{
     private static final String TABLE_STUDENT = "TB_Student";
     private static final String COLUMN_STUDENT_EMAIL = "Email";
     private static final String COLUMN_STUDENT_REGISTRATION = "Registration";
@@ -30,8 +31,8 @@ public class StudentDB {
     private static final String DELETE_STUDENT = "DELETE FROM " + TABLE_STUDENT + " WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
 
     private static final String SET_STUDENT_POC_NULL = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_POC + " = NULL WHERE " + COLUMN_STUDENT_POC + " = ?";
-
     private static final String SET_STUDENT_POC = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_POC + " = ? WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
+
     private Connection conn;
 
     private final PreparedStatement queryStudent;
@@ -40,14 +41,14 @@ public class StudentDB {
     private final PreparedStatement insertStudent;
     private final PreparedStatement updateStudent;
     private final PreparedStatement deleteStudent;
-
     private final PreparedStatement setStudentPOCNull;
-
     private final PreparedStatement setStudentPOC;
 
 
-    public StudentDB(Connection conn) throws SQLException {
+    public StudentDB(Connection conn) throws SQLException
+    {
         this.conn = conn;
+
         queryStudent = conn.prepareStatement(QUERY_STUDENT);
         queryStudents = conn.prepareStatement(QUERY_STUDENTS);
         queryStudentByPOCId = conn.prepareStatement(QUERY_STUDENT_BY_POC_ID);
@@ -58,11 +59,14 @@ public class StudentDB {
         setStudentPOC = conn.prepareStatement(SET_STUDENT_POC);
     }
 
-    protected Student queryStudent(String username, String name, String password) throws SQLException {
+    protected Student queryStudent(String username, String name, String password) throws SQLException
+    {
         queryStudent.setString(1, username);
 
-        try (ResultSet resultSet = queryStudent.executeQuery()) {
-            if (resultSet.next()) {
+        try (ResultSet resultSet = queryStudent.executeQuery())
+        {
+            if (resultSet.next())
+            {
                 return new Student(username,
                         name,
                         password,
@@ -76,7 +80,8 @@ public class StudentDB {
         return null;
     }
 
-    protected List<Student> queryStudentsByPocID(int pocID) throws SQLException {
+    protected List<Student> queryStudentsByPocID(int pocID) throws SQLException
+    {
         return new UserDB(conn).queryUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)
                 .map(user -> (Student) user)
@@ -84,7 +89,8 @@ public class StudentDB {
                 .toList();
     }
 
-    protected String insertStudent(Student student) throws SQLException {
+    protected String insertStudent(Student student) throws SQLException
+    {
         insertStudent.setString(COLUMN_STUDENT_EMAIL_INDEX, student.getEmail());
         insertStudent.setString(COLUMN_STUDENT_REGISTRATION_INDEX, student.getRegistration());
         insertStudent.setInt(COLUMN_STUDENT_POC_INDEX, student.getPoc_id());
@@ -92,7 +98,8 @@ public class StudentDB {
 
         int affectedRows = insertStudent.executeUpdate();
 
-        if (affectedRows != 1) {
+        if (affectedRows != 1)
+        {
             throw new SQLException("Couldn't insert student!");
         }
 
@@ -100,38 +107,46 @@ public class StudentDB {
     }
 
 
-    protected Student deleteStudent(String username, String name, String password) throws SQLException {
+    protected Student deleteStudent(String username, String name, String password) throws SQLException
+    {
         Student foundStudent = queryStudent(username, name, password);
         deleteStudent.setString(1, username);
 
         int affectedRows = deleteStudent.executeUpdate();
 
-        if (affectedRows != 1) {
+        if (affectedRows != 1)
+        {
             throw new SQLException("Couldn't delete student!");
         }
 
         return foundStudent;
     }
 
-    protected Student updateStudent(Student newStudent) throws SQLException {
+    protected Student updateStudent(Student newStudent) throws SQLException
+    {
         Student oldStudent = queryStudent(newStudent.getUsername(), newStudent.getName(), newStudent.getPassword());
 
-        if (oldStudent == null) {
+        if (oldStudent == null)
+        {
             return null;
         }
 
-        if (newStudent.getEmail() != null) {
+        if (newStudent.getEmail() != null)
+        {
             oldStudent.setEmail(newStudent.getEmail());
         }
 
-        if (newStudent.getRegistration() != null) {
+        if (newStudent.getRegistration() != null)
+        {
             oldStudent.setRegistration(newStudent.getRegistration());
         }
-        if (newStudent.getPoc_id() != 0) {
+        if (newStudent.getPoc_id() != 0)
+        {
             oldStudent.setPoc_id(newStudent.getPoc_id());
         }
 
-        if (newStudent.getUsername() != null) {
+        if (newStudent.getUsername() != null)
+        {
             oldStudent.setUsername(newStudent.getUsername());
         }
 
@@ -142,46 +157,56 @@ public class StudentDB {
 
         int affectedRows = updateStudent.executeUpdate();
 
-        if (affectedRows != 1) {
+        if (affectedRows != 1)
+        {
             throw new SQLException("Couldn't update student!");
         }
 
         return oldStudent;
     }
 
-    protected void setStudentPOCNull(int pocID) throws SQLException {
+    protected void setStudentPOCNull(int pocID) throws SQLException
+    {
         setStudentPOCNull.setInt(1, pocID);
         setStudentPOCNull.executeUpdate();
 
     }
 
-    protected void setStudentPOC(String studentID, int pocID) throws SQLException {
+    protected void setStudentPOC(String studentID, int pocID) throws SQLException
+    {
         setStudentPOC.setInt(1, pocID);
         setStudentPOC.setString(2, studentID);
         setStudentPOC.executeUpdate();
     }
 
-    public List<Student> getAllStudents() throws SQLException {
+    public List<Student> getAllStudents() throws SQLException
+    {
         return new UserDB(conn).queryUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)
                 .map(user -> (Student) user)
                 .toList();
     }
 
-    public void close() throws SQLException {
-        if (queryStudent != null) {
+    public void close() throws SQLException
+    {
+        if (queryStudent != null)
+        {
             queryStudent.close();
         }
-        if (queryStudents != null) {
+        if (queryStudents != null)
+        {
             queryStudents.close();
         }
-        if (insertStudent != null) {
+        if (insertStudent != null)
+        {
             insertStudent.close();
         }
-        if (deleteStudent != null) {
+        if (deleteStudent != null)
+        {
             deleteStudent.close();
         }
-        if (updateStudent != null) {
+        if (updateStudent != null)
+        {
             updateStudent.close();
         }
     }

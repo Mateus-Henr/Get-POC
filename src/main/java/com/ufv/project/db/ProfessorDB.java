@@ -49,9 +49,6 @@ public class ProfessorDB
     {
         Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
         List<Subject> subjects = professor_has_subjectDB.querySubjectsByProfessor(username);
-
-
-
         queryProfessor.setString(1, username);
 
         try (ResultSet resultSet = queryProfessor.executeQuery())
@@ -66,11 +63,6 @@ public class ProfessorDB
             }
         }
 
-        return null;
-    }
-
-    private List<Subject> getSubjectsTaughtByProfessorID(String id)
-    {
         return null;
     }
 

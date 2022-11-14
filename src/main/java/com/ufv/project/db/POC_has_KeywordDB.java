@@ -75,8 +75,6 @@ public class POC_has_KeywordDB
         insertPOC_has_Keyword.setInt(1, POCID);
         insertPOC_has_Keyword.setString(2, word);
 
-
-
         int affectedRows = insertPOC_has_Keyword.executeUpdate();
 
         if (affectedRows != 1)
@@ -87,21 +85,14 @@ public class POC_has_KeywordDB
 
     public void deletePOC_has_Keyword(int POCID) throws SQLException
     {
-
         deletePOC_has_Keyword.setInt(1, POCID);
 
-
         int affectedRows = deletePOC_has_Keyword.executeUpdate();
-        ;
 
         if (affectedRows == 0)
         {
             throw new SQLException("Couldn't delete POC_has_Keyword!");
         }
-
-
-
-
     }
 
     public void updatePOC_has_Keyword(int oldPOCID, String keywordID, int newPOCID, String newKeywordID) throws SQLException

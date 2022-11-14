@@ -22,7 +22,7 @@ public class Professor_co_advises_pocDB
     private static final String QUERY_PROFESSORS_BY_POC_ID = "SELECT * FROM " + TABLE_PROFESSOR_CO_ADVISES_POC + " WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
     private static final String UPDATE_PROFESSOR_CO_ADVISES_POC = "UPDATE " + TABLE_PROFESSOR_CO_ADVISES_POC + " SET " + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + " = ?, " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ? WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + " = ? AND " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
     private static final String INSERT_PROFESSOR_CO_ADVISES_POC = "INSERT INTO " + TABLE_PROFESSOR_CO_ADVISES_POC + " (" + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + ", " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + ") VALUES (?, ?)";
-    private static final String DELETE_PROFESSOR_CO_ADVISES_POC = "DELETE FROM " + TABLE_PROFESSOR_CO_ADVISES_POC + " WHERE "  + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
+    private static final String DELETE_PROFESSOR_CO_ADVISES_POC = "DELETE FROM " + TABLE_PROFESSOR_CO_ADVISES_POC + " WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
 
     private Connection conn;
 
@@ -41,15 +41,19 @@ public class Professor_co_advises_pocDB
         updateProfessor_co_advises_poc = conn.prepareStatement(UPDATE_PROFESSOR_CO_ADVISES_POC);
     }
 
-   public List<Professor> queryProfessorsByPocId(int pocId) throws SQLException {
+    public List<Professor> queryProfessorsByPocId(int pocId) throws SQLException
+    {
         UserDB userDB = new UserDB(conn);
         List<Professor> professors = new ArrayList<>();
         queryProfessorsByPocId.setInt(1, pocId);
         ResultSet resultSet = queryProfessorsByPocId.executeQuery();
-        while (resultSet.next()) {
+
+        while (resultSet.next())
+        {
             professors.add((Professor) userDB.queryUserByID(resultSet.getString(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID)));
 
         }
+
         return professors;
     }
 
@@ -57,8 +61,6 @@ public class Professor_co_advises_pocDB
     {
         insertProfessor_co_advises_poc.setString(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX, professorID);
         insertProfessor_co_advises_poc.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX, pocID);
-
-
 
         int affectedRows = insertProfessor_co_advises_poc.executeUpdate();
 
