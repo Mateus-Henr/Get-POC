@@ -1,13 +1,13 @@
 package com.ufv.project.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class POC
 {
     private final int id;
     private String title;
+    private List<Student> authors;
     private LocalDate defenseDate;
     private List<String> keywords;
     private String summary;
@@ -26,17 +26,28 @@ public class POC
     {
         this.id = pocBuilder.id;
         this.title = pocBuilder.title;
+        this.authors = pocBuilder.authors;
         this.defenseDate = pocBuilder.defenseDate;
+        this.keywords = pocBuilder.keywords;
         this.summary = pocBuilder.summary;
         this.field = pocBuilder.field;
         this.pdf = pocBuilder.pdf;
         this.registrant = pocBuilder.registrant;
         this.advisor = pocBuilder.advisor;
+        this.coAdvisors = pocBuilder.coAdvisors;
+
     }
+
+
 
     public String getTitle()
     {
         return title;
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
     }
 
     public LocalDate getDefenseDate()
@@ -44,9 +55,29 @@ public class POC
         return defenseDate;
     }
 
+    public void setDefenseDate(LocalDate defenseDate)
+    {
+        this.defenseDate = defenseDate;
+    }
+
+    public List<Student> getAuthors()
+    {
+        return authors;
+    }
+
+    public void setAuthors(List<Student> authors)
+    {
+        this.authors = authors;
+    }
+
     public List<String> getKeywords()
     {
         return keywords;
+    }
+
+    public void setKeywords(List<String> keywords)
+    {
+        this.keywords = keywords;
     }
 
     public String getSummary()
@@ -54,9 +85,19 @@ public class POC
         return summary;
     }
 
+    public void setSummary(String summary)
+    {
+        this.summary = summary;
+    }
+
     public Field getField()
     {
         return field;
+    }
+
+    public void setField(Field field)
+    {
+        this.field = field;
     }
 
     public PDF getPdf()
@@ -64,9 +105,19 @@ public class POC
         return pdf;
     }
 
+    public void setPdf(PDF pdf)
+    {
+        this.pdf = pdf;
+    }
+
     public Professor getRegistrant()
     {
         return registrant;
+    }
+
+    public void setRegistrant(Professor registrant)
+    {
+        this.registrant = registrant;
     }
 
     public Professor getAdvisor()
@@ -74,15 +125,32 @@ public class POC
         return advisor;
     }
 
+    public void setAdvisor(Professor advisor)
+    {
+        this.advisor = advisor;
+    }
+
     public List<Professor> getCoAdvisors()
     {
         return coAdvisors;
+    }
+
+    public void setCoAdvisors(List<Professor> coAdvisors)
+    {
+        this.coAdvisors = coAdvisors;
+    }
+
+    @Override
+    public String toString()
+    {
+        return title;
     }
 
     public static class POCBuilder
     {
         private int id;
         private String title;
+        private List<Student> authors;
         private LocalDate defenseDate;
         private List<String> keywords;
         private String summary;
@@ -94,8 +162,12 @@ public class POC
 
         public POCBuilder()
         {
-            keywords = new ArrayList<>();
-            coAdvisors = new ArrayList<>();
+        }
+
+        public POCBuilder id(int id)
+        {
+            this.id = id;
+            return this;
         }
 
         public POCBuilder title(String title)
@@ -107,6 +179,12 @@ public class POC
         public POCBuilder defenseDate(LocalDate defenseDate)
         {
             this.defenseDate = defenseDate;
+            return this;
+        }
+
+        public POCBuilder authors(List<Student> authors)
+        {
+            this.authors = authors;
             return this;
         }
 

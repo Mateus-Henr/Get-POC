@@ -4,18 +4,14 @@ public class Student extends User
 {
     private String registration;
     private String email;
-    private POC poc;
+    private int poc_id;
 
-    public Student(String username, String name, String password, String registration, String email)
+    public Student(String username, String name, String password, String registration,int poc_id, String email)
     {
-        super(username, name, password);
+        super(username, name, password, UserTypesEnum.STUDENT);
         this.registration = registration;
         this.email = email;
-    }
-
-    public POC searchPOC(String title, String summary, String author, String advisor, String area)
-    {
-        return null;
+        this.poc_id = poc_id;
     }
 
     public String getRegistration()
@@ -38,14 +34,26 @@ public class Student extends User
         this.email = email;
     }
 
-    public POC getPoc()
+    public int getPoc_id()
     {
-        return poc;
+        return poc_id;
     }
 
-    public void setPoc(POC poc)
+    public void setPoc_id(int poc_id)
     {
-        this.poc = poc;
+        this.poc_id = poc_id;
+    }
+
+    @Override
+    public boolean canModifyUsers()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canModifyPOCs()
+    {
+        return false;
     }
 
 }

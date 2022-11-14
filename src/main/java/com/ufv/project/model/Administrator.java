@@ -1,27 +1,22 @@
 package com.ufv.project.model;
 
-import com.ufv.project.persistence.Singleton;
-
 public class Administrator extends User
 {
     public Administrator(String username, String name, String password)
     {
-        super(username, name, password);
+        super(username, name, password, UserTypesEnum.ADMIN);
     }
 
-    public User getUser(String username)
+    @Override
+    public boolean canModifyUsers()
     {
-        return Singleton.getInstance().getUser(username);
+        return true;
     }
 
-    public boolean removeUser(String username)
+    @Override
+    public boolean canModifyPOCs()
     {
-        return Singleton.getInstance().removeUser(username);
-    }
-
-    public boolean addUser(User user)
-    {
-        return Singleton.getInstance().addUser(user);
+        return true;
     }
 
 }

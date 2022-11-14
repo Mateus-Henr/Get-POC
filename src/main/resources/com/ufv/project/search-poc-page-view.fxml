@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:id="vBox"
+      fx:controller="com.ufv.project.controller.SearchPOCController"
+      prefHeight="400.0" prefWidth="600.0">
+
+    <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
+
+    <HBox>
+        <TextField fx:id="searchPOCTextField" promptText="POC"/>
+        <Button onMouseClicked="#handlePOCSearching">Search</Button>
+    </HBox>
+    <ImageView fx:id="noPOCImage" visible="false"/>
+    <ListView fx:id="pocListView"/>
+</VBox>

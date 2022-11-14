@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.ufv.project.controller.CreatePOCController"
+      prefHeight="400.0" prefWidth="600.0"
+      alignment="CENTER">
+
+    <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
+
+    <fx:include fx:id="userData" source="personal-info-page-view.fxml"/>
+
+    <Label>Create POC</Label>
+    <GridPane fx:id="gridPane" alignment="CENTER">
+        <TextField fx:id="title" promptText="Title" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <MenuButton fx:id="authorMenuButton" GridPane.rowIndex="1" GridPane.columnIndex="0">Author(s)</MenuButton>
+        <ComboBox fx:id="advisorComboBox" promptText="Advisor" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <MenuButton fx:id="coAdvisorMenuButton" GridPane.rowIndex="3" GridPane.columnIndex="0">Co-Advisors</MenuButton>
+        <ComboBox fx:id="fieldComboBox" promptText="Field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <DatePicker fx:id="datePicker" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <ListView fx:id="keywordList" editable="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <Button fx:id="choosePDFButton" onMouseClicked="#handlePDFChoosing" GridPane.rowIndex="0"
+                GridPane.columnIndex="2">Choose...
+        </Button>
+        <Text fx:id="pdfFilepathText" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+        <Button fx:id="addPOCButton" onMouseClicked="#handlePOCAdding" GridPane.rowIndex="2" GridPane.columnIndex="2">
+            Add POC
+        </Button>
+    </GridPane>
+</VBox>

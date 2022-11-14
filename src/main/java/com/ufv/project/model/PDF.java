@@ -1,17 +1,18 @@
 package com.ufv.project.model;
 
+
 import java.time.LocalDate;
 
 public class PDF
 {
     private final int id;
-    private String content;
+    private String path;
     private LocalDate lastModificationDate;
 
-    public PDF(int id, String content, LocalDate lastModificationDate)
+    public PDF(int id, String path, LocalDate lastModificationDate)
     {
         this.id = id;
-        this.content = content;
+        this.path = path;
         this.lastModificationDate = lastModificationDate;
     }
 
@@ -20,14 +21,14 @@ public class PDF
         return id;
     }
 
-    public String getContent()
+    public String getPath()
     {
-        return content;
+        return path;
     }
 
-    public void setContent(String content)
+    public void setPath(String content)
     {
-        this.content = content;
+        this.path = content;
     }
 
     public LocalDate getLastModificationDate()
@@ -35,9 +36,9 @@ public class PDF
         return lastModificationDate;
     }
 
-    public void setLastModificationDate(LocalDate lastModificationDate)
+    public void setLastModificationDate()
     {
-        this.lastModificationDate = lastModificationDate;
+        this.lastModificationDate = LocalDate.now();
     }
 
 }

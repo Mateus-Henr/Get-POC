@@ -1,18 +1,18 @@
 package com.ufv.project.model;
 
-import com.ufv.project.persistence.Singleton;
-
-public class User
+public abstract class User
 {
-    protected String username;
-    protected String name;
-    protected String password;
+    private String username;
+    private String name;
+    private String password;
+    private final UserTypesEnum userType;
 
-    public User(String username, String name, String password)
+    public User(String username, String name, String password, UserTypesEnum userType)
     {
         this.username = username;
         this.name = name;
         this.password = password;
+        this.userType = userType;
     }
 
     public String getUsername()
@@ -20,18 +20,9 @@ public class User
         return username;
     }
 
-    public boolean changeUsername(String newUsername)
+    public void setUsername(String username)
     {
-        User foundUser = Singleton.getInstance().getUser(newUsername);
-
-        if (foundUser == null)
-        {
-            this.username = newUsername;
-
-            return true;
-        }
-
-        return false;
+        this.username = username;
     }
 
     public String getName()
@@ -53,5 +44,14 @@ public class User
     {
         this.password = password;
     }
+
+    public UserTypesEnum getUserType()
+    {
+        return userType;
+    }
+
+    public abstract boolean canModifyUsers();
+
+    public abstract boolean canModifyPOCs();
 
 }
