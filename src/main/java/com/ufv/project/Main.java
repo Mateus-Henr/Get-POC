@@ -16,9 +16,9 @@ public class Main extends Application
     {
         setMockupData();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login-page-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/ufv/project/fxml/login-page-view.fxml"));
 
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Get-POC App");
         stage.setScene(scene);
         stage.show();
@@ -43,7 +43,7 @@ public class Main extends Application
 
         try
         {
-            Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+            Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
 
             stage.setScene(scene);

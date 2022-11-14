@@ -1,0 +1,41 @@
+.background{
+    -fx-max-height: 400.0;
+    -fx-max-width: 655.0;
+    -fx-min-height: 400.0;
+    -fx-min-width: 655.0;
+    -fx-pref-height: 400.0;
+    -fx-pref-width: 655.0;
+    -fx-background-color: #001524;
+}
+.username-password-fields{
+    -fx-background-color: #001524;
+    -fx-border-width: 2.0;
+    -fx-border-color: #FFECD1;
+    -fx-border-radius: 20.0;
+    -fx-prompt-text-fill: #FFECD1;
+    -fx-text-fill: #FFECD1;
+    -fx-pref-width: 206.0;
+    -fx-pref-height: 22.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 13.0;
+}
+.login-button{
+    -fx-background-color: #FFECD1;
+    -fx-fill: #001524;
+    -fx-background-radius: 20.0;
+    -fx-pref-height: 0.0;
+    -fx-pref-width: 169.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 16.0;
+}
+.forgot-password{
+    -fx-fill: #15616D;
+    -fx-alignment: center;
+    -fx-stroke-type: outside;
+    -fx-stroke-width: 0.0;
+    -fx-font-family: "Ubuntu Medium";
+    -fx-font-size: 13.0;
+}
+.division-line{
+    -fx-stroke: #FFECD1;
+}

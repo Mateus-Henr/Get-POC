@@ -18,19 +18,19 @@ public class Singleton
         pocList = FXCollections.observableArrayList();
 
         pocList.add(new POC.POCBuilder()
-                .title("My")
+                .title("POC title")
                 .defenseDate(LocalDate.now())
-                .advisor(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()))
+                .advisor(new Professor("matt", "Matt", "123", "matt@gmail.com", new ArrayList<>()))
                 .coAdvisors(new ArrayList<>())
-                .registrant(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()))
+                .registrant(new Professor("alan", "Alan", "123", "alan@gmail.com", new ArrayList<>()))
                 .pdf(new PDF(1, "", LocalDate.now()))
-                .field(new Field(1, "sa"))
-                .summary("dadasdasdas")
+                .field(new Field(1, "Field name"))
+                .summary("POC summary")
                 .keywords(new ArrayList<>())
                 .build());
 
-        userList.add(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()));
-        userList.add(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()));
+        userList.add(new Professor("matt", "Matt", "123", "matt@gmail.com", new ArrayList<>()));
+        userList.add(new Professor("alan", "Alan", "123", "alan@gmail.com", new ArrayList<>()));
     }
 
     private static class RegistryHolder

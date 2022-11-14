@@ -9,14 +9,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class LoginController
 {
     @FXML
-    private VBox mainPane;
-
+    public AnchorPane mainPane;
     @FXML
     private TextField usernameField;
 
@@ -67,14 +67,13 @@ public class LoginController
         {
             try
             {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ufv/project/create-poc-page-view.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ufv/project/fxml/create-poc-page-view.fxml"));
+                Scene scene = new Scene(fxmlLoader.load());
                 Stage stage = new Stage();
 
                 stage.setScene(scene);
                 stage.show();
 
-                ((Stage) mainPane.getScene().getWindow()).close();
             }
             catch (Exception e)
             {

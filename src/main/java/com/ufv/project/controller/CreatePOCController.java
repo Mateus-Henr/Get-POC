@@ -131,8 +131,8 @@ public class CreatePOCController
         // Testing things out.
         try
         {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ufv/project/search-poc-page-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ufv/project/fxml/search-poc-page-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
 
             stage.setScene(scene);
