@@ -6,6 +6,7 @@ module com.ufv.project
     requires mysql.connector.j;
     requires junit;
     requires java.desktop;
+    requires ibatis.core;
 
     opens com.ufv.project to javafx.fxml;
     opens com.ufv.project.model to javafx.fxml;

@@ -1,6 +1,8 @@
 package com.ufv.project.db;
 
-import com.ufv.project.model.*;
+import com.ufv.project.model.POC;
+import com.ufv.project.model.Professor;
+import com.ufv.project.model.Student;
 
 import java.sql.*;
 import java.util.ArrayList;
