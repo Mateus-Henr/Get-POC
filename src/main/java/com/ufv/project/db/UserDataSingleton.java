@@ -1,18 +1,36 @@
 package com.ufv.project.db;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import com.ufv.project.model.User;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class UserDataSingleton
 {
     private String username;
-    private String email;
     private String name;
-    private ImageView userIcon;
+    private String userType;
 
     private UserDataSingleton()
     {
+        try (ConnectDB connectDB = new ConnectDB())
+        {
+            Connection conn = connectDB.getConnection();
+            UserDB userDB = new UserDB(conn);
 
+            User user = userDB.queryUserByID("Miguel");
+
+            if (user != null)
+            {
+                username = user.getUsername();
+                name = user.getName();
+                userType = user.getUserType().toString();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private static class RegistryHolder
@@ -36,16 +54,6 @@ public class UserDataSingleton
         this.username = username;
     }
 
-    public String getEmail()
-    {
-        return email;
-    }
-
-    public void setEmail(String email)
-    {
-        this.email = email;
-    }
-
     public String getName()
     {
         return name;
@@ -56,14 +64,14 @@ public class UserDataSingleton
         this.name = name;
     }
 
-    public Image getUserIcon()
+    public String getUserType()
     {
-        return userIcon.getImage();
+        return userType;
     }
 
-    public void setUserIcon(Image userIcon)
+    public void setUserType(String userType)
     {
-        this.userIcon.setImage(userIcon);
+        this.userType = userType;
     }
 
 }

@@ -8,6 +8,7 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,7 +28,7 @@ public class ConnectDB implements AutoCloseable
 
     private Connection conn;
 
-    public ConnectDB() throws Exception
+    public ConnectDB() throws SQLException
     {
         try (Connection conn = DriverManager.getConnection(CONNECTION_STRING, USER, PASSWORD))
         {
@@ -46,7 +47,7 @@ public class ConnectDB implements AutoCloseable
     }
 
     @Override
-    public void close() throws Exception
+    public void close() throws SQLException
     {
         if (conn != null)
         {
@@ -54,7 +55,7 @@ public class ConnectDB implements AutoCloseable
         }
     }
 
-    public void executeSQLFilesFromFolder(Connection conn, final File folder) throws Exception
+    public void executeSQLFilesFromFolder(Connection conn, final File folder)
     {
         File[] files = folder.listFiles();
 
@@ -69,7 +70,15 @@ public class ConnectDB implements AutoCloseable
 
             sr.setLogWriter(null);
             sr.setErrorLogWriter(null);
-            sr.runScript(new BufferedReader(new FileReader(fileEntry.getAbsoluteFile())));
+
+            try
+            {
+                sr.runScript(new BufferedReader(new FileReader(fileEntry.getAbsoluteFile())));
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -16,8 +16,8 @@
             <Text fx:id="usernameText"/>
         </HBox>
         <HBox>
-            <Label>Email:</Label>
-            <Text fx:id="emailText"/>
+            <Label>User type:</Label>
+            <Text fx:id="userTypeText"/>
         </HBox>
     </VBox>
     <Separator prefWidth="200.0"/>

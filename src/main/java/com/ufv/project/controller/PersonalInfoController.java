@@ -9,7 +9,7 @@ public class PersonalInfoController
     private Text usernameText;
 
     @FXML
-    private Text emailText;
+    private Text userTypeText;
 
     @FXML
     private Text nameText;
@@ -29,14 +29,14 @@ public class PersonalInfoController
         usernameText.setText(username);
     }
 
-    public String getEmailText()
+    public String getUserTypeText()
     {
-        return emailText.getText();
+        return userTypeText.getText();
     }
 
-    public void setEmailText(String email)
+    public void setUserTypeText(String userType)
     {
-        emailText.setText(email);
+        userTypeText.setText(userType);
     }
 
     public String getNameText()

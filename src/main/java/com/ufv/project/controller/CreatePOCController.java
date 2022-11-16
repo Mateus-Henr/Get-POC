@@ -101,8 +101,8 @@ public class CreatePOCController
 
         // Sets values according to the current user.
         userDataController.setUsernameText(UserDataSingleton.getInstance().getUsername());
-        userDataController.setEmailText(UserDataSingleton.getInstance().getEmail());
         userDataController.setNameText(UserDataSingleton.getInstance().getName());
+        userDataController.setUserTypeText(UserDataSingleton.getInstance().getUserType());
 
         // Get data from db.
         ObservableList<Professor> professors = Singleton.getInstance().getProfessorList();

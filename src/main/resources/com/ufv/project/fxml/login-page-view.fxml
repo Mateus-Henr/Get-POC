@@ -5,9 +5,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Text?>
 <?import java.net.URL?>
 <AnchorPane fx:id="mainPane" fx:controller="com.ufv.project.controller.LoginController" styleClass="background"
             xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">

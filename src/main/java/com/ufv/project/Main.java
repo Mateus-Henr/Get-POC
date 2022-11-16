@@ -31,10 +31,7 @@ public class Main extends Application
 
     public void setMockupData()
     {
-        UserDataSingleton.getInstance().setUsername("Matt");
-        UserDataSingleton.getInstance().setEmail("m@gmail.com");
-        UserDataSingleton.getInstance().setName("Mateus");
-//        UserDataSingleton.getInstance().setUserIcon();
+        UserDataSingleton userDataSingleton = UserDataSingleton.getInstance();
     }
 
     public static Object loadStage(String filename)

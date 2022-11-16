@@ -1,6 +1,8 @@
 package com.ufv.project.controller;
 
+import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.Singleton;
+import com.ufv.project.db.UserDB;
 import com.ufv.project.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,8 +12,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class LoginController
 {
@@ -56,14 +60,23 @@ public class LoginController
     @FXML
     protected void onLoginButtonClick()
     {
-        User user = Singleton.getInstance().getUser(usernameField.getText());
+        User user = null;
 
-//        if (user == null)
-//        {
-//            return;
-//        }
+        try (ConnectDB connectDB = new ConnectDB())
+        {
+            user = new UserDB(connectDB.getConnection()).queryUserByID(usernameField.getText());
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
 
-        if ("test".equals(passwordField.getText()))
+        if (user == null)
+        {
+            return;
+        }
+
+        if (user.getPassword().equals(passwordField.getText()))
         {
             try
             {
