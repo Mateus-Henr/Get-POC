@@ -31,7 +31,7 @@ public class ConnectDB implements AutoCloseable
     {
         try (Connection conn = DriverManager.getConnection(CONNECTION_STRING, USER, PASSWORD))
         {
-            readSQLFilesFromFolder(conn, new File(SET_UP_FOLDER));
+            executeSQLFilesFromFolder(conn, new File(SET_UP_FOLDER));
         }
     }
 
@@ -54,7 +54,7 @@ public class ConnectDB implements AutoCloseable
         }
     }
 
-    public void readSQLFilesFromFolder(Connection conn, final File folder) throws Exception
+    public void executeSQLFilesFromFolder(Connection conn, final File folder) throws Exception
     {
         File[] files = folder.listFiles();
 
