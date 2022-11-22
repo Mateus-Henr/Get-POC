@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
+<?import java.net.URL?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ufv.project.controller.CreatePOCController"
@@ -14,13 +15,18 @@
     <fx:include fx:id="userData" source="personal-info-page-view.fxml"/>
 
     <Label>Create POC</Label>
-    <GridPane fx:id="gridPane" alignment="CENTER">
-        <TextField fx:id="title" promptText="Title" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <MenuButton fx:id="authorMenuButton" GridPane.rowIndex="1" GridPane.columnIndex="0">Author(s)</MenuButton>
+    <GridPane fx:id="gridPane" alignment="CENTER" styleClass="background">
+        <TextField fx:id="title" promptText="Title" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                   styleClass="text-field"/>
+        <MenuButton fx:id="authorMenuButton" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="menu-button">
+            Author(s)
+        </MenuButton>
         <ComboBox fx:id="advisorComboBox" promptText="Advisor" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <MenuButton fx:id="coAdvisorMenuButton" GridPane.rowIndex="3" GridPane.columnIndex="0">Co-Advisors</MenuButton>
+        <MenuButton fx:id="coAdvisorMenuButton" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="menu-button">
+            Co-Advisors
+        </MenuButton>
         <ComboBox fx:id="fieldComboBox" promptText="Field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-        <DatePicker fx:id="datePicker" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <DatePicker fx:id="datePicker" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="date-picker"/>
         <ListView fx:id="keywordList" editable="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
         <Button fx:id="choosePDFButton" onMouseClicked="#handlePDFChoosing" GridPane.rowIndex="0"
                 GridPane.columnIndex="2">Choose...
@@ -30,4 +36,7 @@
             Add POC
         </Button>
     </GridPane>
+    <stylesheets>
+        <URL value="@../css/create-poc-page-styles.css"/>
+    </stylesheets>
 </VBox>

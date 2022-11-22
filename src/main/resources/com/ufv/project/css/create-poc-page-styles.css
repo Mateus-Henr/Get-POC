@@ -1,7 +1,29 @@
 .background
 {
-    -fx-pref-height: 400.0;
-    -fx-pref-width: 600.0;
     -fx-alignment: center;
     -fx-background-color: #FFECD1;
+}
+.menu-button
+{
+    -fx-background-color: #001524;
+}
+.text-field
+{
+    -fx-background-color: #FFECD1;
+    -fx-border-width: 2.0;
+    -fx-border-color: #001524;
+    -fx-border-radius: 20.0;
+    -fx-prompt-text-fill: #001524;
+    -fx-text-fill: #001524;
+    -fx-font-family: "Ubuntu Mono Bold";
+}
+.date-picker
+{
+    -fx-background-color: #FFECD1;
+    -fx-border-width: 2.0;
+    -fx-border-color: #001524;
+    -fx-border-radius: 20.0;
+    -fx-prompt-text-fill: #001524;
+    -fx-text-fill: #001524;
+    -fx-font-family: "Ubuntu Mono Bold";
 }
