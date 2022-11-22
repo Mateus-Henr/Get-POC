@@ -1,7 +1,6 @@
 package com.ufv.project.controller;
 
 import com.ufv.project.db.ConnectDB;
-import com.ufv.project.db.Singleton;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.model.User;
 import javafx.fxml.FXML;
@@ -12,9 +11,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 public class LoginController
@@ -31,6 +30,9 @@ public class LoginController
     private Button loginButton;
 
     @FXML
+    private Text invalidText;
+
+    @FXML
     public void initialize()
     {
         // Set event handling to text box when pressing the "ENTER" key.
@@ -38,7 +40,7 @@ public class LoginController
         {
             if (keyEvent.getCode().equals(KeyCode.ENTER) && areFieldsValid())
             {
-                onLoginButtonClick();
+                onLoginButtonAction();
             }
         });
 
@@ -47,7 +49,7 @@ public class LoginController
         {
             if (keyEvent.getCode().equals(KeyCode.ENTER) && areFieldsValid())
             {
-                onLoginButtonClick();
+                onLoginButtonAction();
             }
         });
 
@@ -58,7 +60,18 @@ public class LoginController
     }
 
     @FXML
-    protected void onLoginButtonClick()
+    protected void onLoginButtonPressed()
+    {
+        loginButton.getStyleClass().add("login-button-clicked");
+    }
+
+    @FXML
+    protected void onLoginButtonReleased()
+    {
+        loginButton.getStyleClass().remove("login-button-clicked");
+    }
+    @FXML
+    protected void onLoginButtonAction()
     {
         User user = null;
 
@@ -95,7 +108,9 @@ public class LoginController
         }
         else
         {
-            // Validation failed call fail style.
+            usernameField.getStyleClass().add("username-password-fields-invalid");
+            passwordField.getStyleClass().add("username-password-fields-invalid");
+            invalidText.setOpacity(1);
         }
     }
 

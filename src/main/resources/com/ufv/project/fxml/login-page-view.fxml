@@ -19,9 +19,10 @@
                        styleClass="username-password-fields">
         </PasswordField>
         <Button fx:id="loginButton" defaultButton="true" layoutX="82.0" layoutY="233.0" mnemonicParsing="false"
-                onMouseClicked="#onLoginButtonClick" text="LOGIN" styleClass="login-button">
+                onAction="#onLoginButtonAction" onMousePressed="#onLoginButtonPressed"
+                onMouseReleased="#onLoginButtonReleased" text="LOGIN" styleClass="login-button">
         </Button>
-        <Text layoutX="111.0" layoutY="294.0" text="Esqueceu a senha?" styleClass="forgot-password">
+        <Text fx:id="invalidText" layoutX="94.0" layoutY="122.0" text="Usuário ou senha errados" opacity="0" styleClass="invalid-text">
         </Text>
         <Line endX="390.5" endY="374.0" layoutX="-63.0" layoutY="-8.0" startX="390.5" startY="40.0"
               styleClass="division-line"/>

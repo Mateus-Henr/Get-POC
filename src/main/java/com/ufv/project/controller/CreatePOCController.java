@@ -96,7 +96,6 @@ public class CreatePOCController
         );
 
         // Sets values to top menu.
-        topMenuController.setUserIcon(new Image(new File("src/main/resources/com/ufv/project/images/teacher.png").toURI().toString()));
         topMenuController.setUserRole("Teacher");
 
         // Sets values according to the current user.

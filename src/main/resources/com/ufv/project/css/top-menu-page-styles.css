@@ -1,0 +1,10 @@
+.background
+{
+    -fx-pref-height: 20.0;
+    -fx-pref-width: 600.0;
+    -fx-background-color: #15616D;
+}
+.user-role
+{
+    -fx-fill: #FFECD1;
+}
