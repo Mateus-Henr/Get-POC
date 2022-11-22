@@ -26,7 +26,7 @@ public class UserDB
     private static final String UPDATE_USER = "UPDATE " + TABLE_USER + " SET " + COLUMN_USER_PASSWORD + " = ?, " + COLUMN_USER_NAME + " = ?, " + COLUMN_USER_TYPE + " = ? WHERE " + COLUMN_USER_ID + " = ?";
     private static final String DELETE_USER = "DELETE FROM " + TABLE_USER + " WHERE " + COLUMN_USER_ID + " = ?";
 
-    private Connection conn;
+    private final Connection conn;
 
     private final PreparedStatement queryUser;
     private final PreparedStatement queryUsers;
@@ -81,6 +81,9 @@ public class UserDB
 
     public String insertUser(User user) throws SQLException
     {
+        // Begin transaction.
+        conn.setAutoCommit(false);
+
         insertUser.setString(COLUMN_USER_ID_INDEX, user.getUsername());
         insertUser.setString(COLUMN_USER_PASSWORD_INDEX, user.getPassword());
         insertUser.setString(COLUMN_USER_NAME_INDEX, user.getName());
@@ -94,21 +97,26 @@ public class UserDB
         }
 
         UserTypesEnum userType = user.getUserType();
+        String username = null;
 
         if (userType == UserTypesEnum.PROFESSOR)
         {
-            return new ProfessorDB(conn).insertProfessor((Professor) user);
+            username = new ProfessorDB(conn).insertProfessor((Professor) user);
         }
         else if (userType == UserTypesEnum.STUDENT)
         {
-            return new StudentDB(conn).insertStudent((Student) user);
+            username = new StudentDB(conn).insertStudent((Student) user);
         }
         else if (userType == UserTypesEnum.ADMIN)
         {
-            return user.getUsername();
+            username = user.getUsername();
         }
 
-        return null;
+        // End transaction.
+        conn.commit();
+        conn.setAutoCommit(true);
+
+        return username;
     }
 
     public User deleteUserByID(String id) throws SQLException

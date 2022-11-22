@@ -37,13 +37,13 @@ public class POCDB
     private static final String UPDATE_POC = "UPDATE " + TABLE_POC + " SET " + COLUMN_POC_TITLE + " = ?, " + COLUMN_POC_DEFENSE_DATE + " = ?, " + COLUMN_POC_SUMMARY + " = ?, " + COLUMN_POC_FIELD_ID + " = ?, " + COLUMN_POC_PDF_ID + " = ?, " + COLUMN_POC_TEACHER_REGISTRANT_ID + " = ?, " + COLUMN_POC_TEACHER_ADVISOR_ID + " = ? WHERE " + COLUMN_POC_ID + " = ?";
     private static final String DELETE_POC = "DELETE FROM " + TABLE_POC + " WHERE " + COLUMN_POC_ID + " = ?";
 
-    private Connection conn;
+    private final Connection conn;
 
-    private PreparedStatement queryPOC;
-    private PreparedStatement queryPOCs;
-    private PreparedStatement insertPOC;
-    private PreparedStatement updatePOC;
-    private PreparedStatement deletePOC;
+    private final PreparedStatement queryPOC;
+    private final PreparedStatement queryPOCs;
+    private final PreparedStatement insertPOC;
+    private final PreparedStatement updatePOC;
+    private final PreparedStatement deletePOC;
 
     public POCDB(Connection conn) throws SQLException
     {
@@ -72,7 +72,6 @@ public class POCDB
 
         FieldDB fieldDB = new FieldDB(conn);
         PDFDB pdfDB = new PDFDB(conn);
-        ProfessorDB professorDB = new ProfessorDB(conn);
         UserDB userDB = new UserDB(conn);
 
         queryPOC.setInt(1, id);
@@ -80,19 +79,18 @@ public class POCDB
 
         if (results.next())
         {
-            return new POC.POCBuilder()
-                    .id(results.getInt(COLUMN_POC_ID_INDEX))
-                    .title(results.getString(COLUMN_POC_TITLE_INDEX))
-                    .authors(students)
-                    .defenseDate(results.getDate(COLUMN_POC_DEFENSE_DATE_INDEX).toLocalDate())
-                    .keywords(keywords)
-                    .summary(results.getString(COLUMN_POC_SUMMARY_INDEX))
-                    .field(fieldDB.queryFieldByID(results.getInt(COLUMN_POC_FIELD_INDEX)))
-                    .pdf(pdfDB.queryPDFByID(results.getInt(COLUMN_POC_PDF_ID_INDEX)))
-                    .registrant((Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_REGISTRANT_ID_INDEX)))
-                    .advisor((Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_ADVISOR_ID_INDEX)))
-                    .coAdvisors(professors)
-                    .build();
+            return new POC(
+                    results.getInt(COLUMN_POC_ID_INDEX),
+                    results.getString(COLUMN_POC_TITLE_INDEX),
+                    students,
+                    results.getDate(COLUMN_POC_DEFENSE_DATE_INDEX).toLocalDate(),
+                    keywords,
+                    results.getString(COLUMN_POC_SUMMARY_INDEX),
+                    fieldDB.queryFieldByID(results.getInt(COLUMN_POC_FIELD_INDEX)),
+                    pdfDB.queryPDFByID(results.getInt(COLUMN_POC_PDF_ID_INDEX)),
+                    (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_REGISTRANT_ID_INDEX)),
+                    (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_ADVISOR_ID_INDEX)),
+                    professors);
         }
 
         return null;
@@ -267,19 +265,17 @@ public class POCDB
 
         while (results.next())
         {
-            pocs.add(new POC.POCBuilder()
-                    .id(results.getInt(COLUMN_POC_ID))
-                    .title(results.getString(COLUMN_POC_TITLE))
-                    .authors(studentDB.queryStudentsByPocID(results.getInt(COLUMN_POC_ID)))
-                    .defenseDate(results.getDate(COLUMN_POC_DEFENSE_DATE).toLocalDate())
-                    .keywords(poc_has_keywordDB.queryKeywordsByPOCID(results.getInt(COLUMN_POC_ID)))
-                    .summary(results.getString(COLUMN_POC_SUMMARY))
-                    .field(fieldDB.queryFieldByID(results.getInt(COLUMN_POC_FIELD_ID)))
-                    .pdf(pdfDB.queryPDFByID(results.getInt(COLUMN_POC_PDF_ID)))
-                    .registrant((Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_REGISTRANT_ID)))
-                    .advisor((Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_ADVISOR_ID)))
-                    .coAdvisors(professor_co_advises_pocDB.queryProfessorsByPocId(results.getInt(COLUMN_POC_ID)))
-                    .build());
+            pocs.add(new POC(results.getInt(COLUMN_POC_ID),
+                    results.getString(COLUMN_POC_TITLE),
+                    studentDB.queryStudentsByPocID(results.getInt(COLUMN_POC_ID)),
+                    results.getDate(COLUMN_POC_DEFENSE_DATE).toLocalDate(),
+                    poc_has_keywordDB.queryKeywordsByPOCID(results.getInt(COLUMN_POC_ID)),
+                    results.getString(COLUMN_POC_SUMMARY),
+                    fieldDB.queryFieldByID(results.getInt(COLUMN_POC_FIELD_ID)),
+                    pdfDB.queryPDFByID(results.getInt(COLUMN_POC_PDF_ID)),
+                    (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_REGISTRANT_ID)),
+                    (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_ADVISOR_ID)),
+                    professor_co_advises_pocDB.queryProfessorsByPocId(results.getInt(COLUMN_POC_ID))));
 
         }
 

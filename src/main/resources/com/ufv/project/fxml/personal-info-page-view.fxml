@@ -5,12 +5,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
+<?import java.net.URL?>
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.PersonalInfoController">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.PersonalInfoController"
+      styleClass="background">
     <Separator prefWidth="200.0"/>
 
     <Text fx:id="nameText"/>
-    <VBox>
+    <VBox styleClass="info-background">
         <HBox>
             <Label text="Username:">Username:</Label>
             <Text fx:id="usernameText"/>
@@ -21,4 +23,7 @@
         </HBox>
     </VBox>
     <Separator prefWidth="200.0"/>
+    <stylesheets>
+        <URL value="@../css/personal-info-page-styles.css"/>
+    </stylesheets>
 </VBox>

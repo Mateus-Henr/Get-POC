@@ -2,14 +2,15 @@ package com.ufv.project.controller;
 
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
+import com.ufv.project.db.UserDataSingleton;
 import com.ufv.project.model.User;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -19,7 +20,8 @@ import java.sql.SQLException;
 public class LoginController
 {
     @FXML
-    public AnchorPane mainPane;
+    private AnchorPane mainPane;
+
     @FXML
     private TextField usernameField;
 
@@ -32,26 +34,19 @@ public class LoginController
     @FXML
     private Text invalidText;
 
+    private static final String INVALID_BOX_CSS_CLASS = "username-password-fields-invalid";
+
     @FXML
     public void initialize()
     {
         // Set event handling to text box when pressing the "ENTER" key.
-        usernameField.setOnKeyPressed(keyEvent ->
-        {
-            if (keyEvent.getCode().equals(KeyCode.ENTER) && areFieldsValid())
-            {
-                onLoginButtonAction();
-            }
-        });
-
-        // Set event handling to password box when pressing the "ENTER" key.
-        passwordField.setOnKeyPressed(keyEvent ->
-        {
-            if (keyEvent.getCode().equals(KeyCode.ENTER) && areFieldsValid())
-            {
-                onLoginButtonAction();
-            }
-        });
+        loginButton.disableProperty().bind(Bindings.createBooleanBinding(() ->
+                        usernameField.getText().trim().isEmpty(),
+                usernameField.textProperty())
+                .or(Bindings.createBooleanBinding(() ->
+                                passwordField.getText().trim().isEmpty(),
+                        passwordField.textProperty())
+        ));
 
         // Take away focus from boxes.
         usernameField.setFocusTraversable(false);
@@ -70,6 +65,7 @@ public class LoginController
     {
         loginButton.getStyleClass().remove("login-button-clicked");
     }
+
     @FXML
     protected void onLoginButtonAction()
     {
@@ -86,6 +82,9 @@ public class LoginController
 
         if (user == null)
         {
+            usernameField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
+            passwordField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
+            invalidText.setOpacity(1);
             return;
         }
 
@@ -93,6 +92,13 @@ public class LoginController
         {
             try
             {
+                usernameField.getStyleClass().removeIf(s -> s.equals(INVALID_BOX_CSS_CLASS));
+                passwordField.getStyleClass().removeIf(s -> s.equals(INVALID_BOX_CSS_CLASS));
+                invalidText.setOpacity(0);
+
+                // Sets global data
+                UserDataSingleton.getInstance().initialiseUser(usernameField.getText());
+
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ufv/project/fxml/create-poc-page-view.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());
                 Stage stage = new Stage();
@@ -100,6 +106,7 @@ public class LoginController
                 stage.setScene(scene);
                 stage.show();
 
+                ((Stage) mainPane.getScene().getWindow()).close();
             }
             catch (Exception e)
             {
@@ -108,15 +115,10 @@ public class LoginController
         }
         else
         {
-            usernameField.getStyleClass().add("username-password-fields-invalid");
-            passwordField.getStyleClass().add("username-password-fields-invalid");
+            usernameField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
+            passwordField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
             invalidText.setOpacity(1);
         }
-    }
-
-    public boolean areFieldsValid()
-    {
-        return !usernameField.getText().trim().isEmpty() && !passwordField.getText().trim().isEmpty();
     }
 
 }

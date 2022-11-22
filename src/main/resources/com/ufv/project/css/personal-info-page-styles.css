@@ -1,0 +1,12 @@
+.background
+{
+    -fx-background-color: #FFECD1;
+}
+.separator
+{
+    -fx-pref-height: 20.0;
+}
+.info-background
+{
+    -fx-background-color: #001524;
+}

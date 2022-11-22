@@ -6,8 +6,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
-import java.io.File;
-
 public class TopMenuController
 {
     @FXML

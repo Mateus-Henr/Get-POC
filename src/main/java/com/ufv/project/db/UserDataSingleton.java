@@ -13,24 +13,6 @@ public class UserDataSingleton
 
     private UserDataSingleton()
     {
-        try (ConnectDB connectDB = new ConnectDB())
-        {
-            Connection conn = connectDB.getConnection();
-            UserDB userDB = new UserDB(conn);
-
-            User user = userDB.queryUserByID("Miguel");
-
-            if (user != null)
-            {
-                username = user.getUsername();
-                name = user.getName();
-                userType = user.getUserType().toString();
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
     }
 
     private static class RegistryHolder
@@ -42,6 +24,28 @@ public class UserDataSingleton
     public static UserDataSingleton getInstance()
     {
         return UserDataSingleton.RegistryHolder.INSTANCE;
+    }
+
+    public void initialiseUser(String username)
+    {
+        try (ConnectDB connectDB = new ConnectDB())
+        {
+            Connection conn = connectDB.getConnection();
+            UserDB userDB = new UserDB(conn);
+
+            User user = userDB.queryUserByID(username);
+
+            if (user != null)
+            {
+                this.username = user.getUsername();
+                this.name = user.getName();
+                this.userType = user.getUserType().toString();
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public String getUsername()

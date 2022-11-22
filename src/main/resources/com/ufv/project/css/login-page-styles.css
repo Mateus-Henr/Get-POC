@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'Ubuntu Mono Bold';
+    src: url('../fonts/UbuntuMono-B.ttf');
+}
 .background{
     -fx-max-height: 400.0;
     -fx-max-width: 655.0;
@@ -54,7 +58,7 @@
     -fx-alignment: center;
     -fx-stroke-type: outside;
     -fx-stroke-width: 0.0;
-    -fx-font-family: "Ubuntu Medium";
+    -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 13.0;
 }
 .division-line{

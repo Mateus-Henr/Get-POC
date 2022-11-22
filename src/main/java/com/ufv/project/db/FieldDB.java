@@ -24,8 +24,6 @@ public class FieldDB
     private static final String UPDATE_FIELD_NAME = "UPDATE " + TABLE_FIELD + " SET " + COLUMN_FIELD_NAME + " = ? WHERE " + COLUMN_FIELD_ID + " = ?";
     private static final String DELETE_FIELD = "DELETE FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
 
-    private Connection conn;
-
     private final PreparedStatement queryField;
     private final PreparedStatement queryFields;
     private final PreparedStatement insertField;
@@ -34,8 +32,6 @@ public class FieldDB
 
     public FieldDB(Connection conn) throws SQLException
     {
-        this.conn = conn;
-
         queryField = conn.prepareStatement(QUERY_FIELD);
         queryFields = conn.prepareStatement(QUERY_FIELDS);
         insertField = conn.prepareStatement(INSERT_FIELD, Statement.RETURN_GENERATED_KEYS);
@@ -117,7 +113,7 @@ public class FieldDB
 
         if (oldField == null)
         {
-            throw new SQLException("Field with ID " + newField.toString() + " doesn't exist.");
+            throw new SQLException("Field with ID " + newField + " doesn't exist.");
         }
 
         updateField.setInt(2, newField.getId());

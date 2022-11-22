@@ -1,15 +1,14 @@
 package com.ufv.project.controller;
 
-import com.ufv.project.db.Singleton;
-import com.ufv.project.db.UserDataSingleton;
+import com.ufv.project.db.*;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -18,7 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,31 +102,31 @@ public class CreatePOCController
         userDataController.setNameText(UserDataSingleton.getInstance().getName());
         userDataController.setUserTypeText(UserDataSingleton.getInstance().getUserType());
 
-        // Get data from db.
-        ObservableList<Professor> professors = Singleton.getInstance().getProfessorList();
-        authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(Singleton.getInstance().getStudentList()));
+        ObservableList<Professor> professors = null;
+
+        try (ConnectDB connectDB = new ConnectDB())
+        {
+            professors = FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).getAllProfessors());
+            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new StudentDB(connectDB.getConnection()).getAllStudents()));
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
 
         // Set data for choosing.
-        advisorComboBox.setItems(professors);
-        coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
+        if (professors != null)
+        {
+            advisorComboBox.setItems(professors);
+            coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
+
+        }
     }
 
     @FXML
     public void handlePOCAdding()
     {
-        Singleton.getInstance().addPOC(new POC.POCBuilder()
-                .title(title.getText())
-                .defenseDate(datePicker.getValue())
-                .advisor(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()))
-                .coAdvisors(new ArrayList<>())
-                .registrant(new Professor("matt", "Matt", "kdka", "da", new ArrayList<>()))
-                .pdf(new PDF(1, pdfFile.toString(), LocalDate.now()))
-                .field(new Field(1, "sa"))
-                .summary("dadasdasdas")
-                .keywords(new ArrayList<>())
-                .build());
-
-        // Testing things out.
         try
         {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ufv/project/fxml/search-poc-page-view.fxml"));
@@ -141,7 +140,7 @@ public class CreatePOCController
         }
         catch (IOException e)
         {
-
+            e.printStackTrace();
         }
     }
 

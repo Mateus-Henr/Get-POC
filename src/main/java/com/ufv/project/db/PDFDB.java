@@ -33,12 +33,8 @@ public class PDFDB
     private final PreparedStatement updatePDF;
     private final PreparedStatement deletePDF;
 
-    private Connection conn;
-
     public PDFDB(Connection conn) throws SQLException
     {
-        this.conn = conn;
-
         queryPDF = conn.prepareStatement(QUERY_PDF);
         queryPDFs = conn.prepareStatement(QUERY_PDFS);
         insertPDF = conn.prepareStatement(INSERT_PDF, Statement.RETURN_GENERATED_KEYS);

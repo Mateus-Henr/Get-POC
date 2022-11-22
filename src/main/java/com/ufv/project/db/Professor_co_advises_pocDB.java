@@ -24,7 +24,7 @@ public class Professor_co_advises_pocDB
     private static final String INSERT_PROFESSOR_CO_ADVISES_POC = "INSERT INTO " + TABLE_PROFESSOR_CO_ADVISES_POC + " (" + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + ", " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + ") VALUES (?, ?)";
     private static final String DELETE_PROFESSOR_CO_ADVISES_POC = "DELETE FROM " + TABLE_PROFESSOR_CO_ADVISES_POC + " WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
 
-    private Connection conn;
+    private final Connection conn;
 
     private final PreparedStatement queryProfessorsByPocId;
     private final PreparedStatement insertProfessor_co_advises_poc;

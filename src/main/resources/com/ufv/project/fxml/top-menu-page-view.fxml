@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
+<?import java.net.URL?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.ufv.project.controller.TopMenuController"
-            prefHeight="400.0" prefWidth="600.0">
+            styleClass="background">
     <left>
-        <ImageView fx:id="pocIcon"/>
+        <ImageView fx:id="pocIcon" fitHeight="20.0" fitWidth="67" layoutY="5.0">
+            <Image url="@../images/getpoc.png"/>
+        </ImageView>
     </left>
     <right>
         <HBox>
-            <ImageView fx:id="userIcon" fitWidth="50" fitHeight="50"/>
-            <Text fx:id="userRole"/>
+            <ImageView fx:id="userIcon" fitWidth="20.0" fitHeight="20.0" layoutY="5.0">
+                <Image url="@../images/user.png"/>
+            </ImageView>
+            <Text fx:id="userRole" styleClass="user-role"/>
         </HBox>
     </right>
+    <stylesheets>
+        <URL value="@../css/top-menu-page-styles.css"/>
+    </stylesheets>
 </BorderPane>

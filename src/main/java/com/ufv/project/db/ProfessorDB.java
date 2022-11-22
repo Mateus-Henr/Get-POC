@@ -26,7 +26,7 @@ public class ProfessorDB
     private static final String UPDATE_PROFESSOR = "UPDATE " + TABLE_PROFESSOR + " SET " + COLUMN_PROFESSOR_EMAIL + " = ? WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
     private static final String DELETE_PROFESSOR = "DELETE FROM " + TABLE_PROFESSOR + " WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
 
-    private Connection conn;
+    private final Connection conn;
 
     private final PreparedStatement queryProfessor;
     private final PreparedStatement queryProfessors;

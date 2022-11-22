@@ -23,8 +23,6 @@ public class SubjectDB
     private static final String UPDATE_SUBJECT = "UPDATE " + TABLE_SUBJECT + " SET " + COLUMN_SUBJECT_NAME + " = ?, " + COLUMN_SUBJECT_DESCRIPTION + " = ? WHERE " + COLUMN_SUBJECT_ID + " = ?";
     private static final String DELETE_SUBJECT = "DELETE FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_ID + " = ?";
 
-    private Connection conn;
-
     private final PreparedStatement querySubject;
     private final PreparedStatement querySubjects;
     private final PreparedStatement insertSubject;
@@ -33,8 +31,6 @@ public class SubjectDB
 
     public SubjectDB(Connection conn) throws SQLException
     {
-        this.conn = conn;
-
         querySubject = conn.prepareStatement(QUERY_SUBJECT);
         querySubjects = conn.prepareStatement(QUERY_SUBJECTS);
         insertSubject = conn.prepareStatement(INSERT_SUBJECT, Statement.RETURN_GENERATED_KEYS);

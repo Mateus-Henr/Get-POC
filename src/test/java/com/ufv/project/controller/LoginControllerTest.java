@@ -1,7 +1,7 @@
 package com.ufv.project.controller;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 class LoginControllerTest {
 

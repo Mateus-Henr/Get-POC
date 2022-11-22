@@ -33,7 +33,7 @@ public class StudentDB
     private static final String SET_STUDENT_POC_NULL = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_POC + " = NULL WHERE " + COLUMN_STUDENT_POC + " = ?";
     private static final String SET_STUDENT_POC = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_POC + " = ? WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
 
-    private Connection conn;
+    private final Connection conn;
 
     private final PreparedStatement queryStudent;
     private final PreparedStatement queryStudents;

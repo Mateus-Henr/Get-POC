@@ -18,8 +18,6 @@ public class KeywordDB
     private static final String UPDATE_KEYWORD = "UPDATE " + TABLE_KEYWORD + " SET " + COLUMN_KEYWORDS_WORD + " = ?" + " WHERE " + COLUMN_KEYWORDS_WORD + " = ?";
     private static final String DELETE_KEYWORD = "DELETE FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORDS_WORD + " = ?";
 
-    private Connection conn;
-
     private final PreparedStatement queryKeyword;
     private final PreparedStatement queryKeywords;
     private final PreparedStatement insertKeyword;
@@ -28,8 +26,6 @@ public class KeywordDB
 
     public KeywordDB(Connection conn) throws SQLException
     {
-        this.conn = conn;
-
         queryKeyword = conn.prepareStatement(QUERY_KEYWORD);
         queryKeywords = conn.prepareStatement(QUERY_KEYWORDS);
         insertKeyword = conn.prepareStatement(INSERT_KEYWORD, Statement.RETURN_GENERATED_KEYS);

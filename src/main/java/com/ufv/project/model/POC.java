@@ -3,8 +3,7 @@ package com.ufv.project.model;
 import java.time.LocalDate;
 import java.util.List;
 
-public class POC
-{
+public class POC {
     private final int id;
     private String title;
     private List<Student> authors;
@@ -17,28 +16,26 @@ public class POC
     private Professor advisor;
     private List<Professor> coAdvisors;
 
+    public POC(int id, String title, List<Student> authors, LocalDate defenseDate, List<String> keywords, String summary,
+               Field field, PDF pdf, Professor registrant, Professor advisor, List<Professor> coAdvisors)
+    {
+        this.id = id;
+        this.title = title;
+        this.authors = authors;
+        this.defenseDate = defenseDate;
+        this.keywords = keywords;
+        this.summary = summary;
+        this.field = field;
+        this.pdf = pdf;
+        this.registrant = registrant;
+        this.advisor = advisor;
+        this.coAdvisors = coAdvisors;
+    }
+
     public int getId()
     {
         return id;
     }
-
-    private POC(POCBuilder pocBuilder)
-    {
-        this.id = pocBuilder.id;
-        this.title = pocBuilder.title;
-        this.authors = pocBuilder.authors;
-        this.defenseDate = pocBuilder.defenseDate;
-        this.keywords = pocBuilder.keywords;
-        this.summary = pocBuilder.summary;
-        this.field = pocBuilder.field;
-        this.pdf = pocBuilder.pdf;
-        this.registrant = pocBuilder.registrant;
-        this.advisor = pocBuilder.advisor;
-        this.coAdvisors = pocBuilder.coAdvisors;
-
-    }
-
-
 
     public String getTitle()
     {
@@ -50,16 +47,6 @@ public class POC
         this.title = title;
     }
 
-    public LocalDate getDefenseDate()
-    {
-        return defenseDate;
-    }
-
-    public void setDefenseDate(LocalDate defenseDate)
-    {
-        this.defenseDate = defenseDate;
-    }
-
     public List<Student> getAuthors()
     {
         return authors;
@@ -68,6 +55,16 @@ public class POC
     public void setAuthors(List<Student> authors)
     {
         this.authors = authors;
+    }
+
+    public LocalDate getDefenseDate()
+    {
+        return defenseDate;
+    }
+
+    public void setDefenseDate(LocalDate defenseDate)
+    {
+        this.defenseDate = defenseDate;
     }
 
     public List<String> getKeywords()
@@ -139,102 +136,4 @@ public class POC
     {
         this.coAdvisors = coAdvisors;
     }
-
-    @Override
-    public String toString()
-    {
-        return title;
-    }
-
-    public static class POCBuilder
-    {
-        private int id;
-        private String title;
-        private List<Student> authors;
-        private LocalDate defenseDate;
-        private List<String> keywords;
-        private String summary;
-        private Field field;
-        private PDF pdf;
-        private Professor registrant;
-        private Professor advisor;
-        private List<Professor> coAdvisors;
-
-        public POCBuilder()
-        {
-        }
-
-        public POCBuilder id(int id)
-        {
-            this.id = id;
-            return this;
-        }
-
-        public POCBuilder title(String title)
-        {
-            this.title = title;
-            return this;
-        }
-
-        public POCBuilder defenseDate(LocalDate defenseDate)
-        {
-            this.defenseDate = defenseDate;
-            return this;
-        }
-
-        public POCBuilder authors(List<Student> authors)
-        {
-            this.authors = authors;
-            return this;
-        }
-
-        public POCBuilder keywords(List<String> keywords)
-        {
-            this.keywords = keywords;
-            return this;
-        }
-
-        public POCBuilder summary(String summary)
-        {
-            this.summary = summary;
-            return this;
-        }
-
-        public POCBuilder field(Field field)
-        {
-            this.field = field;
-            return this;
-        }
-
-        public POCBuilder pdf(PDF pdf)
-        {
-            this.pdf = pdf;
-            return this;
-        }
-
-        public POCBuilder registrant(Professor registrant)
-        {
-            this.registrant = registrant;
-            return this;
-        }
-
-        public POCBuilder advisor(Professor advisor)
-        {
-            this.advisor = advisor;
-            return this;
-        }
-
-        public POCBuilder coAdvisors(List<Professor> coAdvisors)
-        {
-            this.coAdvisors = coAdvisors;
-            return this;
-        }
-
-        public POC build()
-        {
-            return new POC(this);
-        }
-
-    }
-
 }
