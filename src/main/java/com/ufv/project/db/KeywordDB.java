@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeywordDB implements AutoCloseable
+public class KeywordDB
 {
     private static final String TABLE_KEYWORD = "TB_keyword";
 
@@ -18,30 +18,25 @@ public class KeywordDB implements AutoCloseable
     private static final String UPDATE_KEYWORD = "UPDATE " + TABLE_KEYWORD + " SET " + COLUMN_KEYWORDS_WORD + " = ?" + " WHERE " + COLUMN_KEYWORDS_WORD + " = ?";
     private static final String DELETE_KEYWORD = "DELETE FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORDS_WORD + " = ?";
 
-    private final PreparedStatement queryKeyword;
-    private final PreparedStatement queryKeywords;
-    private final PreparedStatement insertKeyword;
-    private final PreparedStatement updateKeyword;
-    private final PreparedStatement deleteKeyword;
+    private final Connection conn;
 
-    public KeywordDB(Connection conn) throws SQLException
+    public KeywordDB(Connection conn)
     {
-        queryKeyword = conn.prepareStatement(QUERY_KEYWORD);
-        queryKeywords = conn.prepareStatement(QUERY_KEYWORDS);
-        insertKeyword = conn.prepareStatement(INSERT_KEYWORD, Statement.RETURN_GENERATED_KEYS);
-        deleteKeyword = conn.prepareStatement(DELETE_KEYWORD);
-        updateKeyword = conn.prepareStatement(UPDATE_KEYWORD);
+        this.conn = conn;
     }
 
     public String queryKeywordByID(String word) throws SQLException
     {
-        queryKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, word);
-
-        try (ResultSet resultSet = queryKeyword.executeQuery())
+        try (PreparedStatement queryKeyword = conn.prepareStatement(QUERY_KEYWORD))
         {
-            if (resultSet.next())
+            queryKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, word);
+
+            try (ResultSet resultSet = queryKeyword.executeQuery())
             {
-                return resultSet.getString(COLUMN_KEYWORDS_WORD_INDEX);
+                if (resultSet.next())
+                {
+                    return resultSet.getString(COLUMN_KEYWORDS_WORD_INDEX);
+                }
             }
         }
 
@@ -50,7 +45,8 @@ public class KeywordDB implements AutoCloseable
 
     public List<String> queryKeywords() throws SQLException
     {
-        try (ResultSet resultSet = queryKeywords.executeQuery())
+        try (PreparedStatement queryKeywords = conn.prepareStatement(QUERY_KEYWORDS);
+             ResultSet resultSet = queryKeywords.executeQuery())
         {
             List<String> keywords = new ArrayList<>();
 
@@ -65,70 +61,53 @@ public class KeywordDB implements AutoCloseable
 
     public String insertKeyword(String keyword) throws SQLException
     {
-        insertKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, keyword);
-
-        int affectedRows = insertKeyword.executeUpdate();
-
-        if (affectedRows != 1)
+        try (PreparedStatement insertKeyword = conn.prepareStatement(INSERT_KEYWORD, Statement.RETURN_GENERATED_KEYS))
         {
-            throw new SQLException("Could not insert keyword");
-        }
+            insertKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, keyword);
 
-        return keyword;
+            int affectedRows = insertKeyword.executeUpdate();
+
+            if (affectedRows != 1)
+            {
+                throw new SQLException("Could not insert keyword");
+            }
+
+            return keyword;
+        }
     }
 
     public String deleteKeyword(String id) throws SQLException
     {
-        deleteKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, id);
-
-
-        int affectedRows = deleteKeyword.executeUpdate();
-
-        if (affectedRows != 1)
+        try (PreparedStatement deleteKeyword = conn.prepareStatement(DELETE_KEYWORD))
         {
-            throw new SQLException("Could not delete keyword");
-        }
+            deleteKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, id);
 
-        return id;
+            int affectedRows = deleteKeyword.executeUpdate();
+
+            if (affectedRows != 1)
+            {
+                throw new SQLException("Could not delete keyword");
+            }
+
+            return id;
+        }
     }
 
     public String updateKeyword(String oldKeyword, String newKeyword) throws SQLException
     {
-        updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, newKeyword);
-        updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX + 1, oldKeyword);
+        try (PreparedStatement updateKeyword = conn.prepareStatement(UPDATE_KEYWORD))
+        {
+            updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, newKeyword);
+            updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX + 1, oldKeyword);
 
-        int affectedRows = updateKeyword.executeUpdate();
+            int affectedRows = updateKeyword.executeUpdate();
 
-        if (affectedRows != 1)
-        {
-            throw new SQLException("Could not update keyword");
-        }
+            if (affectedRows != 1)
+            {
+                throw new SQLException("Could not update keyword");
+            }
 
-        return newKeyword;
-    }
-
-    @Override
-    public void close() throws SQLException
-    {
-        if (queryKeyword != null)
-        {
-            queryKeyword.close();
-        }
-        if (queryKeywords != null)
-        {
-            queryKeywords.close();
-        }
-        if (insertKeyword != null)
-        {
-            insertKeyword.close();
-        }
-        if (updateKeyword != null)
-        {
-            updateKeyword.close();
-        }
-        if (deleteKeyword != null)
-        {
-            deleteKeyword.close();
+            return newKeyword;
         }
     }
 

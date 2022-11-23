@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PDFDB implements AutoCloseable
+public class PDFDB
 {
     /*
      * TB_PDF table columns names
@@ -27,30 +27,25 @@ public class PDFDB implements AutoCloseable
     private static final String UPDATE_PDF = "UPDATE " + TABLE_PDF + " SET " + COLUMN_PDF_PATH + " = ?, " + COLUMN_PDF_CREATION_DATE + " = ? WHERE " + COLUMN_PDF_ID + " = ?";
     private static final String DELETE_PDF = "DELETE FROM " + TABLE_PDF + " WHERE " + COLUMN_PDF_ID + " = ?";
 
-    private final PreparedStatement queryPDF;
-    private final PreparedStatement queryPDFs;
-    private final PreparedStatement insertPDF;
-    private final PreparedStatement updatePDF;
-    private final PreparedStatement deletePDF;
+    private final Connection conn;
 
     public PDFDB(Connection conn) throws SQLException
     {
-        queryPDF = conn.prepareStatement(QUERY_PDF);
-        queryPDFs = conn.prepareStatement(QUERY_PDFS);
-        insertPDF = conn.prepareStatement(INSERT_PDF, Statement.RETURN_GENERATED_KEYS);
-        deletePDF = conn.prepareStatement(DELETE_PDF);
-        updatePDF = conn.prepareStatement(UPDATE_PDF);
+        this.conn = conn;
     }
 
     public PDF queryPDFByID(int id) throws SQLException
     {
-        queryPDF.setInt(1, id);
-
-        try (ResultSet results = queryPDF.executeQuery())
+        try (PreparedStatement queryPDF = conn.prepareStatement(QUERY_PDF))
         {
-            if (results.next())
+            queryPDF.setInt(1, id);
+
+            try (ResultSet results = queryPDF.executeQuery())
             {
-                return new PDF(results.getInt(COLUMN_PDF_ID_INDEX), results.getString(COLUMN_PDF_PATH_INDEX), results.getDate(COLUMN_PDF_CREATION_DATE_INDEX).toLocalDate());
+                if (results.next())
+                {
+                    return new PDF(results.getInt(COLUMN_PDF_ID_INDEX), results.getString(COLUMN_PDF_PATH_INDEX), results.getDate(COLUMN_PDF_CREATION_DATE_INDEX).toLocalDate());
+                }
             }
         }
 
@@ -59,7 +54,8 @@ public class PDFDB implements AutoCloseable
 
     public List<PDF> queryPDFs() throws SQLException
     {
-        try (ResultSet results = queryPDFs.executeQuery())
+        try (PreparedStatement queryPDFs = conn.prepareStatement(QUERY_PDFS);
+             ResultSet results = queryPDFs.executeQuery())
         {
             List<PDF> pdfs = new ArrayList<>();
 
@@ -74,37 +70,43 @@ public class PDFDB implements AutoCloseable
 
     public int insertPDF(PDF pdfToInsert) throws SQLException
     {
-        insertPDF.setInt(COLUMN_PDF_ID_INDEX, pdfToInsert.getId());
-        insertPDF.setDate(COLUMN_PDF_CREATION_DATE_INDEX, Date.valueOf(pdfToInsert.getLastModificationDate()));
-        insertPDF.setString(COLUMN_PDF_PATH_INDEX, pdfToInsert.getPath());
-
-        int affectedRows = insertPDF.executeUpdate();
-
-        if (affectedRows != 1)
+        try (PreparedStatement insertPDF = conn.prepareStatement(INSERT_PDF, Statement.RETURN_GENERATED_KEYS))
         {
-            throw new SQLException("Couldn't insert PDF.");
-        }
+            insertPDF.setInt(COLUMN_PDF_ID_INDEX, pdfToInsert.getId());
+            insertPDF.setDate(COLUMN_PDF_CREATION_DATE_INDEX, Date.valueOf(pdfToInsert.getLastModificationDate()));
+            insertPDF.setString(COLUMN_PDF_PATH_INDEX, pdfToInsert.getPath());
 
-        try (ResultSet generatedKeys = insertPDF.getGeneratedKeys())
-        {
-            if (generatedKeys.next())
+            int affectedRows = insertPDF.executeUpdate();
+
+            if (affectedRows != 1)
             {
-                return generatedKeys.getInt(1);
+                throw new SQLException("Couldn't insert PDF.");
             }
-        }
 
-        throw new SQLException("Couldn't get _id for PDF.");
+            try (ResultSet generatedKeys = insertPDF.getGeneratedKeys())
+            {
+                if (generatedKeys.next())
+                {
+                    return generatedKeys.getInt(1);
+                }
+            }
+
+            throw new SQLException("Couldn't get _id for PDF.");
+        }
     }
 
     public PDF deletePDF(PDF pdfToDelete) throws SQLException
     {
-        deletePDF.setInt(COLUMN_PDF_ID_INDEX, pdfToDelete.getId());
-
-        int affectedRows = deletePDF.executeUpdate();
-
-        if (affectedRows == 1)
+        try (PreparedStatement deletePDF = conn.prepareStatement(DELETE_PDF))
         {
-            return pdfToDelete;
+            deletePDF.setInt(COLUMN_PDF_ID_INDEX, pdfToDelete.getId());
+
+            int affectedRows = deletePDF.executeUpdate();
+
+            if (affectedRows == 1)
+            {
+                return pdfToDelete;
+            }
         }
 
         return null;
@@ -119,58 +121,38 @@ public class PDFDB implements AutoCloseable
             return null;
         }
 
-        if (newPDF.getPath() != null)
+        try (PreparedStatement updatePDF = conn.prepareStatement(UPDATE_PDF))
         {
-            updatePDF.setString(1, newPDF.getPath());
-        }
-        else
-        {
-            updatePDF.setString(1, oldPDF.getPath());
-        }
 
-        if (newPDF.getLastModificationDate() != null)
-        {
-            updatePDF.setDate(2, Date.valueOf(newPDF.getLastModificationDate()));
-        }
-        else
-        {
-            updatePDF.setDate(2, Date.valueOf(oldPDF.getLastModificationDate()));
-        }
+            if (newPDF.getPath() != null)
+            {
+                updatePDF.setString(1, newPDF.getPath());
+            }
+            else
+            {
+                updatePDF.setString(1, oldPDF.getPath());
+            }
 
-        updatePDF.setInt(3, newPDF.getId());
+            if (newPDF.getLastModificationDate() != null)
+            {
+                updatePDF.setDate(2, Date.valueOf(newPDF.getLastModificationDate()));
+            }
+            else
+            {
+                updatePDF.setDate(2, Date.valueOf(oldPDF.getLastModificationDate()));
+            }
 
-        int affectedRows = updatePDF.executeUpdate();
+            updatePDF.setInt(3, newPDF.getId());
 
-        if (affectedRows == 1)
-        {
-            return oldPDF;
+            int affectedRows = updatePDF.executeUpdate();
+
+            if (affectedRows == 1)
+            {
+                return oldPDF;
+            }
         }
 
         return null;
-    }
-
-    public void close() throws SQLException
-    {
-        if (queryPDF != null)
-        {
-            queryPDF.close();
-        }
-        if (queryPDFs != null)
-        {
-            queryPDFs.close();
-        }
-        if (insertPDF != null)
-        {
-            insertPDF.close();
-        }
-        if (deletePDF != null)
-        {
-            deletePDF.close();
-        }
-        if (updatePDF != null)
-        {
-            updatePDF.close();
-        }
     }
 
 }

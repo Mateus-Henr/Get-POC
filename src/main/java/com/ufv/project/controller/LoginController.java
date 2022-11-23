@@ -42,12 +42,12 @@ public class LoginController
     {
         // Set event handling to text box when pressing the "ENTER" key.
         loginButton.disableProperty().bind(Bindings.createBooleanBinding(() ->
-                        usernameField.getText().trim().isEmpty(),
-                usernameField.textProperty())
+                                usernameField.getText().trim().isEmpty(),
+                        usernameField.textProperty())
                 .or(Bindings.createBooleanBinding(() ->
                                 passwordField.getText().trim().isEmpty(),
                         passwordField.textProperty())
-        ));
+                ));
 
         // Take away focus from boxes.
         usernameField.setFocusTraversable(false);
@@ -72,10 +72,9 @@ public class LoginController
     {
         User user = null;
 
-        try (ConnectDB connectDB = new ConnectDB();
-            UserDB userDB = new UserDB(connectDB.getConnection()))
+        try (ConnectDB connectDB = new ConnectDB())
         {
-            user = userDB.queryUserByID(usernameField.getText());
+            user = new UserDB(connectDB.getConnection()).queryUserByID(usernameField.getText());
         }
         catch (SQLException e)
         {

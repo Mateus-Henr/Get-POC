@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubjectDB implements AutoCloseable
+public class SubjectDB
 {
     private static final String TABLE_SUBJECT = "TB_Subject";
     private static final String COLUMN_SUBJECT_ID = "ID";
@@ -23,73 +23,72 @@ public class SubjectDB implements AutoCloseable
     private static final String UPDATE_SUBJECT = "UPDATE " + TABLE_SUBJECT + " SET " + COLUMN_SUBJECT_NAME + " = ?, " + COLUMN_SUBJECT_DESCRIPTION + " = ? WHERE " + COLUMN_SUBJECT_ID + " = ?";
     private static final String DELETE_SUBJECT = "DELETE FROM " + TABLE_SUBJECT + " WHERE " + COLUMN_SUBJECT_ID + " = ?";
 
-    private final PreparedStatement querySubject;
-    private final PreparedStatement querySubjects;
-    private final PreparedStatement insertSubject;
-    private final PreparedStatement updateSubject;
-    private final PreparedStatement deleteSubject;
+    private final Connection conn;
 
     public SubjectDB(Connection conn) throws SQLException
     {
-        querySubject = conn.prepareStatement(QUERY_SUBJECT);
-        querySubjects = conn.prepareStatement(QUERY_SUBJECTS);
-        insertSubject = conn.prepareStatement(INSERT_SUBJECT, Statement.RETURN_GENERATED_KEYS);
-        updateSubject = conn.prepareStatement(UPDATE_SUBJECT);
-        deleteSubject = conn.prepareStatement(DELETE_SUBJECT);
+        this.conn = conn;
     }
 
     public Subject querySubjectByID(int id) throws SQLException
     {
-        querySubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
-
-        try (ResultSet resultSet = querySubject.executeQuery())
+        try (PreparedStatement querySubject = conn.prepareStatement(QUERY_SUBJECT))
         {
-            if (resultSet.next())
-            {
-                return new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX), resultSet.getString(COLUMN_SUBJECT_NAME_INDEX), resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX));
-            }
-        }
+            querySubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
 
-        return null;
+            try (ResultSet resultSet = querySubject.executeQuery())
+            {
+                if (resultSet.next())
+                {
+                    return new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX), resultSet.getString(COLUMN_SUBJECT_NAME_INDEX), resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX));
+                }
+            }
+
+            return null;
+        }
     }
 
     public List<Subject> querySubjects() throws SQLException
     {
-        List<Subject> subjects = new ArrayList<>();
-
-        try (ResultSet resultSet = querySubjects.executeQuery())
+        try (PreparedStatement querySubjects = conn.prepareStatement(QUERY_SUBJECTS);
+             ResultSet resultSet = querySubjects.executeQuery())
         {
+            List<Subject> subjects = new ArrayList<>();
+
             while (resultSet.next())
             {
                 subjects.add(new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX), resultSet.getString(COLUMN_SUBJECT_NAME_INDEX), resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX)));
             }
-        }
 
-        return subjects;
+            return subjects;
+        }
     }
 
     public int insertSubject(Subject new_subject) throws SQLException
     {
-        insertSubject.setInt(COLUMN_SUBJECT_ID_INDEX, new_subject.getId());
-        insertSubject.setString(COLUMN_SUBJECT_NAME_INDEX, new_subject.getName());
-        insertSubject.setString(COLUMN_SUBJECT_DESCRIPTION_INDEX, new_subject.getDescription());
-
-        int affectedRows = insertSubject.executeUpdate();
-
-        if (affectedRows != 1)
+        try (PreparedStatement insertSubject = conn.prepareStatement(INSERT_SUBJECT, Statement.RETURN_GENERATED_KEYS))
         {
-            throw new SQLException("Couldn't insert subject");
-        }
+            insertSubject.setInt(COLUMN_SUBJECT_ID_INDEX, new_subject.getId());
+            insertSubject.setString(COLUMN_SUBJECT_NAME_INDEX, new_subject.getName());
+            insertSubject.setString(COLUMN_SUBJECT_DESCRIPTION_INDEX, new_subject.getDescription());
 
-        try (ResultSet generatedKeys = insertSubject.getGeneratedKeys())
-        {
-            if (generatedKeys.next())
+            int affectedRows = insertSubject.executeUpdate();
+
+            if (affectedRows != 1)
             {
-                return generatedKeys.getInt(1);
+                throw new SQLException("Couldn't insert subject");
             }
-            else
+
+            try (ResultSet generatedKeys = insertSubject.getGeneratedKeys())
             {
-                throw new SQLException("Couldn't get id for subject");
+                if (generatedKeys.next())
+                {
+                    return generatedKeys.getInt(1);
+                }
+                else
+                {
+                    throw new SQLException("Couldn't get id for subject");
+                }
             }
         }
     }
@@ -97,16 +96,25 @@ public class SubjectDB implements AutoCloseable
     public Subject deleteSubject(int id) throws SQLException
     {
         Subject foundSubject = querySubjectByID(id);
-        deleteSubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
 
-        int affectedRows = deleteSubject.executeUpdate();
-
-        if (affectedRows != 1)
+        if (foundSubject == null)
         {
-            throw new SQLException("Couldn't delete subject");
+            return null;
         }
 
-        return foundSubject;
+        try (PreparedStatement deleteSubject = conn.prepareStatement(DELETE_SUBJECT))
+        {
+            deleteSubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
+
+            int affectedRows = deleteSubject.executeUpdate();
+
+            if (affectedRows != 1)
+            {
+                throw new SQLException("Couldn't delete subject");
+            }
+
+            return foundSubject;
+        }
     }
 
     public Subject updateSubject(Subject newSubject) throws SQLException
@@ -118,58 +126,47 @@ public class SubjectDB implements AutoCloseable
             return null;
         }
 
-        if (newSubject.getName() != null)
+        try (PreparedStatement updateSubject = conn.prepareStatement(UPDATE_SUBJECT))
         {
-            updateSubject.setString(1, newSubject.getName());
-        }
-        else
-        {
-            updateSubject.setString(1, foundSubject.getName());
-        }
+            conn.setAutoCommit(false);
 
-        if (newSubject.getDescription() != null)
-        {
-            updateSubject.setString(2, newSubject.getDescription());
-        }
-        else
-        {
-            updateSubject.setString(2, foundSubject.getDescription());
-        }
+            if (newSubject.getName() != null)
+            {
+                updateSubject.setString(1, newSubject.getName());
+            }
+            else
+            {
+                updateSubject.setString(1, foundSubject.getName());
+            }
 
-        updateSubject.setInt(3, newSubject.getId());
+            if (newSubject.getDescription() != null)
+            {
+                updateSubject.setString(2, newSubject.getDescription());
+            }
+            else
+            {
+                updateSubject.setString(2, foundSubject.getDescription());
+            }
 
-        int affectedRows = updateSubject.executeUpdate();
+            updateSubject.setInt(3, newSubject.getId());
 
-        if (affectedRows == 1)
-        {
+            int affectedRows = updateSubject.executeUpdate();
+
+            if (affectedRows != 1)
+            {
+                throw new SQLException("Couldn't update subject.");
+            }
+
+            conn.setAutoCommit(true);
+
             return foundSubject;
         }
+        catch (SQLException e)
+        {
+            conn.rollback();
+            conn.setAutoCommit(true);
 
-        return null;
-    }
-
-    @Override
-    public void close() throws SQLException
-    {
-        if (querySubject != null)
-        {
-            querySubject.close();
-        }
-        if (querySubjects != null)
-        {
-            querySubjects.close();
-        }
-        if (insertSubject != null)
-        {
-            insertSubject.close();
-        }
-        if (updateSubject != null)
-        {
-            updateSubject.close();
-        }
-        if (deleteSubject != null)
-        {
-            deleteSubject.close();
+            throw new SQLException(e);
         }
     }
 

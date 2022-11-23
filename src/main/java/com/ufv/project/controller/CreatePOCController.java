@@ -107,12 +107,10 @@ public class CreatePOCController
 
         ObservableList<Professor> professors = null;
 
-        try (ConnectDB connectDB = new ConnectDB();
-            ProfessorDB professorDB = new ProfessorDB(connectDB.getConnection());
-            StudentDB studentDB = new StudentDB(connectDB.getConnection()))
+        try (ConnectDB connectDB = new ConnectDB())
         {
-            professors = FXCollections.observableList(professorDB.getAllProfessors());
-            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(studentDB.getAllStudents()));
+            professors = FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).getAllProfessors());
+            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new StudentDB(connectDB.getConnection()).getAllStudents()));
         }
         catch (SQLException e)
         {

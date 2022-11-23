@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldDB implements AutoCloseable
+public class FieldDB
 {
     /*
      *   TB_Field table column's names
@@ -24,39 +24,35 @@ public class FieldDB implements AutoCloseable
     private static final String UPDATE_FIELD_NAME = "UPDATE " + TABLE_FIELD + " SET " + COLUMN_FIELD_NAME + " = ? WHERE " + COLUMN_FIELD_ID + " = ?";
     private static final String DELETE_FIELD = "DELETE FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
 
-    private final PreparedStatement queryField;
-    private final PreparedStatement queryFields;
-    private final PreparedStatement insertField;
-    private final PreparedStatement updateField;
-    private final PreparedStatement deleteField;
+    private final Connection conn;
 
     public FieldDB(Connection conn) throws SQLException
     {
-        queryField = conn.prepareStatement(QUERY_FIELD);
-        queryFields = conn.prepareStatement(QUERY_FIELDS);
-        insertField = conn.prepareStatement(INSERT_FIELD, Statement.RETURN_GENERATED_KEYS);
-        updateField = conn.prepareStatement(UPDATE_FIELD_NAME);
-        deleteField = conn.prepareStatement(DELETE_FIELD);
+        this.conn = conn;
     }
 
     public Field queryFieldByID(int id) throws SQLException
     {
-        queryField.setInt(COLUMN_FIELD_ID_INDEX, id);
-
-        try (ResultSet resultSet = queryField.executeQuery())
+        try (PreparedStatement queryField = conn.prepareStatement(QUERY_FIELD);)
         {
-            if (resultSet.next())
+            queryField.setInt(COLUMN_FIELD_ID_INDEX, id);
+
+            try (ResultSet resultSet = queryField.executeQuery())
             {
-                return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
+                if (resultSet.next())
+                {
+                    return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
+                }
+
+                return null;
             }
         }
-
-        return null;
     }
 
     public List<Field> queryFields() throws SQLException
     {
-        try (ResultSet resultSet = queryFields.executeQuery())
+        try (PreparedStatement queryFields = conn.prepareStatement(QUERY_FIELDS);
+             ResultSet resultSet = queryFields.executeQuery())
         {
             List<Field> fields = new ArrayList<>();
 
@@ -71,40 +67,46 @@ public class FieldDB implements AutoCloseable
 
     public int insertField(Field field) throws SQLException
     {
-        insertField.setInt(COLUMN_FIELD_ID_INDEX, field.getId());
-        insertField.setString(COLUMN_FIELD_NAME_INDEX, field.getName());
-
-        int affectedRows = insertField.executeUpdate();
-
-        if (affectedRows != 1)
+        try (PreparedStatement insertField = conn.prepareStatement(INSERT_FIELD, Statement.RETURN_GENERATED_KEYS))
         {
-            throw new SQLException("Couldn't insert field!");
-        }
+            insertField.setInt(COLUMN_FIELD_ID_INDEX, field.getId());
+            insertField.setString(COLUMN_FIELD_NAME_INDEX, field.getName());
 
-        try (ResultSet generatedKeys = insertField.getGeneratedKeys())
-        {
-            if (generatedKeys.next())
+            int affectedRows = insertField.executeUpdate();
+
+            if (affectedRows != 1)
             {
-                return generatedKeys.getInt(1);
+                throw new SQLException("Couldn't insert field!");
             }
-        }
 
-        throw new SQLException("Couldn't get _id for field.");
+            try (ResultSet generatedKeys = insertField.getGeneratedKeys())
+            {
+                if (generatedKeys.next())
+                {
+                    return generatedKeys.getInt(1);
+                }
+            }
+
+            throw new SQLException("Couldn't get _id for field.");
+        }
     }
 
     public Field deleteFieldByID(int id) throws SQLException
     {
-        Field field = queryFieldByID(id);
-
-        if (field == null)
+        try (PreparedStatement deleteField = conn.prepareStatement(DELETE_FIELD))
         {
-            throw new SQLException("Field with ID: " + id + " doesn't exist.");
+            Field field = queryFieldByID(id);
+
+            if (field == null)
+            {
+                throw new SQLException("Field with ID: " + id + " doesn't exist.");
+            }
+
+            deleteField.setInt(1, id);
+            deleteField.executeUpdate();
+
+            return field;
         }
-
-        deleteField.setInt(1, id);
-        deleteField.executeUpdate();
-
-        return field;
     }
 
     public Field updateField(Field newField) throws SQLException
@@ -116,45 +118,23 @@ public class FieldDB implements AutoCloseable
             throw new SQLException("Field with ID " + newField + " doesn't exist.");
         }
 
-        updateField.setInt(2, newField.getId());
-
-        if (newField.getName() == null)
+        try (PreparedStatement updateField = conn.prepareStatement(UPDATE_FIELD_NAME))
         {
-            updateField.setString(1, oldField.getName());
-        }
-        else
-        {
-            updateField.setString(1, newField.getName());
-        }
+            updateField.setInt(2, newField.getId());
 
-        updateField.executeUpdate();
+            if (newField.getName() == null)
+            {
+                updateField.setString(1, oldField.getName());
+            }
+            else
+            {
+                updateField.setString(1, newField.getName());
+            }
+
+            updateField.executeUpdate();
+        }
 
         return oldField;
-    }
-
-    @Override
-    public void close() throws SQLException
-    {
-        if (queryField != null)
-        {
-            queryField.close();
-        }
-        if (queryFields != null)
-        {
-            queryFields.close();
-        }
-        if (insertField != null)
-        {
-            insertField.close();
-        }
-        if (updateField != null)
-        {
-            updateField.close();
-        }
-        if (deleteField != null)
-        {
-            deleteField.close();
-        }
     }
 
 }

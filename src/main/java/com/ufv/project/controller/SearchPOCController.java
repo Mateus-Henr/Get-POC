@@ -74,10 +74,9 @@ public class SearchPOCController
         // Load items from database.
         ObservableList<POC> pocList = null;
 
-        try (ConnectDB connectDB = new ConnectDB();
-        POCDB pocdb = new POCDB(connectDB.getConnection()))
+        try (ConnectDB connectDB = new ConnectDB())
         {
-            pocList = FXCollections.observableList(pocdb.queryAllPOCs());
+            pocList = FXCollections.observableList(new POCDB(connectDB.getConnection()).queryAllPOCs());
         }
         catch (SQLException e)
         {
