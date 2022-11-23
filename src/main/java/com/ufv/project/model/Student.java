@@ -34,7 +34,7 @@ public class Student extends User
         this.email = email;
     }
 
-    public int getPoc_id()
+    public int getPOCID()
     {
         return poc_id;
     }

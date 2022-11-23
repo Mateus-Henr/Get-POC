@@ -26,14 +26,14 @@ public class FieldDB
 
     private final Connection conn;
 
-    public FieldDB(Connection conn) throws SQLException
+    public FieldDB(Connection conn)
     {
         this.conn = conn;
     }
 
     public Field queryFieldByID(int id) throws SQLException
     {
-        try (PreparedStatement queryField = conn.prepareStatement(QUERY_FIELD);)
+        try (PreparedStatement queryField = conn.prepareStatement(QUERY_FIELD))
         {
             queryField.setInt(COLUMN_FIELD_ID_INDEX, id);
 
@@ -41,7 +41,8 @@ public class FieldDB
             {
                 if (resultSet.next())
                 {
-                    return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX), resultSet.getString(COLUMN_FIELD_NAME_INDEX));
+                    return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX),
+                            resultSet.getString(COLUMN_FIELD_NAME_INDEX));
                 }
 
                 return null;
@@ -58,7 +59,8 @@ public class FieldDB
 
             while (resultSet.next())
             {
-                fields.add(new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX), resultSet.getString(COLUMN_FIELD_NAME_INDEX)));
+                fields.add(new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX),
+                        resultSet.getString(COLUMN_FIELD_NAME_INDEX)));
             }
 
             return fields;
@@ -72,40 +74,42 @@ public class FieldDB
             insertField.setInt(COLUMN_FIELD_ID_INDEX, field.getId());
             insertField.setString(COLUMN_FIELD_NAME_INDEX, field.getName());
 
-            int affectedRows = insertField.executeUpdate();
-
-            if (affectedRows != 1)
+            if (insertField.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't insert field!");
+                throw new SQLException("ERROR: Couldn't insert field with ID: '" + field.getId() + "'.");
             }
 
             try (ResultSet generatedKeys = insertField.getGeneratedKeys())
             {
                 if (generatedKeys.next())
                 {
-                    return generatedKeys.getInt(1);
+                    return generatedKeys.getInt(COLUMN_FIELD_ID_INDEX);
                 }
-            }
 
-            throw new SQLException("Couldn't get _id for field.");
+                throw new SQLException("ERROR: Couldn't get _id for field.");
+            }
         }
     }
 
     public Field deleteFieldByID(int id) throws SQLException
     {
+        Field oldField = queryFieldByID(id);
+
+        if (oldField == null)
+        {
+            throw new SQLException("ERROR: Field with ID: '" + id + "' doesn't exist.");
+        }
+
         try (PreparedStatement deleteField = conn.prepareStatement(DELETE_FIELD))
         {
-            Field field = queryFieldByID(id);
+            deleteField.setInt(1, id);
 
-            if (field == null)
+            if (deleteField.executeUpdate() != 1)
             {
-                throw new SQLException("Field with ID: " + id + " doesn't exist.");
+                throw new SQLException("ERROR: Couldn't delete field with ID: '" + id + "'.");
             }
 
-            deleteField.setInt(1, id);
-            deleteField.executeUpdate();
-
-            return field;
+            return oldField;
         }
     }
 
@@ -115,7 +119,7 @@ public class FieldDB
 
         if (oldField == null)
         {
-            throw new SQLException("Field with ID " + newField + " doesn't exist.");
+            throw new SQLException("ERROR: Field with name '" + newField.getName() + "' doesn't exist.");
         }
 
         try (PreparedStatement updateField = conn.prepareStatement(UPDATE_FIELD_NAME))
@@ -131,10 +135,13 @@ public class FieldDB
                 updateField.setString(1, newField.getName());
             }
 
-            updateField.executeUpdate();
-        }
+            if (updateField.executeUpdate() != 1)
+            {
+                throw new SQLException("ERROR: Couldn't update field whit name '" + oldField + "'");
+            }
 
-        return oldField;
+            return oldField;
+        }
     }
 
 }

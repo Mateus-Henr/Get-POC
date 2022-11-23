@@ -28,7 +28,7 @@ public class UserDB
 
     private final Connection conn;
 
-    public UserDB(Connection conn) throws SQLException
+    public UserDB(Connection conn)
     {
         this.conn = conn;
     }
@@ -64,15 +64,15 @@ public class UserDB
                                 resultSet.getString(COLUMN_USER_PASSWORD_INDEX));
                     }
                 }
-            }
 
-            return null;
+                return null;
+            }
         }
     }
 
     public String insertUser(User user) throws SQLException
     {
-        try (PreparedStatement insertUser = conn.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS))
+        try (PreparedStatement insertUser = conn.prepareStatement(INSERT_USER))
         {
             // Begin transaction.
             conn.setAutoCommit(false);
@@ -82,11 +82,9 @@ public class UserDB
             insertUser.setString(COLUMN_USER_NAME_INDEX, user.getName());
             insertUser.setString(COLUMN_USER_TYPE_INDEX, user.getUserType().toString());
 
-            int affectedRows = insertUser.executeUpdate();
-
-            if (affectedRows != 1)
+            if (insertUser.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't insert user!");
+                throw new SQLException("ERROR: Couldn't insert user with username: '" + user.getUsername() + "'.");
             }
 
             UserTypesEnum userType = user.getUserType();
@@ -125,7 +123,7 @@ public class UserDB
 
         if (foundUser == null)
         {
-            throw new SQLException("Couldn't find the user.");
+            throw new SQLException("ERROR: User with username: '" + id + "' doesn't exist.");
         }
 
         try (PreparedStatement deleteUser = conn.prepareStatement(DELETE_USER))
@@ -147,11 +145,9 @@ public class UserDB
 
             deleteUser.setString(COLUMN_USER_ID_INDEX, id);
 
-            int affectedRows = deleteUser.executeUpdate();
-
-            if (affectedRows != 1)
+            if (deleteUser.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't delete user!");
+                throw new SQLException("ERROR: Couldn't delete user with username: '" + id + "'.");
             }
 
             conn.setAutoCommit(true);
@@ -173,11 +169,13 @@ public class UserDB
 
         if (oldUser == null)
         {
-            throw new SQLException("User doesn't exist.");
+            throw new SQLException("ERROR: User with username: '" + newUser.getUsername() + "' doesn't exist.");
         }
 
         try (PreparedStatement updateUser = conn.prepareStatement(UPDATE_USER))
         {
+            conn.setAutoCommit(false);
+
             if (newUser.getPassword() == null)
             {
                 updateUser.setString(1, oldUser.getPassword());
@@ -203,7 +201,10 @@ public class UserDB
 
             updateUser.setString(4, newUser.getUsername());
 
-            int affectedRows = updateUser.executeUpdate();
+            if (updateUser.executeUpdate() != 1)
+            {
+                throw new SQLException("ERROR: Couldn't update user with username: '" + newUser.getUsername() + "'.");
+            }
 
             if (newUser.getUserType() == UserTypesEnum.PROFESSOR)
             {
@@ -212,11 +213,6 @@ public class UserDB
             else if (newUser.getUserType() == UserTypesEnum.STUDENT)
             {
                 new StudentDB(conn).updateStudent((Student) newUser);
-            }
-
-            if (affectedRows != 1)
-            {
-                throw new SQLException("Couldn't update user!");
             }
 
             conn.setAutoCommit(true);

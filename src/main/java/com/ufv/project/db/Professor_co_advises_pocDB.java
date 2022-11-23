@@ -26,7 +26,7 @@ public class Professor_co_advises_pocDB
 
     private final Connection conn;
 
-    public Professor_co_advises_pocDB(Connection conn) throws SQLException
+    public Professor_co_advises_pocDB(Connection conn)
     {
         this.conn = conn;
     }
@@ -35,7 +35,7 @@ public class Professor_co_advises_pocDB
     {
         try (PreparedStatement queryProfessorsByPocId = conn.prepareStatement(QUERY_PROFESSORS_BY_POC_ID))
         {
-            queryProfessorsByPocId.setInt(1, pocId);
+            queryProfessorsByPocId.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX, pocId);
 
             try (ResultSet resultSet = queryProfessorsByPocId.executeQuery())
             {
@@ -52,51 +52,45 @@ public class Professor_co_advises_pocDB
         }
     }
 
-    public void insertProfessor_co_advises_poc(String professorID, int pocID) throws SQLException
+    public void insertProfessor_co_advises_poc(String professorID, int POCID) throws SQLException
     {
         try (PreparedStatement insertProfessor_co_advises_poc = conn.prepareStatement(INSERT_PROFESSOR_CO_ADVISES_POC))
         {
             insertProfessor_co_advises_poc.setString(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX, professorID);
-            insertProfessor_co_advises_poc.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX, pocID);
+            insertProfessor_co_advises_poc.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX, POCID);
 
-            int affectedRows = insertProfessor_co_advises_poc.executeUpdate();
-
-            if (affectedRows != 1)
+            if (insertProfessor_co_advises_poc.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't insert professor_co_advises_poc");
+                throw new SQLException("ERROR: Couldn't insert professor_co_advises_poc with professor ID: '" + professorID + "' and pocID = '" + POCID + "'.");
             }
         }
     }
 
-    public void deleteProfessor_co_advises_poc(int poc_id) throws SQLException
+    public void deleteProfessor_co_advises_poc(int POCID) throws SQLException
     {
         try (PreparedStatement deleteProfessor_co_advises_poc = conn.prepareStatement(DELETE_PROFESSOR_CO_ADVISES_POC))
         {
-            deleteProfessor_co_advises_poc.setInt(1, poc_id);
+            deleteProfessor_co_advises_poc.setInt(COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX, POCID);
 
-            int affectedRows = deleteProfessor_co_advises_poc.executeUpdate();
-
-            if (affectedRows == 0)
+            if (deleteProfessor_co_advises_poc.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't delete professor_co_advises_poc");
+                throw new SQLException("ERROR: Couldn't delete professor_co_advises_poc with POC ID: '" + POCID + "'.");
             }
         }
     }
 
-    public void updateProfessor_co_advises_poc(String professor_id, int poc_id, String new_professor_id, int new_poc_id) throws SQLException
+    public void updateProfessor_co_advises_poc(String oldProfessorID, int oldPOCID, String newProfessorID, int newPOCID) throws SQLException
     {
         try (PreparedStatement updateProfessor_co_advises_poc = conn.prepareStatement(UPDATE_PROFESSOR_CO_ADVISES_POC))
         {
-            updateProfessor_co_advises_poc.setString(1, new_professor_id);
-            updateProfessor_co_advises_poc.setInt(2, new_poc_id);
-            updateProfessor_co_advises_poc.setString(3, professor_id);
-            updateProfessor_co_advises_poc.setInt(4, poc_id);
+            updateProfessor_co_advises_poc.setString(1, newProfessorID);
+            updateProfessor_co_advises_poc.setInt(2, newPOCID);
+            updateProfessor_co_advises_poc.setString(3, oldProfessorID);
+            updateProfessor_co_advises_poc.setInt(4, oldPOCID);
 
-            int affectedRows = updateProfessor_co_advises_poc.executeUpdate();
-
-            if (affectedRows != 1)
+            if (updateProfessor_co_advises_poc.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't update professor_co_advises_poc");
+                throw new SQLException("ERROR: Couldn't update professor_co_advises_poc with professor ID: '" + oldProfessorID + "' and POC ID: '" + oldPOCID + "'.");
             }
         }
     }

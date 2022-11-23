@@ -1,7 +1,6 @@
 package com.ufv.project.db;
 
 import com.ufv.project.model.Student;
-import com.ufv.project.model.User;
 import com.ufv.project.model.UserTypesEnum;
 
 import java.sql.Connection;
@@ -37,7 +36,7 @@ public class StudentDB
     private final Connection conn;
 
 
-    public StudentDB(Connection conn) throws SQLException
+    public StudentDB(Connection conn)
     {
         this.conn = conn;
     }
@@ -71,7 +70,7 @@ public class StudentDB
         return new UserDB(conn).queryUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)
                 .map(user -> (Student) user)
-                .filter(student -> student.getPoc_id() == pocID)
+                .filter(student -> student.getPOCID() == pocID)
                 .toList();
     }
 
@@ -81,14 +80,12 @@ public class StudentDB
         {
             insertStudent.setString(COLUMN_STUDENT_EMAIL_INDEX, student.getEmail());
             insertStudent.setString(COLUMN_STUDENT_REGISTRATION_INDEX, student.getRegistration());
-            insertStudent.setInt(COLUMN_STUDENT_POC_INDEX, student.getPoc_id());
+            insertStudent.setInt(COLUMN_STUDENT_POC_INDEX, student.getPOCID());
             insertStudent.setString(COLUMN_USER_STUDENT_ID_INDEX, student.getUsername());
 
-            int affectedRows = insertStudent.executeUpdate();
-
-            if (affectedRows != 1)
+            if (insertStudent.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't insert student!");
+                throw new SQLException("ERROR: Couldn't insert student with username: '" + student.getUsername() + "'.");
             }
 
             return student.getUsername();
@@ -102,18 +99,16 @@ public class StudentDB
 
         if (foundStudent == null)
         {
-            return null;
+            throw new SQLException("ERROR: Student with username: '" + username + "' doesn't exist.");
         }
 
         try (PreparedStatement deleteStudent = conn.prepareStatement(DELETE_STUDENT))
         {
             deleteStudent.setString(1, username);
 
-            int affectedRows = deleteStudent.executeUpdate();
-
-            if (affectedRows != 1)
+            if (deleteStudent.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't delete student!");
+                throw new SQLException("ERROR: Couldn't delete student with username: '" + username + "'.");
             }
 
             return foundStudent;
@@ -126,7 +121,7 @@ public class StudentDB
 
         if (oldStudent == null)
         {
-            return null;
+            throw new SQLException("ERROR: Student with username: '" + newStudent.getUsername() + "' doesn't exist.");
         }
 
         try (PreparedStatement updateStudent = conn.prepareStatement(UPDATE_STUDENT))
@@ -140,9 +135,9 @@ public class StudentDB
             {
                 oldStudent.setRegistration(newStudent.getRegistration());
             }
-            if (newStudent.getPoc_id() != 0)
+            if (newStudent.getPOCID() != 0)
             {
-                oldStudent.setPoc_id(newStudent.getPoc_id());
+                oldStudent.setPoc_id(newStudent.getPOCID());
             }
 
             if (newStudent.getUsername() != null)
@@ -152,36 +147,42 @@ public class StudentDB
 
             updateStudent.setString(1, oldStudent.getRegistration());
             updateStudent.setString(2, oldStudent.getEmail());
-            updateStudent.setInt(3, oldStudent.getPoc_id());
+            updateStudent.setInt(3, oldStudent.getPOCID());
             updateStudent.setString(4, oldStudent.getUsername());
 
-            int affectedRows = updateStudent.executeUpdate();
-
-            if (affectedRows != 1)
+            if (updateStudent.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't update student!");
+                throw new SQLException("ERROR: Couldn't update student with username: '" + newStudent.getUsername() + "'.");
             }
 
             return oldStudent;
         }
     }
 
-    protected void setStudentPOCNull(int pocID) throws SQLException
+    protected void setStudentPOCNull(int POCID) throws SQLException
     {
         try (PreparedStatement setStudentPOCNull = conn.prepareStatement(SET_STUDENT_POC_NULL))
         {
-            setStudentPOCNull.setInt(1, pocID);
-            setStudentPOCNull.executeUpdate();
+            setStudentPOCNull.setInt(1, POCID);
+
+            if (setStudentPOCNull.executeUpdate() != 1)
+            {
+                throw new SQLException("ERROR: Couldn't set POC with ID: '" + POCID + "' to null.");
+            }
         }
     }
 
-    protected void setStudentPOC(String studentID, int pocID) throws SQLException
+    protected void setStudentPOC(String studentID, int POCID) throws SQLException
     {
         try (PreparedStatement setStudentPOC = conn.prepareStatement(SET_STUDENT_POC))
         {
-            setStudentPOC.setInt(1, pocID);
+            setStudentPOC.setInt(1, POCID);
             setStudentPOC.setString(2, studentID);
-            setStudentPOC.executeUpdate();
+
+            if (setStudentPOC.executeUpdate() != 1)
+            {
+                throw new SQLException("ERROR: Couldn't set POC with ID: '" + POCID + "' to student with ID: '" + studentID + "'.");
+            }
         }
     }
 

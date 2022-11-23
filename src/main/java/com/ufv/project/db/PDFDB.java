@@ -29,7 +29,7 @@ public class PDFDB
 
     private final Connection conn;
 
-    public PDFDB(Connection conn) throws SQLException
+    public PDFDB(Connection conn)
     {
         this.conn = conn;
     }
@@ -46,10 +46,10 @@ public class PDFDB
                 {
                     return new PDF(results.getInt(COLUMN_PDF_ID_INDEX), results.getString(COLUMN_PDF_PATH_INDEX), results.getDate(COLUMN_PDF_CREATION_DATE_INDEX).toLocalDate());
                 }
+
+                return null;
             }
         }
-
-        return null;
     }
 
     public List<PDF> queryPDFs() throws SQLException
@@ -76,11 +76,9 @@ public class PDFDB
             insertPDF.setDate(COLUMN_PDF_CREATION_DATE_INDEX, Date.valueOf(pdfToInsert.getLastModificationDate()));
             insertPDF.setString(COLUMN_PDF_PATH_INDEX, pdfToInsert.getPath());
 
-            int affectedRows = insertPDF.executeUpdate();
-
-            if (affectedRows != 1)
+            if (insertPDF.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't insert PDF.");
+                throw new SQLException("ERROR: Couldn't insert PDF from: '" + pdfToInsert.getId() + "'.");
             }
 
             try (ResultSet generatedKeys = insertPDF.getGeneratedKeys())
@@ -91,7 +89,7 @@ public class PDFDB
                 }
             }
 
-            throw new SQLException("Couldn't get _id for PDF.");
+            throw new SQLException("ERROR: Couldn't get _id for PDF.");
         }
     }
 
@@ -101,15 +99,13 @@ public class PDFDB
         {
             deletePDF.setInt(COLUMN_PDF_ID_INDEX, pdfToDelete.getId());
 
-            int affectedRows = deletePDF.executeUpdate();
-
-            if (affectedRows == 1)
+            if (deletePDF.executeUpdate() != 1)
             {
-                return pdfToDelete;
+                throw new SQLException("ERROR: Couldn't delete PDF with ID: '" + pdfToDelete.getId() + "'.");
             }
-        }
 
-        return null;
+            return pdfToDelete;
+        }
     }
 
     public PDF updatePDF(PDF newPDF) throws SQLException
@@ -118,12 +114,11 @@ public class PDFDB
 
         if (oldPDF == null)
         {
-            return null;
+            throw new SQLException("ERROR: PDF with ID: '" + newPDF.getId() + "' doesn't exists.");
         }
 
         try (PreparedStatement updatePDF = conn.prepareStatement(UPDATE_PDF))
         {
-
             if (newPDF.getPath() != null)
             {
                 updatePDF.setString(1, newPDF.getPath());
@@ -144,15 +139,13 @@ public class PDFDB
 
             updatePDF.setInt(3, newPDF.getId());
 
-            int affectedRows = updatePDF.executeUpdate();
-
-            if (affectedRows == 1)
+            if (updatePDF.executeUpdate() != 1)
             {
-                return oldPDF;
+                throw new SQLException("ERROR: Couldn't update PDF with ID: '" + newPDF.getId() + "'.");
             }
-        }
 
-        return null;
+            return oldPDF;
+        }
     }
 
 }

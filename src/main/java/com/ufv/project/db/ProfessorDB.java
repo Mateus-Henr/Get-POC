@@ -28,7 +28,7 @@ public class ProfessorDB
 
     private final Connection conn;
 
-    public ProfessorDB(Connection conn) throws SQLException
+    public ProfessorDB(Connection conn)
     {
         this.conn = conn;
     }
@@ -59,23 +59,21 @@ public class ProfessorDB
 
     protected String insertProfessor(Professor professor) throws SQLException
     {
-        try (PreparedStatement insertProfessor = conn.prepareStatement(INSERT_PROFESSOR, PreparedStatement.RETURN_GENERATED_KEYS))
+        try (PreparedStatement insertProfessor = conn.prepareStatement(INSERT_PROFESSOR))
         {
-            insertProfessor.setString(1, professor.getEmail());
-            insertProfessor.setString(2, professor.getUsername());
+            insertProfessor.setString(COLUMN_PROFESSOR_EMAIL_INDEX, professor.getEmail());
+            insertProfessor.setString(COLUMN_USER_PROFESSOR_ID_INDEX, professor.getUsername());
 
-            int affectedRows = insertProfessor.executeUpdate();
+            if (insertProfessor.executeUpdate() != 1)
+            {
+                throw new SQLException("ERROR: Couldn't insert professor with data: " + professor);
+            }
 
             Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
 
             for (Subject subject : professor.getSubjectsTaught())
             {
                 professor_has_subjectDB.insertProfessorHasSubject(professor.getUsername(), subject.getId());
-            }
-
-            if (affectedRows != 1)
-            {
-                throw new SQLException("Couldn't insert professor!");
             }
 
             return professor.getUsername();
@@ -88,7 +86,7 @@ public class ProfessorDB
 
         if (foundProfessor == null)
         {
-            return null;
+            throw new SQLException("ERROR: Professor with username: '" + username + "' doesn't exists.");
         }
 
         try (PreparedStatement deleteProfessor = conn.prepareStatement(DELETE_PROFESSOR))
@@ -102,11 +100,9 @@ public class ProfessorDB
                 professor_has_subjectDB.deleteProfessorHasSubject(foundProfessor.getUsername(), subject.getId());
             }
 
-            int affectedRows = deleteProfessor.executeUpdate();
-
-            if (affectedRows != 1)
+            if (deleteProfessor.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't delete the professor");
+                throw new SQLException("ERROR: Couldn't delete the professor with username: '" + username + "'.");
             }
 
             return foundProfessor;
@@ -119,26 +115,26 @@ public class ProfessorDB
 
         if (oldProfessor == null)
         {
-            return null;
+            throw new SQLException("ERROR: Professor with username: '" + professor.getUsername() + "' doesn't exists.");
         }
 
         try (PreparedStatement updateProfessor = conn.prepareStatement(UPDATE_PROFESSOR))
         {
             Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
 
-            //Delete old subjects
+            // Delete old subjects.
             for (Subject subject : oldProfessor.getSubjectsTaught())
             {
                 professor_has_subjectDB.deleteProfessorHasSubject(oldProfessor.getUsername(), subject.getId());
             }
 
-            //Insert new subjects
+            // Insert new subjects.
             for (Subject subject : professor.getSubjectsTaught())
             {
                 professor_has_subjectDB.insertProfessorHasSubject(professor.getUsername(), subject.getId());
             }
 
-            //Update professor
+            // Update professor.
             if (professor.getEmail() != null)
             {
                 updateProfessor.setString(1, professor.getEmail());
@@ -150,11 +146,9 @@ public class ProfessorDB
 
             updateProfessor.setString(2, professor.getUsername());
 
-            int affectedRows = updateProfessor.executeUpdate();
-
-            if (affectedRows != 1)
+            if (updateProfessor.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't update professor.");
+                throw new SQLException("ERROR: Couldn't update professor with username: '" + professor.getUsername() + "'.");
             }
 
             return oldProfessor;

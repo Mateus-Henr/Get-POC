@@ -25,7 +25,7 @@ public class SubjectDB
 
     private final Connection conn;
 
-    public SubjectDB(Connection conn) throws SQLException
+    public SubjectDB(Connection conn)
     {
         this.conn = conn;
     }
@@ -72,11 +72,9 @@ public class SubjectDB
             insertSubject.setString(COLUMN_SUBJECT_NAME_INDEX, new_subject.getName());
             insertSubject.setString(COLUMN_SUBJECT_DESCRIPTION_INDEX, new_subject.getDescription());
 
-            int affectedRows = insertSubject.executeUpdate();
-
-            if (affectedRows != 1)
+            if (insertSubject.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't insert subject");
+                throw new SQLException("ERROR: Couldn't insert subject with ID: '" + new_subject.getId() + "'.");
             }
 
             try (ResultSet generatedKeys = insertSubject.getGeneratedKeys())
@@ -85,10 +83,8 @@ public class SubjectDB
                 {
                     return generatedKeys.getInt(1);
                 }
-                else
-                {
-                    throw new SQLException("Couldn't get id for subject");
-                }
+
+                throw new SQLException("ERROR: Couldn't get _id for subject.");
             }
         }
     }
@@ -99,18 +95,16 @@ public class SubjectDB
 
         if (foundSubject == null)
         {
-            return null;
+            throw new SQLException("ERROR: Subject with ID: '" + id + "' doesn't exist.");
         }
 
         try (PreparedStatement deleteSubject = conn.prepareStatement(DELETE_SUBJECT))
         {
             deleteSubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
 
-            int affectedRows = deleteSubject.executeUpdate();
-
-            if (affectedRows != 1)
+            if (deleteSubject.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't delete subject");
+                throw new SQLException("ERROR: Couldn't delete subject with ID: '" + id + "'.");
             }
 
             return foundSubject;
@@ -123,7 +117,7 @@ public class SubjectDB
 
         if (foundSubject == null)
         {
-            return null;
+            throw new SQLException("ERROR: Subject with ID: '" + newSubject.getId() + "' doesn't exist.");
         }
 
         try (PreparedStatement updateSubject = conn.prepareStatement(UPDATE_SUBJECT))
@@ -150,11 +144,9 @@ public class SubjectDB
 
             updateSubject.setInt(3, newSubject.getId());
 
-            int affectedRows = updateSubject.executeUpdate();
-
-            if (affectedRows != 1)
+            if (updateSubject.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't update subject.");
+                throw new SQLException("ERROR: Couldn't delete subject with ID: '" + newSubject.getId() + "'.");
             }
 
             conn.setAutoCommit(true);

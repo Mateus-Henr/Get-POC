@@ -37,10 +37,10 @@ public class KeywordDB
                 {
                     return resultSet.getString(COLUMN_KEYWORDS_WORD_INDEX);
                 }
+
+                return null;
             }
         }
-
-        return null;
     }
 
     public List<String> queryKeywords() throws SQLException
@@ -65,11 +65,9 @@ public class KeywordDB
         {
             insertKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, keyword);
 
-            int affectedRows = insertKeyword.executeUpdate();
-
-            if (affectedRows != 1)
+            if (insertKeyword.executeUpdate() != 1)
             {
-                throw new SQLException("Could not insert keyword");
+                throw new SQLException("ERROR: Couldn't insert keyword with value: '" + keyword + "'.");
             }
 
             return keyword;
@@ -82,11 +80,9 @@ public class KeywordDB
         {
             deleteKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, id);
 
-            int affectedRows = deleteKeyword.executeUpdate();
-
-            if (affectedRows != 1)
+            if (deleteKeyword.executeUpdate() != 1)
             {
-                throw new SQLException("Could not delete keyword");
+                throw new SQLException("ERROR: Couldn't delete keyword with ID: '" + id + "'.");
             }
 
             return id;
@@ -98,16 +94,14 @@ public class KeywordDB
         try (PreparedStatement updateKeyword = conn.prepareStatement(UPDATE_KEYWORD))
         {
             updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, newKeyword);
-            updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX + 1, oldKeyword);
+            updateKeyword.setString(2, oldKeyword);
 
-            int affectedRows = updateKeyword.executeUpdate();
-
-            if (affectedRows != 1)
+            if (updateKeyword.executeUpdate() != 1)
             {
-                throw new SQLException("Could not update keyword");
+                throw new SQLException("ERROR: Could not update keyword with value: '" + oldKeyword + "'.");
             }
 
-            return newKeyword;
+            return oldKeyword;
         }
     }
 

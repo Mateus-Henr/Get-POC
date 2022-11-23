@@ -39,7 +39,7 @@ public class POCDB
 
     private final Connection conn;
 
-    public POCDB(Connection conn) throws SQLException
+    public POCDB(Connection conn)
     {
         this.conn = conn;
     }
@@ -50,7 +50,7 @@ public class POCDB
         {
             queryPOC.setInt(1, id);
 
-            try (ResultSet results = queryPOC.executeQuery();)
+            try (ResultSet results = queryPOC.executeQuery())
             {
                 if (results.next())
                 {
@@ -93,14 +93,20 @@ public class POCDB
             insertPOC.setString(7, poc.getRegistrant().getUsername());
             insertPOC.setString(8, poc.getAdvisor().getUsername());
 
-            int affectedRows = insertPOC.executeUpdate();
-
-            if (affectedRows != 1)
+            if (insertPOC.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't insert POC!");
+                throw new SQLException("ERROR: Couldn't insert POC with ID: '" + poc.getId() + "'.");
             }
 
-            return affectedRows;
+            try (ResultSet resultSet = insertPOC.getGeneratedKeys())
+            {
+                if (resultSet.next())
+                {
+                    return resultSet.getInt(COLUMN_POC_ID_INDEX);
+                }
+
+                throw new SQLException("ERROR: Couldn't get _id for POC.");
+            }
         }
     }
 
@@ -110,27 +116,27 @@ public class POCDB
 
         if (foundPOC == null)
         {
-            return null;
+            throw new SQLException("ERROR: POC with ID: '" + id + "' doesn't exist.");
         }
-
-        POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
-        Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
-        StudentDB studentDB = new StudentDB(conn);
 
         try (PreparedStatement deletePOC = conn.prepareStatement(DELETE_POC))
         {
             conn.setAutoCommit(false);
 
+            POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
             poc_has_keywordDB.deletePOC_has_Keyword(id);
+
+            Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
             professor_co_advises_pocDB.deleteProfessor_co_advises_poc(id);
+
+            StudentDB studentDB = new StudentDB(conn);
             studentDB.setStudentPOCNull(id);
-            deletePOC.setInt(1, id);
 
-            int affectedRows = deletePOC.executeUpdate();
+            deletePOC.setInt(COLUMN_POC_ID_INDEX, id);
 
-            if (affectedRows != 1)
+            if (deletePOC.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't delete POC!");
+                throw new SQLException("ERROR: Couldn't delete POC with ID: '" + id + "'.");
             }
 
             conn.setAutoCommit(true);
@@ -141,7 +147,8 @@ public class POCDB
         {
             conn.rollback();
             conn.setAutoCommit(true);
-            return null;
+
+            throw new SQLException(e);
         }
     }
 
@@ -151,18 +158,15 @@ public class POCDB
 
         if (oldPOC == null)
         {
-            return null;
+            throw new SQLException("ERROR: Couldn't find POC with ID: '" + poc.getId() + "'.");
         }
-
-        POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
-        Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
-        StudentDB studentDB = new StudentDB(conn);
 
         try (PreparedStatement updatePOC = conn.prepareStatement(UPDATE_POC))
         {
             conn.setAutoCommit(false);
 
             // Update Keywords
+            POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
             poc_has_keywordDB.deletePOC_has_Keyword(poc.getId());
 
             for (String keyword : poc.getKeywords())
@@ -171,6 +175,7 @@ public class POCDB
             }
 
             // Update Co-Advisors
+            Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
             professor_co_advises_pocDB.deleteProfessor_co_advises_poc(poc.getId());
 
             for (Professor professor : poc.getCoAdvisors())
@@ -179,6 +184,7 @@ public class POCDB
             }
 
             // Update Authors
+            StudentDB studentDB = new StudentDB(conn);
             studentDB.setStudentPOCNull(poc.getId());
 
             for (Student student : poc.getAuthors())
@@ -219,13 +225,11 @@ public class POCDB
                 updatePOC.setInt(4, poc.getField().getId());
             }
             else
-
             {
                 updatePOC.setInt(4, oldPOC.getField().getId());
             }
 
             if (poc.getPdf() != null)
-
             {
                 updatePOC.setInt(5, poc.getPdf().getId());
             }
@@ -248,25 +252,27 @@ public class POCDB
                 updatePOC.setString(7, poc.getAdvisor().getUsername());
             }
             else
-
             {
                 updatePOC.setString(7, oldPOC.getAdvisor().getUsername());
             }
 
             updatePOC.setInt(8, poc.getId());
 
-            int affectedRows = updatePOC.executeUpdate();
-
-            if (affectedRows != 1)
-
+            if (updatePOC.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't update POC!");
+                throw new SQLException("ERROR: Couldn't update POC with ID: '" + poc.getId() + "'.");
             }
 
-            conn.commit();
             conn.setAutoCommit(true);
 
             return poc;
+        }
+        catch (SQLException e)
+        {
+            conn.rollback();
+            conn.setAutoCommit(true);
+
+            throw new SQLException(e);
         }
     }
 

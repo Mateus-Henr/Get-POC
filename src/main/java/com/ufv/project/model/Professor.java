@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Professor extends User
 {
-    private String email;
-    private List<Subject> subjectsTaught;
+    private final String email;
+    private final List<Subject> subjectsTaught;
 
     public Professor(String username, String name, String password, String email, List<Subject> subjectsTaught)
     {

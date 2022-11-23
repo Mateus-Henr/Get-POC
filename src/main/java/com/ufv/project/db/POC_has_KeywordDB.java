@@ -22,7 +22,7 @@ public class POC_has_KeywordDB
 
     private final Connection conn;
 
-    public POC_has_KeywordDB(Connection conn) throws SQLException
+    public POC_has_KeywordDB(Connection conn)
     {
         this.conn = conn;
     }
@@ -64,18 +64,16 @@ public class POC_has_KeywordDB
         }
     }
 
-    public void insertPOC_has_Keyword(int POCID, String word) throws SQLException
+    public void insertPOC_has_Keyword(int POCID, String keyword) throws SQLException
     {
         try (PreparedStatement insertPOC_has_Keyword = conn.prepareStatement(INSERT_POC_HAS_KEYWORD, Statement.RETURN_GENERATED_KEYS))
         {
             insertPOC_has_Keyword.setInt(1, POCID);
-            insertPOC_has_Keyword.setString(2, word);
+            insertPOC_has_Keyword.setString(2, keyword);
 
-            int affectedRows = insertPOC_has_Keyword.executeUpdate();
-
-            if (affectedRows != 1)
+            if (insertPOC_has_Keyword.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't insert POC_has_Keyword!");
+                throw new SQLException("ERROR: Couldn't insert POC_has_Keyword with POC ID: '" + POCID + "' and keyword: '" + keyword + "'.");
             }
         }
     }
@@ -86,29 +84,25 @@ public class POC_has_KeywordDB
         {
             deletePOC_has_Keyword.setInt(1, POCID);
 
-            int affectedRows = deletePOC_has_Keyword.executeUpdate();
-
-            if (affectedRows == 0)
+            if (deletePOC_has_Keyword.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't delete POC_has_Keyword!");
+                throw new SQLException("ERROR: Couldn't delete POC_has_Keyword with POC ID: '" + POCID + "'.");
             }
         }
     }
 
-    public void updatePOC_has_Keyword(int oldPOCID, String keywordID, int newPOCID, String newKeywordID) throws SQLException
+    public void updatePOC_has_Keyword(int oldPOCID, String oldKeyword, int newPOCID, String newKeyword) throws SQLException
     {
         try (PreparedStatement updatePOC_has_Keyword = conn.prepareStatement(UPDATE_POC_HAS_KEYWORD))
         {
             updatePOC_has_Keyword.setInt(1, newPOCID);
-            updatePOC_has_Keyword.setString(2, newKeywordID);
+            updatePOC_has_Keyword.setString(2, newKeyword);
             updatePOC_has_Keyword.setInt(3, oldPOCID);
-            updatePOC_has_Keyword.setString(4, keywordID);
+            updatePOC_has_Keyword.setString(4, oldKeyword);
 
-            int affectedRows = updatePOC_has_Keyword.executeUpdate();
-
-            if (affectedRows != 1)
+            if (updatePOC_has_Keyword.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't update POC_has_Keyword!");
+                throw new SQLException("ERROR: Couldn't update POC_has_Keyword with POC ID: '" + oldPOCID + "' and keyword: '" + oldKeyword + "'.");
             }
         }
     }

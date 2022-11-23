@@ -26,7 +26,7 @@ public class Professor_has_subjectDB
 
     private final Connection conn;
 
-    public Professor_has_subjectDB(Connection conn) throws SQLException
+    public Professor_has_subjectDB(Connection conn)
     {
         this.conn = conn;
     }
@@ -35,7 +35,7 @@ public class Professor_has_subjectDB
     {
         try (PreparedStatement querySubjectsByProfessor = conn.prepareStatement(QUERY_SUBJECTS_BY_PROFESSOR))
         {
-            querySubjectsByProfessor.setString(1, professorID);
+            querySubjectsByProfessor.setString(COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID_INDEX, professorID);
 
             try (ResultSet resultSet = querySubjectsByProfessor.executeQuery())
             {
@@ -56,14 +56,12 @@ public class Professor_has_subjectDB
     {
         try (PreparedStatement insertProfessor_has_subject = conn.prepareStatement(INSERT_PROFESSOR_HAS_SUBJECT, PreparedStatement.RETURN_GENERATED_KEYS))
         {
-            insertProfessor_has_subject.setString(1, professorID);
-            insertProfessor_has_subject.setInt(2, subjectID);
+            insertProfessor_has_subject.setString(COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID_INDEX, professorID);
+            insertProfessor_has_subject.setInt(COLUMN_PROFESSOR_HAS_SUBJECT_FIELD_ID_INDEX, subjectID);
 
-            int affectedRows = insertProfessor_has_subject.executeUpdate();
-
-            if (affectedRows != 1)
+            if (insertProfessor_has_subject.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't insert professor_has_subject!");
+                throw new SQLException("ERROR: Couldn't insert professor_has_subject with professor ID: '" + professorID + "' and subject ID: '" + subjectID + "'.");
             }
         }
     }
@@ -75,11 +73,9 @@ public class Professor_has_subjectDB
             deleteProfessor_has_subject.setString(2, professorID);
             deleteProfessor_has_subject.setInt(1, subjectID);
 
-            int affectedRows = deleteProfessor_has_subject.executeUpdate();
-
-            if (affectedRows != 1)
+            if (deleteProfessor_has_subject.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't delete professor_has_subject!");
+                throw new SQLException("ERROR: Couldn't delete professor_has_subject with professor ID: '" + professorID + "' and subject ID: '" + subjectID + "'.");
             }
         }
     }
@@ -93,11 +89,9 @@ public class Professor_has_subjectDB
             updateProfessor_has_subject.setString(3, oldProfessorID);
             updateProfessor_has_subject.setInt(4, oldSubjectID);
 
-            int affectedRows = updateProfessor_has_subject.executeUpdate();
-
-            if (affectedRows != 1)
+            if (updateProfessor_has_subject.executeUpdate() != 1)
             {
-                throw new SQLException("Couldn't update professor_has_subject!");
+                throw new SQLException("ERROR: Couldn't update professor_has_subject with professor ID: '" + oldProfessorID + "' and subject ID: '" + oldSubjectID + "'.");
             }
         }
     }
