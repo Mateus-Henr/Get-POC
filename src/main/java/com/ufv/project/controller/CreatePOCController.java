@@ -1,19 +1,17 @@
 package com.ufv.project.controller;
 
+import com.ufv.project.Main;
 import com.ufv.project.db.*;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +21,11 @@ import java.util.List;
 
 public class CreatePOCController
 {
+    // ---------- MainPane ----------
+    @FXML
+    private VBox mainPane;
+    // ------------------------------
+
     // ----------- Layout -----------
     @FXML
     private GridPane gridPane;
@@ -104,11 +107,12 @@ public class CreatePOCController
 
         ObservableList<Professor> professors = null;
 
-        try (ConnectDB connectDB = new ConnectDB())
+        try (ConnectDB connectDB = new ConnectDB();
+            ProfessorDB professorDB = new ProfessorDB(connectDB.getConnection());
+            StudentDB studentDB = new StudentDB(connectDB.getConnection()))
         {
-            professors = FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).getAllProfessors());
-            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new StudentDB(connectDB.getConnection()).getAllStudents()));
-
+            professors = FXCollections.observableList(professorDB.getAllProfessors());
+            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(studentDB.getAllStudents()));
         }
         catch (SQLException e)
         {
@@ -127,21 +131,8 @@ public class CreatePOCController
     @FXML
     public void handlePOCAdding()
     {
-        try
-        {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ufv/project/fxml/search-poc-page-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = new Stage();
-
-            stage.setScene(scene);
-            stage.show();
-
-            ((Stage) gridPane.getScene().getWindow()).close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        Main.loadStage("search-poc-page-view.fxml");
+        Main.closeCurrentStage(mainPane);
     }
 
     @FXML

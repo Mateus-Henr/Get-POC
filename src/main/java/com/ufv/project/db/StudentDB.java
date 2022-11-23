@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class StudentDB
+public class StudentDB implements AutoCloseable
 {
     private static final String TABLE_STUDENT = "TB_Student";
     private static final String COLUMN_STUDENT_EMAIL = "Email";
@@ -187,6 +187,7 @@ public class StudentDB
                 .toList();
     }
 
+    @Override
     public void close() throws SQLException
     {
         if (queryStudent != null)
@@ -197,17 +198,29 @@ public class StudentDB
         {
             queryStudents.close();
         }
+        if (queryStudentByPOCId != null)
+        {
+            queryStudentByPOCId.close();
+        }
         if (insertStudent != null)
         {
             insertStudent.close();
+        }
+        if (updateStudent != null)
+        {
+            updateStudent.close();
         }
         if (deleteStudent != null)
         {
             deleteStudent.close();
         }
-        if (updateStudent != null)
+        if (setStudentPOCNull != null)
         {
-            updateStudent.close();
+            setStudentPOCNull.close();
+        }
+        if (setStudentPOC != null)
+        {
+            setStudentPOC.close();
         }
     }
 

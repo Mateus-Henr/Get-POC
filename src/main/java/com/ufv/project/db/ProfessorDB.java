@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ProfessorDB
+public class ProfessorDB implements AutoCloseable
 {
     private static final String TABLE_PROFESSOR = "TB_Professor";
 
@@ -163,6 +163,7 @@ public class ProfessorDB
                 .toList();
     }
 
+    @Override
     public void close() throws SQLException
     {
         if (queryProfessor != null)
@@ -184,10 +185,6 @@ public class ProfessorDB
         if (deleteProfessor != null)
         {
             deleteProfessor.close();
-        }
-        if (conn != null)
-        {
-            conn.close();
         }
     }
 

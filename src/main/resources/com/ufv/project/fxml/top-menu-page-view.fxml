@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Text?>
-<?import java.net.URL?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ufv.project.controller.TopMenuController"
-            styleClass="background">
+<?import java.net.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import javafx.scene.control.Separator?>
+<BorderPane styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.ufv.project.controller.TopMenuController">
     <left>
-        <ImageView fx:id="pocIcon" fitHeight="20.0" fitWidth="67" layoutY="5.0">
-            <Image url="@../images/getpoc.png"/>
-        </ImageView>
+        <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER_LEFT">
+            <Separator prefWidth="5.0" visible="false"/>
+            <ImageView fx:id="pocIcon" fitHeight="20.0" fitWidth="67">
+                <Image url="@../images/getpoc.png" />
+            </ImageView>
+        </HBox>
     </left>
     <right>
-        <HBox>
-            <ImageView fx:id="userIcon" fitWidth="20.0" fitHeight="20.0" layoutY="5.0">
-                <Image url="@../images/user.png"/>
+        <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER_RIGHT">
+            <ImageView fx:id="userIcon" fitHeight="20.0" fitWidth="20.0" layoutY="5.0">
+                <Image url="@../images/user.png" />
             </ImageView>
-            <Text fx:id="userRole" styleClass="user-role"/>
+            <Separator prefWidth="2.0" visible="false"/>
+            <Text fx:id="userRole" styleClass="user-role" />
+            <Separator prefWidth="5.0" visible="false"/>
         </HBox>
     </right>
     <stylesheets>
-        <URL value="@../css/top-menu-page-styles.css"/>
+        <URL value="@../css/top-menu-page-styles.css" />
     </stylesheets>
 </BorderPane>

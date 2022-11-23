@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubjectDB
+public class SubjectDB implements AutoCloseable
 {
     private static final String TABLE_SUBJECT = "TB_Subject";
     private static final String COLUMN_SUBJECT_ID = "ID";
@@ -148,6 +148,7 @@ public class SubjectDB
         return null;
     }
 
+    @Override
     public void close() throws SQLException
     {
         if (querySubject != null)

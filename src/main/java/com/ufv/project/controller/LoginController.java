@@ -1,5 +1,6 @@
 package com.ufv.project.controller;
 
+import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.db.UserDataSingleton;
@@ -71,9 +72,10 @@ public class LoginController
     {
         User user = null;
 
-        try (ConnectDB connectDB = new ConnectDB())
+        try (ConnectDB connectDB = new ConnectDB();
+            UserDB userDB = new UserDB(connectDB.getConnection()))
         {
-            user = new UserDB(connectDB.getConnection()).queryUserByID(usernameField.getText());
+            user = userDB.queryUserByID(usernameField.getText());
         }
         catch (SQLException e)
         {
@@ -84,7 +86,7 @@ public class LoginController
         {
             usernameField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
             passwordField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
-            invalidText.setOpacity(1);
+            invalidText.setVisible(true);
             return;
         }
 
@@ -94,19 +96,13 @@ public class LoginController
             {
                 usernameField.getStyleClass().removeIf(s -> s.equals(INVALID_BOX_CSS_CLASS));
                 passwordField.getStyleClass().removeIf(s -> s.equals(INVALID_BOX_CSS_CLASS));
-                invalidText.setOpacity(0);
+                invalidText.setVisible(false);
 
                 // Sets global data
                 UserDataSingleton.getInstance().initialiseUser(usernameField.getText());
 
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/ufv/project/fxml/create-poc-page-view.fxml"));
-                Scene scene = new Scene(fxmlLoader.load());
-                Stage stage = new Stage();
-
-                stage.setScene(scene);
-                stage.show();
-
-                ((Stage) mainPane.getScene().getWindow()).close();
+                Main.loadStage("create-poc-page-view.fxml");
+                Main.closeCurrentStage(mainPane);
             }
             catch (Exception e)
             {
@@ -117,7 +113,7 @@ public class LoginController
         {
             usernameField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
             passwordField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
-            invalidText.setOpacity(1);
+            invalidText.setVisible(true);
         }
     }
 

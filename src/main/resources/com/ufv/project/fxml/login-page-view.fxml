@@ -22,7 +22,7 @@
                 onAction="#onLoginButtonAction" onMousePressed="#onLoginButtonPressed"
                 onMouseReleased="#onLoginButtonReleased" text="LOGIN" styleClass="login-button">
         </Button>
-        <Text fx:id="invalidText" layoutX="166.0" layoutY="122.0" text="Usuário ou senha errados" opacity="0"
+        <Text fx:id="invalidText" layoutX="68.0" layoutY="122.0" text="Usuário ou senha errados" visible="false"
               styleClass="invalid-text">
         </Text>
         <Line endX="390.5" endY="374.0" layoutX="-63.0" layoutY="-8.0" startX="390.5" startY="40.0"

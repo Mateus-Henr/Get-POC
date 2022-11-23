@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PDFDB
+public class PDFDB implements AutoCloseable
 {
     /*
      * TB_PDF table columns names

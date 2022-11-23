@@ -1,12 +1,29 @@
-.background
-{
+@font-face {
+    font-family: 'Ubuntu Mono Bold';
+    src: url('../fonts/UbuntuMono-B.ttf');
+}
+.background  {
+    -fx-alignment: center;
     -fx-background-color: #FFECD1;
+    -fx-padding: 20 20 20 20;
 }
-.separator
-{
-    -fx-pref-height: 20.0;
-}
-.info-background
-{
+.info-background {
     -fx-background-color: #001524;
+    -fx-pref-width: 560.0;
+    -fx-background-radius: 15.0;
+}
+.username {
+    -fx-fill: #001524;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 32.0;
+}
+.info-text{
+    -fx-fill: #FFFFFF;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 16.0;
+}
+.info-title{
+    -fx-fill: #001524;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 16.0;
 }

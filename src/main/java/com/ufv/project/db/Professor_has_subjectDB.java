@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Professor_has_subjectDB
+public class Professor_has_subjectDB implements AutoCloseable
 {
     private static final String TABLE_PROFESSOR_HAS_SUBJECT = "tb_professor_has_subject";
     private static final String COLUMN_PROFESSOR_HAS_SUBJECT_PROFESSOR_ID = "TB_teacher_User_id";
@@ -101,6 +101,7 @@ public class Professor_has_subjectDB
         }
     }
 
+    @Override
     public void close() throws SQLException
     {
         if (querySubjectsByProfessor != null)

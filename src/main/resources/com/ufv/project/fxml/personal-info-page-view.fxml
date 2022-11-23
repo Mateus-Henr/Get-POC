@@ -1,29 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
-<?import java.net.URL?>
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.PersonalInfoController"
-      styleClass="background">
-    <Separator prefWidth="200.0"/>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-    <Text fx:id="nameText"/>
-    <VBox styleClass="info-background">
-        <HBox>
-            <Label text="Username:">Username:</Label>
-            <Text fx:id="usernameText"/>
-        </HBox>
-        <HBox>
-            <Label>User type:</Label>
-            <Text fx:id="userTypeText"/>
-        </HBox>
-    </VBox>
-    <Separator prefWidth="200.0"/>
+<VBox styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.ufv.project.controller.PersonalInfoController">
+    <Text fx:id="nameText" styleClass="username" />
+    <HBox>
+        <Separator prefWidth="40.0" visible="false" />
+        <Text styleClass="info-title" text="Personal information:" />
+    </HBox>
+    <HBox>
+        <Separator prefWidth="20.0" visible="false" />
+        <VBox styleClass="info-background">
+            <HBox>
+                <Separator prefWidth="20.0" visible="false" />
+                <VBox>
+                    <Separator prefHeight="10.0" visible="false" />
+                    <HBox>
+                        <Text styleClass="info-text" text="Username: ">Username:</Text>
+                        <Text fx:id="usernameText" styleClass="info-text" />
+                    </HBox>
+                    <HBox>
+                        <Text styleClass="info-text" text="User type: ">User type:</Text>
+                        <Text fx:id="userTypeText" styleClass="info-text" />
+                    </HBox>
+                    <HBox>
+                        <Text styleClass="info-text" text="E-mail: ">E-mail:</Text>
+                        <Text fx:id="emailText" styleClass="info-text" />
+                    </HBox>
+                    <HBox>
+                        <Text styleClass="info-text" text="Registration: ">Registration:</Text>
+                        <Text fx:id="registrationText" styleClass="info-text" />
+                    </HBox>
+                    <Separator prefHeight="15.0" visible="false" />
+                </VBox>
+                <Separator prefWidth="20.0" visible="false" />
+            </HBox>
+        </VBox>
+        <Separator prefWidth="20.0" visible="false" />
+    </HBox>
+    <Separator prefHeight="20.0" visible="false" />
     <stylesheets>
-        <URL value="@../css/personal-info-page-styles.css"/>
+        <URL value="@../css/personal-info-page-styles.css" />
     </stylesheets>
 </VBox>

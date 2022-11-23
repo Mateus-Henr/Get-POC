@@ -7,15 +7,15 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ufv.project.controller.CreatePOCController"
-      prefHeight="400.0" prefWidth="600.0"
-      alignment="CENTER">
+      fx:id="mainPane"
+      styleClass="background">
 
     <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
 
     <fx:include fx:id="userData" source="personal-info-page-view.fxml"/>
 
     <Label>Create POC</Label>
-    <GridPane fx:id="gridPane" alignment="CENTER" styleClass="background">
+    <GridPane fx:id="gridPane" styleClass="create-background">
         <TextField fx:id="title" promptText="Title" GridPane.rowIndex="0" GridPane.columnIndex="0"
                    styleClass="text-field"/>
         <MenuButton fx:id="authorMenuButton" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="menu-button">

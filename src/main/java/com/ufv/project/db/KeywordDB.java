@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeywordDB
+public class KeywordDB implements AutoCloseable
 {
     private static final String TABLE_KEYWORD = "TB_keyword";
 
@@ -63,7 +63,6 @@ public class KeywordDB
         }
     }
 
-
     public String insertKeyword(String keyword) throws SQLException
     {
         insertKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, keyword);
@@ -93,10 +92,10 @@ public class KeywordDB
         return id;
     }
 
-    public String updateKeyword(String oldkeyword, String newKeyword) throws SQLException
+    public String updateKeyword(String oldKeyword, String newKeyword) throws SQLException
     {
         updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, newKeyword);
-        updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX + 1, oldkeyword);
+        updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX + 1, oldKeyword);
 
         int affectedRows = updateKeyword.executeUpdate();
 
@@ -108,6 +107,7 @@ public class KeywordDB
         return newKeyword;
     }
 
+    @Override
     public void close() throws SQLException
     {
         if (queryKeyword != null)
@@ -122,13 +122,13 @@ public class KeywordDB
         {
             insertKeyword.close();
         }
-        if (deleteKeyword != null)
-        {
-            deleteKeyword.close();
-        }
         if (updateKeyword != null)
         {
             updateKeyword.close();
+        }
+        if (deleteKeyword != null)
+        {
+            deleteKeyword.close();
         }
     }
 

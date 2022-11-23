@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class POC_has_KeywordDB
+public class POC_has_KeywordDB implements AutoCloseable
 {
     private static final String TABLE_POC_HAS_KEYWORD = "tb_poc_has_keyword";
 

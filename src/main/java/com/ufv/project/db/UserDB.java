@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDB
+public class UserDB implements AutoCloseable
 {
     private static final String TABLE_USER = "TB_User";
 
@@ -241,4 +241,28 @@ public class UserDB
         }
     }
 
+    @Override
+    public void close() throws SQLException
+    {
+        if (queryUser != null)
+        {
+            queryUser.close();
+        }
+        if (queryUsers != null)
+        {
+            queryUsers.close();
+        }
+        if (insertUser != null)
+        {
+            insertUser.close();
+        }
+        if (updateUser != null)
+        {
+            updateUser.close();
+        }
+        if (deleteUser != null)
+        {
+            deleteUser.close();
+        }
+    }
 }

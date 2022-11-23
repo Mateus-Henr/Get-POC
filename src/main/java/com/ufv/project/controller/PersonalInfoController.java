@@ -5,6 +5,8 @@ import javafx.scene.text.Text;
 
 public class PersonalInfoController
 {
+    public Text emailText;
+    public Text registrationText;
     @FXML
     private Text usernameText;
 

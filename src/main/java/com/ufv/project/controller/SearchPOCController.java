@@ -21,10 +21,13 @@ public class SearchPOCController
 {
     // ----------- Layout -----------
     @FXML
-    private VBox vBox;
+    private VBox mainPane;
     // ------------------------------
 
     // ---------- Top Menu ----------
+    @FXML
+    private VBox topMenu;
+
     @FXML
     private TopMenuController topMenuController;
     // ------------------------------
@@ -61,7 +64,7 @@ public class SearchPOCController
         pocListView.getSelectionModel().selectedItemProperty().addListener((observableValue, poc, t1) ->
         {
             ((AnalyzePOCController) Main.loadStage("analyze-poc-page-view.fxml")).setData(pocListView.getSelectionModel().getSelectedItem());
-            Main.closeCurrentStage(vBox);
+            Main.closeCurrentStage(mainPane);
         });
     }
 
@@ -71,9 +74,10 @@ public class SearchPOCController
         // Load items from database.
         ObservableList<POC> pocList = null;
 
-        try (ConnectDB connectDB = new ConnectDB())
+        try (ConnectDB connectDB = new ConnectDB();
+        POCDB pocdb = new POCDB(connectDB.getConnection()))
         {
-            pocList = FXCollections.observableList(new POCDB(connectDB.getConnection()).queryAllPOCs());
+            pocList = FXCollections.observableList(pocdb.queryAllPOCs());
         }
         catch (SQLException e)
         {

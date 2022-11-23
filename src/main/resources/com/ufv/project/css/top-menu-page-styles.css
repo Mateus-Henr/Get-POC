@@ -1,10 +1,15 @@
+@font-face {
+    font-family: 'Ubuntu Mono Bold';
+    src: url('../fonts/UbuntuMono-B.ttf');
+}
 .background
 {
-    -fx-pref-height: 30.0;
+    -fx-pref-height: 300.0;
     -fx-pref-width: 600.0;
     -fx-background-color: #112A3B;
 }
 .user-role
 {
     -fx-fill: #FFECD1;
+    -fx-font-family: "Ubuntu Mono Bold";
 }

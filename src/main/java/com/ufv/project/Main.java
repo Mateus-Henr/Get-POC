@@ -36,7 +36,7 @@ public class Main extends Application
 
     public static Object loadStage(String filename)
     {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(filename));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/ufv/project/fxml/" + filename));
 
         try
         {

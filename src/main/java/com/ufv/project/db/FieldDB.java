@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldDB
+public class FieldDB implements AutoCloseable
 {
     /*
      *   TB_Field table column's names
@@ -132,6 +132,7 @@ public class FieldDB
         return oldField;
     }
 
+    @Override
     public void close() throws SQLException
     {
         if (queryField != null)
@@ -146,13 +147,13 @@ public class FieldDB
         {
             insertField.close();
         }
-        if (deleteField != null)
-        {
-            deleteField.close();
-        }
         if (updateField != null)
         {
             updateField.close();
+        }
+        if (deleteField != null)
+        {
+            deleteField.close();
         }
     }
 

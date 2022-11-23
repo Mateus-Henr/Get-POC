@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class POCDB
+public class POCDB implements AutoCloseable
 {
     /*TB_POC table columns names*/
 
@@ -280,6 +280,31 @@ public class POCDB
         }
 
         return pocs;
+    }
+
+    @Override
+    public void close() throws SQLException
+    {
+        if (queryPOC != null)
+        {
+            queryPOC.close();
+        }
+        if (queryPOCs != null)
+        {
+            queryPOCs.close();
+        }
+        if (insertPOC != null)
+        {
+            insertPOC.close();
+        }
+        if (updatePOC != null)
+        {
+            updatePOC.close();
+        }
+        if (deletePOC != null)
+        {
+            deletePOC.close();
+        }
     }
 
 }
