@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:id="vBox"
+      fx:id="mainPane"
       fx:controller="com.ufv.project.controller.AnalyzePOCController"
       prefHeight="400.0" prefWidth="600.0">
 
@@ -33,5 +33,5 @@
     <ListView fx:id="keywordList" editable="true"/>
 
     <Label>PDF file:</Label>
-    <Hyperlink fx:id="pdfFilepathText">Choose...</Hyperlink>
+    <Hyperlink fx:id="pdfFilepathText" onAction="#onDisplayPDF"/>
 </VBox>

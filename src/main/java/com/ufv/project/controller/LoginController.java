@@ -8,7 +8,10 @@ import com.ufv.project.model.User;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
@@ -74,7 +77,6 @@ public class LoginController
             {
                 try (ConnectDB connectDB = new ConnectDB())
                 {
-                    connectDB.initializeDB();
                     return new UserDB(connectDB.getConnection()).queryUserByID(usernameField.getText().trim());
                 }
             }

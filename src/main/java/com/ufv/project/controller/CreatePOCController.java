@@ -16,6 +16,9 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -86,6 +89,13 @@ public class CreatePOCController
 
     private File pdfFile;
 
+    public static final String PDF_STORAGE_FOLDER = "src" + File.separator +
+            "main" + File.separator +
+            "resources" + File.separator +
+            "com" + File.separator +
+            "ufv" + File.separator +
+            "project" + File.separator + "pdfs" + File.separator;
+
     @FXML
     public void initialize()
     {
@@ -141,22 +151,34 @@ public class CreatePOCController
         final Task<Integer> task = new Task<>()
         {
             @Override
-            protected Integer call() throws SQLException
+            protected Integer call() throws SQLException, IOException
             {
                 try (ConnectDB connectDB = new ConnectDB())
                 {
+                    String pdfFilepath = PDF_STORAGE_FOLDER + pdfFile.getName();
+
+                    Files.copy(Paths.get(pdfFile.getAbsolutePath()),
+                            Paths.get(pdfFilepath),
+                            StandardCopyOption.COPY_ATTRIBUTES);
+
                     List<Student> authors = new ArrayList<>();
 
                     for (MenuItem item : authorMenuButton.getItems())
                     {
-                        authors.add((Student) new UserDB(connectDB.getConnection()).queryUserByID(item.getId()));
+                        if (((CheckMenuItem) item).isSelected())
+                        {
+                            authors.add((Student) new UserDB(connectDB.getConnection()).queryUserByID(item.getId()));
+                        }
                     }
 
                     List<Professor> coAdvisors = new ArrayList<>();
 
                     for (MenuItem item : coAdvisorMenuButton.getItems())
                     {
-                        coAdvisors.add((Professor) new UserDB(connectDB.getConnection()).queryUserByID(item.getId()));
+                        if (((CheckMenuItem) item).isSelected())
+                        {
+                            coAdvisors.add((Professor) new UserDB(connectDB.getConnection()).queryUserByID(item.getId()));
+                        }
                     }
 
                     return new POCDB(connectDB.getConnection()).insertPOC(new POC(0,
@@ -166,7 +188,7 @@ public class CreatePOCController
                             keywordList.getItems().stream().toList(),
                             summaryTextArea.getText(),
                             fieldComboBox.getValue(),
-                            new PDF(0, pdfFile.getPath(), LocalDate.now()),
+                            new PDF(0, pdfFilepath, LocalDate.now()),
                             ((Professor) new UserDB(connectDB.getConnection()).queryUserByID(UserDataSingleton.getInstance().getUsername())),
                             advisorComboBox.getValue(),
                             coAdvisors
@@ -185,7 +207,7 @@ public class CreatePOCController
         {
             if (task.getException() != null)
             {
-                System.out.println(task.getException().getMessage());
+                task.getException().printStackTrace();
             }
         });
 

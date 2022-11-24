@@ -85,9 +85,8 @@ public class POCDB
         try (PreparedStatement insertPOC = conn.prepareStatement(INSERT_POC, Statement.RETURN_GENERATED_KEYS))
         {
             conn.setAutoCommit(false);
-            int POCID = poc.getId();
 
-            insertPOC.setInt(1, POCID);
+            insertPOC.setInt(1, poc.getId());
             insertPOC.setString(2, poc.getTitle());
             insertPOC.setString(3, Date.valueOf(poc.getDefenseDate()).toString());
             insertPOC.setString(4, poc.getSummary());
@@ -101,29 +100,31 @@ public class POCDB
                 throw new SQLException("ERROR: Couldn't insert POC with ID: '" + poc.getId() + "'.");
             }
 
-            Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
-
-            for (Professor coAdvisor : poc.getCoAdvisors())
-            {
-                professor_co_advises_pocDB.insertProfessor_co_advises_poc(coAdvisor.getUsername(), POCID);
-            }
-
-            KeywordDB keywordDB = new KeywordDB(conn);
-            POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
-
-            for (String keyword : poc.getKeywords())
-            {
-                keywordDB.insertKeyword(keyword);
-                poc_has_keywordDB.insertPOC_has_Keyword(POCID, keyword);
-            }
-
-            conn.setAutoCommit(true);
-
             try (ResultSet resultSet = insertPOC.getGeneratedKeys())
             {
                 if (resultSet.next())
                 {
-                    return resultSet.getInt(COLUMN_POC_ID_INDEX);
+                    int POCID = resultSet.getInt(COLUMN_POC_ID_INDEX);
+
+                    Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
+
+                    for (Professor coAdvisor : poc.getCoAdvisors())
+                    {
+                        professor_co_advises_pocDB.insertProfessor_co_advises_poc(coAdvisor.getUsername(), POCID);
+                    }
+
+                    KeywordDB keywordDB = new KeywordDB(conn);
+                    POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
+
+                    for (String keyword : poc.getKeywords())
+                    {
+                        keywordDB.insertKeyword(keyword);
+                        poc_has_keywordDB.insertPOC_has_Keyword(POCID, keyword);
+                    }
+
+                    conn.setAutoCommit(true);
+
+                    return POCID;
                 }
 
                 throw new SQLException("ERROR: Couldn't get _id for POC.");

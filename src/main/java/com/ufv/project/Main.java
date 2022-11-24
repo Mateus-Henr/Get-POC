@@ -1,32 +1,39 @@
 package com.ufv.project;
 
-import com.ufv.project.db.UserDataSingleton;
+import com.ufv.project.db.ConnectDB;
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Main extends Application
 {
     @Override
-    public void start(Stage stage) throws IOException
+    public void start(Stage stage)
     {
-        setMockupData();
-
         Main.loadStage("login-page-view.fxml", "Get-POC App");
+
+        // Set up db.
+        new Thread(new Task<>()
+        {
+            @Override
+            protected Void call() throws Exception
+            {
+                ConnectDB.initializeDB();
+
+                return null;
+            }
+        }).start();
     }
 
     public static void main(String[] args)
     {
         launch();
-    }
-
-    public void setMockupData()
-    {
-        UserDataSingleton userDataSingleton = UserDataSingleton.getInstance();
     }
 
     public static Object loadStage(String filename, String stageTitle)

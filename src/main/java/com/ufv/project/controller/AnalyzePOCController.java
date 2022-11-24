@@ -10,6 +10,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 public class AnalyzePOCController
 {
     // ---------- Top Menu ----------
@@ -44,7 +48,6 @@ public class AnalyzePOCController
     @FXML
     private Hyperlink pdfFilepathText;
 
-
     @FXML
     public void initialize()
     {
@@ -55,6 +58,19 @@ public class AnalyzePOCController
     public void onDisplayContents()
     {
 
+    }
+
+    @FXML
+    public void onDisplayPDF()
+    {
+        try
+        {
+            Desktop.getDesktop().browse(new File(pdfFilepathText.getText()).toURI());
+        }
+        catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void setData(POC pocToShow)
