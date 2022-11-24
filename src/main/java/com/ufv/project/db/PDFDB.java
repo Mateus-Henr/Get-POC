@@ -85,7 +85,7 @@ public class PDFDB
             {
                 if (generatedKeys.next())
                 {
-                    return generatedKeys.getInt(1);
+                    return generatedKeys.getInt(COLUMN_PDF_ID_INDEX);
                 }
             }
 

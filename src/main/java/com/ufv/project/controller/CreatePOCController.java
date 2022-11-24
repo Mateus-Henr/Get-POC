@@ -185,7 +185,7 @@ public class CreatePOCController
         {
             if (task.getException() != null)
             {
-                task.getException().printStackTrace();
+                System.out.println(task.getException().getMessage());
             }
         });
 

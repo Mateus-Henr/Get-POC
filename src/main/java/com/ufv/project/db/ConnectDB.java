@@ -21,7 +21,11 @@ public class ConnectDB implements AutoCloseable
 
     private Connection conn;
 
-    public ConnectDB() throws SQLException
+    public ConnectDB()
+    {
+    }
+
+    public void initializeDB() throws SQLException
     {
         try (Connection conn = DriverManager.getConnection(CONNECTION_STRING, USER, PASSWORD))
         {

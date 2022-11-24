@@ -38,10 +38,10 @@ USE `get_poc` ;
 -- Table structure for table `tb_field`
 --
 
-DROP TABLE IF EXISTS `tb_field`;
+# DROP TABLE IF EXISTS `tb_field`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_field` (
+CREATE TABLE IF NOT EXISTS `tb_field` (
                             `ID` int NOT NULL AUTO_INCREMENT,
                             `Name` varchar(100) NOT NULL,
                             PRIMARY KEY (`ID`)
@@ -92,10 +92,10 @@ UNLOCK TABLES;
 -- Table structure for table `tb_subject`
 --
 
-DROP TABLE IF EXISTS `tb_subject`;
+# DROP TABLE IF EXISTS `tb_subject`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_subject` (
+CREATE TABLE IF NOT EXISTS `tb_subject` (
                               `ID` int unsigned NOT NULL AUTO_INCREMENT,
                               `Name` varchar(100) NOT NULL,
                               `Description` tinytext NOT NULL,
@@ -147,10 +147,10 @@ UNLOCK TABLES;
 -- Table structure for table `tb_keyword`
 --
 
-DROP TABLE IF EXISTS `tb_keyword`;
+# DROP TABLE IF EXISTS `tb_keyword`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_keyword` (
+CREATE TABLE IF NOT EXISTS `tb_keyword` (
                               `word` varchar(100) NOT NULL,
                               PRIMARY KEY (`word`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -200,10 +200,10 @@ UNLOCK TABLES;
 -- Table structure for table `tb_pdf`
 --
 
-DROP TABLE IF EXISTS `tb_pdf`;
+# DROP TABLE IF EXISTS `tb_pdf`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_pdf` (
+CREATE TABLE IF NOT EXISTS `tb_pdf` (
                           `ID` int NOT NULL AUTO_INCREMENT,
                           `Creation_Date` date NOT NULL,
                           `Path` varchar(100) NOT NULL,
@@ -255,10 +255,10 @@ UNLOCK TABLES;
 -- Table structure for table `tb_user`
 --
 
-DROP TABLE IF EXISTS `tb_user`;
+# DROP TABLE IF EXISTS `tb_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_user` (
+CREATE TABLE IF NOT EXISTS `tb_user` (
                            `ID` varchar(100) NOT NULL,
                            `Password` varchar(100) NOT NULL,
                            `Name` varchar(100) NOT NULL,
@@ -311,10 +311,10 @@ UNLOCK TABLES;
 -- Table structure for table `tb_professor`
 --
 
-DROP TABLE IF EXISTS `tb_professor`;
+# DROP TABLE IF EXISTS `tb_professor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_professor` (
+CREATE TABLE IF NOT EXISTS `tb_professor` (
                                 `Email` varchar(100) NOT NULL,
                                 `TB_User_ID` varchar(100) NOT NULL,
                                 PRIMARY KEY (`TB_User_ID`),
@@ -366,10 +366,10 @@ UNLOCK TABLES;
 -- Table structure for table `tb_poc`
 --
 
-DROP TABLE IF EXISTS `tb_poc`;
+# DROP TABLE IF EXISTS `tb_poc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_poc` (
+CREATE TABLE IF NOT EXISTS`tb_poc` (
                           `ID` int NOT NULL AUTO_INCREMENT,
                           `Title` varchar(100) NOT NULL,
                           `Defense_Date` date NOT NULL,
@@ -434,10 +434,10 @@ UNLOCK TABLES;
 -- Table structure for table `tb_poc_has_keyword`
 --
 
-DROP TABLE IF EXISTS `tb_poc_has_keyword`;
+# DROP TABLE IF EXISTS `tb_poc_has_keyword`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_poc_has_keyword` (
+CREATE TABLE IF NOT EXISTS `tb_poc_has_keyword` (
                                       `TB_POC_ID` int NOT NULL,
                                       `TB_Keyword_ID` varchar(100) NOT NULL,
                                       PRIMARY KEY (`TB_POC_ID`,`TB_Keyword_ID`),
@@ -490,10 +490,10 @@ UNLOCK TABLES;
 -- Table structure for table `tb_student`
 --
 
-DROP TABLE IF EXISTS `tb_student`;
+# DROP TABLE IF EXISTS `tb_student`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_student` (
+CREATE TABLE IF NOT EXISTS `tb_student` (
                               `Email` varchar(100) NOT NULL,
                               `Registration` varchar(100) NOT NULL,
                               `POC` int DEFAULT NULL,
@@ -550,10 +550,10 @@ UNLOCK TABLES;
 -- Table structure for table `tb_professor_co_advises_poc`
 --
 
-DROP TABLE IF EXISTS `tb_professor_co_advises_poc`;
+#   IF EXISTS `tb_professor_co_advises_poc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_professor_co_advises_poc` (
+CREATE TABLE IF NOT EXISTS `tb_professor_co_advises_poc` (
                                                `TB_POC_ID` int NOT NULL AUTO_INCREMENT,
                                                `tb_teacher_TB_User_ID` varchar(100) NOT NULL,
                                                PRIMARY KEY (`TB_POC_ID`,`tb_teacher_TB_User_ID`),
@@ -608,10 +608,10 @@ UNLOCK TABLES;
 -- Table structure for table `tb_professor_has_subject`
 --
 
-DROP TABLE IF EXISTS `tb_professor_has_subject`;
+# DROP TABLE IF EXISTS `tb_professor_has_subject`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tb_professor_has_subject` (
+CREATE TABLE IF NOT EXISTS `tb_professor_has_subject` (
                                             `TB_Discipline_ID` int unsigned NOT NULL AUTO_INCREMENT,
                                             `TB_Teacher_User_ID` varchar(100) NOT NULL,
                                             PRIMARY KEY (`TB_Discipline_ID`,`TB_Teacher_User_ID`),

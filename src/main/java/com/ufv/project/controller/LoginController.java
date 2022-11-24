@@ -74,6 +74,7 @@ public class LoginController
             {
                 try (ConnectDB connectDB = new ConnectDB())
                 {
+                    connectDB.initializeDB();
                     return new UserDB(connectDB.getConnection()).queryUserByID(usernameField.getText().trim());
                 }
             }
