@@ -141,23 +141,27 @@ public class CreatePOCController
         final Task<Integer> task = new Task<>()
         {
             @Override
-            protected Integer call() throws Exception
+            protected Integer call() throws SQLException
             {
                 try (ConnectDB connectDB = new ConnectDB())
                 {
+                    List<Student> authors = new ArrayList<>();
+
+                    for (MenuItem item : authorMenuButton.getItems())
+                    {
+                        authors.add((Student) new UserDB(connectDB.getConnection()).queryUserByID(item.getId()));
+                    }
+
+                    List<Professor> coAdvisors = new ArrayList<>();
+
+                    for (MenuItem item : coAdvisorMenuButton.getItems())
+                    {
+                        coAdvisors.add((Professor) new UserDB(connectDB.getConnection()).queryUserByID(item.getId()));
+                    }
+
                     return new POCDB(connectDB.getConnection()).insertPOC(new POC(0,
                             title.getText(),
-                            authorMenuButton.getItems().stream().map(menuItem ->
-                            {
-                                try
-                                {
-                                    return ((Student) new UserDB(connectDB.getConnection()).queryUserByID(menuItem.getId()));
-                                }
-                                catch (SQLException e)
-                                {
-                                    throw new RuntimeException(e);
-                                }
-                            }).toList(),
+                            authors,
                             datePicker.getValue(),
                             keywordList.getItems().stream().toList(),
                             summaryTextArea.getText(),
@@ -165,17 +169,7 @@ public class CreatePOCController
                             new PDF(0, pdfFile.getPath(), LocalDate.now()),
                             ((Professor) new UserDB(connectDB.getConnection()).queryUserByID(UserDataSingleton.getInstance().getUsername())),
                             advisorComboBox.getValue(),
-                            coAdvisorMenuButton.getItems().stream().map(menuItem ->
-                            {
-                                try
-                                {
-                                    return ((Professor) new UserDB(connectDB.getConnection()).queryUserByID(menuItem.getId()));
-                                }
-                                catch (SQLException e)
-                                {
-                                    throw new RuntimeException(e);
-                                }
-                            }).toList()
+                            coAdvisors
                     ));
                 }
             }
@@ -189,13 +183,9 @@ public class CreatePOCController
 
         task.setOnFailed(workerStateEvent ->
         {
-            try
+            if (task.getException() != null)
             {
-                throw task.getException();
-            }
-            catch (Throwable e)
-            {
-                throw new RuntimeException(e);
+                task.getException().printStackTrace();
             }
         });
 

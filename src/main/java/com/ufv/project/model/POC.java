@@ -3,7 +3,8 @@ package com.ufv.project.model;
 import java.time.LocalDate;
 import java.util.List;
 
-public class POC {
+public class POC
+{
     private final int id;
     private String title;
     private List<Student> authors;
@@ -136,4 +137,11 @@ public class POC {
     {
         this.coAdvisors = coAdvisors;
     }
+
+    @Override
+    public String toString()
+    {
+        return title + " -> " + summary;
+    }
+
 }

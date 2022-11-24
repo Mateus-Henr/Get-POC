@@ -6,7 +6,7 @@ public class Student extends User
     private String email;
     private int poc_id;
 
-    public Student(String username, String name, String password, String registration,int poc_id, String email)
+    public Student(String username, String name, String password, String registration, int poc_id, String email)
     {
         super(username, name, password, UserTypesEnum.STUDENT);
         this.registration = registration;
@@ -54,6 +54,12 @@ public class Student extends User
     public boolean canModifyPOCs()
     {
         return false;
+    }
+
+    @Override
+    public String toString()
+    {
+        return registration + ' ' + getName();
     }
 
 }
