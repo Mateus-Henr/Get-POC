@@ -12,6 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.io.File;
@@ -26,7 +28,7 @@ public class SearchPOCController
 
     // ---------- Top Menu ----------
     @FXML
-    private VBox topMenu;
+    private BorderPane topMenu;
 
     @FXML
     private TopMenuController topMenuController;
@@ -63,7 +65,7 @@ public class SearchPOCController
 
         pocListView.getSelectionModel().selectedItemProperty().addListener((observableValue, poc, t1) ->
         {
-            ((AnalyzePOCController) Main.loadStage("analyze-poc-page-view.fxml")).setData(pocListView.getSelectionModel().getSelectedItem());
+            ((AnalyzePOCController) Main.loadStage("analyze-poc-page-view.fxml", "Analyze POC")).setData(pocListView.getSelectionModel().getSelectedItem());
             Main.closeCurrentStage(mainPane);
         });
     }

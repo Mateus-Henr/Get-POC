@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Text?>
-<?import java.net.URL?>
-<AnchorPane fx:id="mainPane" fx:controller="com.ufv.project.controller.LoginController" styleClass="background"
-            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.LoginController">
     <children>
-        <TextField fx:id="usernameField" layoutX="63.0" layoutY="144.0" promptText="E-mail ou Usuario"
-                   styleClass="username-password-fields">
+        <TextField fx:id="usernameField" layoutX="63.0" layoutY="144.0" promptText="E-mail ou Usuario" styleClass="username-password-fields">
         </TextField>
-        <PasswordField fx:id="passwordField" layoutX="63.0" layoutY="188.0" promptText="Senha"
-                       styleClass="username-password-fields">
+        <PasswordField fx:id="passwordField" layoutX="63.0" layoutY="188.0" promptText="Senha" styleClass="username-password-fields">
         </PasswordField>
-        <Button fx:id="loginButton" defaultButton="true" layoutX="82.0" layoutY="233.0" mnemonicParsing="false"
-                onAction="#onLoginButtonAction" onMousePressed="#onLoginButtonPressed"
-                onMouseReleased="#onLoginButtonReleased" text="LOGIN" styleClass="login-button">
+        <Button fx:id="loginButton" defaultButton="true" layoutX="82.0" layoutY="233.0" mnemonicParsing="false" onAction="#onLoginButtonAction" onMousePressed="#onLoginButtonPressed" onMouseReleased="#onLoginButtonReleased" styleClass="login-button" text="LOGIN">
         </Button>
-        <Text fx:id="invalidText" layoutX="68.0" layoutY="122.0" text="Usuário ou senha errados" visible="false"
-              styleClass="invalid-text">
+        <Text fx:id="invalidText" layoutX="68.0" layoutY="122.0" styleClass="invalid-text" text="Usuário ou senha errados" visible="false">
         </Text>
-        <Line endX="390.5" endY="374.0" layoutX="-63.0" layoutY="-8.0" startX="390.5" startY="40.0"
-              styleClass="division-line"/>
-        <ImageView fitHeight="178.0" fitWidth="275.0" layoutX="341.0" layoutY="123.0" pickOnBounds="true"
-                   preserveRatio="true">
-            <Image url="@../images/Logo.png"/>
+        <Line endX="390.5" endY="374.0" layoutX="-63.0" layoutY="-8.0" startX="390.5" startY="40.0" styleClass="division-line" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="327.0" AnchorPane.topAnchor="31.5" />
+        <ImageView fitHeight="178.0" fitWidth="275.0" layoutX="341.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/Logo.png" />
         </ImageView>
+        <ProgressBar fx:id="progressBar" minWidth="654.0" progress="0.0" visible="false" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect></ProgressBar>
     </children>
     <stylesheets>
-        <URL value="@../css/login-page-styles.css"/>
+        <URL value="@../css/login-page-styles.css" />
     </stylesheets>
 </AnchorPane>

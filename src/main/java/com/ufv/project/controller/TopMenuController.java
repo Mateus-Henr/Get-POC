@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 public class TopMenuController
 {
     @FXML
-    private BorderPane topMenu;
+    private BorderPane mainPane;
 
     @FXML
     private ImageView pocIcon;

@@ -16,12 +16,7 @@ public class Main extends Application
     {
         setMockupData();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/ufv/project/fxml/login-page-view.fxml"));
-
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Get-POC App");
-        stage.setScene(scene);
-        stage.show();
+        Main.loadStage("login-page-view.fxml", "Get-POC App");
     }
 
     public static void main(String[] args)
@@ -34,7 +29,7 @@ public class Main extends Application
         UserDataSingleton userDataSingleton = UserDataSingleton.getInstance();
     }
 
-    public static Object loadStage(String filename)
+    public static Object loadStage(String filename, String stageTitle)
     {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/ufv/project/fxml/" + filename));
 
@@ -44,6 +39,8 @@ public class Main extends Application
             Stage stage = new Stage();
 
             stage.setScene(scene);
+            stage.setTitle(stageTitle);
+            stage.setResizable(false);
             stage.show();
         }
         catch (IOException e)
@@ -56,6 +53,11 @@ public class Main extends Application
 
     public static void closeCurrentStage(Pane pane)
     {
+        if (pane == null)
+        {
+            return;
+        }
+
         Scene scene = pane.getScene();
 
         if (scene == null)

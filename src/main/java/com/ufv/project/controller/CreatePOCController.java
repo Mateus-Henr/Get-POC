@@ -129,7 +129,7 @@ public class CreatePOCController
     @FXML
     public void handlePOCAdding()
     {
-        Main.loadStage("search-poc-page-view.fxml");
+        Main.loadStage("search-poc-page-view.fxml", "Search POC");
         Main.closeCurrentStage(mainPane);
     }
 

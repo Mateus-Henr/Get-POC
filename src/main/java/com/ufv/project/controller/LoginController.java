@@ -6,12 +6,13 @@ import com.ufv.project.db.UserDB;
 import com.ufv.project.db.UserDataSingleton;
 import com.ufv.project.model.User;
 import javafx.beans.binding.Bindings;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -34,6 +35,9 @@ public class LoginController
 
     @FXML
     private Text invalidText;
+
+    @FXML
+    private ProgressBar progressBar;
 
     private static final String INVALID_BOX_CSS_CLASS = "username-password-fields-invalid";
 
@@ -70,50 +74,47 @@ public class LoginController
     @FXML
     protected void onLoginButtonAction()
     {
-        User user = null;
-
-        try (ConnectDB connectDB = new ConnectDB())
+        final Task<User> task = new Task<>()
         {
-            user = new UserDB(connectDB.getConnection()).queryUserByID(usernameField.getText());
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-        }
-
-        if (user == null)
-        {
-            usernameField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
-            passwordField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
-            invalidText.setVisible(true);
-            return;
-        }
-
-        if (user.getPassword().equals(passwordField.getText()))
-        {
-            try
+            @Override
+            protected User call() throws Exception
             {
-                usernameField.getStyleClass().removeIf(s -> s.equals(INVALID_BOX_CSS_CLASS));
-                passwordField.getStyleClass().removeIf(s -> s.equals(INVALID_BOX_CSS_CLASS));
-                invalidText.setVisible(false);
-
-                // Sets global data
-                UserDataSingleton.getInstance().initialiseUser(usernameField.getText());
-
-                Main.loadStage("create-poc-page-view.fxml");
-                Main.closeCurrentStage(mainPane);
+                try (ConnectDB connectDB = new ConnectDB())
+                {
+                    return new UserDB(connectDB.getConnection()).queryUserByID(usernameField.getText());
+                }
             }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        else
+        };
+
+        task.setOnSucceeded(workerStateEvent ->
         {
-            usernameField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
-            passwordField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
-            invalidText.setVisible(true);
-        }
+            User user = task.getValue();
+
+            if (user == null || !user.getPassword().equals(passwordField.getText()))
+            {
+                usernameField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
+                passwordField.getStyleClass().add(INVALID_BOX_CSS_CLASS);
+                invalidText.setVisible(true);
+
+                return;
+            }
+
+
+            usernameField.getStyleClass().removeIf(s -> s.equals(INVALID_BOX_CSS_CLASS));
+            passwordField.getStyleClass().removeIf(s -> s.equals(INVALID_BOX_CSS_CLASS));
+            invalidText.setVisible(false);
+
+            // Sets global data
+            UserDataSingleton.getInstance().initialiseUser(usernameField.getText());
+
+            Main.loadStage("create-poc-page-view.fxml", "Create POC");
+            Main.closeCurrentStage(mainPane);
+        });
+
+        new Thread(task).start();
+        progressBar.progressProperty().bind(task.progressProperty());
+        progressBar.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        loginButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
     }
 
 }
