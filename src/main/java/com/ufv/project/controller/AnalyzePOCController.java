@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 public class AnalyzePOCController
 {
@@ -48,6 +49,8 @@ public class AnalyzePOCController
     @FXML
     private Hyperlink pdfFilepathText;
 
+    private URI pdfPath;
+
     @FXML
     public void initialize()
     {
@@ -65,11 +68,11 @@ public class AnalyzePOCController
     {
         try
         {
-            Desktop.getDesktop().browse(new File(pdfFilepathText.getText()).toURI());
+            Desktop.getDesktop().browse(pdfPath);
         }
         catch (IOException e)
         {
-            System.out.println(e.getMessage());
+            System.out.println("ERROR: Couldn't open PDF: " + e.getMessage());
         }
     }
 
@@ -82,7 +85,11 @@ public class AnalyzePOCController
         fieldText.setText(pocToShow.getTitle());
         dateText.setText(pocToShow.getDefenseDate().toString());
         keywordList.setItems(FXCollections.observableList(pocToShow.getKeywords()));
-        pdfFilepathText.setText(pocToShow.getPdf().getPath());
+
+        File pdfFile = new File(pocToShow.getPdf().getPath());
+
+        pdfFilepathText.setText(pdfFile.getName());
+        pdfPath = pdfFile.toURI();
     }
 
 }

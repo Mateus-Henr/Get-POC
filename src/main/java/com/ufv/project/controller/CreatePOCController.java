@@ -159,7 +159,8 @@ public class CreatePOCController
 
                     Files.copy(Paths.get(pdfFile.getAbsolutePath()),
                             Paths.get(pdfFilepath),
-                            StandardCopyOption.COPY_ATTRIBUTES);
+                            StandardCopyOption.COPY_ATTRIBUTES,
+                            StandardCopyOption.REPLACE_EXISTING);
 
                     List<Student> authors = new ArrayList<>();
 
