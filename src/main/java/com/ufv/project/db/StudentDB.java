@@ -65,12 +65,12 @@ public class StudentDB
         }
     }
 
-    protected List<Student> queryStudentsByPocID(int pocID) throws SQLException
+    protected List<Student> queryStudentsByPocID(int POCID) throws SQLException
     {
         return new UserDB(conn).queryUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)
                 .map(user -> (Student) user)
-                .filter(student -> student.getPOCID() == pocID)
+                .filter(student -> student.getPOCID() == POCID)
                 .toList();
     }
 

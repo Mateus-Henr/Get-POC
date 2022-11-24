@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -43,6 +44,9 @@ public class SearchPOCController
 
     @FXML
     private ListView<POC> pocListView;
+
+    @FXML
+    private ProgressIndicator progressIndicator;
     // ------------------------------
 
     @FXML

@@ -7,17 +7,10 @@ import com.ufv.project.db.UserDataSingleton;
 import com.ufv.project.model.User;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
-import java.sql.SQLException;
 
 public class LoginController
 {
@@ -37,7 +30,7 @@ public class LoginController
     private Text invalidText;
 
     @FXML
-    private ProgressBar progressBar;
+    private ProgressIndicator progressIndicator;
 
     private static final String INVALID_BOX_CSS_CLASS = "username-password-fields-invalid";
 
@@ -81,7 +74,7 @@ public class LoginController
             {
                 try (ConnectDB connectDB = new ConnectDB())
                 {
-                    return new UserDB(connectDB.getConnection()).queryUserByID(usernameField.getText());
+                    return new UserDB(connectDB.getConnection()).queryUserByID(usernameField.getText().trim());
                 }
             }
         };
@@ -112,8 +105,8 @@ public class LoginController
         });
 
         new Thread(task).start();
-        progressBar.progressProperty().bind(task.progressProperty());
-        progressBar.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        progressIndicator.progressProperty().bind(task.progressProperty());
+        progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         loginButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
     }
 

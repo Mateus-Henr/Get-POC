@@ -6,6 +6,7 @@ import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -16,6 +17,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,9 @@ public class CreatePOCController
     private DatePicker datePicker;
 
     @FXML
+    private TextArea summaryTextArea;
+
+    @FXML
     private ComboBox<Field> fieldComboBox;
 
     @FXML
@@ -74,6 +79,9 @@ public class CreatePOCController
 
     @FXML
     private Button addPOCButton;
+
+    @FXML
+    private ProgressIndicator progressIndicator;
     // ------------------------------
 
     private File pdfFile;
@@ -82,28 +90,28 @@ public class CreatePOCController
     public void initialize()
     {
         // Disables button until every field has been populated.
-        addPOCButton.disableProperty().bind(
-                Bindings.createBooleanBinding(() ->
-                                        title.getText().trim().isEmpty(),
-                                title.textProperty())
-//                        .or(authorComboBox.valueProperty().isNull())
-//                        .or(advisorComboBox.valueProperty().isNull())
-//                        .or(coAdvisorComboBox.valueProperty().isNull())
-//                        .or(datePicker.valueProperty().isNull())
-//                        .or(fieldComboBox.valueProperty().isNull())
-//                        .or(Bindings.isEmpty(keywordList.getItems()))
-                        .or(Bindings.createBooleanBinding(() ->
-                                        pdfFilepathText.getText().trim().isEmpty(),
-                                pdfFilepathText.textProperty()))
-        );
+//        addPOCButton.disableProperty().bind(
+//                Bindings.createBooleanBinding(() ->
+//                                        title.getText().trim().isEmpty(),
+//                                title.textProperty())
+////                        .or(authorComboBox.valueProperty().isNull())
+////                        .or(advisorComboBox.valueProperty().isNull())
+////                        .or(coAdvisorComboBox.valueProperty().isNull())
+////                        .or(datePicker.valueProperty().isNull())
+////                        .or(fieldComboBox.valueProperty().isNull())
+////                        .or(Bindings.isEmpty(keywordList.getItems()))
+//                        .or(Bindings.createBooleanBinding(() ->
+//                                        pdfFilepathText.getText().trim().isEmpty(),
+//                                pdfFilepathText.textProperty()))
+//        );
 
         // Sets values to top menu.
-        topMenuController.setUserRole("Teacher");
+        topMenuController.setUserRole(changeCase(UserDataSingleton.getInstance().getUserType()));
 
         // Sets values according to the current user.
         userDataController.setUsernameText(UserDataSingleton.getInstance().getUsername());
         userDataController.setNameText(UserDataSingleton.getInstance().getName());
-        userDataController.setUserTypeText(UserDataSingleton.getInstance().getUserType());
+        userDataController.setUserTypeText(changeCase(UserDataSingleton.getInstance().getUserType()));
 
         ObservableList<Professor> professors = null;
 
@@ -111,6 +119,8 @@ public class CreatePOCController
         {
             professors = FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).getAllProfessors());
             authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new StudentDB(connectDB.getConnection()).getAllStudents()));
+            coAdvisorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(professors));
+            fieldComboBox.setItems(FXCollections.observableList(new FieldDB(connectDB.getConnection()).queryFields()));
         }
         catch (SQLException e)
         {
@@ -122,15 +132,78 @@ public class CreatePOCController
         {
             advisorComboBox.setItems(professors);
             coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
-
         }
     }
 
     @FXML
     public void handlePOCAdding()
     {
-        Main.loadStage("search-poc-page-view.fxml", "Search POC");
-        Main.closeCurrentStage(mainPane);
+        final Task<Integer> task = new Task<>()
+        {
+            @Override
+            protected Integer call() throws Exception
+            {
+                try (ConnectDB connectDB = new ConnectDB())
+                {
+                    return new POCDB(connectDB.getConnection()).insertPOC(new POC(0,
+                            title.getText(),
+                            authorMenuButton.getItems().stream().map(menuItem ->
+                            {
+                                try
+                                {
+                                    return ((Student) new UserDB(connectDB.getConnection()).queryUserByID(menuItem.getId()));
+                                }
+                                catch (SQLException e)
+                                {
+                                    throw new RuntimeException(e);
+                                }
+                            }).toList(),
+                            datePicker.getValue(),
+                            keywordList.getItems().stream().toList(),
+                            summaryTextArea.getText(),
+                            fieldComboBox.getValue(),
+                            new PDF(0, pdfFile.getPath(), LocalDate.now()),
+                            ((Professor) new UserDB(connectDB.getConnection()).queryUserByID(UserDataSingleton.getInstance().getUsername())),
+                            advisorComboBox.getValue(),
+                            coAdvisorMenuButton.getItems().stream().map(menuItem ->
+                            {
+                                try
+                                {
+                                    return ((Professor) new UserDB(connectDB.getConnection()).queryUserByID(menuItem.getId()));
+                                }
+                                catch (SQLException e)
+                                {
+                                    throw new RuntimeException(e);
+                                }
+                            }).toList()
+                    ));
+                }
+            }
+        };
+
+        task.setOnSucceeded(workerStateEvent ->
+        {
+            Main.loadStage("search-poc-page-view.fxml", "Search POC");
+            Main.closeCurrentStage(mainPane);
+        });
+
+        task.setOnFailed(workerStateEvent ->
+        {
+            try
+            {
+                throw task.getException();
+            }
+            catch (Throwable e)
+            {
+                throw new RuntimeException(e);
+            }
+        });
+
+        new Thread(task).start();
+        progressIndicator.progressProperty().bind(task.progressProperty());
+        progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        addPOCButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+
     }
 
     @FXML
@@ -161,12 +234,23 @@ public class CreatePOCController
         {
             CheckMenuItem menuItem = new CheckMenuItem();
 
+            menuItem.setId(user.getUsername());
             menuItem.setText(user.getName() + " " + user.getUsername());
 
             items.add(menuItem);
         }
 
         return items;
+    }
+
+    public String changeCase(String string)
+    {
+        if (string == null)
+        {
+            return null;
+        }
+
+        return string.charAt(0) + string.substring(1).toLowerCase();
     }
 
 }

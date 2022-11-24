@@ -84,12 +84,14 @@ public class POCDB
     {
         try (PreparedStatement insertPOC = conn.prepareStatement(INSERT_POC, Statement.RETURN_GENERATED_KEYS))
         {
+            conn.setAutoCommit(false);
+
             insertPOC.setInt(1, poc.getId());
             insertPOC.setString(2, poc.getTitle());
             insertPOC.setString(3, Date.valueOf(poc.getDefenseDate()).toString());
             insertPOC.setString(4, poc.getSummary());
             insertPOC.setInt(5, poc.getField().getId());
-            insertPOC.setInt(6, poc.getPdf().getId());
+            insertPOC.setInt(6, new PDFDB(conn).insertPDF(poc.getPdf()));
             insertPOC.setString(7, poc.getRegistrant().getUsername());
             insertPOC.setString(8, poc.getAdvisor().getUsername());
 
@@ -97,6 +99,8 @@ public class POCDB
             {
                 throw new SQLException("ERROR: Couldn't insert POC with ID: '" + poc.getId() + "'.");
             }
+
+            conn.setAutoCommit(true);
 
             try (ResultSet resultSet = insertPOC.getGeneratedKeys())
             {
@@ -107,6 +111,13 @@ public class POCDB
 
                 throw new SQLException("ERROR: Couldn't get _id for POC.");
             }
+        }
+        catch (SQLException e)
+        {
+            conn.rollback();
+            conn.setAutoCommit(true);
+
+            throw new SQLException(e);
         }
     }
 

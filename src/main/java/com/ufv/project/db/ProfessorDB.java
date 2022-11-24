@@ -66,7 +66,7 @@ public class ProfessorDB
 
             if (insertProfessor.executeUpdate() != 1)
             {
-                throw new SQLException("ERROR: Couldn't insert professor with data: " + professor);
+                throw new SQLException("ERROR: Couldn't insert professor with username: '" + professor.getUsername() + "'.");
             }
 
             Professor_has_subjectDB professor_has_subjectDB = new Professor_has_subjectDB(conn);
