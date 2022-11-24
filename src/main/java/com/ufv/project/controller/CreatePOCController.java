@@ -22,6 +22,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CreatePOCController
@@ -72,7 +73,7 @@ public class CreatePOCController
     private ComboBox<Field> fieldComboBox;
 
     @FXML
-    private ListView<String> keywordList;
+    private TextArea keywordsTextArea;
 
     @FXML
     private Button choosePDFButton;
@@ -186,7 +187,7 @@ public class CreatePOCController
                             title.getText(),
                             authors,
                             datePicker.getValue(),
-                            keywordList.getItems().stream().toList(),
+                            Arrays.stream(keywordsTextArea.getText().split(" ")).toList(),
                             summaryTextArea.getText(),
                             fieldComboBox.getValue(),
                             new PDF(0, pdfFilepath, LocalDate.now()),

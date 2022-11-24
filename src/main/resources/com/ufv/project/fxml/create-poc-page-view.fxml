@@ -27,7 +27,7 @@
         </MenuButton>
         <ComboBox fx:id="fieldComboBox" promptText="Field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
         <DatePicker fx:id="datePicker" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="date-picker"/>
-        <ListView fx:id="keywordList" editable="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <TextArea fx:id="keywordsTextArea" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
         <TextArea fx:id="summaryTextArea" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
         <Button fx:id="choosePDFButton" onMouseClicked="#handlePDFChoosing" GridPane.rowIndex="0"
                 GridPane.columnIndex="2">Choose...
