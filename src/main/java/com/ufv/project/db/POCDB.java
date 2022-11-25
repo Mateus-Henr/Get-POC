@@ -122,6 +122,13 @@ public class POCDB
                         poc_has_keywordDB.insertPOC_has_Keyword(POCID, keyword);
                     }
 
+                    StudentDB studentDB = new StudentDB(conn);
+
+                    for (Student student : poc.getAuthors())
+                    {
+                        studentDB.setStudentPOC(student.getUsername(), POCID);
+                    }
+
                     conn.setAutoCommit(true);
 
                     return POCID;
