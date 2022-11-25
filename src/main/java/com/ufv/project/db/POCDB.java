@@ -4,12 +4,15 @@ import com.ufv.project.model.POC;
 import com.ufv.project.model.Professor;
 import com.ufv.project.model.Student;
 
+import com.ufv.project.db.StudentDB;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class POCDB
-{
+import static com.ufv.project.db.StudentDB.*;
+
+public class POCDB {
     /*TB_POC table columns names*/
 
     private static final String TABLE_POC = "TB_POC";
@@ -36,24 +39,23 @@ public class POCDB
     private static final String INSERT_POC = "INSERT INTO " + TABLE_POC + " (" + COLUMN_POC_ID + ", " + COLUMN_POC_TITLE + ", " + COLUMN_POC_DEFENSE_DATE + ", " + COLUMN_POC_SUMMARY + ", " + COLUMN_POC_FIELD_ID + ", " + COLUMN_POC_PDF_ID + ", " + COLUMN_POC_TEACHER_REGISTRANT_ID + ", " + COLUMN_POC_TEACHER_ADVISOR_ID + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_POC = "UPDATE " + TABLE_POC + " SET " + COLUMN_POC_TITLE + " = ?, " + COLUMN_POC_DEFENSE_DATE + " = ?, " + COLUMN_POC_SUMMARY + " = ?, " + COLUMN_POC_FIELD_ID + " = ?, " + COLUMN_POC_PDF_ID + " = ?, " + COLUMN_POC_TEACHER_REGISTRANT_ID + " = ?, " + COLUMN_POC_TEACHER_ADVISOR_ID + " = ? WHERE " + COLUMN_POC_ID + " = ?";
     private static final String DELETE_POC = "DELETE FROM " + TABLE_POC + " WHERE " + COLUMN_POC_ID + " = ?";
-
+    private static final String SEARCH_POC_BY_TEXT_TITLE = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_TITLE + " LIKE ?";
+    private static final String SEARCH_POC_BY_TEXT_SUMMARY = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_SUMMARY + " LIKE ?";
+    private static final String SEARCH_POC_BY_STUDENT = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_ID + " IN (SELECT " + COLUMN_STUDENT_POC + " FROM " + TABLE_STUDENT + " WHERE " + COLUMN_USER_STUDENT_ID + " = ?)";
+    private static final String SEARCH_POC_BY_ADVISOR = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_TEACHER_ADVISOR_ID + " = ?";
+    private static final String SEARCH_POC_BY_FIELD = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_FIELD_ID + " = ?";
     private final Connection conn;
 
-    public POCDB(Connection conn)
-    {
+    public POCDB(Connection conn) {
         this.conn = conn;
     }
 
-    public POC queryPOC(int id) throws SQLException
-    {
-        try (PreparedStatement queryPOC = conn.prepareStatement(QUERY_POC))
-        {
+    public POC queryPOC(int id) throws SQLException {
+        try (PreparedStatement queryPOC = conn.prepareStatement(QUERY_POC)) {
             queryPOC.setInt(1, id);
 
-            try (ResultSet results = queryPOC.executeQuery())
-            {
-                if (results.next())
-                {
+            try (ResultSet results = queryPOC.executeQuery()) {
+                if (results.next()) {
                     POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
                     Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
                     StudentDB studentDB = new StudentDB(conn);
@@ -80,10 +82,9 @@ public class POCDB
         }
     }
 
-    public int insertPOC(POC poc) throws SQLException
-    {
-        try (PreparedStatement insertPOC = conn.prepareStatement(INSERT_POC, Statement.RETURN_GENERATED_KEYS))
-        {
+    public int insertPOC(POC poc) throws SQLException {
+
+        try (PreparedStatement insertPOC = conn.prepareStatement(INSERT_POC, Statement.RETURN_GENERATED_KEYS)) {
             conn.setAutoCommit(false);
 
             insertPOC.setInt(1, poc.getId());
@@ -95,37 +96,31 @@ public class POCDB
             insertPOC.setString(7, poc.getRegistrant().getUsername());
             insertPOC.setString(8, poc.getAdvisor().getUsername());
 
-            if (insertPOC.executeUpdate() != 1)
-            {
+            if (insertPOC.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't insert POC with ID: '" + poc.getId() + "'.");
             }
 
-            try (ResultSet resultSet = insertPOC.getGeneratedKeys())
-            {
-                if (resultSet.next())
-                {
+            try (ResultSet resultSet = insertPOC.getGeneratedKeys()) {
+                if (resultSet.next()) {
                     int POCID = resultSet.getInt(COLUMN_POC_ID_INDEX);
 
                     Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
 
-                    for (Professor coAdvisor : poc.getCoAdvisors())
-                    {
+                    for (Professor coAdvisor : poc.getCoAdvisors()) {
                         professor_co_advises_pocDB.insertProfessor_co_advises_poc(coAdvisor.getUsername(), POCID);
                     }
 
                     KeywordDB keywordDB = new KeywordDB(conn);
                     POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
 
-                    for (String keyword : poc.getKeywords())
-                    {
+                    for (String keyword : poc.getKeywords()) {
                         keywordDB.insertKeyword(keyword);
                         poc_has_keywordDB.insertPOC_has_Keyword(POCID, keyword);
                     }
 
                     StudentDB studentDB = new StudentDB(conn);
 
-                    for (Student student : poc.getAuthors())
-                    {
+                    for (Student student : poc.getAuthors()) {
                         studentDB.setStudentPOC(student.getUsername(), POCID);
                     }
 
@@ -136,9 +131,7 @@ public class POCDB
 
                 throw new SQLException("ERROR: Couldn't get _id for POC.");
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             conn.rollback();
             conn.setAutoCommit(true);
 
@@ -146,17 +139,14 @@ public class POCDB
         }
     }
 
-    public POC deletePOC(int id) throws SQLException
-    {
+    public POC deletePOC(int id) throws SQLException {
         POC foundPOC = queryPOC(id);
 
-        if (foundPOC == null)
-        {
+        if (foundPOC == null) {
             throw new SQLException("ERROR: POC with ID: '" + id + "' doesn't exist.");
         }
 
-        try (PreparedStatement deletePOC = conn.prepareStatement(DELETE_POC))
-        {
+        try (PreparedStatement deletePOC = conn.prepareStatement(DELETE_POC)) {
             conn.setAutoCommit(false);
 
             POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
@@ -170,17 +160,14 @@ public class POCDB
 
             deletePOC.setInt(COLUMN_POC_ID_INDEX, id);
 
-            if (deletePOC.executeUpdate() != 1)
-            {
+            if (deletePOC.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't delete POC with ID: '" + id + "'.");
             }
 
             conn.setAutoCommit(true);
 
             return foundPOC;
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             conn.rollback();
             conn.setAutoCommit(true);
 
@@ -188,25 +175,21 @@ public class POCDB
         }
     }
 
-    public POC updatePOC(POC poc) throws SQLException
-    {
+    public POC updatePOC(POC poc) throws SQLException {
         POC oldPOC = queryPOC(poc.getId());
 
-        if (oldPOC == null)
-        {
+        if (oldPOC == null) {
             throw new SQLException("ERROR: Couldn't find POC with ID: '" + poc.getId() + "'.");
         }
 
-        try (PreparedStatement updatePOC = conn.prepareStatement(UPDATE_POC))
-        {
+        try (PreparedStatement updatePOC = conn.prepareStatement(UPDATE_POC)) {
             conn.setAutoCommit(false);
 
             // Update Keywords
             POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
             poc_has_keywordDB.deletePOC_has_Keyword(poc.getId());
 
-            for (String keyword : poc.getKeywords())
-            {
+            for (String keyword : poc.getKeywords()) {
                 poc_has_keywordDB.insertPOC_has_Keyword(poc.getId(), keyword);
             }
 
@@ -214,8 +197,7 @@ public class POCDB
             Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
             professor_co_advises_pocDB.deleteProfessor_co_advises_poc(poc.getId());
 
-            for (Professor professor : poc.getCoAdvisors())
-            {
+            for (Professor professor : poc.getCoAdvisors()) {
                 professor_co_advises_pocDB.insertProfessor_co_advises_poc(professor.getUsername(), poc.getId());
             }
 
@@ -223,88 +205,62 @@ public class POCDB
             StudentDB studentDB = new StudentDB(conn);
             studentDB.setStudentPOCNull(poc.getId());
 
-            for (Student student : poc.getAuthors())
-            {
+            for (Student student : poc.getAuthors()) {
                 studentDB.setStudentPOC(student.getUsername(), poc.getId());
             }
 
-            if (poc.getTitle() != null)
-            {
+            if (poc.getTitle() != null) {
                 updatePOC.setString(1, poc.getTitle());
-            }
-            else
-            {
+            } else {
                 updatePOC.setString(1, oldPOC.getTitle());
             }
 
-            if (poc.getDefenseDate() != null)
-            {
+            if (poc.getDefenseDate() != null) {
                 updatePOC.setString(2, Date.valueOf(poc.getDefenseDate()).toString());
-            }
-            else
-            {
+            } else {
                 updatePOC.setString(2, Date.valueOf(oldPOC.getDefenseDate()).toString());
             }
 
-            if (poc.getSummary() != null)
-            {
+            if (poc.getSummary() != null) {
                 updatePOC.setString(3, poc.getSummary());
-            }
-            else
-            {
+            } else {
                 updatePOC.setString(3, oldPOC.getSummary());
             }
 
-            if (poc.getField() != null)
-
-            {
+            if (poc.getField() != null) {
                 updatePOC.setInt(4, poc.getField().getId());
-            }
-            else
-            {
+            } else {
                 updatePOC.setInt(4, oldPOC.getField().getId());
             }
 
-            if (poc.getPdf() != null)
-            {
+            if (poc.getPdf() != null) {
                 updatePOC.setInt(5, poc.getPdf().getId());
-            }
-            else
-            {
+            } else {
                 updatePOC.setInt(5, oldPOC.getPdf().getId());
             }
 
-            if (poc.getRegistrant() != null)
-            {
+            if (poc.getRegistrant() != null) {
                 updatePOC.setString(6, poc.getRegistrant().getUsername());
-            }
-            else
-            {
+            } else {
                 updatePOC.setString(6, oldPOC.getRegistrant().getUsername());
             }
 
-            if (poc.getAdvisor() != null)
-            {
+            if (poc.getAdvisor() != null) {
                 updatePOC.setString(7, poc.getAdvisor().getUsername());
-            }
-            else
-            {
+            } else {
                 updatePOC.setString(7, oldPOC.getAdvisor().getUsername());
             }
 
             updatePOC.setInt(8, poc.getId());
 
-            if (updatePOC.executeUpdate() != 1)
-            {
+            if (updatePOC.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't update POC with ID: '" + poc.getId() + "'.");
             }
 
             conn.setAutoCommit(true);
 
             return poc;
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             conn.rollback();
             conn.setAutoCommit(true);
 
@@ -312,11 +268,9 @@ public class POCDB
         }
     }
 
-    public List<POC> queryAllPOCs() throws SQLException
-    {
+    public List<POC> queryAllPOCs() throws SQLException {
         try (PreparedStatement queryPOCs = conn.prepareStatement(QUERY_POCs);
-             ResultSet results = queryPOCs.executeQuery())
-        {
+             ResultSet results = queryPOCs.executeQuery()) {
             List<POC> pocs = new ArrayList<>();
             StudentDB studentDB = new StudentDB(conn);
             FieldDB fieldDB = new FieldDB(conn);
@@ -325,8 +279,7 @@ public class POCDB
             Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
             POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
 
-            while (results.next())
-            {
+            while (results.next()) {
                 pocs.add(new POC(results.getInt(COLUMN_POC_ID),
                         results.getString(COLUMN_POC_TITLE),
                         studentDB.queryStudentsByPocID(results.getInt(COLUMN_POC_ID)),
@@ -345,4 +298,162 @@ public class POCDB
         }
     }
 
+   /* public POC searchPocByTitle(String search) throws SQLException {
+        try (PreparedStatement searchPOC = conn.prepareStatement(SEARCH_POC_BY_TEXT_TITLE)) {
+            searchPOC.setString(1, "%" + search + "%");
+
+            try (ResultSet results = searchPOC.executeQuery()) {
+                if (results.next()) {
+                    StudentDB studentDB = new StudentDB(conn);
+                    FieldDB fieldDB = new FieldDB(conn);
+                    PDFDB pdfDB = new PDFDB(conn);
+                    UserDB userDB = new UserDB(conn);
+                    Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
+                    POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
+
+                    return new POC(results.getInt(COLUMN_POC_ID),
+                            results.getString(COLUMN_POC_TITLE),
+                            studentDB.queryStudentsByPocID(results.getInt(COLUMN_POC_ID)),
+                            results.getDate(COLUMN_POC_DEFENSE_DATE).toLocalDate(),
+                            poc_has_keywordDB.queryKeywordsByPOCID(results.getInt(COLUMN_POC_ID)),
+                            results.getString(COLUMN_POC_SUMMARY),
+                            fieldDB.queryFieldByID(results.getInt(COLUMN_POC_FIELD_ID)),
+                            pdfDB.queryPDFByID(results.getInt(COLUMN_POC_PDF_ID)),
+                            (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_REGISTRANT_ID)),
+                            (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_ADVISOR_ID)),
+                            professor_co_advises_pocDB.queryProfessorsByPocId(results.getInt(COLUMN_POC_ID)));
+                } else {
+                    return null;
+                }
+            }
+        }
+
+
+    }
+
+    public POC searchPocBySummary(String search) throws SQLException {
+        try (PreparedStatement searchPOC = conn.prepareStatement(SEARCH_POC_BY_TEXT_SUMMARY)) {
+            searchPOC.setString(1, "%" + search + "%");
+
+            try (ResultSet results = searchPOC.executeQuery()) {
+                if (results.next()) {
+                    StudentDB studentDB = new StudentDB(conn);
+                    FieldDB fieldDB = new FieldDB(conn);
+                    PDFDB pdfDB = new PDFDB(conn);
+                    UserDB userDB = new UserDB(conn);
+                    Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
+                    POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
+
+                    return new POC(results.getInt(COLUMN_POC_ID),
+                            results.getString(COLUMN_POC_TITLE),
+                            studentDB.queryStudentsByPocID(results.getInt(COLUMN_POC_ID)),
+                            results.getDate(COLUMN_POC_DEFENSE_DATE).toLocalDate(),
+                            poc_has_keywordDB.queryKeywordsByPOCID(results.getInt(COLUMN_POC_ID)),
+                            results.getString(COLUMN_POC_SUMMARY),
+                            fieldDB.queryFieldByID(results.getInt(COLUMN_POC_FIELD_ID)),
+                            pdfDB.queryPDFByID(results.getInt(COLUMN_POC_PDF_ID)),
+                            (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_REGISTRANT_ID)),
+                            (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_ADVISOR_ID)),
+                            professor_co_advises_pocDB.queryProfessorsByPocId(results.getInt(COLUMN_POC_ID)));
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
+
+    public POC searchPocByAuthor(String username) throws SQLException {
+        try (PreparedStatement searchPOC = conn.prepareStatement(SEARCH_POC_BY_STUDENT)) {
+            searchPOC.setString(1, username);
+
+            try (ResultSet results = searchPOC.executeQuery()) {
+                if (results.next()) {
+                    StudentDB studentDB = new StudentDB(conn);
+                    FieldDB fieldDB = new FieldDB(conn);
+                    PDFDB pdfDB = new PDFDB(conn);
+                    UserDB userDB = new UserDB(conn);
+                    Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
+                    POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
+
+                    return new POC(results.getInt(COLUMN_POC_ID),
+                            results.getString(COLUMN_POC_TITLE),
+                            studentDB.queryStudentsByPocID(results.getInt(COLUMN_POC_ID)),
+                            results.getDate(COLUMN_POC_DEFENSE_DATE).toLocalDate(),
+                            poc_has_keywordDB.queryKeywordsByPOCID(results.getInt(COLUMN_POC_ID)),
+                            results.getString(COLUMN_POC_SUMMARY),
+                            fieldDB.queryFieldByID(results.getInt(COLUMN_POC_FIELD_ID)),
+                            pdfDB.queryPDFByID(results.getInt(COLUMN_POC_PDF_ID)),
+                            (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_REGISTRANT_ID)),
+                            (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_ADVISOR_ID)),
+                            professor_co_advises_pocDB.queryProfessorsByPocId(results.getInt(COLUMN_POC_ID)));
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
+
+    public POC searchPocByAdvisor(String username) throws SQLException {
+        try (PreparedStatement searchPOC = conn.prepareStatement(SEARCH_POC_BY_ADVISOR)) {
+            searchPOC.setString(1, username);
+
+            try (ResultSet results = searchPOC.executeQuery()) {
+                if (results.next()) {
+                    StudentDB studentDB = new StudentDB(conn);
+                    FieldDB fieldDB = new FieldDB(conn);
+                    PDFDB pdfDB = new PDFDB(conn);
+                    UserDB userDB = new UserDB(conn);
+                    Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
+                    POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
+
+                    return new POC(results.getInt(COLUMN_POC_ID),
+                            results.getString(COLUMN_POC_TITLE),
+                            studentDB.queryStudentsByPocID(results.getInt(COLUMN_POC_ID)),
+                            results.getDate(COLUMN_POC_DEFENSE_DATE).toLocalDate(),
+                            poc_has_keywordDB.queryKeywordsByPOCID(results.getInt(COLUMN_POC_ID)),
+                            results.getString(COLUMN_POC_SUMMARY),
+                            fieldDB.queryFieldByID(results.getInt(COLUMN_POC_FIELD_ID)),
+                            pdfDB.queryPDFByID(results.getInt(COLUMN_POC_PDF_ID)),
+                            (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_REGISTRANT_ID)),
+                            (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_ADVISOR_ID)),
+                            professor_co_advises_pocDB.queryProfessorsByPocId(results.getInt(COLUMN_POC_ID)));
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
+
+    public POC searchPocByField (int fieldID) throws SQLException {
+        try (PreparedStatement searchPOC = conn.prepareStatement(SEARCH_POC_BY_FIELD)) {
+            searchPOC.setInt(1, fieldID);
+
+            try (ResultSet results = searchPOC.executeQuery()) {
+                if (results.next()) {
+                    StudentDB studentDB = new StudentDB(conn);
+                    FieldDB fieldDB = new FieldDB(conn);
+                    PDFDB pdfDB = new PDFDB(conn);
+                    UserDB userDB = new UserDB(conn);
+                    Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
+                    POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
+
+                    return new POC(results.getInt(COLUMN_POC_ID),
+                            results.getString(COLUMN_POC_TITLE),
+                            studentDB.queryStudentsByPocID(results.getInt(COLUMN_POC_ID)),
+                            results.getDate(COLUMN_POC_DEFENSE_DATE).toLocalDate(),
+                            poc_has_keywordDB.queryKeywordsByPOCID(results.getInt(COLUMN_POC_ID)),
+                            results.getString(COLUMN_POC_SUMMARY),
+                            fieldDB.queryFieldByID(results.getInt(COLUMN_POC_FIELD_ID)),
+                            pdfDB.queryPDFByID(results.getInt(COLUMN_POC_PDF_ID)),
+                            (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_REGISTRANT_ID)),
+                            (Professor) userDB.queryUserByID(results.getString(COLUMN_POC_TEACHER_ADVISOR_ID)),
+                            professor_co_advises_pocDB.queryProfessorsByPocId(results.getInt(COLUMN_POC_ID)));
+                } else {
+                    return null;
+                }
+            }
+        }
+    }*/
 }
+
+

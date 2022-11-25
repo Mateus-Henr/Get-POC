@@ -11,11 +11,11 @@ import java.util.List;
 
 public class StudentDB
 {
-    private static final String TABLE_STUDENT = "TB_Student";
+    public static final String TABLE_STUDENT = "TB_Student";
     private static final String COLUMN_STUDENT_EMAIL = "Email";
     private static final String COLUMN_STUDENT_REGISTRATION = "Registration";
-    private static final String COLUMN_STUDENT_POC = "POC";
-    private static final String COLUMN_USER_STUDENT_ID = "TB_User_ID";
+    public static final String COLUMN_STUDENT_POC = "POC";
+    public static final String COLUMN_USER_STUDENT_ID = "TB_User_ID";
 
     private static final int COLUMN_STUDENT_EMAIL_INDEX = 1;
     private static final int COLUMN_STUDENT_REGISTRATION_INDEX = 2;
