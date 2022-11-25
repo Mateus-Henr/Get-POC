@@ -11,16 +11,16 @@
           fx:controller="com.ufv.project.controller.CreateUserController"
           prefHeight="400.0" prefWidth="600.0">
 
-    <Label fx:id="usernameLabel" labelFor="$usernameTextField" text="Username"/>
+    <Label labelFor="$usernameTextField" text="Username"/>
     <TextField fx:id="usernameTextField"/>
 
-    <Label fx:id="nameLabel" labelFor="$nameTextField" text="Name"/>
+    <Label labelFor="$nameTextField" text="Name"/>
     <TextField fx:id="nameTextField"/>
 
-    <Label fx:id="passwordLabel" labelFor="$passwordField" text="Password"/>
+    <Label labelFor="$passwordField" text="Password"/>
     <PasswordField fx:id="passwordField"/>
 
-    <Label fx:id="confirmPasswordLabel" labelFor="$confirmPasswordField" text="Confirm password"/>
+    <Label labelFor="$confirmPasswordField" text="Confirm password"/>
     <PasswordField fx:id="confirmPasswordField"/>
 
     <RadioButton fx:id="studentRadioButton" selected="true" onMouseClicked="#onRadioButtonChanged" text="Student">

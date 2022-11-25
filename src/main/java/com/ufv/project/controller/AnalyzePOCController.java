@@ -58,12 +58,6 @@ public class AnalyzePOCController
     }
 
     @FXML
-    public void onDisplayContents()
-    {
-
-    }
-
-    @FXML
     public void onDisplayPDF()
     {
         try

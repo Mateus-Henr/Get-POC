@@ -14,7 +14,6 @@ import javafx.scene.layout.FlowPane;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CreateUserController
 {
@@ -22,25 +21,13 @@ public class CreateUserController
     private FlowPane mainPane;
 
     @FXML
-    private Label usernameLabel;
-
-    @FXML
     private TextField usernameTextField;
-
-    @FXML
-    private Label nameLabel;
 
     @FXML
     private TextField nameTextField;
 
     @FXML
-    private Label passwordLabel;
-
-    @FXML
     private PasswordField passwordField;
-
-    @FXML
-    private Label confirmPasswordLabel;
 
     @FXML
     private PasswordField confirmPasswordField;
