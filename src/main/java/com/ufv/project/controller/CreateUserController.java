@@ -2,6 +2,7 @@ package com.ufv.project.controller;
 
 import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
+import com.ufv.project.db.SubjectDB;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
@@ -10,8 +11,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CreateUserController
 {
@@ -19,34 +22,52 @@ public class CreateUserController
     private FlowPane mainPane;
 
     @FXML
+    private Label usernameLabel;
+
+    @FXML
     private TextField usernameTextField;
+
+    @FXML
+    private Label nameLabel;
 
     @FXML
     private TextField nameTextField;
 
     @FXML
+    private Label passwordLabel;
+
+    @FXML
     private PasswordField passwordField;
+
+    @FXML
+    private Label confirmPasswordLabel;
 
     @FXML
     private PasswordField confirmPasswordField;
 
     @FXML
+    private Label emailLabel;
+
+    @FXML
     private TextField emailTextField;
+
+    @FXML
+    private Label registrationLabel;
 
     @FXML
     private TextField registrationTextField;
 
     @FXML
+    private Label professorSubjectsLabel;
+
+    @FXML
     private MenuButton professorSubjects;
 
     @FXML
-    private RadioButton professorRadioButton;
-
-    @FXML
-    private ToggleGroup group;
-
-    @FXML
     private RadioButton studentRadioButton;
+
+    @FXML
+    private RadioButton professorRadioButton;
 
     @FXML
     private RadioButton adminRadioButton;
@@ -76,29 +97,92 @@ public class CreateUserController
                                                 confirmPasswordField.textProperty()))
                                 )));
 
+        // Set up page according to the selected one
+        onRadioButtonChanged();
     }
 
     @FXML
     public void onRadioButtonChanged()
     {
-        if (professorRadioButton.isSelected())
+        if (studentRadioButton.isSelected())
         {
-            registrationTextField.setVisible(false);
-            professorSubjects.setVisible(true);
+            professorSubjectsLabel.setManaged(false);
+            professorSubjects.setManaged(false);
+            professorSubjectsLabel.setVisible(false);
+            professorSubjects.setVisible(false);
+
+            registrationLabel.setManaged(true);
+            registrationTextField.setManaged(true);
+            registrationLabel.setVisible(true);
+            registrationTextField.setVisible(true);
+
+            emailLabel.setManaged(true);
+            emailTextField.setManaged(true);
+            emailLabel.setVisible(true);
             emailTextField.setVisible(true);
         }
-        else if (studentRadioButton.isSelected())
+        else if (professorRadioButton.isSelected())
         {
-            professorSubjects.setVisible(false);
-            registrationTextField.setVisible(true);
+            registrationLabel.setManaged(false);
+            registrationTextField.setManaged(false);
+            registrationLabel.setVisible(false);
+            registrationTextField.setVisible(false);
+
+            emailLabel.setManaged(true);
+            emailTextField.setManaged(true);
+            emailLabel.setVisible(true);
             emailTextField.setVisible(true);
+
+            professorSubjectsLabel.setManaged(true);
+            professorSubjects.setManaged(true);
+            professorSubjectsLabel.setVisible(true);
+            professorSubjects.setVisible(true);
+
+            // Fetches data from db
+            final Task<List<MenuItem>> task = new Task<>()
+            {
+                @Override
+                protected List<MenuItem> call() throws SQLException
+                {
+                    try (ConnectDB connectDB = new ConnectDB())
+                    {
+                        return initializeCheckMenuItemsFromList(new SubjectDB(connectDB.getConnection()).querySubjects());
+                    }
+                }
+            };
+
+            task.setOnSucceeded(workerStateEvent -> professorSubjects.getItems().setAll(task.getValue()));
+
+            task.setOnFailed(workerStateEvent -> task.getException().printStackTrace());
+
+            new Thread(task).start();
         }
         else if (adminRadioButton.isSelected())
         {
+            professorSubjectsLabel.setManaged(false);
+            professorSubjects.setManaged(false);
+            professorSubjectsLabel.setVisible(false);
             professorSubjects.setVisible(false);
+
+            registrationLabel.setManaged(false);
+            registrationTextField.setManaged(false);
+            registrationLabel.setVisible(false);
             registrationTextField.setVisible(false);
+
+            emailLabel.setManaged(false);
+            emailTextField.setManaged(false);
+            emailLabel.setVisible(false);
             emailTextField.setVisible(false);
         }
+    }
+
+    @FXML
+    public void onSelectSubject()
+    {
+        professorSubjects.setText(professorSubjects.getItems().stream()
+                .filter(menuItem -> ((CheckMenuItem) menuItem).isSelected())
+                .map(MenuItem::getText)
+                .collect(Collectors.joining(", ")));
     }
 
     @FXML
@@ -117,7 +201,16 @@ public class CreateUserController
             {
                 User user = null;
 
-                if (professorRadioButton.isSelected())
+                if (studentRadioButton.isSelected())
+                {
+                    user = new Student(usernameTextField.getText().trim(),
+                            nameTextField.getText().trim(),
+                            passwordField.getText(),
+                            registrationTextField.getText().trim(),
+                            0,
+                            emailTextField.getText().trim());
+                }
+                else if (professorRadioButton.isSelected())
                 {
                     List<Subject> subjects = new ArrayList<>();
 
@@ -126,15 +219,6 @@ public class CreateUserController
                             passwordField.getText(),
                             emailTextField.getText().trim(),
                             subjects);
-                }
-                else if (studentRadioButton.isSelected())
-                {
-                    user = new Student(usernameTextField.getText().trim(),
-                            nameTextField.getText().trim(),
-                            passwordField.getText(),
-                            registrationTextField.getText().trim(),
-                            0,
-                            emailTextField.getText().trim());
                 }
                 else if (adminRadioButton.isSelected())
                 {
@@ -148,7 +232,6 @@ public class CreateUserController
                     throw new IllegalAccessException("ERROR: No role was assigned.");
                 }
 
-                // Checks whether username already exists
                 try (ConnectDB connectDB = new ConnectDB())
                 {
                     return new UserDB(connectDB.getConnection()).insertUser(user);
@@ -175,6 +258,23 @@ public class CreateUserController
     public boolean arePasswordsEqual()
     {
         return passwordField.getText().equals(confirmPasswordField.getText());
+    }
+
+    public List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList)
+    {
+        List<MenuItem> items = new ArrayList<>();
+
+        for (Subject subject : subjectList)
+        {
+            CheckMenuItem menuItem = new CheckMenuItem();
+
+            menuItem.setId(String.valueOf(subject.getId()));
+            menuItem.setText(subject.getName() + " - " + subject.getDescription());
+
+            items.add(menuItem);
+        }
+
+        return items;
     }
 
 }

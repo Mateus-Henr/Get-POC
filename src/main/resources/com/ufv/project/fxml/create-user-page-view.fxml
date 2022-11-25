@@ -4,24 +4,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+
 <FlowPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:id="mainPane"
           fx:controller="com.ufv.project.controller.CreateUserController"
           prefHeight="400.0" prefWidth="600.0">
-    <Label text="Username"/>
+
+    <Label fx:id="usernameLabel" labelFor="$usernameTextField" text="Username"/>
     <TextField fx:id="usernameTextField"/>
 
-    <Label text="Name"/>
+    <Label fx:id="nameLabel" labelFor="$nameTextField" text="Name"/>
     <TextField fx:id="nameTextField"/>
 
-    <Label text="Password"/>
+    <Label fx:id="passwordLabel" labelFor="$passwordField" text="Password"/>
     <PasswordField fx:id="passwordField"/>
 
-    <Label text="Confirm password"/>
+    <Label fx:id="confirmPasswordLabel" labelFor="$confirmPasswordField" text="Confirm password"/>
     <PasswordField fx:id="confirmPasswordField"/>
 
-    <RadioButton fx:id="professorRadioButton" selected="true" onMouseClicked="#onRadioButtonChanged" text="Professor">
+    <RadioButton fx:id="studentRadioButton" selected="true" onMouseClicked="#onRadioButtonChanged" text="Student">
         <HBox.margin>
             <Insets right="3.0"/>
         </HBox.margin>
@@ -29,7 +31,7 @@
             <ToggleGroup fx:id="group"/>
         </toggleGroup>
     </RadioButton>
-    <RadioButton fx:id="studentRadioButton" onMouseClicked="#onRadioButtonChanged" text="Student">
+    <RadioButton fx:id="professorRadioButton" onMouseClicked="#onRadioButtonChanged" text="Professor">
         <HBox.margin>
             <Insets right="30.0"/>
             <Insets bottom="10.0"/>
@@ -47,8 +49,15 @@
             <fx:reference source="group"/>
         </toggleGroup>
     </RadioButton>
+
+    <Label fx:id="emailLabel" labelFor="$emailTextField" text="Email"/>
     <TextField fx:id="emailTextField"/>
+
+    <Label fx:id="registrationLabel" labelFor="$registrationTextField" text="Registration"/>
     <TextField fx:id="registrationTextField"/>
-    <MenuButton fx:id="professorSubjects"/>
+
+    <Label fx:id="professorSubjectsLabel" labelFor="$professorSubjects" text="Subjects"/>
+    <MenuButton fx:id="professorSubjects" onMouseClicked="#onSelectSubject"/>
+
     <Button fx:id="createUserButton" text="Create"/>
 </FlowPane>
