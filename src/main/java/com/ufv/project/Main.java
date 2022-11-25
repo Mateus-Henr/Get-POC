@@ -9,14 +9,13 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class Main extends Application
 {
     @Override
     public void start(Stage stage)
     {
-        Main.loadStage("login-page-view.fxml", "Get-POC App");
+        Main.loadStage("create-user-page-view.fxml", "Get-POC App");
 
         // Set up db.
         new Thread(new Task<>()
