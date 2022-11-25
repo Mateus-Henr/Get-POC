@@ -4,7 +4,7 @@ public class DataModel
 {
     private final String username;
     private final String name;
-    private final String userType;
+    private final UserTypesEnum userType;
     private String email;
     private String registration;
 
@@ -13,7 +13,7 @@ public class DataModel
     {
         this.username = student.getUsername();
         this.name = student.getName();
-        this.userType = student.getUserType().toString();
+        this.userType = student.getUserType();
         this.email = student.getEmail();
         this.registration = student.getRegistration();
     }
@@ -23,7 +23,7 @@ public class DataModel
     {
         this.username = professor.getUsername();
         this.name = professor.getName();
-        this.userType = professor.getUserType().toString();
+        this.userType = professor.getUserType();
         this.email = professor.getEmail();
     }
 
@@ -32,7 +32,7 @@ public class DataModel
     {
         this.username = administrator.getUsername();
         this.name = administrator.getName();
-        this.userType = administrator.getUserType().toString();
+        this.userType = administrator.getUserType();
     }
 
     public String getUsername()
@@ -45,7 +45,7 @@ public class DataModel
         return name;
     }
 
-    public String getUserType()
+    public UserTypesEnum getUserType()
     {
         return userType;
     }

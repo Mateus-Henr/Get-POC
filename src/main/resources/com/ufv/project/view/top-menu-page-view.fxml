@@ -23,7 +23,7 @@
                 <Image url="@../images/user.png" />
             </ImageView>
             <Separator prefWidth="2.0" visible="false"/>
-            <Text fx:id="userRole" styleClass="user-role" />
+            <Text fx:id="userType" styleClass="user-role" />
             <Separator prefWidth="5.0" visible="false"/>
         </HBox>
     </right>

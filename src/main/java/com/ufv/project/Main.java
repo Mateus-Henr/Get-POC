@@ -5,7 +5,6 @@ import com.ufv.project.db.ConnectDB;
 import com.ufv.project.model.DataModel;
 import javafx.application.Application;
 import javafx.concurrent.Task;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -31,7 +30,7 @@ public class Main extends Application
             }
         }).start();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/ufv/project/fxml/login-page-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/ufv/project/view/login-page-view.fxml"));
 
         try
         {
@@ -53,43 +52,11 @@ public class Main extends Application
         launch();
     }
 
-    public static Object loadStage(String filename, DataModel dataModel, String stageTitle)
+    public static Object loadStageWithDataModel(String filename, DataModel dataModel, String stageTitle)
     {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/ufv/project/fxml/" + filename));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/ufv/project/view/" + filename));
 
-        Callback<Class<?>, Object> controllerFactory = type ->
-        {
-            if (type == LoginController.class)
-            {
-                return new LoginController();
-            }
-            else if (type == CreatePOCController.class)
-            {
-                return new CreatePOCController(dataModel);
-            }
-            else if (type == PersonalInfoController.class)
-            {
-                return new PersonalInfoController(dataModel);
-            }
-            else if (type == SearchPOCController.class)
-            {
-                return new SearchPOCController(dataModel);
-            }
-            else
-            {
-                try
-                {
-                    return type.newInstance(); // default behavior - invoke no-arg construtor
-                }
-                catch (Exception exc)
-                {
-                    System.err.println("Could not create controller for " + type.getName());
-                    throw new RuntimeException(exc);
-                }
-            }
-        };
-
-        fxmlLoader.setControllerFactory(controllerFactory);
+        fxmlLoader.setControllerFactory(ControllerFactory.controllerFactoryWithDataModel(dataModel));
 
         try
         {
@@ -108,6 +75,7 @@ public class Main extends Application
 
         return fxmlLoader.getController();
     }
+
 
     public static void closeCurrentStage(Pane pane)
     {

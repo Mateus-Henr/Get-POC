@@ -17,7 +17,13 @@ public class PersonalInfoController
     private Text nameText;
 
     @FXML
+    private Text emailLabel;
+
+    @FXML
     private Text emailText;
+
+    @FXML
+    private Text registrationLabel;
 
     @FXML
     private Text registrationText;
@@ -33,27 +39,35 @@ public class PersonalInfoController
     @FXML
     public void initialize()
     {
+        UserTypesEnum userType = dataModel.getUserType();
+
         usernameText.setText(dataModel.getUsername());
         nameText.setText(dataModel.getName());
-        userTypeText.setText(dataModel.getUserType());
+        userTypeText.setText(userType.toString());
 
-        if (userTypeText.getText().equalsIgnoreCase(UserTypesEnum.STUDENT.toString()))
+        if (userType == UserTypesEnum.STUDENT)
         {
             emailText.setText(dataModel.getEmail());
             registrationText.setText(dataModel.getRegistration());
+        }
+        else if (userType == UserTypesEnum.PROFESSOR)
+        {
+            emailText.setText(dataModel.getEmail());
 
+            registrationLabel.setManaged(false);
+            registrationLabel.setVisible(false);
             registrationText.setManaged(false);
             registrationText.setVisible(false);
         }
-        else if (userTypeText.getText().equalsIgnoreCase(UserTypesEnum.PROFESSOR.toString()))
+        else if (userType == UserTypesEnum.ADMIN)
         {
-            emailText.setText(dataModel.getEmail());
-        }
-        else if (userTypeText.getText().equalsIgnoreCase(UserTypesEnum.ADMIN.toString()))
-        {
+            emailLabel.setManaged(false);
+            emailLabel.setVisible(false);
             emailText.setManaged(false);
             emailText.setVisible(false);
 
+            registrationLabel.setManaged(false);
+            registrationLabel.setVisible(false);
             registrationText.setManaged(false);
             registrationText.setVisible(false);
         }

@@ -123,9 +123,6 @@ public class CreatePOCController
 //                                pdfFilepathText.textProperty()))
 //        );
 
-        // Sets values to top menu.
-        topMenuController.setUserRole(changeCase(dataModel.getUserType()));
-
         ObservableList<Professor> professors = null;
 
         try (ConnectDB connectDB = new ConnectDB())
@@ -216,7 +213,7 @@ public class CreatePOCController
 
         task.setOnSucceeded(workerStateEvent ->
         {
-            Main.loadStage("search-poc-page-view.fxml", dataModel, "Search POC");
+            Main.loadStageWithDataModel("search-poc-page-view.fxml", dataModel, "Search POC");
             Main.closeCurrentStage(mainPane);
         });
 
@@ -270,16 +267,6 @@ public class CreatePOCController
         }
 
         return items;
-    }
-
-    private String changeCase(String string)
-    {
-        if (string == null)
-        {
-            return null;
-        }
-
-        return string.charAt(0) + string.substring(1).toLowerCase();
     }
 
     private long getSelectedItemsNumber(MenuButton menuButton)

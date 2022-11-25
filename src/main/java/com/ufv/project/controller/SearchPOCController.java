@@ -76,7 +76,7 @@ public class SearchPOCController
 
         pocListView.getSelectionModel().selectedItemProperty().addListener((observableValue, poc, t1) ->
         {
-            ((AnalyzePOCController) Main.loadStage("analyze-poc-page-view.fxml", dataModel, "Analyze POC")).setData(pocListView.getSelectionModel().getSelectedItem());
+            ((AnalyzePOCController) Main.loadStageWithDataModel("analyze-poc-page-view.fxml", dataModel, "Analyze POC")).setData(pocListView.getSelectionModel().getSelectedItem());
             Main.closeCurrentStage(mainPane);
         });
     }

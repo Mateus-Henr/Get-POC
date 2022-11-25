@@ -27,11 +27,11 @@
                         <Text fx:id="userTypeText" styleClass="info-text" />
                     </HBox>
                     <HBox>
-                        <Text styleClass="info-text" text="E-mail: ">E-mail:</Text>
+                        <Text fx:id="emailLabel" styleClass="info-text" text="E-mail: ">E-mail:</Text>
                         <Text fx:id="emailText" styleClass="info-text" />
                     </HBox>
                     <HBox>
-                        <Text styleClass="info-text" text="Registration: ">Registration:</Text>
+                        <Text fx:id="registrationLabel" styleClass="info-text" text="Registration: ">Registration:</Text>
                         <Text fx:id="registrationText" styleClass="info-text" />
                     </HBox>
                     <Separator prefHeight="15.0" visible="false" />
