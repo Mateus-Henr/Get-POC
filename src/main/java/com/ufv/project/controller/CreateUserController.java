@@ -97,7 +97,7 @@ public class CreateUserController
                                                 confirmPasswordField.textProperty()))
                                 )));
 
-        // Set up page according to the selected one
+        // Set up page according to the selected one.
         onRadioButtonChanged();
     }
 
@@ -178,18 +178,9 @@ public class CreateUserController
     @FXML
     public void onSelectSubject()
     {
-        String newName = professorSubjects.getItems().stream()
+        professorSubjects.setText(professorSubjects.getItems().stream()
                 .filter(menuItem -> ((CheckMenuItem) menuItem).isSelected())
-                .map(MenuItem::getText)
-                .collect(Collectors.joining(", "));
-
-        if (newName.isEmpty())
-        {
-            professorSubjects.setText("Select");
-            return;
-        }
-
-        professorSubjects.setText(newName);
+                .count() + " subject(s) selected");
     }
 
     @FXML

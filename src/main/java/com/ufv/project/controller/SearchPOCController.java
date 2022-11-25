@@ -3,6 +3,7 @@ package com.ufv.project.controller;
 import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.POCDB;
+import com.ufv.project.model.DataModel;
 import com.ufv.project.model.POC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,6 +49,13 @@ public class SearchPOCController
     private ProgressIndicator progressIndicator;
     // ------------------------------
 
+    private final DataModel dataModel;
+
+    public SearchPOCController(DataModel dataModel)
+    {
+        this.dataModel = dataModel;
+    }
+
     @FXML
     public void initialize()
     {
@@ -68,7 +76,7 @@ public class SearchPOCController
 
         pocListView.getSelectionModel().selectedItemProperty().addListener((observableValue, poc, t1) ->
         {
-            ((AnalyzePOCController) Main.loadStage("analyze-poc-page-view.fxml", "Analyze POC")).setData(pocListView.getSelectionModel().getSelectedItem());
+            ((AnalyzePOCController) Main.loadStage("analyze-poc-page-view.fxml", dataModel, "Analyze POC")).setData(pocListView.getSelectionModel().getSelectedItem());
             Main.closeCurrentStage(mainPane);
         });
     }

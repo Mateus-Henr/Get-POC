@@ -18,24 +18,23 @@
     <GridPane fx:id="gridPane" styleClass="create-background">
         <TextField fx:id="title" promptText="Title" GridPane.rowIndex="0" GridPane.columnIndex="0"
                    styleClass="text-field"/>
-        <MenuButton fx:id="authorMenuButton" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="menu-button">
-            Author(s)
-        </MenuButton>
+        <MenuButton fx:id="authorMenuButton" text="Author(s)" onHiding="#onSelectAuthors" GridPane.rowIndex="1"
+                    GridPane.columnIndex="0"
+                    styleClass="menu-button"/>
         <ComboBox fx:id="advisorComboBox" promptText="Advisor" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <MenuButton fx:id="coAdvisorMenuButton" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="menu-button">
-            Co-Advisors
-        </MenuButton>
+        <MenuButton fx:id="coAdvisorMenuButton" text="Co-Advisors" onHiding="#onSelectCoAdvisors" GridPane.rowIndex="3"
+                    GridPane.columnIndex="0"
+                    styleClass="menu-button"/>
         <ComboBox fx:id="fieldComboBox" promptText="Field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-        <DatePicker fx:id="datePicker" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="date-picker"/>
+        <DatePicker fx:id="datePicker" editable="false" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                    styleClass="date-picker"/>
         <TextArea fx:id="keywordsTextArea" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
         <TextArea fx:id="summaryTextArea" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
-        <Button fx:id="choosePDFButton" onMouseClicked="#handlePDFChoosing" GridPane.rowIndex="0"
-                GridPane.columnIndex="2">Choose...
-        </Button>
+        <Button fx:id="choosePDFButton" text="Choose..." onMouseClicked="#handlePDFChoosing" GridPane.rowIndex="0"
+                GridPane.columnIndex="2"/>
         <Text fx:id="pdfFilepathText" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
-        <Button fx:id="addPOCButton" onMouseClicked="#handlePOCAdding" GridPane.rowIndex="2" GridPane.columnIndex="2">
-            Add POC
-        </Button>
+        <Button fx:id="addPOCButton" text="Add POC" onMouseClicked="#handlePOCAdding" GridPane.rowIndex="2"
+                GridPane.columnIndex="2"/>
     </GridPane>
     <ProgressIndicator fx:id="progressIndicator"/>
     <stylesheets>

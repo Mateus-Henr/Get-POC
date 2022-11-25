@@ -88,6 +88,8 @@ public class CreatePOCController
     private ProgressIndicator progressIndicator;
     // ------------------------------
 
+    private final DataModel dataModel;
+
     private File pdfFile;
 
     public static final String PDF_STORAGE_FOLDER = "src" + File.separator +
@@ -96,6 +98,11 @@ public class CreatePOCController
             "com" + File.separator +
             "ufv" + File.separator +
             "project" + File.separator + "pdfs" + File.separator;
+
+    public CreatePOCController(DataModel dataModel)
+    {
+        this.dataModel = dataModel;
+    }
 
     @FXML
     public void initialize()
@@ -117,12 +124,7 @@ public class CreatePOCController
 //        );
 
         // Sets values to top menu.
-        topMenuController.setUserRole(changeCase(UserDataSingleton.getInstance().getUserType()));
-
-        // Sets values according to the current user.
-        userDataController.setUsernameText(UserDataSingleton.getInstance().getUsername());
-        userDataController.setNameText(UserDataSingleton.getInstance().getName());
-        userDataController.setUserTypeText(changeCase(UserDataSingleton.getInstance().getUserType()));
+        topMenuController.setUserRole(changeCase(dataModel.getUserType()));
 
         ObservableList<Professor> professors = null;
 
@@ -147,6 +149,18 @@ public class CreatePOCController
     }
 
     @FXML
+    public void onSelectCoAdvisors()
+    {
+        coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " co-advisor(s) selected");
+    }
+
+    @FXML
+    public void onSelectAuthors()
+    {
+        coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " author(s) selected");
+    }
+
+    @FXML
     public void handlePOCAdding()
     {
         final Task<Integer> task = new Task<>()
@@ -161,7 +175,8 @@ public class CreatePOCController
                     Files.copy(Paths.get(pdfFile.getAbsolutePath()),
                             Paths.get(pdfFilepath),
                             StandardCopyOption.COPY_ATTRIBUTES,
-                            StandardCopyOption.REPLACE_EXISTING);
+                            StandardCopyOption.REPLACE_EXISTING
+                    );
 
                     List<Student> authors = new ArrayList<>();
 
@@ -184,14 +199,14 @@ public class CreatePOCController
                     }
 
                     return new POCDB(connectDB.getConnection()).insertPOC(new POC(0,
-                            title.getText(),
+                            title.getText().trim(),
                             authors,
                             datePicker.getValue(),
                             Arrays.stream(keywordsTextArea.getText().split(" ")).toList(),
-                            summaryTextArea.getText(),
+                            summaryTextArea.getText().trim(),
                             fieldComboBox.getValue(),
                             new PDF(0, pdfFilepath, LocalDate.now()),
-                            ((Professor) new UserDB(connectDB.getConnection()).queryUserByID(UserDataSingleton.getInstance().getUsername())),
+                            ((Professor) new UserDB(connectDB.getConnection()).queryUserByID(dataModel.getUsername())),
                             advisorComboBox.getValue(),
                             coAdvisors
                     ));
@@ -201,7 +216,7 @@ public class CreatePOCController
 
         task.setOnSucceeded(workerStateEvent ->
         {
-            Main.loadStage("search-poc-page-view.fxml", "Search POC");
+            Main.loadStage("search-poc-page-view.fxml", dataModel, "Search POC");
             Main.closeCurrentStage(mainPane);
         });
 
@@ -257,7 +272,7 @@ public class CreatePOCController
         return items;
     }
 
-    public String changeCase(String string)
+    private String changeCase(String string)
     {
         if (string == null)
         {
@@ -265,6 +280,14 @@ public class CreatePOCController
         }
 
         return string.charAt(0) + string.substring(1).toLowerCase();
+    }
+
+    private long getSelectedItemsNumber(MenuButton menuButton)
+    {
+        return menuButton.getItems()
+                .stream()
+                .filter(menuItem -> ((CheckMenuItem) menuItem).isSelected())
+                .count();
     }
 
 }

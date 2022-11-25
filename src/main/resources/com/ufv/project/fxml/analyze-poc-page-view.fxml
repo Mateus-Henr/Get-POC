@@ -11,27 +11,27 @@
 
     <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
 
-    <Label>Title</Label>
+    <Label labelFor="$titleText" text="Title: "/>
     <Text fx:id="titleText"/>
 
-    <Label>Author(s)</Label>
+    <Label labelFor="$authorListView" text="Author(s): "/>
     <ListView fx:id="authorListView"/>
 
-    <Label>Advisor:</Label>
+    <Label labelFor="$advisorText" text="Advisor: "/>
     <Text fx:id="advisorText"/>
 
-    <Label>Co-Advisors:</Label>
+    <Label labelFor="$coAdvisorListView" text="Co-Advisors: "/>
     <ListView fx:id="coAdvisorListView"/>
 
-    <Label>Field:</Label>
+    <Label labelFor="$fieldText" text="Field: "/>
     <Text fx:id="fieldText"/>
 
-    <Label>Date:</Label>
+    <Label labelFor="$dateText" text="Date: "/>
     <Text fx:id="dateText"/>
 
-    <Label>Keywords:</Label>
-    <ListView fx:id="keywordList" editable="true"/>
+    <Label labelFor="$keywordList" text="Keywords: "/>
+    <ListView fx:id="keywordList"/>
 
-    <Label>PDF file:</Label>
+    <Label labelFor="$pdfFilepathText" text="PDF file: "/>
     <Hyperlink fx:id="pdfFilepathText" onAction="#onDisplayPDF"/>
 </VBox>

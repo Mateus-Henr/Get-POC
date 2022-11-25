@@ -1,12 +1,12 @@
 package com.ufv.project.controller;
 
+import com.ufv.project.model.DataModel;
+import com.ufv.project.model.UserTypesEnum;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
 public class PersonalInfoController
 {
-    public Text emailText;
-    public Text registrationText;
     @FXML
     private Text usernameText;
 
@@ -16,39 +16,47 @@ public class PersonalInfoController
     @FXML
     private Text nameText;
 
+    @FXML
+    private Text emailText;
+
+    @FXML
+    private Text registrationText;
+
+    private final DataModel dataModel;
+
+    // Student
+    public PersonalInfoController(DataModel dataModel)
+    {
+        this.dataModel = dataModel;
+    }
+
+    @FXML
     public void initialize()
     {
+        usernameText.setText(dataModel.getUsername());
+        nameText.setText(dataModel.getName());
+        userTypeText.setText(dataModel.getUserType());
 
-    }
+        if (userTypeText.getText().equalsIgnoreCase(UserTypesEnum.STUDENT.toString()))
+        {
+            emailText.setText(dataModel.getEmail());
+            registrationText.setText(dataModel.getRegistration());
 
-    public String getUsernameText()
-    {
-        return usernameText.getText();
-    }
+            registrationText.setManaged(false);
+            registrationText.setVisible(false);
+        }
+        else if (userTypeText.getText().equalsIgnoreCase(UserTypesEnum.PROFESSOR.toString()))
+        {
+            emailText.setText(dataModel.getEmail());
+        }
+        else if (userTypeText.getText().equalsIgnoreCase(UserTypesEnum.ADMIN.toString()))
+        {
+            emailText.setManaged(false);
+            emailText.setVisible(false);
 
-    public void setUsernameText(String username)
-    {
-        usernameText.setText(username);
-    }
-
-    public String getUserTypeText()
-    {
-        return userTypeText.getText();
-    }
-
-    public void setUserTypeText(String userType)
-    {
-        userTypeText.setText(userType);
-    }
-
-    public String getNameText()
-    {
-        return nameText.getText();
-    }
-
-    public void setNameText(String name)
-    {
-        nameText.setText(name);
+            registrationText.setManaged(false);
+            registrationText.setVisible(false);
+        }
     }
 
 }

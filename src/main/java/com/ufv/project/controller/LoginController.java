@@ -3,8 +3,7 @@ package com.ufv.project.controller;
 import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
-import com.ufv.project.db.UserDataSingleton;
-import com.ufv.project.model.User;
+import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -100,10 +99,27 @@ public class LoginController
             passwordField.getStyleClass().removeIf(s -> s.equals(INVALID_BOX_CSS_CLASS));
             invalidText.setVisible(false);
 
-            // Sets global data
-            UserDataSingleton.getInstance().initialiseUser(usernameField.getText());
+            DataModel dataModel = null;
 
-            Main.loadStage("create-poc-page-view.fxml", "Create POC");
+            if (user.getUserType() == UserTypesEnum.STUDENT)
+            {
+                dataModel = new DataModel((Student) user);
+            }
+            else if (user.getUserType() == UserTypesEnum.PROFESSOR)
+            {
+                dataModel = new DataModel((Professor) user);
+            }
+            else if (user.getUserType() == UserTypesEnum.ADMIN)
+            {
+                dataModel = new DataModel((Administrator) user);
+            }
+
+            if (dataModel == null)
+            {
+                return;
+            }
+
+            Main.loadStage("create-poc-page-view.fxml", dataModel, "Create POC");
             Main.closeCurrentStage(mainPane);
         });
 
