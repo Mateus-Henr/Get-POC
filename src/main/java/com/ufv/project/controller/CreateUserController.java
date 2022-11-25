@@ -152,7 +152,6 @@ public class CreateUserController
             };
 
             task.setOnSucceeded(workerStateEvent -> professorSubjects.getItems().setAll(task.getValue()));
-
             task.setOnFailed(workerStateEvent -> task.getException().printStackTrace());
 
             new Thread(task).start();
@@ -179,10 +178,18 @@ public class CreateUserController
     @FXML
     public void onSelectSubject()
     {
-        professorSubjects.setText(professorSubjects.getItems().stream()
+        String newName = professorSubjects.getItems().stream()
                 .filter(menuItem -> ((CheckMenuItem) menuItem).isSelected())
                 .map(MenuItem::getText)
-                .collect(Collectors.joining(", ")));
+                .collect(Collectors.joining(", "));
+
+        if (newName.isEmpty())
+        {
+            professorSubjects.setText("Select");
+            return;
+        }
+
+        professorSubjects.setText(newName);
     }
 
     @FXML

@@ -57,7 +57,7 @@
     <TextField fx:id="registrationTextField"/>
 
     <Label fx:id="professorSubjectsLabel" labelFor="$professorSubjects" text="Subjects"/>
-    <MenuButton fx:id="professorSubjects" onMouseClicked="#onSelectSubject"/>
+    <MenuButton fx:id="professorSubjects" onHiding="#onSelectSubject" text="Select"/>
 
     <Button fx:id="createUserButton" text="Create"/>
 </FlowPane>
