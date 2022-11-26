@@ -3,11 +3,13 @@ package com.ufv.project.controller;
 import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.POCDB;
+import com.ufv.project.db.POCSearchTypesEnum;
 import com.ufv.project.model.DataModel;
 import com.ufv.project.model.POC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
@@ -19,6 +21,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.HashSet;
 
 public class SearchPOCController
 {
@@ -49,6 +52,23 @@ public class SearchPOCController
     private ProgressIndicator progressIndicator;
     // ------------------------------
 
+    // --------- Search POC ---------
+    @FXML
+    private CheckBox searchByTitleCheckBox;
+
+    @FXML
+    private CheckBox searchBySummaryCheckBox;
+
+    @FXML
+    private CheckBox searchByAuthorCheckBox;
+
+    @FXML
+    private CheckBox searchByAdvisorCheckBox;
+
+    @FXML
+    private CheckBox searchByFieldCheckBox;
+    // ------------------------------
+
     private final DataModel dataModel;
 
     public SearchPOCController(DataModel dataModel)
@@ -76,8 +96,8 @@ public class SearchPOCController
 
         pocListView.getSelectionModel().selectedItemProperty().addListener((observableValue, poc, t1) ->
         {
-            ((AnalyzePOCController) Main.loadStageWithDataModel("analyze-poc-page-view.fxml", dataModel, "Analyze POC")).setData(pocListView.getSelectionModel().getSelectedItem());
-            Main.closeCurrentStage(mainPane);
+            ((AnalyzePOCController) Main.loadStageWithDataModel("analyze-poc-page-view.fxml", dataModel, "Analyze POC"))
+                    .setData(pocListView.getSelectionModel().getSelectedItem());
         });
     }
 
@@ -86,10 +106,12 @@ public class SearchPOCController
     {
         // Load items from database.
         ObservableList<POC> pocList = null;
+        HashSet<POCSearchTypesEnum> pocSearchTypes = getSearchTypes();
 
         try (ConnectDB connectDB = new ConnectDB())
         {
-            pocList = FXCollections.observableList(new POCDB(connectDB.getConnection()).queryAllPOCs());
+            pocList = FXCollections.observableList(new POCDB(connectDB.getConnection()).queryPOCsByType(pocSearchTypes,
+                    searchPOCTextField.getText().trim()));
         }
         catch (SQLException e)
         {
@@ -109,6 +131,38 @@ public class SearchPOCController
 
         // Shows up list with the results.
         pocListView.setVisible(true);
+    }
+
+    private HashSet<POCSearchTypesEnum> getSearchTypes()
+    {
+        HashSet<POCSearchTypesEnum> searchTypes = new HashSet<>();
+
+        if (searchByTitleCheckBox.isSelected())
+        {
+            searchTypes.add(POCSearchTypesEnum.TITLE);
+        }
+
+        if (searchBySummaryCheckBox.isSelected())
+        {
+            searchTypes.add(POCSearchTypesEnum.SUMMARY);
+        }
+
+        if (searchByAuthorCheckBox.isSelected())
+        {
+            searchTypes.add(POCSearchTypesEnum.AUTHOR);
+        }
+
+        if (searchByAdvisorCheckBox.isSelected())
+        {
+            searchTypes.add(POCSearchTypesEnum.ADVISOR);
+        }
+
+        if (searchByFieldCheckBox.isSelected())
+        {
+            searchTypes.add(POCSearchTypesEnum.FIELD);
+        }
+
+        return searchTypes;
     }
 
 }

@@ -7,6 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.CheckBox?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:id="mainPane"
@@ -21,5 +22,10 @@
     </HBox>
     <ImageView fx:id="noPOCImage" visible="false"/>
     <ListView fx:id="pocListView"/>
+    <CheckBox fx:id="searchByTitleCheckBox"/>
+    <CheckBox fx:id="searchBySummaryCheckBox"/>
+    <CheckBox fx:id="searchByAuthorCheckBox"/>
+    <CheckBox fx:id="searchByAdvisorCheckBox"/>
+    <CheckBox fx:id="searchByFieldCheckBox"/>
     <ProgressIndicator fx:id="progressIndicator"/>
 </VBox>
