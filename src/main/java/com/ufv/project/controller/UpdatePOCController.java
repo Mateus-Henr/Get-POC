@@ -1,11 +1,12 @@
 package com.ufv.project.controller;
 
 import com.ufv.project.Main;
-import com.ufv.project.db.*;
+import com.ufv.project.db.ConnectDB;
+import com.ufv.project.db.POCDB;
+import com.ufv.project.db.StudentDB;
+import com.ufv.project.db.UserDB;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

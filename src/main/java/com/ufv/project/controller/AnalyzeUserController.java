@@ -2,15 +2,16 @@ package com.ufv.project.controller;
 
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.Professor_has_subjectDB;
-import com.ufv.project.model.*;
+import com.ufv.project.model.DataModel;
+import com.ufv.project.model.Subject;
+import com.ufv.project.model.UserTypesEnum;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AnalyzeUserController
 {
