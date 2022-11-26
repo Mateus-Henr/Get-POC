@@ -235,7 +235,7 @@ public class POCDB
                 studentDB.setStudentPOC(student.getUsername(), poc.getId());
             }
 
-            if (poc.getTitle() != null)
+            if (poc.getTitle() != null && !poc.getTitle().isEmpty())
             {
                 updatePOC.setString(1, poc.getTitle());
             }
@@ -253,7 +253,7 @@ public class POCDB
                 updatePOC.setString(2, Date.valueOf(oldPOC.getDefenseDate()).toString());
             }
 
-            if (poc.getSummary() != null)
+            if (poc.getSummary() != null && !poc.getSummary().isEmpty())
             {
                 updatePOC.setString(3, poc.getSummary());
             }

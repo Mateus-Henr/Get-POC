@@ -3,6 +3,7 @@ package com.ufv.project.controller;
 import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.Professor_has_subjectDB;
+import com.ufv.project.db.SubjectDB;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
@@ -89,62 +90,76 @@ public class UpdateUserController
             emailTextField.setManaged(false);
             emailLabel.setVisible(false);
             emailTextField.setVisible(false);
-
-            return;
         }
-
-        try (ConnectDB connectDB = new ConnectDB())
+        else if (userType == UserTypesEnum.STUDENT)
         {
-            if (userType == UserTypesEnum.STUDENT)
-            {
-                professorSubjectsLabel.setManaged(false);
-                professorSubjects.setManaged(false);
-                professorSubjectsLabel.setVisible(false);
-                professorSubjects.setVisible(false);
+            professorSubjectsLabel.setManaged(false);
+            professorSubjects.setManaged(false);
+            professorSubjectsLabel.setVisible(false);
+            professorSubjects.setVisible(false);
 
-                registrationLabel.setManaged(true);
-                registrationTextField.setManaged(true);
-                registrationLabel.setVisible(true);
-                registrationTextField.setVisible(true);
+            registrationLabel.setManaged(true);
+            registrationTextField.setManaged(true);
+            registrationLabel.setVisible(true);
+            registrationTextField.setVisible(true);
 
-                emailLabel.setManaged(true);
-                emailTextField.setManaged(true);
-                emailLabel.setVisible(true);
-                emailTextField.setVisible(true);
-
-                registrationTextField.setText(dataModel.getRegistration());
-                emailTextField.setText(dataModel.getEmail());
-                POCIDTextField.setText(String.valueOf(((Student) new UserDB(connectDB.getConnection())
-                        .queryUserByID(dataModel.getUsername())).getPOCID()));
-            }
-            else if (userType == UserTypesEnum.PROFESSOR)
-            {
-                registrationLabel.setManaged(false);
-                registrationTextField.setManaged(false);
-                registrationLabel.setVisible(false);
-                registrationTextField.setVisible(false);
-
-                emailLabel.setManaged(true);
-                emailTextField.setManaged(true);
-                emailLabel.setVisible(true);
-                emailTextField.setVisible(true);
-
-                professorSubjectsLabel.setManaged(true);
-                professorSubjects.setManaged(true);
-                professorSubjectsLabel.setVisible(true);
-                professorSubjects.setVisible(true);
-
-                emailTextField.setText(dataModel.getEmail());
-                professorSubjects
-                        .getItems()
-                        .setAll(initializeCheckMenuItemsFromList(new Professor_has_subjectDB(connectDB.getConnection())
-                                .querySubjectsByProfessor(dataModel.getUsername())));
-            }
+            emailLabel.setManaged(true);
+            emailTextField.setManaged(true);
+            emailLabel.setVisible(true);
+            emailTextField.setVisible(true);
         }
-        catch (SQLException e)
+        else if (userType == UserTypesEnum.PROFESSOR)
         {
-            System.err.println("ERROR: Couldn't initialize user: " + e.getMessage());
+            registrationLabel.setManaged(false);
+            registrationTextField.setManaged(false);
+            registrationLabel.setVisible(false);
+            registrationTextField.setVisible(false);
+
+            emailLabel.setManaged(true);
+            emailTextField.setManaged(true);
+            emailLabel.setVisible(true);
+            emailTextField.setVisible(true);
+
+            professorSubjectsLabel.setManaged(true);
+            professorSubjects.setManaged(true);
+            professorSubjectsLabel.setVisible(true);
+            professorSubjects.setVisible(true);
         }
+
+        new Thread(new Task<Void>()
+        {
+            @Override
+            protected Void call() throws SQLException
+            {
+                try (ConnectDB connectDB = new ConnectDB())
+                {
+                    if (userType == UserTypesEnum.STUDENT)
+                    {
+                        registrationTextField.setText(dataModel.getRegistration());
+                        emailTextField.setText(dataModel.getEmail());
+                        POCIDTextField.setText(String.valueOf(((Student) new UserDB(connectDB.getConnection())
+                                .queryUserByID(dataModel.getUsername())).getPOCID()));
+                    }
+                    else if (userType == UserTypesEnum.PROFESSOR)
+                    {
+                        emailTextField.setText(dataModel.getEmail());
+
+                        List<Subject> markedSubjects = new Professor_has_subjectDB(connectDB.getConnection()).querySubjectsByProfessor(dataModel.getUsername());
+
+                        professorSubjects.getItems().setAll(initializeCheckMenuItemsFromList(new SubjectDB(connectDB.getConnection()).querySubjects()));
+
+                        for (MenuItem menuItem : professorSubjects.getItems())
+                        {
+                            markedSubjects.stream().map(Subject::getId).forEach(integer -> ((CheckMenuItem) menuItem)
+                                    .setSelected(integer == Integer.parseInt(menuItem.getId())));
+                        }
+                    }
+
+                    return null;
+                }
+            }
+        }).start();
+
     }
 
     @FXML
@@ -159,22 +174,46 @@ public class UpdateUserController
 
                 if (dataModel.getUserType() == UserTypesEnum.STUDENT)
                 {
+                    String POCIDText = POCIDTextField.getText().trim();
+                    int POCID = 0;
+
+                    if (!POCIDText.isEmpty())
+                    {
+                        POCID = Integer.parseInt(POCIDText);
+                    }
+
                     user = new Student(usernameTextField.getText().trim(),
                             nameTextField.getText().trim(),
                             passwordField.getText(),
                             registrationTextField.getText().trim(),
-                            0,
+                            POCID,
                             emailTextField.getText().trim());
                 }
                 else if (dataModel.getUserType() == UserTypesEnum.PROFESSOR)
                 {
-                    List<Subject> subjects = new ArrayList<>();
+                    List<Integer> subjectIDList = professorSubjects
+                            .getItems()
+                            .stream()
+                            .filter(menuItem -> ((CheckMenuItem) menuItem).isSelected())
+                            .map(menuItem -> Integer.parseInt(menuItem.getId()))
+                            .toList();
 
-                    user = new Professor(usernameTextField.getText().trim(),
-                            nameTextField.getText().trim(),
-                            passwordField.getText(),
-                            emailTextField.getText().trim(),
-                            subjects);
+                    try (ConnectDB connectDB = new ConnectDB())
+                    {
+                        SubjectDB subjectDB = new SubjectDB(connectDB.getConnection());
+                        List<Subject> subjectList = new ArrayList<>();
+
+                        for (int id : subjectIDList)
+                        {
+                            subjectList.add(subjectDB.querySubjectByID(id));
+                        }
+
+                        user = new Professor(usernameTextField.getText().trim(),
+                                nameTextField.getText().trim(),
+                                passwordField.getText(),
+                                emailTextField.getText().trim(),
+                                subjectList);
+                    }
                 }
                 else if (dataModel.getUserType() == UserTypesEnum.ADMIN)
                 {

@@ -24,6 +24,9 @@
     <Label fx:id="registrationLabel" labelFor="$registrationTextField" text="Registration"/>
     <TextField fx:id="registrationTextField"/>
 
+    <Label fx:id="POCIDLabel" labelFor="$POCIDTextField" text="POC ID"/>
+    <TextField fx:id="POCIDTextField" />
+
     <Label fx:id="professorSubjectsLabel" labelFor="$professorSubjects" text="Subjects"/>
     <MenuButton fx:id="professorSubjects" onHiding="#onSelectSubject" text="Select"/>
 

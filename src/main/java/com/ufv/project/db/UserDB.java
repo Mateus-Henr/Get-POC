@@ -181,7 +181,7 @@ public class UserDB
         {
             conn.setAutoCommit(false);
 
-            if (newUser.getPassword() == null)
+            if (newUser.getPassword() == null || newUser.getPassword().isEmpty())
             {
                 updateUser.setString(1, oldUser.getPassword());
             }
@@ -190,7 +190,7 @@ public class UserDB
                 updateUser.setString(1, newUser.getPassword());
             }
 
-            if (newUser.getPassword() == null)
+            if (newUser.getPassword() == null || newUser.getPassword().isEmpty())
             {
                 updateUser.setString(2, oldUser.getPassword());
             }
@@ -199,10 +199,10 @@ public class UserDB
                 updateUser.setString(2, newUser.getPassword());
             }
 
-            if (newUser.getUserType() != oldUser.getUserType())
-            {
-                updateUser.setString(3, oldUser.getUserType().toString());
-            }
+//            if (newUser.getUserType() != oldUser.getUserType())
+//            {
+//                updateUser.setString(3, oldUser.getUserType().toString());
+//            }
 
             updateUser.setString(4, newUser.getUsername());
 
