@@ -29,6 +29,8 @@ public class UserDB
     private static final String UPDATE_USER = "UPDATE " + TABLE_USER + " SET " + COLUMN_USER_PASSWORD + " = ?, " + COLUMN_USER_NAME + " = ?, " + COLUMN_USER_TYPE + " = ? WHERE " + COLUMN_USER_ID + " = ?";
     private static final String DELETE_USER = "DELETE FROM " + TABLE_USER + " WHERE " + COLUMN_USER_ID + " = ?";
 
+    private static final String SEARCH_USERS_BY_CONTAINS_ID = "SELECT * FROM " + TABLE_USER + " WHERE " + COLUMN_USER_ID + " LIKE ?";
+
     private final Connection conn;
 
     public UserDB(Connection conn)
@@ -264,6 +266,46 @@ public class UserDB
             }
 
             return users;
+        }
+    }
+
+    public List<User> queryUsersByContainsID(String username) throws SQLException
+    {
+        try (PreparedStatement queryUsers = conn.prepareStatement(SEARCH_USERS_BY_CONTAINS_ID))
+        {
+            queryUsers.setString(COLUMN_USER_ID_INDEX, username);
+
+            try (ResultSet resultSet = queryUsers.executeQuery())
+            {
+                List<User> users = new ArrayList<>();
+
+                while (resultSet.next())
+                {
+                    UserTypesEnum userType = UserTypesEnum.valueOf(resultSet.getString(COLUMN_USER_TYPE_INDEX));
+
+                    if (userType == UserTypesEnum.PROFESSOR)
+                    {
+                        users.add(new ProfessorDB(conn).queryProfessor(resultSet.getString(COLUMN_USER_ID_INDEX),
+                                resultSet.getString(COLUMN_USER_PASSWORD_INDEX),
+                                resultSet.getString(COLUMN_USER_NAME_INDEX)));
+
+                    }
+                    else if (userType == UserTypesEnum.ADMIN)
+                    {
+                        users.add(new Administrator(resultSet.getString(COLUMN_USER_ID_INDEX),
+                                resultSet.getString(COLUMN_USER_NAME_INDEX),
+                                resultSet.getString(COLUMN_USER_PASSWORD_INDEX)));
+                    }
+                    else if (userType == UserTypesEnum.STUDENT)
+                    {
+                        users.add(new StudentDB(conn).queryStudent(resultSet.getString(COLUMN_USER_ID_INDEX),
+                                resultSet.getString(COLUMN_USER_NAME_INDEX),
+                                resultSet.getString(COLUMN_USER_PASSWORD_INDEX)));
+                    }
+                }
+
+                return users;
+            }
         }
     }
 
