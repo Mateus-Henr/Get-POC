@@ -65,7 +65,7 @@ public class StudentDB
         }
     }
 
-    protected List<Student> queryStudentsByPocID(int POCID) throws SQLException
+    public List<Student> queryStudentsByPocID(int POCID) throws SQLException
     {
         return new UserDB(conn).queryUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)
@@ -137,7 +137,7 @@ public class StudentDB
             }
             if (newStudent.getPOCID() != 0)
             {
-                oldStudent.setPoc_id(newStudent.getPOCID());
+                oldStudent.setPOCID(newStudent.getPOCID());
             }
 
             if (newStudent.getUsername() != null)

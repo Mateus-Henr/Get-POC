@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.ufv.project.controller.UpdatePOCController"
+      fx:id="mainPane"
+      styleClass="background">
+
+    <Label>Create POC</Label>
+    <GridPane fx:id="gridPane" styleClass="create-background">
+        <TextField fx:id="title" promptText="Title" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                   styleClass="text-field"/>
+        <MenuButton fx:id="authorMenuButton" text="Author(s)" onHiding="#onSelectAuthors" GridPane.rowIndex="1"
+                    GridPane.columnIndex="0"
+                    styleClass="menu-button"/>
+        <ComboBox fx:id="advisorComboBox" promptText="Advisor" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <MenuButton fx:id="coAdvisorMenuButton" text="Co-Advisors" onHiding="#onSelectCoAdvisors" GridPane.rowIndex="3"
+                    GridPane.columnIndex="0"
+                    styleClass="menu-button"/>
+        <ComboBox fx:id="fieldComboBox" promptText="Field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <DatePicker fx:id="datePicker" editable="false" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                    styleClass="date-picker"/>
+        <TextArea fx:id="keywordsTextArea" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <TextArea fx:id="summaryTextArea" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+        <Button fx:id="choosePDFButton" text="Choose..." onMouseClicked="#handlePDFChoosing" GridPane.rowIndex="0"
+                GridPane.columnIndex="2"/>
+        <Text fx:id="pdfFilepathText" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+        <Button fx:id="updatePOCButton" text="Add POC" onMouseClicked="#onUpdateButtonClicked" GridPane.rowIndex="2"
+                GridPane.columnIndex="2"/>
+    </GridPane>
+    <ProgressIndicator fx:id="progressIndicator"/>
+    <stylesheets>
+        <URL value="@../css/create-poc-page-styles.css"/>
+    </stylesheets>
+</VBox>

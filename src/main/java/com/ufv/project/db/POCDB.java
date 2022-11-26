@@ -3,7 +3,6 @@ package com.ufv.project.db;
 import com.ufv.project.model.POC;
 import com.ufv.project.model.Professor;
 import com.ufv.project.model.Student;
-import com.ufv.project.model.UserTypesEnum;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -90,7 +89,6 @@ public class POCDB
 
     public int insertPOC(POC poc) throws SQLException
     {
-
         try (PreparedStatement insertPOC = conn.prepareStatement(INSERT_POC, Statement.RETURN_GENERATED_KEYS))
         {
             conn.setAutoCommit(false);

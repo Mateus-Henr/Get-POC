@@ -273,7 +273,7 @@ public class UserDB
     {
         try (PreparedStatement queryUsers = conn.prepareStatement(SEARCH_USERS_BY_CONTAINS_ID))
         {
-            queryUsers.setString(COLUMN_USER_ID_INDEX, username);
+            queryUsers.setString(COLUMN_USER_ID_INDEX, "%" + username + "%");
 
             try (ResultSet resultSet = queryUsers.executeQuery())
             {

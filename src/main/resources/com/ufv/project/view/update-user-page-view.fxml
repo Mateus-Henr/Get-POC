@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.ufv.project.controller.UpdateUserController"
+            prefHeight="400.0" prefWidth="600.0">
+    <Label labelFor="$usernameTextField" text="Username"/>
+    <TextField fx:id="usernameTextField" editable="false"/>
+
+    <Label labelFor="$nameTextField" text="Name"/>
+    <TextField fx:id="nameTextField"/>
+
+    <Label labelFor="$passwordField" text="Password"/>
+    <PasswordField fx:id="passwordField"/>
+
+    <Label labelFor="$confirmPasswordField" text="Confirm password"/>
+    <PasswordField fx:id="confirmPasswordField"/>
+
+    <Label fx:id="emailLabel" labelFor="$emailTextField" text="Email"/>
+    <TextField fx:id="emailTextField"/>
+
+    <Label fx:id="registrationLabel" labelFor="$registrationTextField" text="Registration"/>
+    <TextField fx:id="registrationTextField"/>
+
+    <Label fx:id="professorSubjectsLabel" labelFor="$professorSubjects" text="Subjects"/>
+    <MenuButton fx:id="professorSubjects" onHiding="#onSelectSubject" text="Select"/>
+
+    <Button fx:id="updateUserButton" text="Update" onMouseClicked="#onUpdateButtonClicked"/>
+</AnchorPane>

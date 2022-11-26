@@ -1,6 +1,6 @@
 package com.ufv.project;
 
-import com.ufv.project.controller.*;
+import com.ufv.project.controller.ControllerFactory;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.model.DataModel;
 import javafx.application.Application;
@@ -9,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 

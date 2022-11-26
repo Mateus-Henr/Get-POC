@@ -34,4 +34,6 @@
 
     <Label labelFor="$pdfFilepathText" text="PDF file: "/>
     <Hyperlink fx:id="pdfFilepathText" onAction="#onDisplayPDF"/>
+
+    <fx:include source="update-poc-page-view.fxml" fx:id="updatePOC"/>
 </VBox>

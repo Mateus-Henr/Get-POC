@@ -1,12 +1,12 @@
 package com.ufv.project.controller;
 
+import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.model.User;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
@@ -21,9 +21,6 @@ public class SearchUserController
 
     @FXML
     private ListView<User> userList;
-
-    @FXML
-    private Button searchUserButton;
 
     @FXML
     private ProgressIndicator progressIndicator;
@@ -56,14 +53,32 @@ public class SearchUserController
             }
         };
 
-        task.setOnSucceeded(workerStateEvent -> userList.getItems().setAll(task.getValue()));
+        task.setOnSucceeded(workerStateEvent ->
+        {
+            userList.setManaged(true);
+            userList.setVisible(true);
+            userList.getItems().setAll(task.getValue());
+        });
 
         task.setOnFailed(workerStateEvent -> task.getException().printStackTrace());
 
         new Thread(task).start();
         progressIndicator.progressProperty().bind(task.progressProperty());
+        progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
-        searchUserButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+    }
+
+    @FXML
+    public void onSelectedRow()
+    {
+        User user = userList.getSelectionModel().getSelectedItem();
+
+        if (user == null)
+        {
+            return;
+        }
+
+        Main.loadStageWithDataModel("update-poc-page-view.fxml", null, "Update POC");
     }
 
 }

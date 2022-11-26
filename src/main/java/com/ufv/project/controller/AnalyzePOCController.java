@@ -1,5 +1,6 @@
 package com.ufv.project.controller;
 
+import com.ufv.project.model.DataModel;
 import com.ufv.project.model.POC;
 import com.ufv.project.model.Professor;
 import com.ufv.project.model.Student;
@@ -10,7 +11,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -49,7 +50,17 @@ public class AnalyzePOCController
     @FXML
     private Hyperlink pdfFilepathText;
 
+    @FXML
+    private UpdatePOCController updatePOCController;
+
     private URI pdfPath;
+
+    private final DataModel dataModel;
+
+    public AnalyzePOCController(DataModel dataModel)
+    {
+        this.dataModel = dataModel;
+    }
 
     @FXML
     public void initialize()

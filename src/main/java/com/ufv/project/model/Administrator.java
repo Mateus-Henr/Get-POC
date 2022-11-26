@@ -19,4 +19,10 @@ public class Administrator extends User
         return true;
     }
 
+    @Override
+    public String toString()
+    {
+        return getUserType().toString() + " -> " + getUsername() + " - " + getName();
+    }
+
 }

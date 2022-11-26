@@ -29,6 +29,18 @@ public class ControllerFactory
             {
                 return new TopMenuController(dataModel);
             }
+            else if (type == AnalyzePOCController.class)
+            {
+                return new AnalyzePOCController(dataModel);
+            }
+            else if (type == UpdateUserController.class)
+            {
+                return new UpdateUserController(dataModel);
+            }
+            else if (type == UpdatePOCController.class)
+            {
+                return new UpdatePOCController(dataModel);
+            }
             else
             {
                 try

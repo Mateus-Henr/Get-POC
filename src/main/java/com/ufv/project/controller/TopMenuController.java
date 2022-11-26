@@ -8,13 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
-import javax.print.URIException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOError;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Objects;
 
 public class TopMenuController
 {

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ufv.project.controller.SearchUserController"
-            prefHeight="400.0" prefWidth="600.0">
-    <Label labelFor="$searchUsernameTextField"/>
-    <TextField fx:id="searchUsernameTextField"/>
-    <Button fx:id="searchUserButton" text="Search" onMouseClicked="#onSearchUserButtonClicked"/>
-    <ProgressIndicator fx:id="progressIndicator"/>
-    <ListView fx:id="userList"/>
-</AnchorPane>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+<FlowPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.ufv.project.controller.SearchUserController"
+          prefHeight="400.0" prefWidth="600.0">
+    <Label labelFor="$searchUsernameTextField" text="Search for username"/>
+    <TextField fx:id="searchUsernameTextField" onKeyTyped="#onSearchUserButtonClicked"/>
+    <ProgressIndicator fx:id="progressIndicator" visible="false" managed="false"/>
+    <ListView fx:id="userList" visible="false" managed="false"/>
+</FlowPane>

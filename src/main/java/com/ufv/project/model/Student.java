@@ -6,12 +6,12 @@ public class Student extends User
     private String email;
     private int poc_id;
 
-    public Student(String username, String name, String password, String registration, int poc_id, String email)
+    public Student(String username, String name, String password, String registration, int POCID, String email)
     {
         super(username, name, password, UserTypesEnum.STUDENT);
         this.registration = registration;
         this.email = email;
-        this.poc_id = poc_id;
+        this.poc_id = POCID;
     }
 
     public String getRegistration()
@@ -39,7 +39,7 @@ public class Student extends User
         return poc_id;
     }
 
-    public void setPoc_id(int poc_id)
+    public void setPOCID(int poc_id)
     {
         this.poc_id = poc_id;
     }
@@ -59,7 +59,7 @@ public class Student extends User
     @Override
     public String toString()
     {
-        return registration + ' ' + getName();
+        return getUserType().toString() + " -> " + getUsername() + " - " + registration + " - " + getName();
     }
 
 }
