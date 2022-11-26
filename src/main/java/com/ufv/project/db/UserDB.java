@@ -199,11 +199,7 @@ public class UserDB
                 updateUser.setString(2, newUser.getPassword());
             }
 
-//            if (newUser.getUserType() != oldUser.getUserType())
-//            {
-//                updateUser.setString(3, oldUser.getUserType().toString());
-//            }
-
+            updateUser.setString(3, oldUser.getUserType().toString());
             updateUser.setString(4, newUser.getUsername());
 
             if (updateUser.executeUpdate() != 1)

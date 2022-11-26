@@ -90,6 +90,8 @@ public class UpdatePOCController
 
     private final DataModel dataModel;
 
+    private POC poc;
+
     private File pdfFile;
 
     public static final String PDF_STORAGE_FOLDER = "src" + File.separator +
@@ -108,28 +110,6 @@ public class UpdatePOCController
     public void initialize()
     {
 
-        ObservableList<Professor> professors = null;
-
-        try (ConnectDB connectDB = new ConnectDB())
-        {
-            POC poc = new POCDB(connectDB.getConnection()).queryPOC(1);
-
-            professors = FXCollections.observableList(poc.getCoAdvisors());
-            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new StudentDB(connectDB.getConnection()).getAllStudents()));
-            coAdvisorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(professors));
-            fieldComboBox.setItems(FXCollections.observableList(new FieldDB(connectDB.getConnection()).queryFields()));
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        // Set data for choosing.
-        if (professors != null)
-        {
-            advisorComboBox.setItems(professors);
-            coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
-        }
     }
 
     @FXML
@@ -163,12 +143,13 @@ public class UpdatePOCController
                     );
 
                     List<Student> authors = new ArrayList<>();
+                    UserDB userDB = new UserDB(connectDB.getConnection());
 
                     for (MenuItem item : authorMenuButton.getItems())
                     {
                         if (((CheckMenuItem) item).isSelected())
                         {
-                            authors.add((Student) new UserDB(connectDB.getConnection()).queryUserByID(item.getId()));
+                            authors.add((Student) userDB.queryUserByID(item.getId()));
                         }
                     }
 
@@ -178,7 +159,7 @@ public class UpdatePOCController
                     {
                         if (((CheckMenuItem) item).isSelected())
                         {
-                            coAdvisors.add((Professor) new UserDB(connectDB.getConnection()).queryUserByID(item.getId()));
+                            coAdvisors.add((Professor) userDB.queryUserByID(item.getId()));
                         }
                     }
 
@@ -254,6 +235,27 @@ public class UpdatePOCController
         }
 
         return items;
+    }
+
+    public void setPOCData(POC poc)
+    {
+        this.poc = poc;
+
+        title.setText(poc.getTitle());
+        datePicker.setValue(poc.getDefenseDate());
+        summaryTextArea.setText(poc.getSummary());
+
+        try (ConnectDB connectDB = new ConnectDB())
+        {
+            List<Student> students = new StudentDB(connectDB.getConnection()).getAllStudents();
+            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(poc.getAuthors()));
+            coAdvisorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(poc.getCoAdvisors()));
+            fieldComboBox.getItems().setAll();
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Couldn't get data to update POC: " + e.getMessage());
+        }
     }
 
     private long getSelectedItemsNumber(MenuButton menuButton)

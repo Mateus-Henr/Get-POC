@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ufv.project.controller.UpdateUserController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:id="mainPane"
+      fx:controller="com.ufv.project.controller.AnalyzeUserController"
+      prefHeight="400.0" prefWidth="600.0">
+
+    <Label labelFor="$usernameTextField" text="Username"/>
+    <TextField fx:id="usernameTextField" editable="false"/>
+
+    <Label labelFor="$nameTextField" text="Name"/>
+    <TextField fx:id="nameTextField"/>
+
+    <Label fx:id="emailLabel" labelFor="$emailTextField" text="Email"/>
+    <TextField fx:id="emailTextField"/>
+
+    <Label fx:id="registrationLabel" labelFor="$registrationTextField" text="Registration"/>
+    <TextField fx:id="registrationTextField"/>
+
+    <Label fx:id="professorSubjectsLabel" labelFor="$professorSubjectListView" text="Subjects"/>
+    <ListView fx:id="professorSubjectListView" editable="false"/>
+
     <fx:include source="update-user-page-view.fxml" fx:id="updateUser"/>
-</AnchorPane>
+</VBox>

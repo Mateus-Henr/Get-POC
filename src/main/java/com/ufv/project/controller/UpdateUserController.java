@@ -165,6 +165,12 @@ public class UpdateUserController
     @FXML
     public void onUpdateButtonClicked()
     {
+        if (!arePasswordsEqual())
+        {
+            // Display error style on password input boxes.
+            return;
+        }
+
         final Task<User> task = new Task<>()
         {
             @Override
@@ -250,6 +256,11 @@ public class UpdateUserController
         professorSubjects.setText(professorSubjects.getItems().stream()
                 .filter(menuItem -> ((CheckMenuItem) menuItem).isSelected())
                 .count() + " subject(s) selected");
+    }
+
+    public boolean arePasswordsEqual()
+    {
+        return passwordField.getText().equals(confirmPasswordField.getText());
     }
 
     public List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList)

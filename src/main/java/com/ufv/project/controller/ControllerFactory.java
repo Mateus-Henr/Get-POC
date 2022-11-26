@@ -41,6 +41,10 @@ public class ControllerFactory
             {
                 return new UpdatePOCController(dataModel);
             }
+            else if (type == AnalyzeUserController.class)
+            {
+                return new AnalyzeUserController(dataModel);
+            }
             else
             {
                 try
