@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
-<?import java.net.URL?>
-<BorderPane styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:id="mainPane"
-            fx:controller="com.ufv.project.controller.TopMenuController">
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.TopMenuController">
     <left>
         <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER_LEFT">
+         <MenuButton mnemonicParsing="false" styleClass="menu-button">
+             <graphic>
+                 <ImageView fitWidth="15.0" fitHeight="15.0">
+                     <Image url="@../images/menu.png" />
+                 </ImageView>
+             </graphic>
+           <items>
+             <MenuItem mnemonicParsing="false" text="Search POC" onAction="#onSearchPOCButtonAction"/>
+             <MenuItem mnemonicParsing="false" text="Create POC" onAction="#onCreatePOCButtonAction"/>
+           </items>
+         </MenuButton>
             <Separator prefWidth="5.0" visible="false"/>
-            <ImageView fx:id="pocIcon" fitHeight="20.0" fitWidth="67">
+            <ImageView fx:id="pocIcon" fitHeight="15.0" fitWidth="50">
                 <Image url="@../images/getpoc.png" />
             </ImageView>
+         <BorderPane.margin>
+            <Insets left="5.0" />
+         </BorderPane.margin>
         </HBox>
     </left>
     <right>
@@ -22,9 +35,11 @@
             <ImageView fx:id="userIcon" fitHeight="20.0" fitWidth="20.0" layoutY="5.0">
                 <Image url="@../images/user.png" />
             </ImageView>
-            <Separator prefWidth="2.0" visible="false"/>
+            <Separator prefWidth="2.0" visible="false" />
             <Text fx:id="userTypeText" styleClass="user-role" />
-            <Separator prefWidth="5.0" visible="false"/>
+         <BorderPane.margin>
+            <Insets right="5.0" />
+         </BorderPane.margin>
         </HBox>
     </right>
     <stylesheets>

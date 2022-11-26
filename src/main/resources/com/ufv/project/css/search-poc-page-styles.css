@@ -1,0 +1,10 @@
+.background {
+    -fx-pref-height: 400.0;
+    -fx-pref-width: 600.0;
+    -fx-background-color: #FFECD1;
+}
+.search {
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+    -fx-prompt-text-fill: #FFFFFF;
+}

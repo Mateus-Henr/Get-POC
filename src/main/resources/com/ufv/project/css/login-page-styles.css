@@ -2,7 +2,7 @@
     font-family: 'Ubuntu Mono Bold';
     src: url('../fonts/UbuntuMono-B.ttf');
 }
-.background{
+.background {
     -fx-max-height: 400.0;
     -fx-max-width: 655.0;
     -fx-min-height: 400.0;
@@ -11,7 +11,7 @@
     -fx-pref-width: 655.0;
     -fx-background-color: #001524;
 }
-.username-password-fields{
+.username-password-fields {
     -fx-background-color: #001524;
     -fx-border-width: 2.0;
     -fx-border-color: #FFECD1;
@@ -23,7 +23,7 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 13.0;
 }
-.username-password-fields-invalid{
+.username-password-fields-invalid {
     -fx-background-color: #001524;
     -fx-border-width: 2.0;
     -fx-border-color: #E92927;
@@ -35,7 +35,7 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 13.0;
 }
-.login-button{
+.login-button {
     -fx-background-color: #FFECD1;
     -fx-fill: #001524;
     -fx-background-radius: 19.0;
@@ -44,7 +44,7 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-.login-button-clicked{
+.login-button-clicked {
     -fx-background-color: #797B76;
     -fx-fill: #001524;
     -fx-background-radius: 20.0;
@@ -53,7 +53,7 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-.invalid-text{
+.invalid-text {
     -fx-fill: #E92927;
     -fx-alignment: center;
     -fx-stroke-type: outside;
@@ -61,6 +61,9 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-.division-line{
+.division-line {
     -fx-stroke: #FFECD1;
+}
+.progress-indicator {
+    -fx-progress-color: #FF7D00;
 }
