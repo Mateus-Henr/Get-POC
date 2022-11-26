@@ -190,13 +190,13 @@ public class UserDB
                 updateUser.setString(1, newUser.getPassword());
             }
 
-            if (newUser.getPassword() == null || newUser.getPassword().isEmpty())
+            if (newUser.getName() == null || newUser.getName().isEmpty())
             {
-                updateUser.setString(2, oldUser.getPassword());
+                updateUser.setString(2, oldUser.getName());
             }
             else
             {
-                updateUser.setString(2, newUser.getPassword());
+                updateUser.setString(2, newUser.getName());
             }
 
             updateUser.setString(3, oldUser.getUserType().toString());

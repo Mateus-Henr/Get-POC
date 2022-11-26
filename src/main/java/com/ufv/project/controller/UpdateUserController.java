@@ -46,6 +46,9 @@ public class UpdateUserController
     private TextField registrationTextField;
 
     @FXML
+    private Label POCIDLabel;
+
+    @FXML
     private TextField POCIDTextField;
 
     @FXML
@@ -76,6 +79,11 @@ public class UpdateUserController
 
         if (userType == UserTypesEnum.ADMIN)
         {
+            POCIDLabel.setManaged(false);
+            POCIDTextField.setManaged(false);
+            POCIDLabel.setVisible(false);
+            POCIDTextField.setVisible(false);
+
             professorSubjectsLabel.setManaged(false);
             professorSubjects.setManaged(false);
             professorSubjectsLabel.setVisible(false);
@@ -93,6 +101,11 @@ public class UpdateUserController
         }
         else if (userType == UserTypesEnum.STUDENT)
         {
+            POCIDLabel.setManaged(true);
+            POCIDTextField.setManaged(true);
+            POCIDLabel.setVisible(true);
+            POCIDTextField.setVisible(true);
+
             professorSubjectsLabel.setManaged(false);
             professorSubjects.setManaged(false);
             professorSubjectsLabel.setVisible(false);
@@ -110,6 +123,11 @@ public class UpdateUserController
         }
         else if (userType == UserTypesEnum.PROFESSOR)
         {
+            POCIDLabel.setManaged(false);
+            POCIDTextField.setManaged(false);
+            POCIDLabel.setVisible(false);
+            POCIDTextField.setVisible(false);
+
             registrationLabel.setManaged(false);
             registrationTextField.setManaged(false);
             registrationLabel.setVisible(false);
@@ -126,7 +144,7 @@ public class UpdateUserController
             professorSubjects.setVisible(true);
         }
 
-        new Thread(new Task<Void>()
+        final Task<Void> task = new Task<Void>()
         {
             @Override
             protected Void call() throws SQLException
@@ -158,8 +176,11 @@ public class UpdateUserController
                     return null;
                 }
             }
-        }).start();
+        };
 
+        task.setOnSucceeded(workerStateEvent -> onSelectSubject());
+
+        new Thread(task).start();
     }
 
     @FXML

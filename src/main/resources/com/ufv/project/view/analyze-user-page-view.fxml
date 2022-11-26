@@ -7,6 +7,7 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Separator?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:id="mainPane"
@@ -26,7 +27,9 @@
     <TextField fx:id="registrationTextField"/>
 
     <Label fx:id="professorSubjectsLabel" labelFor="$professorSubjectListView" text="Subjects"/>
-    <ListView fx:id="professorSubjectListView" editable="false"/>
+    <ListView fx:id="professorSubjectListView"/>
+
+    <Separator prefWidth="20.0" visible="false" />
 
     <fx:include source="update-user-page-view.fxml" fx:id="updateUser"/>
 </VBox>
