@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ufv.project.controller.UpdateUserController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.ufv.project.controller.UpdateUserController"
+      prefHeight="400.0" prefWidth="600.0">
+    <Label text="Update User"/>
+
     <Label labelFor="$usernameTextField" text="Username"/>
     <TextField fx:id="usernameTextField" editable="false"/>
 
@@ -25,10 +28,12 @@
     <TextField fx:id="registrationTextField"/>
 
     <Label fx:id="POCIDLabel" labelFor="$POCIDTextField" text="POC ID"/>
-    <TextField fx:id="POCIDTextField" />
+    <TextField fx:id="POCIDTextField"/>
 
     <Label fx:id="professorSubjectsLabel" labelFor="$professorSubjects" text="Subjects"/>
     <MenuButton fx:id="professorSubjects" onHiding="#onSelectSubject" text="Select"/>
 
     <Button fx:id="updateUserButton" text="Update" onMouseClicked="#onUpdateButtonClicked"/>
-</AnchorPane>
+
+    <ProgressIndicator fx:id="progressIndicator"/>
+</VBox>

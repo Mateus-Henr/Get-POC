@@ -176,12 +176,13 @@ public class CreatePOCController
                     );
 
                     List<Student> authors = new ArrayList<>();
+                    UserDB userDB = new UserDB(connectDB.getConnection());
 
                     for (MenuItem item : authorMenuButton.getItems())
                     {
                         if (((CheckMenuItem) item).isSelected())
                         {
-                            authors.add((Student) new UserDB(connectDB.getConnection()).queryUserByID(item.getId()));
+                            authors.add((Student) userDB.queryUserByID(item.getId()));
                         }
                     }
 
@@ -191,7 +192,7 @@ public class CreatePOCController
                     {
                         if (((CheckMenuItem) item).isSelected())
                         {
-                            coAdvisors.add((Professor) new UserDB(connectDB.getConnection()).queryUserByID(item.getId()));
+                            coAdvisors.add((Professor) userDB.queryUserByID(item.getId()));
                         }
                     }
 
