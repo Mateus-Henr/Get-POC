@@ -4,16 +4,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:id="mainPane"
       fx:controller="com.ufv.project.controller.SearchPOCController"
-      prefHeight="400.0" prefWidth="600.0">
+      styleClass="background">
 
     <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
 
     <HBox>
-        <TextField fx:id="searchPOCTextField" promptText="POC"/>
+        <TextField fx:id="searchPOCTextField" promptText="Search" styleClass="search"/>
         <Button onMouseClicked="#handlePOCSearching">Search</Button>
     </HBox>
     <ImageView fx:id="noPOCImage" visible="false"/>
@@ -32,4 +33,7 @@
     <Label labelFor="$searchByFieldCheckBox" text="Field"/>
     <CheckBox fx:id="searchByFieldCheckBox"/>
     <ProgressIndicator fx:id="progressIndicator"/>
+    <stylesheets>
+        <URL value="@../css/search-poc-page-styles.css" />
+    </stylesheets>
 </VBox>

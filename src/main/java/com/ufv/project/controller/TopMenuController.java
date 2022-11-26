@@ -2,6 +2,7 @@ package com.ufv.project.controller;
 
 import com.ufv.project.model.DataModel;
 import com.ufv.project.model.UserTypesEnum;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -70,4 +71,9 @@ public class TopMenuController
         }
     }
 
+    public void onSearchPOCButtonAction(ActionEvent actionEvent) {
+    }
+
+    public void onCreatePOCButtonAction(ActionEvent actionEvent) {
+    }
 }
