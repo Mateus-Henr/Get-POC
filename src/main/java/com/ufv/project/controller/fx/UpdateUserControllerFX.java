@@ -204,7 +204,7 @@ public class UpdateUserControllerFX {
                         POCID = Integer.parseInt(POCIDText);
                     }
 
-                    user = new Student(usernameTextField.getText().trim(),
+                    return new Student(usernameTextField.getText().trim(),
                             nameTextField.getText().trim(),
                             passwordField.getText(),
                             registrationTextField.getText().trim(),
@@ -226,7 +226,7 @@ public class UpdateUserControllerFX {
                             subjectList.add(subjectDB.querySubjectByID(id));
                         }
 
-                        user = new Professor(usernameTextField.getText().trim(),
+                        return new Professor(usernameTextField.getText().trim(),
                                 nameTextField.getText().trim(),
                                 passwordField.getText(),
                                 emailTextField.getText().trim(),
@@ -246,10 +246,35 @@ public class UpdateUserControllerFX {
 
         task.setOnFailed(workerStateEvent -> task.getException().printStackTrace());
 
-        new Thread(task).start();
-        progressIndicator.progressProperty().bind(task.progressProperty());
-        progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
-        updateUserButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        Thread fetchDataThread = new Thread(task);
+
+        fetchDataThread.start();
+
+        try {
+            fetchDataThread.join();
+        }
+        catch (InterruptedException e)
+        {
+            System.err.println("ERROR: Couldn't get data from database: " + e.getMessage());
+        }
+
+        final Task<User> updateTask = new Task<>()
+        {
+            @Override
+            protected User call() throws SQLException
+            {
+                try (ConnectDB connectDB = new ConnectDB())
+                {
+                    return new UserDB(connectDB.getConnection()).updateUser(task.getValue());
+                }
+            }
+        };
+
+        new Thread(updateTask).start();
+        progressIndicator.progressProperty().bind(updateTask.progressProperty());
+        progressIndicator.visibleProperty().bind(Bindings.when(updateTask.runningProperty()).then(true).otherwise(false));
+        progressIndicator.managedProperty().bind(Bindings.when(updateTask.runningProperty()).then(true).otherwise(false));
+        updateUserButton.disableProperty().bind(Bindings.when(updateTask.runningProperty()).then(true).otherwise(false));
     }
 
     @FXML

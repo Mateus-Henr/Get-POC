@@ -39,7 +39,7 @@ public class CreatePOCControllerFX
 
     // ---------- Top Menu ----------
     @FXML
-    private TopMenuController topMenuController;
+    private TopMenuController topMenuControllerFX;
     // ------------------------------
 
     // ---- Personal information ----

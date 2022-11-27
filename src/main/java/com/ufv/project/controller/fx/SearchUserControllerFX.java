@@ -86,6 +86,10 @@ public class SearchUserControllerFX
             return;
         }
 
+        UserTypesEnum userType = user.getUserType();
+
+        DataModel dataModel = null;
+
         if (userType == UserTypesEnum.STUDENT)
         {
             dataModel = new DataModel((Student) user);

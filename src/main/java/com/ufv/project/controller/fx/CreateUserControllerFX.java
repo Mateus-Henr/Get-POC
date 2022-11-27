@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.regex.*;
+
 public class CreateUserControllerFX
 {
     @FXML
@@ -44,6 +46,12 @@ public class CreateUserControllerFX
 
     @FXML
     private TextField registrationTextField;
+
+    @FXML
+    private Label POCIDLabel;
+
+    @FXML
+    private TextField POCIDTextField;
 
     @FXML
     private Label professorSubjectsLabel;
@@ -89,11 +97,18 @@ public class CreateUserControllerFX
         onRadioButtonChanged();
     }
 
+
+
     @FXML
     public void onRadioButtonChanged()
     {
         if (studentRadioButton.isSelected())
         {
+            POCIDLabel.setManaged(true);
+            POCIDLabel.setManaged(true);
+            POCIDTextField.setVisible(true);
+            POCIDTextField.setVisible(true);
+
             professorSubjectsLabel.setManaged(false);
             professorSubjects.setManaged(false);
             professorSubjectsLabel.setVisible(false);
@@ -111,6 +126,11 @@ public class CreateUserControllerFX
         }
         else if (professorRadioButton.isSelected())
         {
+            POCIDLabel.setManaged(false);
+            POCIDLabel.setManaged(false);
+            POCIDTextField.setVisible(false);
+            POCIDTextField.setVisible(false);
+
             registrationLabel.setManaged(false);
             registrationTextField.setManaged(false);
             registrationLabel.setVisible(false);
@@ -146,6 +166,11 @@ public class CreateUserControllerFX
         }
         else if (adminRadioButton.isSelected())
         {
+            POCIDLabel.setManaged(false);
+            POCIDLabel.setManaged(false);
+            POCIDTextField.setVisible(false);
+            POCIDTextField.setVisible(false);
+
             professorSubjectsLabel.setManaged(false);
             professorSubjects.setManaged(false);
             professorSubjectsLabel.setVisible(false);
@@ -174,11 +199,14 @@ public class CreateUserControllerFX
     @FXML
     public void onCreateButtonPressed()
     {
-        if (!arePasswordsEqual())
+       if (!CreateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()) &&
+               !CreateUserController.checkEmail(emailTextField.getText()) &&
+               !CreateUserController.checkRegistration(registrationTextField.getText()))
         {
             // Display error style on password input boxes.
             return;
         }
+
 
         final Task<String> task = new Task<>()
         {
@@ -239,11 +267,6 @@ public class CreateUserControllerFX
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         createUserButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
-    }
-
-    public boolean arePasswordsEqual()
-    {
-        return passwordField.getText().equals(confirmPasswordField.getText());
     }
 
     public List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList)

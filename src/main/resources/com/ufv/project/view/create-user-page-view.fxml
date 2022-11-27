@@ -54,11 +54,15 @@
     <Label fx:id="emailLabel" labelFor="$emailTextField" text="Email"/>
     <TextField fx:id="emailTextField"/>
 
+    <Label fx:id="POCIDLabel" labelFor="$POCIDTextField" text="POC ID"/>
+    <TextField fx:id="POCIDTextField"/>
+
     <Label fx:id="registrationLabel" labelFor="$registrationTextField" text="Registration"/>
     <TextField fx:id="registrationTextField"/>
 
     <Label fx:id="professorSubjectsLabel" labelFor="$professorSubjects" text="Subjects"/>
     <MenuButton fx:id="professorSubjects" onHiding="#onSelectSubject" text="Select"/>
 
-    <Button fx:id="createUserButton" text="Create"/>
+    <Button fx:id="createUserButton" text="Create" onMouseClicked="#onCreateButtonPressed"/>
+    <ProgressIndicator fx:id="progressIndicator"/>
 </FlowPane>

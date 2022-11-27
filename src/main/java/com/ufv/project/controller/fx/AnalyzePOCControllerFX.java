@@ -20,7 +20,7 @@ public class AnalyzePOCControllerFX
 {
     // ---------- Top Menu ----------
     @FXML
-    private TopMenuController topMenuController;
+    private TopMenuController topMenuControllerFX;
     // ------------------------------
 
     @FXML

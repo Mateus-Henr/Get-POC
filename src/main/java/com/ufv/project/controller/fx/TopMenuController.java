@@ -1,5 +1,6 @@
 package com.ufv.project.controller.fx;
 
+import com.ufv.project.Main;
 import com.ufv.project.model.DataModel;
 import com.ufv.project.model.UserTypesEnum;
 import javafx.event.ActionEvent;
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class TopMenuController
 {
     @FXML
+
     private BorderPane mainPane;
 
     @FXML
@@ -71,10 +73,16 @@ public class TopMenuController
         }
     }
 
-    public void onSearchPOCButtonAction(ActionEvent actionEvent) {
+    public void onSearchPOCButtonAction()
+    {
+        Main.loadStageWithDataModel("search-poc-page-view.fxml", dataModel, "Search POC");
+        Main.closeCurrentStage(mainPane);
     }
 
-    public void onCreatePOCButtonAction(ActionEvent actionEvent) {
+    public void onCreatePOCButtonAction()
+    {
+        Main.loadStageWithDataModel("create-poc-page-view.fxml", dataModel, "Search POC");
+        Main.closeCurrentStage(mainPane);
     }
 
     public void onLogoutButtonAction()

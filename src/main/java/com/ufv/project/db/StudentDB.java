@@ -3,10 +3,7 @@ package com.ufv.project.db;
 import com.ufv.project.model.Student;
 import com.ufv.project.model.UserTypesEnum;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class StudentDB
@@ -80,7 +77,16 @@ public class StudentDB
         {
             insertStudent.setString(COLUMN_STUDENT_EMAIL_INDEX, student.getEmail());
             insertStudent.setString(COLUMN_STUDENT_REGISTRATION_INDEX, student.getRegistration());
-            insertStudent.setInt(COLUMN_STUDENT_POC_INDEX, student.getPOCID());
+
+            if (student.getPOCID() == 0)
+            {
+                insertStudent.setNull(COLUMN_STUDENT_POC_INDEX, Types.INTEGER);
+            }
+            else
+            {
+                insertStudent.setInt(COLUMN_STUDENT_POC_INDEX, student.getPOCID());
+            }
+
             insertStudent.setString(COLUMN_USER_STUDENT_ID_INDEX, student.getUsername());
 
             if (insertStudent.executeUpdate() != 1)

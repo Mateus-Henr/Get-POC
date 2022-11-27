@@ -35,7 +35,7 @@ public class SearchPOCControllerFX
     private BorderPane topMenu;
 
     @FXML
-    private TopMenuController topMenuController;
+    private TopMenuController topMenuControllerFX;
     // ------------------------------
 
     // --------- Search POC ---------
