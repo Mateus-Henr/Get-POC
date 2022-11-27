@@ -10,14 +10,19 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpdateUserControllerFX {
+public class UpdateUserControllerFX
+{
     @FXML
-    private FlowPane mainPane;
+    private VBox mainPane;
+
+    @FXML
+    private VBox personalInfo;
 
     @FXML
     private TextField usernameTextField;
@@ -71,14 +76,15 @@ public class UpdateUserControllerFX {
         this.dataModel = dataModel;
     }
 
-
-    public void setData(User user)
+    @FXML
+    public void initialize()
     {
-        usernameTextField.setText(user.getUsername());
-        nameTextField.setText(user.getName());
-        UserTypesEnum userType = user.getUserType();
+        usernameTextField.setText(dataModel.getUsername());
+        nameTextField.setText(dataModel.getName());
+        UserTypesEnum userType = dataModel.getUserType();
 
-        if (userType == UserTypesEnum.ADMIN) {
+        if (userType == UserTypesEnum.ADMIN)
+        {
             POCIDLabel.setManaged(false);
             POCIDTextField.setManaged(false);
             POCIDLabel.setVisible(false);
@@ -144,11 +150,15 @@ public class UpdateUserControllerFX {
             professorSubjects.setVisible(true);
         }
 
-        final Task<Void> task = new Task<Void>() {
+        final Task<Void> task = new Task<Void>()
+        {
             @Override
-            protected Void call() throws SQLException {
+            protected Void call() throws SQLException
+            {
                 try (ConnectDB connectDB = new ConnectDB())
                 {
+                    User user = new UserDB(connectDB.getConnection()).queryUserByID(dataModel.getUsername());
+
                     if (userType == UserTypesEnum.STUDENT)
                     {
                         Student student = (Student) user;
@@ -193,24 +203,32 @@ public class UpdateUserControllerFX {
             return;
         }
 
-        final Task<User> task = new Task<>() {
+        final Task<User> task = new Task<>()
+        {
             @Override
-            protected User call() throws Exception {
-                if (dataModel.getUserType() == UserTypesEnum.STUDENT) {
+            protected User call() throws Exception
+            {
+                User user = null;
+
+                if (dataModel.getUserType() == UserTypesEnum.STUDENT)
+                {
                     String POCIDText = POCIDTextField.getText().trim();
                     int POCID = 0;
 
-                    if (!POCIDText.isEmpty()) {
+                    if (!POCIDText.isEmpty())
+                    {
                         POCID = Integer.parseInt(POCIDText);
                     }
 
-                    return new Student(usernameTextField.getText().trim(),
+                    user = new Student(usernameTextField.getText().trim(),
                             nameTextField.getText().trim(),
                             passwordField.getText(),
                             registrationTextField.getText().trim(),
                             POCID,
                             emailTextField.getText().trim());
-                } else if (dataModel.getUserType() == UserTypesEnum.PROFESSOR) {
+                }
+                else if (dataModel.getUserType() == UserTypesEnum.PROFESSOR)
+                {
                     List<Integer> subjectIDList = professorSubjects
                             .getItems()
                             .stream()
@@ -218,63 +236,72 @@ public class UpdateUserControllerFX {
                             .map(menuItem -> Integer.parseInt(menuItem.getId()))
                             .toList();
 
-                    try (ConnectDB connectDB = new ConnectDB()) {
+                    try (ConnectDB connectDB = new ConnectDB())
+                    {
                         SubjectDB subjectDB = new SubjectDB(connectDB.getConnection());
                         List<Subject> subjectList = new ArrayList<>();
 
-                        for (int id : subjectIDList) {
+                        for (int id : subjectIDList)
+                        {
                             subjectList.add(subjectDB.querySubjectByID(id));
                         }
 
-                        return new Professor(usernameTextField.getText().trim(),
+                        user = new Professor(usernameTextField.getText().trim(),
                                 nameTextField.getText().trim(),
                                 passwordField.getText(),
                                 emailTextField.getText().trim(),
                                 subjectList);
                     }
-                } else if (dataModel.getUserType() == UserTypesEnum.ADMIN) {
-                    return new Administrator(usernameTextField.getText().trim(),
+                }
+                else if (dataModel.getUserType() == UserTypesEnum.ADMIN)
+                {
+                    user = new Administrator(usernameTextField.getText().trim(),
                             nameTextField.getText().trim(),
                             passwordField.getText());
                 }
 
-                throw new IllegalAccessException("ERROR: No role was assigned.");
-            }
-        };
+                if (user == null)
+                {
+                    throw new IllegalAccessException("ERROR: No role was assigned.");
+                }
 
-        task.setOnSucceeded(workerStateEvent -> Main.closeCurrentStage(mainPane));
-
-        task.setOnFailed(workerStateEvent -> task.getException().printStackTrace());
-
-        Thread fetchDataThread = new Thread(task);
-
-        fetchDataThread.start();
-
-        try {
-            fetchDataThread.join();
-        }
-        catch (InterruptedException e)
-        {
-            System.err.println("ERROR: Couldn't get data from database: " + e.getMessage());
-        }
-
-        final Task<User> updateTask = new Task<>()
-        {
-            @Override
-            protected User call() throws SQLException
-            {
                 try (ConnectDB connectDB = new ConnectDB())
                 {
-                    return new UserDB(connectDB.getConnection()).updateUser(task.getValue());
+                    return new UserDB(connectDB.getConnection()).updateUser(user);
                 }
             }
         };
 
-        new Thread(updateTask).start();
-        progressIndicator.progressProperty().bind(updateTask.progressProperty());
-        progressIndicator.visibleProperty().bind(Bindings.when(updateTask.runningProperty()).then(true).otherwise(false));
-        progressIndicator.managedProperty().bind(Bindings.when(updateTask.runningProperty()).then(true).otherwise(false));
-        updateUserButton.disableProperty().bind(Bindings.when(updateTask.runningProperty()).then(true).otherwise(false));
+        task.setOnSucceeded(workerStateEvent ->
+        {
+            Main.closeCurrentStage(mainPane);
+
+            UserTypesEnum userType = dataModel.getUserType();
+            DataModel dataModel = null;
+
+            if (userType == UserTypesEnum.ADMIN)
+            {
+                dataModel = new DataModel((Administrator) task.getValue());
+            }
+            else if (userType == UserTypesEnum.STUDENT)
+            {
+                dataModel = new DataModel((Student) task.getValue());
+            }
+            else if (userType == UserTypesEnum.PROFESSOR)
+            {
+                dataModel = new DataModel((Professor) task.getValue());
+            }
+
+            Main.loadStageWithDataModel("update-user-page-view.fxml", dataModel, "Update User");
+        });
+
+        task.setOnFailed(workerStateEvent -> task.getException().printStackTrace());
+
+        new Thread(task).start();
+        progressIndicator.progressProperty().bind(task.progressProperty());
+        progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        updateUserButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
     }
 
     @FXML
@@ -285,14 +312,17 @@ public class UpdateUserControllerFX {
                 .count() + " subject(s) selected");
     }
 
-    public boolean arePasswordsEqual() {
+    public boolean arePasswordsEqual()
+    {
         return passwordField.getText().equals(confirmPasswordField.getText());
     }
 
-    public List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList) {
+    public List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList)
+    {
         List<MenuItem> items = new ArrayList<>();
 
-        for (Subject subject : subjectList) {
+        for (Subject subject : subjectList)
+        {
             CheckMenuItem menuItem = new CheckMenuItem();
 
             menuItem.setId(String.valueOf(subject.getId()));

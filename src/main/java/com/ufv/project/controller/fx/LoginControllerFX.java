@@ -126,6 +126,7 @@ public class LoginControllerFX
         new Thread(task).start();
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         loginButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
     }
 

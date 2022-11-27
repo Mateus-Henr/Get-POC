@@ -266,6 +266,7 @@ public class CreateUserControllerFX
         new Thread(task).start();
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         createUserButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
     }
 

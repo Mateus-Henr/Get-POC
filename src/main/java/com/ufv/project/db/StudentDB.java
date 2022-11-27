@@ -161,7 +161,7 @@ public class StudentDB
                 throw new SQLException("ERROR: Couldn't update student with username: '" + newStudent.getUsername() + "'.");
             }
 
-            return oldStudent;
+            return newStudent;
         }
     }
 

@@ -5,6 +5,7 @@ import com.ufv.project.model.DataModel;
 import com.ufv.project.model.UserTypesEnum;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -17,7 +18,6 @@ import java.io.IOException;
 public class TopMenuController
 {
     @FXML
-
     private BorderPane mainPane;
 
     @FXML
@@ -25,6 +25,15 @@ public class TopMenuController
 
     @FXML
     private Text userTypeText;
+
+    @FXML
+    private MenuItem createPOCMenuItem;
+
+    @FXML
+    private MenuItem searchUserMenuItem;
+
+    @FXML
+    private MenuItem createUserMenuItem;
 
     public static final String IMAGE_STORAGE_FOLDER = "src" + File.separator +
             "main" + File.separator +
@@ -50,22 +59,33 @@ public class TopMenuController
 
         try
         {
+            String imageName;
+
             if (userType == UserTypesEnum.STUDENT)
             {
-                userIcon.setImage(new Image(new FileInputStream(IMAGE_STORAGE_FOLDER + "student-icon.png")));
+                imageName = "student-icon.png";
+
+                createPOCMenuItem.setVisible(false);
+                searchUserMenuItem.setVisible(false);
+                createUserMenuItem.setVisible(false);
             }
             else if (userType == UserTypesEnum.PROFESSOR)
             {
-                userIcon.setImage(new Image(new FileInputStream(IMAGE_STORAGE_FOLDER + "professor-icon.png")));
+                imageName = "professor-icon.png";
+
+                searchUserMenuItem.setVisible(false);
+                createUserMenuItem.setVisible(false);
             }
             else if (userType == UserTypesEnum.ADMIN)
             {
-                userIcon.setImage(new Image(new FileInputStream(IMAGE_STORAGE_FOLDER + "admin-icon.png")));
+                imageName = "admin-icon.png";
             }
             else
             {
-                userIcon.setImage(new Image(new FileInputStream(IMAGE_STORAGE_FOLDER + "unknown-icon.png")));
+                imageName = "unknown-icon.png";
             }
+
+            userIcon.setImage(new Image(new FileInputStream(IMAGE_STORAGE_FOLDER + imageName)));
         }
         catch (IOException e)
         {
@@ -102,4 +122,5 @@ public class TopMenuController
         Main.loadStageWithDataModel("create-user-page-view.fxml", dataModel, "Get-POC App");
         Main.closeCurrentStage(mainPane);
     }
+
 }

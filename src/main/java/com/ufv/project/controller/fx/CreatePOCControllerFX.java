@@ -229,8 +229,8 @@ public class CreatePOCControllerFX
         new Thread(task).start();
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         addPOCButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
-
     }
 
     @FXML

@@ -109,13 +109,13 @@ public class ProfessorDB
         }
     }
 
-    protected Professor updateProfessor(Professor professor) throws SQLException
+    protected Professor updateProfessor(Professor newProfessor) throws SQLException
     {
-        Professor oldProfessor = queryProfessor(professor.getUsername(), professor.getName(), professor.getPassword());
+        Professor oldProfessor = queryProfessor(newProfessor.getUsername(), newProfessor.getName(), newProfessor.getPassword());
 
         if (oldProfessor == null)
         {
-            throw new SQLException("ERROR: Professor with username: '" + professor.getUsername() + "' doesn't exists.");
+            throw new SQLException("ERROR: Professor with username: '" + newProfessor.getUsername() + "' doesn't exists.");
         }
 
         try (PreparedStatement updateProfessor = conn.prepareStatement(UPDATE_PROFESSOR))
@@ -129,29 +129,29 @@ public class ProfessorDB
             }
 
             // Insert new subjects.
-            for (Subject subject : professor.getSubjectsTaught())
+            for (Subject subject : newProfessor.getSubjectsTaught())
             {
-                professor_has_subjectDB.insertProfessorHasSubject(professor.getUsername(), subject.getId());
+                professor_has_subjectDB.insertProfessorHasSubject(newProfessor.getUsername(), subject.getId());
             }
 
             // Update professor.
-            if (professor.getEmail() != null)
+            if (newProfessor.getEmail() != null)
             {
-                updateProfessor.setString(1, professor.getEmail());
+                updateProfessor.setString(1, newProfessor.getEmail());
             }
             else
             {
                 updateProfessor.setString(1, oldProfessor.getEmail());
             }
 
-            updateProfessor.setString(2, professor.getUsername());
+            updateProfessor.setString(2, newProfessor.getUsername());
 
             if (updateProfessor.executeUpdate() != 1)
             {
-                throw new SQLException("ERROR: Couldn't update professor with username: '" + professor.getUsername() + "'.");
+                throw new SQLException("ERROR: Couldn't update professor with username: '" + newProfessor.getUsername() + "'.");
             }
 
-            return oldProfessor;
+            return newProfessor;
         }
     }
 

@@ -19,9 +19,9 @@
                 </graphic>
                 <items>
                     <MenuItem mnemonicParsing="false" text="Search POC" onAction="#onSearchPOCButtonAction"/>
-                    <MenuItem mnemonicParsing="false" text="Create POC" onAction="#onCreatePOCButtonAction"/>
-                    <MenuItem mnemonicParsing="false" text="Search User" onAction="#onSearchUserButtonAction"/>
-                    <MenuItem mnemonicParsing="false" text="Create User" onAction="#onCreateUserButtonAction"/>
+                    <MenuItem fx:id="createPOCMenuItem" mnemonicParsing="false" text="Create POC" onAction="#onCreatePOCButtonAction"/>
+                    <MenuItem fx:id="searchUserMenuItem" mnemonicParsing="false" text="Search User" onAction="#onSearchUserButtonAction"/>
+                    <MenuItem fx:id="createUserMenuItem" mnemonicParsing="false" text="Create User" onAction="#onCreateUserButtonAction"/>
                     <MenuItem mnemonicParsing="false" text="Logout" onAction="#onLogoutButtonAction"/>
                 </items>
             </MenuButton>

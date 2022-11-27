@@ -218,7 +218,7 @@ public class UserDB
 
             conn.setAutoCommit(true);
 
-            return oldUser;
+            return newUser;
         }
         catch (SQLException e)
         {

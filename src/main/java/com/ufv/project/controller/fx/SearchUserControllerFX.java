@@ -103,7 +103,7 @@ public class SearchUserControllerFX
             dataModel = new DataModel((Administrator) user);
         }
 
-        ((UpdateUserControllerFX) Main.loadStageWithDataModel("update-user-page-view.fxml", dataModel, "Update User")).setData(user);
+        Main.loadStageWithDataModel("update-user-page-view.fxml", dataModel, "Update User");
     }
 
 }

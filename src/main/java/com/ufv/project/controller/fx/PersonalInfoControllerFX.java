@@ -12,7 +12,8 @@ import javafx.scene.text.Text;
 
 import java.sql.SQLException;
 
-public class PersonalInfoControllerFX {
+public class PersonalInfoControllerFX
+{
     @FXML
     private Text usernameText;
 
@@ -42,19 +43,22 @@ public class PersonalInfoControllerFX {
 
     private final DataModel dataModel;
 
-    public PersonalInfoControllerFX(DataModel dataModel) {
+    public PersonalInfoControllerFX(DataModel dataModel)
+    {
         this.dataModel = dataModel;
     }
 
     @FXML
-    public void initialize() {
+    public void initialize()
+    {
         UserTypesEnum userType = dataModel.getUserType();
 
         usernameText.setText(dataModel.getUsername());
         nameText.setText(dataModel.getName());
         userTypeText.setText(userType.toString());
 
-        if (userType == UserTypesEnum.STUDENT) {
+        if (userType == UserTypesEnum.STUDENT)
+        {
             professorSubjectsLabel.setManaged(false);
             professorSubjectListView.setManaged(false);
             professorSubjectsLabel.setVisible(false);
@@ -72,7 +76,9 @@ public class PersonalInfoControllerFX {
 
             emailText.setText(dataModel.getEmail());
             registrationText.setText(dataModel.getRegistration());
-        } else if (userType == UserTypesEnum.PROFESSOR) {
+        }
+        else if (userType == UserTypesEnum.PROFESSOR)
+        {
             registrationLabel.setManaged(false);
             registrationText.setManaged(false);
             registrationLabel.setVisible(false);
@@ -90,15 +96,20 @@ public class PersonalInfoControllerFX {
 
             emailText.setText(dataModel.getEmail());
 
-            try (ConnectDB connectDB = new ConnectDB()) {
+            try (ConnectDB connectDB = new ConnectDB())
+            {
                 professorSubjectListView
                         .getItems()
                         .setAll(new Professor_has_subjectDB(connectDB.getConnection())
                                 .querySubjectsByProfessor(dataModel.getUsername()));
-            } catch (SQLException e) {
+            }
+            catch (SQLException e)
+            {
                 System.out.println("ERROR: Couldn't get subjects for professor: " + e.getMessage());
             }
-        } else if (userType == UserTypesEnum.ADMIN) {
+        }
+        else if (userType == UserTypesEnum.ADMIN)
+        {
             professorSubjectsLabel.setManaged(false);
             professorSubjectListView.setManaged(false);
             professorSubjectsLabel.setVisible(false);

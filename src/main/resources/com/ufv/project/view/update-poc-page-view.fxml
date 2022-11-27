@@ -10,7 +10,7 @@
       fx:id="mainPane"
       styleClass="background">
 
-    <Label>Create POC</Label>
+    <Label>Update POC</Label>
     <GridPane fx:id="gridPane" styleClass="create-background">
         <TextField fx:id="title" promptText="Title" GridPane.rowIndex="0" GridPane.columnIndex="0"
                    styleClass="text-field"/>

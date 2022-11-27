@@ -64,5 +64,5 @@
     <MenuButton fx:id="professorSubjects" onHiding="#onSelectSubject" text="Select"/>
 
     <Button fx:id="createUserButton" text="Create" onMouseClicked="#onCreateButtonPressed"/>
-    <ProgressIndicator fx:id="progressIndicator"/>
+    <ProgressIndicator fx:id="progressIndicator" managed="false" visible="false"/>
 </FlowPane>
