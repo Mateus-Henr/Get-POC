@@ -127,8 +127,8 @@ public class CreatePOCControllerFX
 
         try (ConnectDB connectDB = new ConnectDB())
         {
-            professors = FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).getAllProfessors());
-            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new StudentDB(connectDB.getConnection()).getAllStudents()));
+            professors = FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).queryProfessors());
+            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new StudentDB(connectDB.getConnection()).querStudents()));
             coAdvisorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(professors));
             fieldComboBox.setItems(FXCollections.observableList(new FieldDB(connectDB.getConnection()).queryFields()));
         }

@@ -355,7 +355,7 @@ public class POCDB
     {
         if (searchTypesEnums == null || searchTypesEnums.isEmpty())
         {
-            throw new SQLException("Select at least one search option.");
+            return queryAllPOCs();
         }
 
         boolean isFirstTime = true;

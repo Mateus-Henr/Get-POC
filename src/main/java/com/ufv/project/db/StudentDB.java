@@ -192,7 +192,7 @@ public class StudentDB
         }
     }
 
-    public List<Student> getAllStudents() throws SQLException
+    public List<Student> querStudents() throws SQLException
     {
         return new UserDB(conn).queryUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)

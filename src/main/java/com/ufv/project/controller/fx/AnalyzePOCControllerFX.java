@@ -1,5 +1,6 @@
 package com.ufv.project.controller.fx;
 
+import com.ufv.project.Main;
 import com.ufv.project.model.DataModel;
 import com.ufv.project.model.POC;
 import com.ufv.project.model.Professor;
@@ -9,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.awt.*;
@@ -22,6 +24,9 @@ public class AnalyzePOCControllerFX
     @FXML
     private TopMenuController topMenuControllerFX;
     // ------------------------------
+
+    @FXML
+    private VBox mainPane;
 
     @FXML
     private TextField searchField;
@@ -57,6 +62,8 @@ public class AnalyzePOCControllerFX
 
     private final DataModel dataModel;
 
+    private POC poc;
+
     public AnalyzePOCControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
@@ -67,6 +74,7 @@ public class AnalyzePOCControllerFX
     {
 
     }
+
 
     @FXML
     public void onDisplayPDF()
@@ -81,17 +89,26 @@ public class AnalyzePOCControllerFX
         }
     }
 
-    public void setData(POC pocToShow)
+    @FXML
+    public void onUpdatePOCButtonClicked()
     {
-        titleText.setText(pocToShow.getTitle());
-        authorListView.setItems(FXCollections.observableList(pocToShow.getAuthors()));
-        advisorText.setText(pocToShow.getAdvisor().toString());
-        coAdvisorListView.setItems(FXCollections.observableList(pocToShow.getCoAdvisors()));
-        fieldText.setText(pocToShow.getTitle());
-        dateText.setText(pocToShow.getDefenseDate().toString());
-        keywordList.setItems(FXCollections.observableList(pocToShow.getKeywords()));
+        Main.closeCurrentStage(mainPane);
+        ((UpdatePOCController) Main.loadStageWithDataModel("update-poc-page-view.fxml", dataModel, "Update POC")).setPOCData(poc);
+    }
 
-        File pdfFile = new File(pocToShow.getPdf().getPath());
+    public void setData(POC poc)
+    {
+        this.poc = poc;
+
+        titleText.setText(poc.getTitle());
+        authorListView.setItems(FXCollections.observableList(poc.getAuthors()));
+        advisorText.setText(poc.getAdvisor().toString());
+        coAdvisorListView.setItems(FXCollections.observableList(poc.getCoAdvisors()));
+        fieldText.setText(poc.getTitle());
+        dateText.setText(poc.getDefenseDate().toString());
+        keywordList.setItems(FXCollections.observableList(poc.getKeywords()));
+
+        File pdfFile = new File(poc.getPdf().getPath());
 
         pdfFilepathText.setText(pdfFile.getName());
         pdfPath = pdfFile.toURI();

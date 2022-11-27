@@ -1,12 +1,10 @@
 package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
-import com.ufv.project.db.ConnectDB;
-import com.ufv.project.db.POCDB;
-import com.ufv.project.db.StudentDB;
-import com.ufv.project.db.UserDB;
+import com.ufv.project.db.*;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -164,7 +162,7 @@ public class UpdatePOCController
                         }
                     }
 
-                    return new POCDB(connectDB.getConnection()).updatePOC(new POC(0,
+                    return new POCDB(connectDB.getConnection()).updatePOC(new POC(poc.getId(),
                             title.getText().trim(),
                             authors,
                             datePicker.getValue(),
@@ -245,17 +243,35 @@ public class UpdatePOCController
         title.setText(poc.getTitle());
         datePicker.setValue(poc.getDefenseDate());
         summaryTextArea.setText(poc.getSummary());
+        keywordsTextArea.setText(String.join(" ", poc.getKeywords()));
+        pdfFile = new File(poc.getPdf().getPath());
+        pdfFilepathText.setText(poc.getPdf().getPath());
 
         try (ConnectDB connectDB = new ConnectDB())
         {
-            List<Student> students = new StudentDB(connectDB.getConnection()).getAllStudents();
-            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(poc.getAuthors()));
-            coAdvisorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(poc.getCoAdvisors()));
-            fieldComboBox.getItems().setAll();
+            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new StudentDB(connectDB.getConnection()).querStudents()));
+            checkMenuItemUser(authorMenuButton.getItems(), poc.getAuthors());
+
+            coAdvisorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new ProfessorDB(connectDB.getConnection()).queryProfessors()));
+            checkMenuItemUser(coAdvisorMenuButton.getItems(), poc.getCoAdvisors());
+
+            advisorComboBox.setItems(FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).queryProfessors()));
+            advisorComboBox.setValue(poc.getAdvisor());
+
+            fieldComboBox.setItems(FXCollections.observableList(new FieldDB(connectDB.getConnection()).queryFields()));
+            fieldComboBox.setValue(poc.getField());
         }
         catch (SQLException e)
         {
             System.out.println("Couldn't get data to update POC: " + e.getMessage());
+        }
+    }
+
+    private void checkMenuItemUser(List<MenuItem> allItems, List<? extends User> userList)
+    {
+        for (MenuItem menuItem : allItems)
+        {
+            userList.stream().map(User::getUsername).forEach(s -> ((CheckMenuItem) menuItem).setSelected(s.equals(menuItem.getId())));
         }
     }
 

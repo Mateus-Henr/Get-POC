@@ -155,7 +155,7 @@ public class ProfessorDB
         }
     }
 
-    public List<Professor> getAllProfessors() throws SQLException
+    public List<Professor> queryProfessors() throws SQLException
     {
         return new UserDB(conn).queryUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.PROFESSOR)
