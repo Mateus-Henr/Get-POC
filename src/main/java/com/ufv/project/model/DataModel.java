@@ -7,6 +7,7 @@ public class DataModel
     private final UserTypesEnum userType;
     private String email;
     private String registration;
+    private int POCID;
 
     // Student
     public DataModel(Student student)
@@ -16,6 +17,7 @@ public class DataModel
         this.userType = student.getUserType();
         this.email = student.getEmail();
         this.registration = student.getRegistration();
+        this.POCID = student.getPOCID();
     }
 
     // Professor
@@ -58,6 +60,11 @@ public class DataModel
     public String getRegistration()
     {
         return registration;
+    }
+
+    public int getPOCID()
+    {
+        return POCID;
     }
 
 }

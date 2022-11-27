@@ -119,7 +119,7 @@ public class LoginControllerFX
                 return;
             }
 
-            Main.loadStageWithDataModel("search-user-page-view.fxml", dataModel, "Create POC");
+            Main.loadStageWithDataModel("search-poc-page-view.fxml", dataModel, "Search POC");
             Main.closeCurrentStage(mainPane);
         });
 

@@ -13,6 +13,8 @@
 
     <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
 
+    <fx:include fx:id="personalInfo" source="personal-info-page-view.fxml"/>
+
     <HBox>
         <TextField fx:id="searchPOCTextField" promptText="Search" styleClass="search"/>
         <Button onMouseClicked="#handlePOCSearching">Search</Button>
@@ -34,6 +36,6 @@
     <CheckBox fx:id="searchByFieldCheckBox"/>
     <ProgressIndicator fx:id="progressIndicator"/>
     <stylesheets>
-        <URL value="@../css/search-poc-page-styles.css" />
+        <URL value="@../css/search-poc-page-styles.css"/>
     </stylesheets>
 </VBox>

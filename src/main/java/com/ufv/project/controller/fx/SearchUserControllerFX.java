@@ -5,17 +5,23 @@ import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class SearchUserControllerFX
 {
+    @FXML
+    private VBox mainPane;
+
     @FXML
     private TextField searchUsernameTextField;
 
@@ -35,7 +41,7 @@ public class SearchUserControllerFX
     @FXML
     public void initialize()
     {
-
+        mainPane.focusedProperty().addListener((ov, onHidden, onShown) -> onSearchUserButtonClicked());
     }
 
     @FXML

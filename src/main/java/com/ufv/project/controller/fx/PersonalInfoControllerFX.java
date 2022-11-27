@@ -2,6 +2,7 @@ package com.ufv.project.controller.fx;
 
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.Professor_has_subjectDB;
+import com.ufv.project.db.StudentDB;
 import com.ufv.project.model.DataModel;
 import com.ufv.project.model.Subject;
 import com.ufv.project.model.UserTypesEnum;
@@ -36,6 +37,12 @@ public class PersonalInfoControllerFX
     private Text registrationText;
 
     @FXML
+    private Label POCIDLabel;
+
+    @FXML
+    private Text POCIDText;
+
+    @FXML
     private Label professorSubjectsLabel;
 
     @FXML
@@ -59,6 +66,11 @@ public class PersonalInfoControllerFX
 
         if (userType == UserTypesEnum.STUDENT)
         {
+            POCIDLabel.setManaged(true);
+            POCIDLabel.setManaged(true);
+            POCIDText.setVisible(true);
+            POCIDText.setVisible(true);
+
             professorSubjectsLabel.setManaged(false);
             professorSubjectListView.setManaged(false);
             professorSubjectsLabel.setVisible(false);
@@ -76,9 +88,15 @@ public class PersonalInfoControllerFX
 
             emailText.setText(dataModel.getEmail());
             registrationText.setText(dataModel.getRegistration());
+            POCIDText.setText(String.valueOf(dataModel.getPOCID()));
         }
         else if (userType == UserTypesEnum.PROFESSOR)
         {
+            POCIDLabel.setManaged(false);
+            POCIDLabel.setManaged(false);
+            POCIDText.setVisible(false);
+            POCIDText.setVisible(false);
+
             registrationLabel.setManaged(false);
             registrationText.setManaged(false);
             registrationLabel.setVisible(false);
@@ -110,6 +128,11 @@ public class PersonalInfoControllerFX
         }
         else if (userType == UserTypesEnum.ADMIN)
         {
+            POCIDLabel.setManaged(false);
+            POCIDLabel.setManaged(false);
+            POCIDText.setVisible(false);
+            POCIDText.setVisible(false);
+
             professorSubjectsLabel.setManaged(false);
             professorSubjectListView.setManaged(false);
             professorSubjectsLabel.setVisible(false);
