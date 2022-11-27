@@ -1,9 +1,9 @@
-package com.ufv.project.controller;
+package com.ufv.project.controller.fx;
 
 import org.junit.Before;
 import org.junit.Test;
 
-class LoginControllerTest {
+class LoginControllerFXTest {
 
     @Before
     public void setUp() throws Exception {

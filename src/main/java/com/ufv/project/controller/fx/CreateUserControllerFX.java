@@ -1,5 +1,6 @@
-package com.ufv.project.controller;
+package com.ufv.project.controller.fx;
 
+import com.ufv.project.controller.java.CreateUserController;
 import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.SubjectDB;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateUserController
+public class CreateUserControllerFX
 {
     @FXML
     private FlowPane mainPane;

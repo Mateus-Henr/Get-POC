@@ -1,6 +1,6 @@
 package com.ufv.project;
 
-import com.ufv.project.controller.ControllerFactory;
+import com.ufv.project.controller.fx.ControllerFactoryFX;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.model.DataModel;
 import javafx.application.Application;
@@ -55,7 +55,7 @@ public class Main extends Application
     {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/ufv/project/view/" + filename));
 
-        fxmlLoader.setControllerFactory(ControllerFactory.controllerFactoryWithDataModel(dataModel));
+        fxmlLoader.setControllerFactory(ControllerFactoryFX.controllerFactoryWithDataModel(dataModel));
 
         try
         {

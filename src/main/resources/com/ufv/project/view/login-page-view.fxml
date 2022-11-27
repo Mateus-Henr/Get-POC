@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Text?>
 <?import java.net.URL?>
-<AnchorPane fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.LoginController">
+<AnchorPane fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.LoginControllerFX">
     <children>
         <TextField fx:id="usernameField" layoutX="63.0" layoutY="144.0" promptText="E-mail ou Usuario" styleClass="username-password-fields">
         </TextField>

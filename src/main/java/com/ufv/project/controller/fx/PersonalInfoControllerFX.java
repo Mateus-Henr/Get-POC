@@ -1,4 +1,4 @@
-package com.ufv.project.controller;
+package com.ufv.project.controller.fx;
 
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.Professor_has_subjectDB;
@@ -8,33 +8,31 @@ import com.ufv.project.model.UserTypesEnum;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.sql.SQLException;
 
-public class AnalyzeUserController
-{
+public class PersonalInfoControllerFX {
     @FXML
-    private VBox mainPane;
+    private Text usernameText;
 
     @FXML
-    private TextField usernameTextField;
+    private Text userTypeText;
 
     @FXML
-    private TextField nameTextField;
+    private Text nameText;
 
     @FXML
     private Label emailLabel;
 
     @FXML
-    private TextField emailTextField;
+    private Text emailText;
 
     @FXML
     private Label registrationLabel;
 
     @FXML
-    private TextField registrationTextField;
+    private Text registrationText;
 
     @FXML
     private Label professorSubjectsLabel;
@@ -44,85 +42,77 @@ public class AnalyzeUserController
 
     private final DataModel dataModel;
 
-    public AnalyzeUserController(DataModel dataModel)
-    {
+    public PersonalInfoControllerFX(DataModel dataModel) {
         this.dataModel = dataModel;
     }
 
     @FXML
-    public void initialize()
-    {
-        usernameTextField.setText(dataModel.getUsername());
-        nameTextField.setText(dataModel.getName());
+    public void initialize() {
         UserTypesEnum userType = dataModel.getUserType();
 
-        if (userType == UserTypesEnum.STUDENT)
-        {
+        usernameText.setText(dataModel.getUsername());
+        nameText.setText(dataModel.getName());
+        userTypeText.setText(userType.toString());
+
+        if (userType == UserTypesEnum.STUDENT) {
             professorSubjectsLabel.setManaged(false);
             professorSubjectListView.setManaged(false);
             professorSubjectsLabel.setVisible(false);
             professorSubjectListView.setVisible(false);
 
             registrationLabel.setManaged(true);
-            registrationTextField.setManaged(true);
+            registrationText.setManaged(true);
             registrationLabel.setVisible(true);
-            registrationTextField.setVisible(true);
+            registrationText.setVisible(true);
 
             emailLabel.setManaged(true);
-            emailTextField.setManaged(true);
+            emailText.setManaged(true);
             emailLabel.setVisible(true);
-            emailTextField.setVisible(true);
+            emailText.setVisible(true);
 
-            registrationTextField.setText(dataModel.getRegistration());
-            emailTextField.setText(dataModel.getEmail());
-        }
-        else if (userType == UserTypesEnum.PROFESSOR)
-        {
+            emailText.setText(dataModel.getEmail());
+            registrationText.setText(dataModel.getRegistration());
+        } else if (userType == UserTypesEnum.PROFESSOR) {
             registrationLabel.setManaged(false);
-            registrationTextField.setManaged(false);
+            registrationText.setManaged(false);
             registrationLabel.setVisible(false);
-            registrationTextField.setVisible(false);
+            registrationText.setVisible(false);
 
             emailLabel.setManaged(true);
-            emailTextField.setManaged(true);
+            emailText.setManaged(true);
             emailLabel.setVisible(true);
-            emailTextField.setVisible(true);
+            emailText.setVisible(true);
 
             professorSubjectsLabel.setManaged(true);
             professorSubjectListView.setManaged(true);
             professorSubjectsLabel.setVisible(true);
             professorSubjectListView.setVisible(true);
 
-            emailTextField.setText(dataModel.getEmail());
+            emailText.setText(dataModel.getEmail());
 
-            try (ConnectDB connectDB = new ConnectDB())
-            {
+            try (ConnectDB connectDB = new ConnectDB()) {
                 professorSubjectListView
                         .getItems()
                         .setAll(new Professor_has_subjectDB(connectDB.getConnection())
                                 .querySubjectsByProfessor(dataModel.getUsername()));
-            }
-            catch (SQLException e)
-            {
+            } catch (SQLException e) {
                 System.out.println("ERROR: Couldn't get subjects for professor: " + e.getMessage());
             }
-        }
-        else if (userType == UserTypesEnum.ADMIN)
-        {
+        } else if (userType == UserTypesEnum.ADMIN) {
             professorSubjectsLabel.setManaged(false);
             professorSubjectListView.setManaged(false);
             professorSubjectsLabel.setVisible(false);
             professorSubjectListView.setVisible(false);
 
             registrationLabel.setManaged(false);
-            registrationTextField.setManaged(false);
+            registrationText.setManaged(false);
             registrationLabel.setVisible(false);
-            registrationTextField.setVisible(false);
+            registrationText.setVisible(false);
 
             emailLabel.setManaged(false);
-            emailTextField.setManaged(false);
+            emailText.setManaged(false);
             emailLabel.setVisible(false);
-            emailTextField.setVisible(false);
+            emailText.setVisible(false);
         }
     }
 

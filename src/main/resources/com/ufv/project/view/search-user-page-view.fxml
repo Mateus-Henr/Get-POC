@@ -5,12 +5,19 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.FlowPane?>
+<?import java.net.URL?>
 <FlowPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.ufv.project.controller.SearchUserController"
+          fx:controller="com.ufv.project.controller.fx.SearchUserControllerFX"
           prefHeight="400.0" prefWidth="600.0">
+
+    <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
+
     <Label labelFor="$searchUsernameTextField" text="Search for username"/>
     <TextField fx:id="searchUsernameTextField" onKeyTyped="#onSearchUserButtonClicked"/>
     <ProgressIndicator fx:id="progressIndicator" visible="false" managed="false"/>
-    <ListView fx:id="userList" visible="false" managed="false"/>
+    <ListView fx:id="userList" visible="false" managed="false" onMouseClicked="#onSelectedRow"/>
+    <stylesheets>
+        <URL value="@../css/top-menu-page-styles.css" />
+    </stylesheets>
 </FlowPane>

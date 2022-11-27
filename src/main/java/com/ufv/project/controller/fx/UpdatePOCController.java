@@ -1,11 +1,12 @@
-package com.ufv.project.controller;
+package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
-import com.ufv.project.db.*;
+import com.ufv.project.db.ConnectDB;
+import com.ufv.project.db.POCDB;
+import com.ufv.project.db.StudentDB;
+import com.ufv.project.db.UserDB;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CreatePOCController
+public class UpdatePOCController
 {
     // ---------- MainPane ----------
     @FXML
@@ -39,7 +40,7 @@ public class CreatePOCController
 
     // ---------- Top Menu ----------
     @FXML
-    private TopMenuController topMenuController;
+    private TopMenuController topMenuControllerFX;
     // ------------------------------
 
     // ---- Personal information ----
@@ -47,7 +48,7 @@ public class CreatePOCController
     private VBox userData;
 
     @FXML
-    private PersonalInfoController userDataController;
+    private PersonalInfoControllerFX userDataController;
     // ------------------------------
 
     // --------- Create POC ---------
@@ -82,13 +83,15 @@ public class CreatePOCController
     private Text pdfFilepathText;
 
     @FXML
-    private Button addPOCButton;
+    private Button updatePOCButton;
 
     @FXML
     private ProgressIndicator progressIndicator;
     // ------------------------------
 
     private final DataModel dataModel;
+
+    private POC poc;
 
     private File pdfFile;
 
@@ -99,7 +102,7 @@ public class CreatePOCController
             "ufv" + File.separator +
             "project" + File.separator + "pdfs" + File.separator;
 
-    public CreatePOCController(DataModel dataModel)
+    public UpdatePOCController(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }
@@ -107,42 +110,7 @@ public class CreatePOCController
     @FXML
     public void initialize()
     {
-        // Disables button until every field has been populated.
-//        addPOCButton.disableProperty().bind(
-//                Bindings.createBooleanBinding(() ->
-//                                        title.getText().trim().isEmpty(),
-//                                title.textProperty())
-////                        .or(authorComboBox.valueProperty().isNull())
-////                        .or(advisorComboBox.valueProperty().isNull())
-////                        .or(coAdvisorComboBox.valueProperty().isNull())
-////                        .or(datePicker.valueProperty().isNull())
-////                        .or(fieldComboBox.valueProperty().isNull())
-////                        .or(Bindings.isEmpty(keywordList.getItems()))
-//                        .or(Bindings.createBooleanBinding(() ->
-//                                        pdfFilepathText.getText().trim().isEmpty(),
-//                                pdfFilepathText.textProperty()))
-//        );
 
-        ObservableList<Professor> professors = null;
-
-        try (ConnectDB connectDB = new ConnectDB())
-        {
-            professors = FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).getAllProfessors());
-            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new StudentDB(connectDB.getConnection()).getAllStudents()));
-            coAdvisorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(professors));
-            fieldComboBox.setItems(FXCollections.observableList(new FieldDB(connectDB.getConnection()).queryFields()));
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        // Set data for choosing.
-        if (professors != null)
-        {
-            advisorComboBox.setItems(professors);
-            coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
-        }
     }
 
     @FXML
@@ -158,12 +126,12 @@ public class CreatePOCController
     }
 
     @FXML
-    public void handlePOCAdding()
+    public void onUpdateButtonClicked()
     {
-        final Task<Integer> task = new Task<>()
+        final Task<POC> task = new Task<>()
         {
             @Override
-            protected Integer call() throws SQLException, IOException
+            protected POC call() throws SQLException, IOException
             {
                 try (ConnectDB connectDB = new ConnectDB())
                 {
@@ -196,7 +164,7 @@ public class CreatePOCController
                         }
                     }
 
-                    return new POCDB(connectDB.getConnection()).insertPOC(new POC(0,
+                    return new POCDB(connectDB.getConnection()).updatePOC(new POC(0,
                             title.getText().trim(),
                             authors,
                             datePicker.getValue(),
@@ -229,7 +197,7 @@ public class CreatePOCController
         new Thread(task).start();
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
-        addPOCButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        updatePOCButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
 
     }
 
@@ -268,6 +236,27 @@ public class CreatePOCController
         }
 
         return items;
+    }
+
+    public void setPOCData(POC poc)
+    {
+        this.poc = poc;
+
+        title.setText(poc.getTitle());
+        datePicker.setValue(poc.getDefenseDate());
+        summaryTextArea.setText(poc.getSummary());
+
+        try (ConnectDB connectDB = new ConnectDB())
+        {
+            List<Student> students = new StudentDB(connectDB.getConnection()).getAllStudents();
+            authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(poc.getAuthors()));
+            coAdvisorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(poc.getCoAdvisors()));
+            fieldComboBox.getItems().setAll();
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Couldn't get data to update POC: " + e.getMessage());
+        }
     }
 
     private long getSelectedItemsNumber(MenuButton menuButton)

@@ -1,4 +1,4 @@
-package com.ufv.project.controller;
+package com.ufv.project.controller.fx;
 
 import com.ufv.project.model.DataModel;
 import com.ufv.project.model.POC;
@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
-public class AnalyzePOCController
+public class AnalyzePOCControllerFX
 {
     // ---------- Top Menu ----------
     @FXML
@@ -51,13 +51,13 @@ public class AnalyzePOCController
     private Hyperlink pdfFilepathText;
 
     @FXML
-    private UpdatePOCController updatePOCController;
+    private UpdatePOCController updatePOCControllerFX;
 
     private URI pdfPath;
 
     private final DataModel dataModel;
 
-    public AnalyzePOCController(DataModel dataModel)
+    public AnalyzePOCControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }

@@ -11,9 +11,9 @@ module com.ufv.project
     opens com.ufv.project to javafx.fxml;
     opens com.ufv.project.model to javafx.fxml;
     exports com.ufv.project;
-    exports com.ufv.project.controller;
+    exports com.ufv.project.controller.fx;
     exports com.ufv.project.model;
-    opens com.ufv.project.controller to javafx.fxml;
+    opens com.ufv.project.controller.fx to javafx.fxml;
     exports com.ufv.project.db;
     opens com.ufv.project.db to javafx.fxml;
 }

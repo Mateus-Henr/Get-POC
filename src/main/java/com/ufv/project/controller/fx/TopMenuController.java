@@ -1,4 +1,4 @@
-package com.ufv.project.controller;
+package com.ufv.project.controller.fx;
 
 import com.ufv.project.model.DataModel;
 import com.ufv.project.model.UserTypesEnum;
@@ -75,5 +75,23 @@ public class TopMenuController
     }
 
     public void onCreatePOCButtonAction(ActionEvent actionEvent) {
+    }
+
+    public void onLogoutButtonAction()
+    {
+        Main.loadStageWithDataModel("login-page-view.fxml", dataModel, "Get-POC App");
+        Main.closeCurrentStage(mainPane);
+    }
+
+    public void onSearchUserButtonAction()
+    {
+        Main.loadStageWithDataModel("search-user-page-view.fxml", dataModel, "Get-POC App");
+        Main.closeCurrentStage(mainPane);
+    }
+
+    public void onCreateUserButtonAction()
+    {
+        Main.loadStageWithDataModel("create-user-page-view.fxml", dataModel, "Get-POC App");
+        Main.closeCurrentStage(mainPane);
     }
 }

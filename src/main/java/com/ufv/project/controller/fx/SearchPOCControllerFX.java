@@ -1,4 +1,4 @@
-package com.ufv.project.controller;
+package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
@@ -23,7 +23,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.HashSet;
 
-public class SearchPOCController
+public class SearchPOCControllerFX
 {
     // ----------- Layout -----------
     @FXML
@@ -71,7 +71,7 @@ public class SearchPOCController
 
     private final DataModel dataModel;
 
-    public SearchPOCController(DataModel dataModel)
+    public SearchPOCControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }
@@ -96,7 +96,7 @@ public class SearchPOCController
 
         pocListView.getSelectionModel().selectedItemProperty().addListener((observableValue, poc, t1) ->
         {
-            ((AnalyzePOCController) Main.loadStageWithDataModel("analyze-poc-page-view.fxml", dataModel, "Analyze POC"))
+            ((AnalyzePOCControllerFX) Main.loadStageWithDataModel("analyze-poc-page-view.fxml", dataModel, "Analyze POC"))
                     .setData(pocListView.getSelectionModel().getSelectedItem());
         });
     }

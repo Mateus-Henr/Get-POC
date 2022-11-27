@@ -1,8 +1,7 @@
-package com.ufv.project.controller;
+package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
-import com.ufv.project.db.Professor_has_subjectDB;
 import com.ufv.project.db.SubjectDB;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.model.*;
@@ -16,8 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpdateUserController
-{
+public class UpdateUserControllerFX {
     @FXML
     private FlowPane mainPane;
 
@@ -63,22 +61,24 @@ public class UpdateUserController
     @FXML
     private ProgressIndicator progressIndicator;
 
+    @FXML
+    private PersonalInfoControllerFX personalInfoControllerFX;
+
     private final DataModel dataModel;
 
-    public UpdateUserController(DataModel dataModel)
+    public UpdateUserControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }
 
-    @FXML
-    public void initialize()
-    {
-        usernameTextField.setText(dataModel.getUsername());
-        nameTextField.setText(dataModel.getName());
-        UserTypesEnum userType = dataModel.getUserType();
 
-        if (userType == UserTypesEnum.ADMIN)
-        {
+    public void setData(User user)
+    {
+        usernameTextField.setText(user.getUsername());
+        nameTextField.setText(user.getName());
+        UserTypesEnum userType = user.getUserType();
+
+        if (userType == UserTypesEnum.ADMIN) {
             POCIDLabel.setManaged(false);
             POCIDTextField.setManaged(false);
             POCIDLabel.setVisible(false);
@@ -144,25 +144,26 @@ public class UpdateUserController
             professorSubjects.setVisible(true);
         }
 
-        final Task<Void> task = new Task<Void>()
-        {
+        final Task<Void> task = new Task<Void>() {
             @Override
-            protected Void call() throws SQLException
-            {
+            protected Void call() throws SQLException {
                 try (ConnectDB connectDB = new ConnectDB())
                 {
                     if (userType == UserTypesEnum.STUDENT)
                     {
-                        registrationTextField.setText(dataModel.getRegistration());
-                        emailTextField.setText(dataModel.getEmail());
-                        POCIDTextField.setText(String.valueOf(((Student) new UserDB(connectDB.getConnection())
-                                .queryUserByID(dataModel.getUsername())).getPOCID()));
+                        Student student = (Student) user;
+
+                        registrationTextField.setText(student.getRegistration());
+                        emailTextField.setText(student.getEmail());
+                        POCIDTextField.setText(String.valueOf(student.getPOCID()));
                     }
                     else if (userType == UserTypesEnum.PROFESSOR)
                     {
-                        emailTextField.setText(dataModel.getEmail());
+                        Professor professor = (Professor) user;
 
-                        List<Subject> markedSubjects = new Professor_has_subjectDB(connectDB.getConnection()).querySubjectsByProfessor(dataModel.getUsername());
+                        emailTextField.setText(professor.getEmail());
+
+                        List<Subject> markedSubjects = professor.getSubjectsTaught();
 
                         professorSubjects.getItems().setAll(initializeCheckMenuItemsFromList(new SubjectDB(connectDB.getConnection()).querySubjects()));
 
@@ -192,20 +193,14 @@ public class UpdateUserController
             return;
         }
 
-        final Task<User> task = new Task<>()
-        {
+        final Task<User> task = new Task<>() {
             @Override
-            protected User call() throws Exception
-            {
-                User user = null;
-
-                if (dataModel.getUserType() == UserTypesEnum.STUDENT)
-                {
+            protected User call() throws Exception {
+                if (dataModel.getUserType() == UserTypesEnum.STUDENT) {
                     String POCIDText = POCIDTextField.getText().trim();
                     int POCID = 0;
 
-                    if (!POCIDText.isEmpty())
-                    {
+                    if (!POCIDText.isEmpty()) {
                         POCID = Integer.parseInt(POCIDText);
                     }
 
@@ -215,9 +210,7 @@ public class UpdateUserController
                             registrationTextField.getText().trim(),
                             POCID,
                             emailTextField.getText().trim());
-                }
-                else if (dataModel.getUserType() == UserTypesEnum.PROFESSOR)
-                {
+                } else if (dataModel.getUserType() == UserTypesEnum.PROFESSOR) {
                     List<Integer> subjectIDList = professorSubjects
                             .getItems()
                             .stream()
@@ -225,13 +218,11 @@ public class UpdateUserController
                             .map(menuItem -> Integer.parseInt(menuItem.getId()))
                             .toList();
 
-                    try (ConnectDB connectDB = new ConnectDB())
-                    {
+                    try (ConnectDB connectDB = new ConnectDB()) {
                         SubjectDB subjectDB = new SubjectDB(connectDB.getConnection());
                         List<Subject> subjectList = new ArrayList<>();
 
-                        for (int id : subjectIDList)
-                        {
+                        for (int id : subjectIDList) {
                             subjectList.add(subjectDB.querySubjectByID(id));
                         }
 
@@ -241,23 +232,13 @@ public class UpdateUserController
                                 emailTextField.getText().trim(),
                                 subjectList);
                     }
-                }
-                else if (dataModel.getUserType() == UserTypesEnum.ADMIN)
-                {
-                    user = new Administrator(usernameTextField.getText().trim(),
+                } else if (dataModel.getUserType() == UserTypesEnum.ADMIN) {
+                    return new Administrator(usernameTextField.getText().trim(),
                             nameTextField.getText().trim(),
                             passwordField.getText());
                 }
 
-                if (user == null)
-                {
-                    throw new IllegalAccessException("ERROR: No role was assigned.");
-                }
-
-                try (ConnectDB connectDB = new ConnectDB())
-                {
-                    return new UserDB(connectDB.getConnection()).updateUser(user);
-                }
+                throw new IllegalAccessException("ERROR: No role was assigned.");
             }
         };
 
@@ -279,17 +260,14 @@ public class UpdateUserController
                 .count() + " subject(s) selected");
     }
 
-    public boolean arePasswordsEqual()
-    {
+    public boolean arePasswordsEqual() {
         return passwordField.getText().equals(confirmPasswordField.getText());
     }
 
-    public List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList)
-    {
+    public List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList) {
         List<MenuItem> items = new ArrayList<>();
 
-        for (Subject subject : subjectList)
-        {
+        for (Subject subject : subjectList) {
             CheckMenuItem menuItem = new CheckMenuItem();
 
             menuItem.setId(String.valueOf(subject.getId()));

@@ -1,48 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
+<?import java.net.URL?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.TopMenuController">
+<BorderPane fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.TopMenuController">
     <left>
         <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER_LEFT">
-         <MenuButton mnemonicParsing="false" styleClass="menu-button">
-             <graphic>
-                 <ImageView fitWidth="15.0" fitHeight="15.0">
-                     <Image url="@../images/menu.png" />
-                 </ImageView>
-             </graphic>
-           <items>
-             <MenuItem mnemonicParsing="false" text="Search POC" onAction="#onSearchPOCButtonAction"/>
-             <MenuItem mnemonicParsing="false" text="Create POC" onAction="#onCreatePOCButtonAction"/>
-           </items>
-         </MenuButton>
+            <MenuButton mnemonicParsing="false" styleClass="menu-button">
+                <graphic>
+                    <ImageView fitWidth="15.0" fitHeight="15.0">
+                        <Image url="@../images/menu.png"/>
+                    </ImageView>
+                </graphic>
+                <items>
+                    <MenuItem mnemonicParsing="false" text="Search POC" onAction="#onSearchPOCButtonAction"/>
+                    <MenuItem mnemonicParsing="false" text="Create POC" onAction="#onCreatePOCButtonAction"/>
+                    <MenuItem mnemonicParsing="false" text="Search User" onAction="#onSearchUserButtonAction"/>
+                    <MenuItem mnemonicParsing="false" text="Create User" onAction="#onCreateUserButtonAction"/>
+                    <MenuItem mnemonicParsing="false" text="Logout" onAction="#onLogoutButtonAction"/>
+                </items>
+            </MenuButton>
             <Separator prefWidth="5.0" visible="false"/>
             <ImageView fx:id="pocIcon" fitHeight="15.0" fitWidth="50">
-                <Image url="@../images/getpoc.png" />
+                <Image url="@../images/getpoc.png"/>
             </ImageView>
-         <BorderPane.margin>
-            <Insets left="5.0" />
-         </BorderPane.margin>
+            <BorderPane.margin>
+                <Insets left="5.0"/>
+            </BorderPane.margin>
         </HBox>
     </left>
     <right>
         <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER_RIGHT">
             <ImageView fx:id="userIcon" fitHeight="20.0" fitWidth="20.0" layoutY="5.0">
-                <Image url="@../images/user.png" />
+                <Image url="@../images/user.png"/>
             </ImageView>
-            <Separator prefWidth="2.0" visible="false" />
-            <Text fx:id="userTypeText" styleClass="user-role" />
-         <BorderPane.margin>
-            <Insets right="5.0" />
-         </BorderPane.margin>
+            <Separator prefWidth="2.0" visible="false"/>
+            <Text fx:id="userTypeText" styleClass="user-role"/>
+            <BorderPane.margin>
+                <Insets right="5.0"/>
+            </BorderPane.margin>
         </HBox>
     </right>
     <stylesheets>
-        <URL value="@../css/top-menu-page-styles.css" />
+        <URL value="@../css/top-menu-page-styles.css"/>
     </stylesheets>
 </BorderPane>

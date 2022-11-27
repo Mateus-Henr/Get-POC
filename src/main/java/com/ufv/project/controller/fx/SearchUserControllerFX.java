@@ -1,9 +1,9 @@
-package com.ufv.project.controller;
+package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
-import com.ufv.project.model.User;
+import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 import java.sql.SQLException;
 import java.util.List;
 
-public class SearchUserController
+public class SearchUserControllerFX
 {
     @FXML
     private TextField searchUsernameTextField;
@@ -24,6 +24,13 @@ public class SearchUserController
 
     @FXML
     private ProgressIndicator progressIndicator;
+
+    private final DataModel dataModel;
+
+    public SearchUserControllerFX(DataModel dataModel)
+    {
+        this.dataModel = dataModel;
+    }
 
     @FXML
     public void initialize()
@@ -41,11 +48,12 @@ public class SearchUserController
             {
                 try (ConnectDB connectDB = new ConnectDB())
                 {
-                    List<User> users = new UserDB(connectDB.getConnection()).queryUsersByContainsID(searchUsernameTextField.getText().trim());
+                    UserDB userDB = new UserDB(connectDB.getConnection());
+                    List<User> users = userDB.queryUsersByContainsID(searchUsernameTextField.getText().trim());
 
                     if (users == null || users.isEmpty())
                     {
-                        return new UserDB(connectDB.getConnection()).queryUsers();
+                        return userDB.queryUsers();
                     }
 
                     return users;
@@ -78,7 +86,20 @@ public class SearchUserController
             return;
         }
 
-        Main.loadStageWithDataModel("update-poc-page-view.fxml", null, "Update POC");
+        if (userType == UserTypesEnum.STUDENT)
+        {
+            dataModel = new DataModel((Student) user);
+        }
+        else if (userType == UserTypesEnum.PROFESSOR)
+        {
+            dataModel = new DataModel((Professor) user);
+        }
+        else if (userType == UserTypesEnum.ADMIN)
+        {
+            dataModel = new DataModel((Administrator) user);
+        }
+
+        ((UpdateUserControllerFX) Main.loadStageWithDataModel("update-user-page-view.fxml", dataModel, "Update User")).setData(user);
     }
 
 }

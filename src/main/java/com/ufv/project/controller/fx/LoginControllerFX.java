@@ -1,4 +1,4 @@
-package com.ufv.project.controller;
+package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
-public class LoginController
+public class LoginControllerFX
 {
     @FXML
     private AnchorPane mainPane;
@@ -119,7 +119,7 @@ public class LoginController
                 return;
             }
 
-            Main.loadStageWithDataModel("analyze-user-page-view.fxml", dataModel, "Create POC");
+            Main.loadStageWithDataModel("search-user-page-view.fxml", dataModel, "Create POC");
             Main.closeCurrentStage(mainPane);
         });
 

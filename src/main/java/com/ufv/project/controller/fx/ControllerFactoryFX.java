@@ -1,49 +1,49 @@
-package com.ufv.project.controller;
+package com.ufv.project.controller.fx;
 
 import com.ufv.project.model.DataModel;
 import javafx.util.Callback;
 
-public class ControllerFactory
+public class ControllerFactoryFX
 {
     public static Callback<Class<?>, Object> controllerFactoryWithDataModel(DataModel dataModel)
     {
         return type ->
         {
-            if (type == LoginController.class)
+            if (type == LoginControllerFX.class)
             {
-                return new LoginController();
+                return new LoginControllerFX();
             }
-            else if (type == CreatePOCController.class)
+            else if (type == CreatePOCControllerFX.class)
             {
-                return new CreatePOCController(dataModel);
+                return new CreatePOCControllerFX(dataModel);
             }
-            else if (type == PersonalInfoController.class)
+            else if (type == PersonalInfoControllerFX.class)
             {
-                return new PersonalInfoController(dataModel);
+                return new PersonalInfoControllerFX(dataModel);
             }
-            else if (type == SearchPOCController.class)
+            else if (type == SearchPOCControllerFX.class)
             {
-                return new SearchPOCController(dataModel);
+                return new SearchPOCControllerFX(dataModel);
             }
             else if (type == TopMenuController.class)
             {
                 return new TopMenuController(dataModel);
             }
-            else if (type == AnalyzePOCController.class)
+            else if (type == AnalyzePOCControllerFX.class)
             {
-                return new AnalyzePOCController(dataModel);
+                return new AnalyzePOCControllerFX(dataModel);
             }
-            else if (type == UpdateUserController.class)
+            else if (type == UpdateUserControllerFX.class)
             {
-                return new UpdateUserController(dataModel);
+                return new UpdateUserControllerFX(dataModel);
             }
             else if (type == UpdatePOCController.class)
             {
                 return new UpdatePOCController(dataModel);
             }
-            else if (type == AnalyzeUserController.class)
+            else if (type == SearchUserControllerFX.class)
             {
-                return new AnalyzeUserController(dataModel);
+                return new SearchUserControllerFX(dataModel);
             }
             else
             {

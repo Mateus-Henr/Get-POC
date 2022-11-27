@@ -8,7 +8,7 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:id="mainPane"
-      fx:controller="com.ufv.project.controller.SearchPOCController"
+      fx:controller="com.ufv.project.controller.fx.SearchPOCControllerFX"
       styleClass="background">
 
     <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
