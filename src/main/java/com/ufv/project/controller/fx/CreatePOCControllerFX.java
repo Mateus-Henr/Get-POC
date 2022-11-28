@@ -3,6 +3,7 @@ package com.ufv.project.controller.fx;
 import com.ufv.project.Main;
 import com.ufv.project.db.*;
 import com.ufv.project.model.*;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +25,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CreatePOCControllerFX
 {
@@ -76,9 +79,6 @@ public class CreatePOCControllerFX
     private TextArea keywordsTextArea;
 
     @FXML
-    private Button choosePDFButton;
-
-    @FXML
     private Text pdfFilepathText;
 
     @FXML
@@ -108,20 +108,20 @@ public class CreatePOCControllerFX
     public void initialize()
     {
         // Disables button until every field has been populated.
-//        addPOCButton.disableProperty().bind(
-//                Bindings.createBooleanBinding(() ->
-//                                        title.getText().trim().isEmpty(),
-//                                title.textProperty())
-////                        .or(authorComboBox.valueProperty().isNull())
-////                        .or(advisorComboBox.valueProperty().isNull())
-////                        .or(coAdvisorComboBox.valueProperty().isNull())
-////                        .or(datePicker.valueProperty().isNull())
-////                        .or(fieldComboBox.valueProperty().isNull())
-////                        .or(Bindings.isEmpty(keywordList.getItems()))
-//                        .or(Bindings.createBooleanBinding(() ->
-//                                        pdfFilepathText.getText().trim().isEmpty(),
-//                                pdfFilepathText.textProperty()))
-//        );
+        addPOCButton.disableProperty().bind(
+                Bindings.createBooleanBinding(() ->
+                                        title.getText().trim().isEmpty(),
+                                title.textProperty())
+                        .or(advisorComboBox.valueProperty().isNull())
+                        .or(datePicker.valueProperty().isNull())
+                        .or(fieldComboBox.valueProperty().isNull())
+                        .or(Bindings.createBooleanBinding(() ->
+                                                keywordsTextArea.getText().trim().isEmpty(),
+                                        keywordsTextArea.textProperty())
+                                .or(Bindings.createBooleanBinding(() ->
+                                                pdfFilepathText.getText().trim().isEmpty(),
+                                        pdfFilepathText.textProperty())))
+        );
 
         ObservableList<Professor> professors = null;
 

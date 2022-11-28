@@ -29,21 +29,7 @@ public class Main extends Application
             }
         }).start();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/ufv/project/view/login-page-view.fxml"));
-
-        try
-        {
-            Scene scene = new Scene(fxmlLoader.load());
-
-            stage.setScene(scene);
-            stage.setTitle("Get-POC App");
-            stage.setResizable(false);
-            stage.show();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        loadStageWithDataModel("login-page-view.fxml", null, "Get-POC App");
     }
 
     public static void main(String[] args)
@@ -64,7 +50,7 @@ public class Main extends Application
 
             stage.setScene(scene);
             stage.setTitle(stageTitle);
-            stage.setResizable(false);
+//            stage.setResizable(false);
             stage.show();
         }
         catch (IOException e)

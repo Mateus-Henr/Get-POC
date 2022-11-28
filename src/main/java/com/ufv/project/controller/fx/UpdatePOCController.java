@@ -169,7 +169,7 @@ public class UpdatePOCController
                             Arrays.stream(keywordsTextArea.getText().split(" ")).toList(),
                             summaryTextArea.getText().trim(),
                             fieldComboBox.getValue(),
-                            new PDF(0, pdfFilepath, LocalDate.now()),
+                            new PDF(poc.getPdf().getId(), pdfFilepath, LocalDate.now()),
                             ((Professor) new UserDB(connectDB.getConnection()).queryUserByID(dataModel.getUsername())),
                             advisorComboBox.getValue(),
                             coAdvisors
@@ -256,10 +256,10 @@ public class UpdatePOCController
             checkMenuItemUser(coAdvisorMenuButton.getItems(), poc.getCoAdvisors());
 
             advisorComboBox.setItems(FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).queryProfessors()));
-            advisorComboBox.setValue(poc.getAdvisor());
+            advisorComboBox.getSelectionModel().select(findIndex(advisorComboBox.getItems(), poc.getAdvisor()));
 
             fieldComboBox.setItems(FXCollections.observableList(new FieldDB(connectDB.getConnection()).queryFields()));
-            fieldComboBox.setValue(poc.getField());
+            fieldComboBox.getSelectionModel().select(findIndex(fieldComboBox.getItems(), poc.getField()));
         }
         catch (SQLException e)
         {
@@ -267,11 +267,38 @@ public class UpdatePOCController
         }
     }
 
+    private int findIndex(List<? extends User> userList, User user)
+    {
+        for (int i = 0; i < userList.size(); i++)
+        {
+            if (userList.get(i).getUsername().equals(user.getUsername()))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private int findIndex(List<Field> userList, Field field)
+    {
+        for (int i = 0; i < userList.size(); i++)
+        {
+            if (userList.get(i).getId() == field.getId())
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     private void checkMenuItemUser(List<MenuItem> allItems, List<? extends User> userList)
     {
         for (MenuItem menuItem : allItems)
         {
-            userList.stream().map(User::getUsername).forEach(s -> ((CheckMenuItem) menuItem).setSelected(s.equals(menuItem.getId())));
+            userList.stream().map(User::getUsername)
+                    .forEach(s -> ((CheckMenuItem) menuItem).setSelected(s.equals(menuItem.getId()) || ((CheckMenuItem) menuItem).isSelected()));
         }
     }
 

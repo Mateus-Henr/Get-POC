@@ -180,7 +180,7 @@ public class UpdateUserControllerFX
                         for (MenuItem menuItem : professorSubjects.getItems())
                         {
                             markedSubjects.stream().map(Subject::getId).forEach(integer -> ((CheckMenuItem) menuItem)
-                                    .setSelected(integer == Integer.parseInt(menuItem.getId())));
+                                    .setSelected(integer == Integer.parseInt(menuItem.getId()) || ((CheckMenuItem) menuItem).isSelected()));
                         }
                     }
 

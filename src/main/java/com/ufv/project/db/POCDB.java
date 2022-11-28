@@ -210,20 +210,34 @@ public class POCDB
 
             // Update Keywords
             POC_has_KeywordDB poc_has_keywordDB = new POC_has_KeywordDB(conn);
-            poc_has_keywordDB.deletePOC_has_Keyword(poc.getId());
 
-            for (String keyword : poc.getKeywords())
+            if (!poc_has_keywordDB.queryKeywordsByPOCID(poc.getId()).isEmpty())
             {
-                poc_has_keywordDB.insertPOC_has_Keyword(poc.getId(), keyword);
+                poc_has_keywordDB.deletePOC_has_Keyword(poc.getId());
+            }
+
+            if (poc.getKeywords() == null || !poc.getKeywords().isEmpty())
+            {
+                for (String keyword : poc.getKeywords())
+                {
+                    poc_has_keywordDB.insertPOC_has_Keyword(poc.getId(), keyword);
+                }
             }
 
             // Update Co-Advisors
             Professor_co_advises_pocDB professor_co_advises_pocDB = new Professor_co_advises_pocDB(conn);
-            professor_co_advises_pocDB.deleteProfessor_co_advises_poc(poc.getId());
 
-            for (Professor professor : poc.getCoAdvisors())
+            if (!professor_co_advises_pocDB.queryProfessorsByPocId(poc.getId()).isEmpty())
             {
-                professor_co_advises_pocDB.insertProfessor_co_advises_poc(professor.getUsername(), poc.getId());
+                professor_co_advises_pocDB.deleteProfessor_co_advises_poc(poc.getId());
+            }
+
+            if (poc.getCoAdvisors() != null || !poc.getCoAdvisors().isEmpty())
+            {
+                for (Professor professor : poc.getCoAdvisors())
+                {
+                    professor_co_advises_pocDB.insertProfessor_co_advises_poc(professor.getUsername(), poc.getId());
+                }
             }
 
             // Update Authors
