@@ -76,6 +76,9 @@ public class CreatePOCControllerFX
     private ComboBox<Field> fieldComboBox;
 
     @FXML
+    private ComboBox<Professor> registrantComboBox;
+
+    @FXML
     private TextArea keywordsTextArea;
 
     @FXML
@@ -115,6 +118,7 @@ public class CreatePOCControllerFX
                         .or(advisorComboBox.valueProperty().isNull())
                         .or(datePicker.valueProperty().isNull())
                         .or(fieldComboBox.valueProperty().isNull())
+                        .or(registrantComboBox.valueProperty().isNull())
                         .or(Bindings.createBooleanBinding(() ->
                                                 keywordsTextArea.getText().trim().isEmpty(),
                                         keywordsTextArea.textProperty())
@@ -141,6 +145,7 @@ public class CreatePOCControllerFX
         if (professors != null)
         {
             advisorComboBox.setItems(professors);
+            registrantComboBox.setItems(professors);
             coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
         }
     }
@@ -204,7 +209,7 @@ public class CreatePOCControllerFX
                             summaryTextArea.getText().trim(),
                             fieldComboBox.getValue(),
                             new PDF(0, pdfFilepath, LocalDate.now()),
-                            ((Professor) new UserDB(connectDB.getConnection()).queryUserByID(dataModel.getUsername())),
+                            registrantComboBox.getValue(),
                             advisorComboBox.getValue(),
                             coAdvisors
                     ));

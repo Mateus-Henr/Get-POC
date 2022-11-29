@@ -30,7 +30,8 @@
                     styleClass="date-picker"/>
         <TextArea fx:id="keywordsTextArea" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
         <TextArea fx:id="summaryTextArea" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
-        <Button fx:id="choosePDFButton" text="Choose..." onMouseClicked="#handlePDFChoosing" GridPane.rowIndex="0"
+        <ComboBox fx:id="registrantComboBox" promptText="Registrant" GridPane.rowIndex="4" GridPane.columnIndex="2"/>
+        <Button text="Choose..." onMouseClicked="#handlePDFChoosing" GridPane.rowIndex="0"
                 GridPane.columnIndex="2"/>
         <Text fx:id="pdfFilepathText" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
         <Button fx:id="addPOCButton" text="Add POC" onMouseClicked="#handlePOCAdding" GridPane.rowIndex="2"

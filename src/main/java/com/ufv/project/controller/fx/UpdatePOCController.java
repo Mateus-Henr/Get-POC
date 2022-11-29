@@ -5,6 +5,7 @@ import com.ufv.project.db.*;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -72,10 +73,10 @@ public class UpdatePOCController
     private ComboBox<Field> fieldComboBox;
 
     @FXML
-    private TextArea keywordsTextArea;
+    private ComboBox<Professor> registrantComboBox;
 
     @FXML
-    private Button choosePDFButton;
+    private TextArea keywordsTextArea;
 
     @FXML
     private Text pdfFilepathText;
@@ -170,7 +171,7 @@ public class UpdatePOCController
                             summaryTextArea.getText().trim(),
                             fieldComboBox.getValue(),
                             new PDF(poc.getPdf().getId(), pdfFilepath, LocalDate.now()),
-                            ((Professor) new UserDB(connectDB.getConnection()).queryUserByID(dataModel.getUsername())),
+                            registrantComboBox.getValue(),
                             advisorComboBox.getValue(),
                             coAdvisors
                     ));
@@ -252,14 +253,19 @@ public class UpdatePOCController
             authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new StudentDB(connectDB.getConnection()).querStudents()));
             checkMenuItemUser(authorMenuButton.getItems(), poc.getAuthors());
 
-            coAdvisorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new ProfessorDB(connectDB.getConnection()).queryProfessors()));
+            ObservableList<Professor> professors = FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).queryProfessors());
+
+            coAdvisorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(professors));
             checkMenuItemUser(coAdvisorMenuButton.getItems(), poc.getCoAdvisors());
 
-            advisorComboBox.setItems(FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).queryProfessors()));
+            advisorComboBox.setItems(professors);
             advisorComboBox.getSelectionModel().select(findIndex(advisorComboBox.getItems(), poc.getAdvisor()));
 
             fieldComboBox.setItems(FXCollections.observableList(new FieldDB(connectDB.getConnection()).queryFields()));
             fieldComboBox.getSelectionModel().select(findIndex(fieldComboBox.getItems(), poc.getField()));
+
+            registrantComboBox.setItems(professors);
+            registrantComboBox.getSelectionModel().select(findIndex(registrantComboBox.getItems(), poc.getRegistrant()));
         }
         catch (SQLException e)
         {
