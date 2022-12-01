@@ -154,7 +154,7 @@ public class CreateUserControllerFX
                 {
                     try (ConnectDB connectDB = new ConnectDB())
                     {
-                        return initializeCheckMenuItemsFromList(new SubjectDB(connectDB.getConnection()).querySubjects());
+                        return CreateUserController.initializeCheckMenuItemsFromList(new SubjectDB(connectDB.getConnection()).querySubjects());
                     }
                 }
             };
@@ -270,21 +270,5 @@ public class CreateUserControllerFX
         createUserButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
     }
 
-    public List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList)
-    {
-        List<MenuItem> items = new ArrayList<>();
-
-        for (Subject subject : subjectList)
-        {
-            CheckMenuItem menuItem = new CheckMenuItem();
-
-            menuItem.setId(String.valueOf(subject.getId()));
-            menuItem.setText(subject.getName() + " - " + subject.getDescription());
-
-            items.add(menuItem);
-        }
-
-        return items;
-    }
 
 }

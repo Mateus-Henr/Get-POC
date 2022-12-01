@@ -1,5 +1,6 @@
 package com.ufv.project.controller.fx;
 
+import com.ufv.project.controller.java.LoginController;
 import com.ufv.project.Main;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
@@ -99,20 +100,7 @@ public class LoginControllerFX
             passwordField.getStyleClass().removeIf(s -> s.equals(INVALID_BOX_CSS_CLASS));
             invalidText.setVisible(false);
 
-            DataModel dataModel = null;
-
-            if (user.getUserType() == UserTypesEnum.STUDENT)
-            {
-                dataModel = new DataModel((Student) user);
-            }
-            else if (user.getUserType() == UserTypesEnum.PROFESSOR)
-            {
-                dataModel = new DataModel((Professor) user);
-            }
-            else if (user.getUserType() == UserTypesEnum.ADMIN)
-            {
-                dataModel = new DataModel((Administrator) user);
-            }
+            DataModel dataModel = LoginController.setDatamodelFromUsertype(user);
 
             if (dataModel == null)
             {

@@ -6,7 +6,7 @@
 <?import java.net.URL?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.ufv.project.controller.fx.UpdatePOCController"
+      fx:controller="com.ufv.project.controller.fx.UpdatePOCControllerFX"
       fx:id="mainPane"
       styleClass="background">
 

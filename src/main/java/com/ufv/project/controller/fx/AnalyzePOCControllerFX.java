@@ -56,7 +56,7 @@ public class AnalyzePOCControllerFX
     private Hyperlink pdfFilepathText;
 
     @FXML
-    private UpdatePOCController updatePOCControllerFX;
+    private UpdatePOCControllerFX updatePOCControllerFX;
 
     private URI pdfPath;
 
@@ -93,7 +93,7 @@ public class AnalyzePOCControllerFX
     public void onUpdatePOCButtonClicked()
     {
         Main.closeCurrentStage(mainPane);
-        ((UpdatePOCController) Main.loadStageWithDataModel("update-poc-page-view.fxml", dataModel, "Update POC")).setPOCData(poc);
+        ((UpdatePOCControllerFX) Main.loadStageWithDataModel("update-poc-page-view.fxml", dataModel, "Update POC")).setPOCData(poc);
     }
 
     public void setData(POC poc)

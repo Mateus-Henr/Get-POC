@@ -1,5 +1,6 @@
 package com.ufv.project.controller.fx;
 
+import com.ufv.project.controller.java.UpdatePOCController;
 import com.ufv.project.Main;
 import com.ufv.project.db.*;
 import com.ufv.project.model.*;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class UpdatePOCController
+public class UpdatePOCControllerFX
 {
     // ---------- MainPane ----------
     @FXML
@@ -101,7 +102,7 @@ public class UpdatePOCController
             "ufv" + File.separator +
             "project" + File.separator + "pdfs" + File.separator;
 
-    public UpdatePOCController(DataModel dataModel)
+    public UpdatePOCControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }
@@ -259,13 +260,13 @@ public class UpdatePOCController
             checkMenuItemUser(coAdvisorMenuButton.getItems(), poc.getCoAdvisors());
 
             advisorComboBox.setItems(professors);
-            advisorComboBox.getSelectionModel().select(findIndex(advisorComboBox.getItems(), poc.getAdvisor()));
+            advisorComboBox.getSelectionModel().select(UpdatePOCController.findIndex(advisorComboBox.getItems(), poc.getAdvisor()));
 
             fieldComboBox.setItems(FXCollections.observableList(new FieldDB(connectDB.getConnection()).queryFields()));
-            fieldComboBox.getSelectionModel().select(findIndex(fieldComboBox.getItems(), poc.getField()));
+            fieldComboBox.getSelectionModel().select(UpdatePOCController.findIndex(fieldComboBox.getItems(), poc.getField()));
 
             registrantComboBox.setItems(professors);
-            registrantComboBox.getSelectionModel().select(findIndex(registrantComboBox.getItems(), poc.getRegistrant()));
+            registrantComboBox.getSelectionModel().select(UpdatePOCController.findIndex(registrantComboBox.getItems(), poc.getRegistrant()));
         }
         catch (SQLException e)
         {
@@ -273,31 +274,7 @@ public class UpdatePOCController
         }
     }
 
-    private int findIndex(List<? extends User> userList, User user)
-    {
-        for (int i = 0; i < userList.size(); i++)
-        {
-            if (userList.get(i).getUsername().equals(user.getUsername()))
-            {
-                return i;
-            }
-        }
 
-        return -1;
-    }
-
-    private int findIndex(List<Field> userList, Field field)
-    {
-        for (int i = 0; i < userList.size(); i++)
-        {
-            if (userList.get(i).getId() == field.getId())
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
 
     private void checkMenuItemUser(List<MenuItem> allItems, List<? extends User> userList)
     {

@@ -1,6 +1,7 @@
 package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
+import com.ufv.project.controller.java.SearchUserController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.model.*;
@@ -92,22 +93,7 @@ public class SearchUserControllerFX
             return;
         }
 
-        UserTypesEnum userType = user.getUserType();
-
-        DataModel dataModel = null;
-
-        if (userType == UserTypesEnum.STUDENT)
-        {
-            dataModel = new DataModel((Student) user);
-        }
-        else if (userType == UserTypesEnum.PROFESSOR)
-        {
-            dataModel = new DataModel((Professor) user);
-        }
-        else if (userType == UserTypesEnum.ADMIN)
-        {
-            dataModel = new DataModel((Administrator) user);
-        }
+        DataModel dataModel1 = SearchUserController.setDatamodelFromUserType(user);
 
         Main.loadStageWithDataModel("update-user-page-view.fxml", dataModel, "Update User");
     }

@@ -37,9 +37,9 @@ public class ControllerFactoryFX
             {
                 return new UpdateUserControllerFX(dataModel);
             }
-            else if (type == UpdatePOCController.class)
+            else if (type == UpdatePOCControllerFX.class)
             {
-                return new UpdatePOCController(dataModel);
+                return new UpdatePOCControllerFX(dataModel);
             }
             else if (type == SearchUserControllerFX.class)
             {
