@@ -9,7 +9,7 @@ import java.util.List;
 public class PDFDB
 {
     /*
-     * TB_PDF table columns names
+     * Table PDF constants.
      */
 
     private static final String TABLE_PDF = "TB_PDF";
@@ -17,9 +17,17 @@ public class PDFDB
     private static final String COLUMN_PDF_PATH = "Path";
     private static final String COLUMN_PDF_CREATION_DATE = "Creation_Date";
 
+    /*
+     * Table PDF constants indexes.
+     */
+
     private static final int COLUMN_PDF_ID_INDEX = 1;
     private static final int COLUMN_PDF_CREATION_DATE_INDEX = 2;
     private static final int COLUMN_PDF_PATH_INDEX = 3;
+
+    /*
+     * Table PDF queries.
+     */
 
     private static final String QUERY_PDF = "SELECT * FROM " + TABLE_PDF + " WHERE " + COLUMN_PDF_ID + " = ?";
     private static final String QUERY_PDFS = "SELECT * FROM " + TABLE_PDF;
@@ -27,12 +35,22 @@ public class PDFDB
     private static final String UPDATE_PDF = "UPDATE " + TABLE_PDF + " SET " + COLUMN_PDF_PATH + " = ?, " + COLUMN_PDF_CREATION_DATE + " = ? WHERE " + COLUMN_PDF_ID + " = ?";
     private static final String DELETE_PDF = "DELETE FROM " + TABLE_PDF + " WHERE " + COLUMN_PDF_ID + " = ?";
 
+    /*
+     * Connection to the database.
+     */
     private final Connection conn;
 
     public PDFDB(Connection conn)
     {
         this.conn = conn;
     }
+
+    /*
+     * Query a PDF by its ID.
+     *
+     * @param    id     ID of the PDF to query.
+     * @return   PDF with the given ID.
+     */
 
     public PDF queryPDFByID(int id) throws SQLException
     {
@@ -52,6 +70,12 @@ public class PDFDB
         }
     }
 
+    /*
+     * Query all PDFs.
+     *
+     * @return   list of all PDFs.
+     */
+
     public List<PDF> queryPDFs() throws SQLException
     {
         try (PreparedStatement queryPDFs = conn.prepareStatement(QUERY_PDFS);
@@ -67,6 +91,13 @@ public class PDFDB
             return pdfs;
         }
     }
+
+    /*
+     * Insert a PDF.
+     *
+     * @param    pdfToInsert     PDF to insert.
+     * @return   id of the inserted PDF.
+     */
 
     public int insertPDF(PDF pdfToInsert) throws SQLException
     {
@@ -93,6 +124,13 @@ public class PDFDB
         }
     }
 
+    /*
+    * Delete a PDF.
+    *
+    * @param    pdfToDelete     PDF to delete.
+    * @return   PDF deleted.
+    */
+
     public PDF deletePDF(PDF pdfToDelete) throws SQLException
     {
         try (PreparedStatement deletePDF = conn.prepareStatement(DELETE_PDF))
@@ -107,6 +145,13 @@ public class PDFDB
             return pdfToDelete;
         }
     }
+
+    /*
+    * Update a PDF.
+    *
+    * @param    newPDF     PDF to update.
+    * @return   PDF before the update.
+    */
 
     public PDF updatePDF(PDF newPDF) throws SQLException
     {

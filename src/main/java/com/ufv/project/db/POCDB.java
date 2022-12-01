@@ -13,7 +13,9 @@ import static com.ufv.project.db.StudentDB.*;
 
 public class POCDB
 {
-    /*TB_POC table columns names*/
+    /*
+    * Table POC column names constants
+    */
 
     private static final String TABLE_POC = "TB_POC";
     private static final String COLUMN_POC_ID = "ID";
@@ -25,6 +27,10 @@ public class POCDB
     private static final String COLUMN_POC_TEACHER_REGISTRANT_ID = "Teacher_Registrant";
     private static final String COLUMN_POC_TEACHER_ADVISOR_ID = "Teacher_Advisor";
 
+    /*
+    * Table POC column index constants
+    */
+
     private static final int COLUMN_POC_ID_INDEX = 1;
     private static final int COLUMN_POC_TITLE_INDEX = 2;
     private static final int COLUMN_POC_DEFENSE_DATE_INDEX = 3;
@@ -33,6 +39,10 @@ public class POCDB
     private static final int COLUMN_POC_PDF_ID_INDEX = 6;
     private static final int COLUMN_POC_TEACHER_REGISTRANT_ID_INDEX = 7;
     private static final int COLUMN_POC_TEACHER_ADVISOR_ID_INDEX = 8;
+
+    /*
+    * Table POC queries
+    */
 
     private static final String QUERY_POC = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_ID + " = ?";
     private static final String QUERY_POCs = "SELECT * FROM " + TABLE_POC;
@@ -45,11 +55,17 @@ public class POCDB
     private static final String SEARCH_POC_BY_ADVISOR = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_TEACHER_ADVISOR_ID + " LIKE ?";
     private static final String SEARCH_POC_BY_FIELD = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_FIELD_ID + " LIKE ?";
     private final Connection conn;
-
     public POCDB(Connection conn)
     {
         this.conn = conn;
     }
+
+    /*
+    * This method queries the database for a POC with the given ID.
+    *
+    * @param    id    the ID of the POC to be queried.
+    * @return   POC object with the given ID.
+    */
 
     public POC queryPOC(int id) throws SQLException
     {
@@ -86,6 +102,13 @@ public class POCDB
             }
         }
     }
+
+    /*
+    * This method inserts a POC object into the database.
+    *
+    * @param    poc    the POC object to be inserted.
+    * @return   id of the inserted POC.
+    */
 
     public int insertPOC(POC poc) throws SQLException
     {
@@ -153,6 +176,13 @@ public class POCDB
         }
     }
 
+    /*
+    * This method deletes a POC object from the database.
+    *
+    * @param    poc    the POC object to be deleted.
+    * @return   POC object that was deleted.
+    */
+
     public POC deletePOC(int id) throws SQLException
     {
         POC foundPOC = queryPOC(id);
@@ -194,6 +224,13 @@ public class POCDB
             throw new SQLException(e);
         }
     }
+
+    /*
+    * This method updates a POC object in the database.
+    *
+    * @param    poc    the POC object to be updated.
+    * @return   POC object that was updated.
+    */
 
     public POC updatePOC(POC poc) throws SQLException
     {
@@ -332,6 +369,12 @@ public class POCDB
         }
     }
 
+    /*
+    * This method queries the database for all POCs.
+    *
+    * @return ArrayList of POC objects.
+    */
+
     public List<POC> queryAllPOCs() throws SQLException
     {
         try (PreparedStatement queryPOCs = conn.prepareStatement(QUERY_POCs);
@@ -364,6 +407,14 @@ public class POCDB
             return pocs;
         }
     }
+
+    /*
+    * This method is used to search pocs in the database.
+    *
+    * @param  searchTypesEnum   the type of search to be performed.
+    * @param  stringToSearchFor the string to search for.
+    * @return ArrayList of POC objects.
+    */
 
     public List<POC> queryPOCsByType(HashSet<POCSearchTypesEnum> searchTypesEnums, String stringToSearchFor) throws SQLException
     {

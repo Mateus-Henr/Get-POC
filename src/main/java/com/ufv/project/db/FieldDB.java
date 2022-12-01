@@ -9,14 +9,23 @@ import java.util.List;
 public class FieldDB
 {
     /*
-     *   TB_Field table column's names
-     */
+    * Table Field constants.
+    */
+
     private static final String TABLE_FIELD = "tb_field";
     private static final String COLUMN_FIELD_ID = "ID";
     private static final String COLUMN_FIELD_NAME = "Name";
 
+    /*
+    * Table Field constants indexes.
+    */
+
     private static final int COLUMN_FIELD_ID_INDEX = 1;
     private static final int COLUMN_FIELD_NAME_INDEX = 2;
+
+    /*
+    * Table Field queries.
+    */
 
     private static final String QUERY_FIELD = "SELECT * FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
     private static final String QUERY_FIELDS = "SELECT * FROM " + TABLE_FIELD;
@@ -24,12 +33,22 @@ public class FieldDB
     private static final String UPDATE_FIELD_NAME = "UPDATE " + TABLE_FIELD + " SET " + COLUMN_FIELD_NAME + " = ? WHERE " + COLUMN_FIELD_ID + " = ?";
     private static final String DELETE_FIELD = "DELETE FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
 
+    /*
+    * Connection to the database.
+    */
     private final Connection conn;
 
     public FieldDB(Connection conn)
     {
         this.conn = conn;
     }
+
+    /*
+    * Query a field by its ID.
+    *
+    * @param    id     ID of the field to query.
+    * @return   field with the given ID.
+    */
 
     public Field queryFieldByID(int id) throws SQLException
     {
@@ -50,6 +69,12 @@ public class FieldDB
         }
     }
 
+    /*
+    * Query all fields.
+    *
+    * @return   a list with all fields.
+    */
+
     public List<Field> queryFields() throws SQLException
     {
         try (PreparedStatement queryFields = conn.prepareStatement(QUERY_FIELDS);
@@ -66,6 +91,13 @@ public class FieldDB
             return fields;
         }
     }
+
+    /*
+    * Insert a new field object into the database.
+    *
+    * @param    field   field to insert
+    * @return   the id of the inserted field.
+    */
 
     public int insertField(Field field) throws SQLException
     {
@@ -91,6 +123,13 @@ public class FieldDB
         }
     }
 
+    /*
+    * Delete a Field object from the database.
+    *
+    * @param    field   field to delete.
+    * @returns  id of the deleted field.
+    */
+
     public Field deleteFieldByID(int id) throws SQLException
     {
         Field oldField = queryFieldByID(id);
@@ -112,6 +151,13 @@ public class FieldDB
             return oldField;
         }
     }
+
+    /*
+    * Update a field object in the database.
+    *
+    * @param    newField   field to update.
+    * @return   Field before the update.
+    */
 
     public Field updateField(Field newField) throws SQLException
     {

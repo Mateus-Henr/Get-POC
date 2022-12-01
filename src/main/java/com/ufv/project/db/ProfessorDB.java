@@ -12,26 +12,37 @@ import java.util.List;
 
 public class ProfessorDB
 {
+    /* Table Professor constants. */
     private static final String TABLE_PROFESSOR = "TB_Professor";
-
     private static final String COLUMN_PROFESSOR_EMAIL = "Email";
     private static final String COLUMN_USER_PROFESSOR_ID = "TB_User_ID";
 
+    /* Table Professor constants indexes. */
     private static final int COLUMN_PROFESSOR_EMAIL_INDEX = 1;
     private static final int COLUMN_USER_PROFESSOR_ID_INDEX = 2;
 
+    /* Table Professor queries. */
+
     private static final String QUERY_PROFESSOR = "SELECT * FROM " + TABLE_PROFESSOR + " WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
-    private static final String QUERY_PROFESSORS = "SELECT * FROM " + TABLE_PROFESSOR;
     private static final String INSERT_PROFESSOR = "INSERT INTO " + TABLE_PROFESSOR + " (" + COLUMN_PROFESSOR_EMAIL + ", " + COLUMN_USER_PROFESSOR_ID + ") VALUES (?, ?)";
     private static final String UPDATE_PROFESSOR = "UPDATE " + TABLE_PROFESSOR + " SET " + COLUMN_PROFESSOR_EMAIL + " = ? WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
     private static final String DELETE_PROFESSOR = "DELETE FROM " + TABLE_PROFESSOR + " WHERE " + COLUMN_USER_PROFESSOR_ID + " = ?";
 
+    /* Connection to the database. */
     private final Connection conn;
 
     public ProfessorDB(Connection conn)
     {
         this.conn = conn;
     }
+
+    /* Query a Professor by its ID.
+     *
+     * @param   username    ID of the Professor to query.
+     * @param   password    password of the Professor to query.
+     * @param   name        name of the Professor to query.
+     * @return  Professor with the given parameters.
+     */
 
     protected Professor queryProfessor(String username, String password, String name) throws SQLException
     {
@@ -57,6 +68,11 @@ public class ProfessorDB
         }
     }
 
+    /* Insert a Professor into the database.
+     *
+     * @param   professor   Professor to insert.
+     */
+
     protected String insertProfessor(Professor professor) throws SQLException
     {
         try (PreparedStatement insertProfessor = conn.prepareStatement(INSERT_PROFESSOR))
@@ -79,6 +95,14 @@ public class ProfessorDB
             return professor.getUsername();
         }
     }
+
+    /* Delete a Professor from the database.
+     *
+     * @param   username    ID of the Professor to delete.
+     * @param   password    password of the Professor to delete.
+     * @param   name        name of the Professor to delete.
+     * @return  Professor with the given parameters.
+     */
 
     protected Professor deleteProfessor(String username, String name, String password) throws SQLException
     {
@@ -109,6 +133,11 @@ public class ProfessorDB
         }
     }
 
+    /* Update a Professor from the database.
+     *
+     * @param   professor   Professor to update.
+     * @return  updated Professor.
+     */
     protected Professor updateProfessor(Professor newProfessor) throws SQLException
     {
         Professor oldProfessor = queryProfessor(newProfessor.getUsername(), newProfessor.getName(), newProfessor.getPassword());
@@ -154,6 +183,11 @@ public class ProfessorDB
             return newProfessor;
         }
     }
+
+    /* Query all Professors from the database.
+     *
+     * @return  List of all Professors.
+     */
 
     public List<Professor> queryProfessors() throws SQLException
     {

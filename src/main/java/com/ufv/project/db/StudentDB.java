@@ -8,16 +8,21 @@ import java.util.List;
 
 public class StudentDB
 {
+    /* Table Student constants. */
     public static final String TABLE_STUDENT = "TB_Student";
     private static final String COLUMN_STUDENT_EMAIL = "Email";
     private static final String COLUMN_STUDENT_REGISTRATION = "Registration";
     public static final String COLUMN_STUDENT_POC = "POC";
     public static final String COLUMN_USER_STUDENT_ID = "TB_User_ID";
 
+    /* Table Student constants indexes. */
+
     private static final int COLUMN_STUDENT_EMAIL_INDEX = 1;
     private static final int COLUMN_STUDENT_REGISTRATION_INDEX = 2;
     private static final int COLUMN_STUDENT_POC_INDEX = 3;
     private static final int COLUMN_USER_STUDENT_ID_INDEX = 4;
+
+    /* Table Student queries. */
 
     private static final String QUERY_STUDENT = "SELECT * FROM " + TABLE_STUDENT + " WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
     private static final String QUERY_STUDENTS = "SELECT * FROM " + TABLE_STUDENT;
@@ -30,6 +35,7 @@ public class StudentDB
     private static final String SET_STUDENT_POC_NULL = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_POC + " = NULL WHERE " + COLUMN_STUDENT_POC + " = ?";
     private static final String SET_STUDENT_POC = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_POC + " = ? WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
 
+    /* Connection to the database. */
     private final Connection conn;
 
 
@@ -38,6 +44,12 @@ public class StudentDB
         this.conn = conn;
     }
 
+    /* Query a Student.
+     * @param   username   username of the Student to query.
+     * @param   password   password of the Student to query.
+     * @param   name       name of the Student to query.
+     * @return  Student with the given username, password and name.
+     */
     protected Student queryStudent(String username, String name, String password) throws SQLException
     {
         try (PreparedStatement queryStudent = conn.prepareStatement(QUERY_STUDENT))
@@ -62,6 +74,11 @@ public class StudentDB
         }
     }
 
+    /* Query Students by POC ID.
+     * @param   POCID   id of the poc that the students are associated with.
+     * @return  List of Students with the given POC ID.
+     */
+
     public List<Student> queryStudentsByPocID(int POCID) throws SQLException
     {
         return new UserDB(conn).queryUsers().stream()
@@ -70,6 +87,11 @@ public class StudentDB
                 .filter(student -> student.getPOCID() == POCID)
                 .toList();
     }
+
+    /* Insert a Student.
+     * @param   student   Student to insert.
+     * @return  username of the inserted Student.
+     */
 
     protected String insertStudent(Student student) throws SQLException
     {
@@ -98,6 +120,12 @@ public class StudentDB
         }
     }
 
+    /* Delete a Student.
+     * @param   username   username of the Student to delete.
+     * @param   password   password of the Student to delete.
+     * @param   name       name of the Student to delete.
+     * @return  Deleted Student.
+     */
 
     protected Student deleteStudent(String username, String name, String password) throws SQLException
     {
@@ -120,6 +148,11 @@ public class StudentDB
             return foundStudent;
         }
     }
+
+    /* Update a Student.
+     * @param   newStudent   Student to update.
+     * @return  Updated Student.
+     */
 
     protected Student updateStudent(Student newStudent) throws SQLException
     {
@@ -165,6 +198,10 @@ public class StudentDB
         }
     }
 
+    /* Set a Student POC null.
+     * @param   POCID      id of the POC to set.
+     */
+
     protected void setStudentPOCNull(int POCID) throws SQLException
     {
         try (PreparedStatement setStudentPOCNull = conn.prepareStatement(SET_STUDENT_POC_NULL))
@@ -177,6 +214,11 @@ public class StudentDB
             }
         }
     }
+
+    /* Set a Student POC.
+     * @param   POCID      id of the POC to set.
+     * @param   studentID  id of the student to set.
+     */
 
     protected void setStudentPOC(String studentID, int POCID) throws SQLException
     {
@@ -191,6 +233,11 @@ public class StudentDB
             }
         }
     }
+
+    /* Query Students by POC ID.
+     * @param   POCID   id of the poc that the students are associated with.
+     * @return  List of Students with the given POC ID.
+     */
 
     public List<Student> querStudents() throws SQLException
     {

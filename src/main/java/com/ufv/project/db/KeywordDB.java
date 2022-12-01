@@ -6,24 +6,35 @@ import java.util.List;
 
 public class KeywordDB
 {
+
+    /* Table Keyword constants. */
     private static final String TABLE_KEYWORD = "TB_keyword";
 
     private static final String COLUMN_KEYWORDS_WORD = "word";
 
+    /* Table Keyword constants indexes. */
     private static final int COLUMN_KEYWORDS_WORD_INDEX = 1;
 
+    /* Table Keyword queries. */
     private static final String QUERY_KEYWORD = "SELECT * FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORDS_WORD + " = ?";
     private static final String QUERY_KEYWORDS = "SELECT * FROM " + TABLE_KEYWORD;
     private static final String INSERT_KEYWORD = "INSERT INTO " + TABLE_KEYWORD + " (" + COLUMN_KEYWORDS_WORD + ") VALUES (?)";
     private static final String UPDATE_KEYWORD = "UPDATE " + TABLE_KEYWORD + " SET " + COLUMN_KEYWORDS_WORD + " = ?" + " WHERE " + COLUMN_KEYWORDS_WORD + " = ?";
     private static final String DELETE_KEYWORD = "DELETE FROM " + TABLE_KEYWORD + " WHERE " + COLUMN_KEYWORDS_WORD + " = ?";
 
+    /* Connection to the database. */
     private final Connection conn;
 
     public KeywordDB(Connection conn)
     {
         this.conn = conn;
     }
+
+    /* Query a keyword by its id.
+    *
+    * @param    word     word of the keyword to query.
+    * @return   keyword with the given word.
+    */
 
     public String queryKeywordByID(String word) throws SQLException
     {
@@ -43,6 +54,11 @@ public class KeywordDB
         }
     }
 
+    /* Query all keywords.
+    *
+    * @return   list of all keywords.
+    */
+
     public List<String> queryKeywords() throws SQLException
     {
         try (PreparedStatement queryKeywords = conn.prepareStatement(QUERY_KEYWORDS);
@@ -59,6 +75,12 @@ public class KeywordDB
         }
     }
 
+    /* Insert a keyword.
+    *
+    * @param    keyword     word of the keyword to insert.
+    * @return   a word of the inserted keyword.
+     */
+
     public String insertKeyword(String keyword) throws SQLException
     {
         try (PreparedStatement insertKeyword = conn.prepareStatement(INSERT_KEYWORD, Statement.RETURN_GENERATED_KEYS))
@@ -74,6 +96,13 @@ public class KeywordDB
         }
     }
 
+    /*
+    * Delete a keyword.
+    *
+    * @param    id     id string of the keyword to delete.
+    * @return   deleted keyword.
+     */
+
     public String deleteKeyword(String id) throws SQLException
     {
         try (PreparedStatement deleteKeyword = conn.prepareStatement(DELETE_KEYWORD))
@@ -88,6 +117,14 @@ public class KeywordDB
             return id;
         }
     }
+
+    /*
+    * Update a keyword.
+    *
+    * @param    oldKeyword     old word of the keyword to update.
+    * @param    newKeyword     new word of the keyword to update.
+    * @return   updated keyword.
+    */
 
     public String updateKeyword(String oldKeyword, String newKeyword) throws SQLException
     {

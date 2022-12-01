@@ -11,18 +11,24 @@ import java.util.List;
 
 public class Professor_co_advises_pocDB
 {
+    /* Table Professor_co_advises_poc constants. */
+
     private static final String TABLE_PROFESSOR_CO_ADVISES_POC = "tb_professor_co_advises_poc";
     private static final String COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID = "tb_teacher_tb_user_id";
     private static final String COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID = "tb_poc_id";
 
+    /* Table Professor_co_advises_poc constants indexes. */
+
     private static final int COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID_INDEX = 1;
     private static final int COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID_INDEX = 2;
 
-
+    /* Table Professor_co_advises_poc queries. */
     private static final String QUERY_PROFESSORS_BY_POC_ID = "SELECT * FROM " + TABLE_PROFESSOR_CO_ADVISES_POC + " WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
     private static final String UPDATE_PROFESSOR_CO_ADVISES_POC = "UPDATE " + TABLE_PROFESSOR_CO_ADVISES_POC + " SET " + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + " = ?, " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ? WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + " = ? AND " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
     private static final String INSERT_PROFESSOR_CO_ADVISES_POC = "INSERT INTO " + TABLE_PROFESSOR_CO_ADVISES_POC + " (" + COLUMN_PROFESSOR_CO_ADVISES_POC_PROFESSOR_ID + ", " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + ") VALUES (?, ?)";
     private static final String DELETE_PROFESSOR_CO_ADVISES_POC = "DELETE FROM " + TABLE_PROFESSOR_CO_ADVISES_POC + " WHERE " + COLUMN_PROFESSOR_CO_ADVISES_POC_POC_ID + " = ?";
+
+    /* Connection to the database. */
 
     private final Connection conn;
 
@@ -30,6 +36,12 @@ public class Professor_co_advises_pocDB
     {
         this.conn = conn;
     }
+
+    /* Query professors by POC ID.
+    *
+    * @param    pocId    ID of the POC to query.
+    * @return   list of professors that co-advises the POC with the given ID.
+    */
 
     public List<Professor> queryProfessorsByPocId(int pocId) throws SQLException
     {
@@ -52,6 +64,12 @@ public class Professor_co_advises_pocDB
         }
     }
 
+    /* Insert a new professor co-advises-POC relation.
+    *
+    * @param    professorId    ID of the professor.
+    * @param    POCID         ID of the POC.
+    */
+
     public void insertProfessor_co_advises_poc(String professorID, int POCID) throws SQLException
     {
         try (PreparedStatement insertProfessor_co_advises_poc = conn.prepareStatement(INSERT_PROFESSOR_CO_ADVISES_POC))
@@ -66,6 +84,11 @@ public class Professor_co_advises_pocDB
         }
     }
 
+    /* Delete a professor co-advises-POC relation.
+    *
+    * @param    POCID    ID of the POC.
+    */
+
     public void deleteProfessor_co_advises_poc(int POCID) throws SQLException
     {
         try (PreparedStatement deleteProfessor_co_advises_poc = conn.prepareStatement(DELETE_PROFESSOR_CO_ADVISES_POC))
@@ -78,6 +101,14 @@ public class Professor_co_advises_pocDB
             }
         }
     }
+
+    /* Update a professor co-advises-POC relation.
+    *
+    * @param    oldProfessorId    ID of the old professor.
+    * @param    oldPOCID         ID of the old POC.
+    * @param    newProfessorId    ID of the new professor.
+    * @param    newPOCID         ID of the new POC.
+     */
 
     public void updateProfessor_co_advises_poc(String oldProfessorID, int oldPOCID, String newProfessorID, int newPOCID) throws SQLException
     {
