@@ -5,6 +5,13 @@ import javafx.util.Callback;
 
 public class ControllerFactoryFX
 {
+
+    /**
+     * Gets an instance of the specified controller.
+     *
+     * @param dataModel data to be passed in the selected controller.
+     * @return new instance of a specified controller.
+     */
     public static Callback<Class<?>, Object> controllerFactoryWithDataModel(DataModel dataModel)
     {
         return type ->
@@ -25,9 +32,9 @@ public class ControllerFactoryFX
             {
                 return new SearchPOCControllerFX(dataModel);
             }
-            else if (type == TopMenuController.class)
+            else if (type == TopMenuControllerFX.class)
             {
-                return new TopMenuController(dataModel);
+                return new TopMenuControllerFX(dataModel);
             }
             else if (type == AnalyzePOCControllerFX.class)
             {
@@ -45,6 +52,10 @@ public class ControllerFactoryFX
             {
                 return new SearchUserControllerFX(dataModel);
             }
+            else if (type == CreateUserControllerFX.class)
+            {
+                return new CreateUserControllerFX(dataModel);
+            }
             else
             {
                 try
@@ -53,7 +64,7 @@ public class ControllerFactoryFX
                 }
                 catch (Exception e)
                 {
-                    throw new IllegalArgumentException("ERROR: Invalid controller.");
+                    throw new IllegalArgumentException("Invalid controller.");
                 }
             }
         };

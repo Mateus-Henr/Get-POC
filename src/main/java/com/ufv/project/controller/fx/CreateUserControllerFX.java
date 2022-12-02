@@ -74,6 +74,16 @@ public class CreateUserControllerFX
     @FXML
     private ProgressIndicator progressIndicator;
 
+    private DataModel dataModel;
+
+    public CreateUserControllerFX(DataModel dataModel)
+    {
+        this.dataModel = dataModel;
+    }
+
+    /**
+     * Runs upon initialization.
+     */
     @FXML
     public void initialize()
     {
@@ -97,8 +107,9 @@ public class CreateUserControllerFX
         onRadioButtonChanged();
     }
 
-
-
+    /**
+     * Hides/shows elements depending on the user type.
+     */
     @FXML
     public void onRadioButtonChanged()
     {
@@ -160,7 +171,10 @@ public class CreateUserControllerFX
             };
 
             task.setOnSucceeded(workerStateEvent -> professorSubjects.getItems().setAll(task.getValue()));
-            task.setOnFailed(workerStateEvent -> task.getException().printStackTrace());
+
+            task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
+                    "Couldn't get subjects for professor: " + task.getException().getMessage(),
+                    ButtonType.OK).showAndWait());
 
             new Thread(task).start();
         }
@@ -188,6 +202,9 @@ public class CreateUserControllerFX
         }
     }
 
+    /**
+     * Shows the number of subject selected.
+     */
     @FXML
     public void onSelectSubject()
     {
@@ -196,12 +213,15 @@ public class CreateUserControllerFX
                 .count() + " subject(s) selected");
     }
 
+    /**
+     * Creates POC if given data is valid.
+     */
     @FXML
     public void onCreateButtonPressed()
     {
-       if (!CreateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()) &&
-               !CreateUserController.checkEmail(emailTextField.getText()) &&
-               !CreateUserController.checkRegistration(registrationTextField.getText()))
+        if (!CreateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()) &&
+                !CreateUserController.checkEmail(emailTextField.getText()) &&
+                !CreateUserController.checkRegistration(registrationTextField.getText()))
         {
             // Display error style on password input boxes.
             return;
@@ -256,21 +276,27 @@ public class CreateUserControllerFX
         task.setOnSucceeded(workerStateEvent ->
         {
             Main.closeCurrentStage(mainPane);
+            Main.loadStageWithDataModel("search-user-page-view.fxml", dataModel, "Search User");
         });
 
-        task.setOnFailed(workerStateEvent ->
-        {
-            task.getException().printStackTrace();
-        });
+        task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
+                "Couldn't create user: " + task.getException().getMessage(),
+                ButtonType.OK).showAndWait());
 
-        new Thread(task).start();
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         createUserButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+
+        new Thread(task).start();
     }
 
-
+    /**
+     * Initializes a list of MenuItems from a list of Subjects.
+     *
+     * @param subjectList list containing the Subject to be displayed on the MenuItems.
+     * @return list containing initialized MenuItems from a list of Subjects.
+     */
     public static List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList)
     {
         List<MenuItem> items = new ArrayList<>();

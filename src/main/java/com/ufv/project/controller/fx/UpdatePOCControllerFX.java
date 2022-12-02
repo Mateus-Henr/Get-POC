@@ -40,7 +40,7 @@ public class UpdatePOCControllerFX
 
     // ---------- Top Menu ----------
     @FXML
-    private TopMenuController topMenuControllerFX;
+    private TopMenuControllerFX topMenuControllerFX;
     // ------------------------------
 
     // ---- Personal information ----

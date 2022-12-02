@@ -7,8 +7,7 @@ import com.ufv.project.model.Professor;
 import com.ufv.project.model.Student;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -20,16 +19,8 @@ import java.net.URI;
 
 public class AnalyzePOCControllerFX
 {
-    // ---------- Top Menu ----------
-    @FXML
-    private TopMenuController topMenuControllerFX;
-    // ------------------------------
-
     @FXML
     private VBox mainPane;
-
-    @FXML
-    private TextField searchField;
 
     @FXML
     private Text titleText;
@@ -55,27 +46,25 @@ public class AnalyzePOCControllerFX
     @FXML
     private Hyperlink pdfFilepathText;
 
-    @FXML
-    private UpdatePOCControllerFX updatePOCControllerFX;
-
     private URI pdfPath;
 
     private final DataModel dataModel;
 
     private POC poc;
 
+    /**
+     * Constructor for AnalyzePOCControllerFX.
+     *
+     * @param dataModel data passed in.
+     */
     public AnalyzePOCControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }
 
-    @FXML
-    public void initialize()
-    {
-
-    }
-
-
+    /**
+     * Displays file explorer for selecting a PDF.
+     */
     @FXML
     public void onDisplayPDF()
     {
@@ -85,18 +74,35 @@ public class AnalyzePOCControllerFX
         }
         catch (IOException e)
         {
-            System.out.println("ERROR: Couldn't open PDF: " + e.getMessage());
+            new Alert(Alert.AlertType.ERROR,
+                    "Couldn't open PDF: " + e.getMessage(),
+                    ButtonType.OK).showAndWait();
         }
     }
 
+    /**
+     * Closes current stage and shows up new stage.
+     */
     @FXML
     public void onUpdatePOCButtonClicked()
     {
+        if (poc == null)
+        {
+            new Alert(Alert.AlertType.ERROR,
+                    "Couldn't load POC.").showAndWait();
+            return;
+        }
+
         Main.closeCurrentStage(mainPane);
         ((UpdatePOCControllerFX) Main.loadStageWithDataModel("update-poc-page-view.fxml", dataModel, "Update POC")).setPOCData(poc);
     }
 
-    public void setData(POC poc)
+    /**
+     * Sets up data for the POC to be analyzed.
+     *
+     * @param poc poc to set up data.
+     */
+    public void setUpPOCData(POC poc)
     {
         this.poc = poc;
 

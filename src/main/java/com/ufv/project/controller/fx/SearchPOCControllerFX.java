@@ -35,7 +35,7 @@ public class SearchPOCControllerFX
     private BorderPane topMenu;
 
     @FXML
-    private TopMenuController topMenuControllerFX;
+    private TopMenuControllerFX topMenuControllerFX;
     // ------------------------------
 
     // --------- Search POC ---------
@@ -97,7 +97,7 @@ public class SearchPOCControllerFX
         pocListView.getSelectionModel().selectedItemProperty().addListener((observableValue, poc, t1) ->
         {
             ((AnalyzePOCControllerFX) Main.loadStageWithDataModel("analyze-poc-page-view.fxml", dataModel, "Analyze POC"))
-                    .setData(pocListView.getSelectionModel().getSelectedItem());
+                    .setUpPOCData(pocListView.getSelectionModel().getSelectedItem());
         });
     }
 

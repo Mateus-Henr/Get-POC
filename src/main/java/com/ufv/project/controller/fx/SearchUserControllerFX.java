@@ -10,9 +10,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
@@ -34,15 +32,12 @@ public class SearchUserControllerFX
 
     private final DataModel dataModel;
 
+    /**
+     * Constructor for SearchUserControllerFX.
+     */
     public SearchUserControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
-    }
-
-    @FXML
-    public void initialize()
-    {
-        mainPane.focusedProperty().addListener((ov, onHidden, onShown) -> onSearchUserButtonClicked());
     }
 
     @FXML
@@ -68,19 +63,17 @@ public class SearchUserControllerFX
             }
         };
 
-        task.setOnSucceeded(workerStateEvent ->
-        {
-            userList.setManaged(true);
-            userList.setVisible(true);
-            userList.getItems().setAll(task.getValue());
-        });
+        task.setOnSucceeded(workerStateEvent -> userList.getItems().setAll(task.getValue()));
 
-        task.setOnFailed(workerStateEvent -> task.getException().printStackTrace());
+        task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
+                "Couldn't get user(s): " + task.getException().getMessage(),
+                ButtonType.OK));
 
-        new Thread(task).start();
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+
+        new Thread(task).start();
     }
 
     @FXML

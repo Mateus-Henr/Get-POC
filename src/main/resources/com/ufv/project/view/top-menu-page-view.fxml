@@ -8,7 +8,7 @@
 <?import javafx.scene.text.*?>
 
 <BorderPane fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.TopMenuController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.TopMenuControllerFX">
     <left>
         <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER_LEFT">
             <MenuButton mnemonicParsing="false" styleClass="menu-button">
@@ -26,7 +26,7 @@
                 </items>
             </MenuButton>
             <Separator prefWidth="5.0" visible="false"/>
-            <ImageView fx:id="pocIcon" fitHeight="15.0" fitWidth="50">
+            <ImageView fitHeight="15.0" fitWidth="50">
                 <Image url="@../images/getpoc.png"/>
             </ImageView>
             <BorderPane.margin>

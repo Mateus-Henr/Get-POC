@@ -1,4 +1,4 @@
-//package com.ufv.project.controller.java;
+package com.ufv.project.controller.java;
 //
 //import com.ufv.project.Main;
 //import com.ufv.project.controller.java.PersonalInfoController;
@@ -12,9 +12,10 @@
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//public class UpdateUserController {
-//
-//    private final DataModel dataModel;
+public class UpdateUserController
+{
+
+    //    private final DataModel dataModel;
 //
 //    public UpdateUserController(DataModel dataModel)
 //    {
@@ -237,4 +238,9 @@
 //        return items;
 //    }
 //
-//}
+    public static boolean arePasswordsEqual(String password, String secondPassword)
+    {
+        return password.equals(secondPassword);
+    }
+
+}

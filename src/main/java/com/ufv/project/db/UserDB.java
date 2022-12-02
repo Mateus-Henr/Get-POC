@@ -217,7 +217,6 @@ public class UserDB {
     *
     * @return   List of all users.
      */
-
     public List<User> queryUsers() throws SQLException {
         try (PreparedStatement queryUsers = conn.prepareStatement(QUERY_USERS);
              ResultSet resultSet = queryUsers.executeQuery()) {

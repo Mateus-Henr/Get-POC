@@ -30,30 +30,12 @@ import java.util.stream.Stream;
 
 public class CreatePOCControllerFX
 {
-    // ---------- MainPane ----------
     @FXML
     private VBox mainPane;
-    // ------------------------------
 
-    // ----------- Layout -----------
     @FXML
     private GridPane gridPane;
-    // ------------------------------
 
-    // ---------- Top Menu ----------
-    @FXML
-    private TopMenuController topMenuControllerFX;
-    // ------------------------------
-
-    // ---- Personal information ----
-    @FXML
-    private VBox userData;
-
-    @FXML
-    private PersonalInfoControllerFX userDataController;
-    // ------------------------------
-
-    // --------- Create POC ---------
     @FXML
     private TextField title;
 
@@ -89,7 +71,6 @@ public class CreatePOCControllerFX
 
     @FXML
     private ProgressIndicator progressIndicator;
-    // ------------------------------
 
     private final DataModel dataModel;
 
@@ -102,11 +83,19 @@ public class CreatePOCControllerFX
             "ufv" + File.separator +
             "project" + File.separator + "pdfs" + File.separator;
 
+    /**
+     * Constructor for CreatePOCControllerFX.
+     *
+     * @param dataModel data passed in.
+     */
     public CreatePOCControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }
 
+    /**
+     * Runs upon initialization.
+     */
     @FXML
     public void initialize()
     {
@@ -127,7 +116,7 @@ public class CreatePOCControllerFX
                                         pdfFilepathText.textProperty())))
         );
 
-        ObservableList<Professor> professors = null;
+        ObservableList<Professor> professors;
 
         try (ConnectDB connectDB = new ConnectDB())
         {
@@ -138,16 +127,16 @@ public class CreatePOCControllerFX
         }
         catch (SQLException e)
         {
-            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,
+                    "Couldn't load data from database: " + e.getMessage(),
+                    ButtonType.OK);
+
+            return;
         }
 
-        // Set data for choosing.
-        if (professors != null)
-        {
-            advisorComboBox.setItems(professors);
-            registrantComboBox.setItems(professors);
-            coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
-        }
+        advisorComboBox.setItems(professors);
+        registrantComboBox.setItems(professors);
+        coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
     }
 
     @FXML
@@ -227,7 +216,9 @@ public class CreatePOCControllerFX
         {
             if (task.getException() != null)
             {
-                task.getException().printStackTrace();
+                new Alert(Alert.AlertType.ERROR,
+                        "Couldn't insert POC: " + task.getException().getMessage(),
+                        ButtonType.OK);
             }
         });
 
@@ -238,6 +229,9 @@ public class CreatePOCControllerFX
         addPOCButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
     }
 
+    /**
+     * Opens up file manager to select PDF.
+     */
     @FXML
     public void handlePDFChoosing()
     {
@@ -258,6 +252,12 @@ public class CreatePOCControllerFX
         }
     }
 
+    /**
+     * Initializes a list of MenuItems from a list of Users.
+     *
+     * @param userList list containing the Users to be displayed on the MenuItems.
+     * @return list containing initialized MenuItems from a list of Users.
+     */
     public List<MenuItem> initializeCheckMenuItemsFromList(List<? extends User> userList)
     {
         List<MenuItem> items = new ArrayList<>();
@@ -275,6 +275,12 @@ public class CreatePOCControllerFX
         return items;
     }
 
+    /**
+     * Get number of selected items in a MenuButton object.
+     *
+     * @param menuButton MenuButton object containing CheckMenuItems.
+     * @return number of selected items.
+     */
     private long getSelectedItemsNumber(MenuButton menuButton)
     {
         return menuButton.getItems()

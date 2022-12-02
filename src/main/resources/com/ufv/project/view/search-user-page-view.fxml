@@ -7,19 +7,21 @@
 <?import java.net.URL?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Button?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:id="mainPane"
       fx:controller="com.ufv.project.controller.fx.SearchUserControllerFX"
       prefHeight="400.0" prefWidth="600.0">
 
-    <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
+    <fx:include source="top-menu-page-view.fxml"/>
 
     <Label labelFor="$searchUsernameTextField" text="Search for username"/>
-    <TextField fx:id="searchUsernameTextField" onKeyTyped="#onSearchUserButtonClicked"/>
+    <TextField fx:id="searchUsernameTextField"/>
+    <Button onMouseClicked="#onSearchUserButtonClicked"/>
     <ProgressIndicator fx:id="progressIndicator" visible="false" managed="false"/>
     <ListView fx:id="userList" visible="false" managed="false" onMouseClicked="#onSelectedRow"/>
     <stylesheets>
-        <URL value="@../css/top-menu-page-styles.css" />
+        <URL value="@../css/top-menu-page-styles.css"/>
     </stylesheets>
 </VBox>

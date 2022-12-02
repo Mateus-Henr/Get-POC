@@ -1,6 +1,8 @@
 package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
+import com.ufv.project.controller.java.UpdatePOCController;
+import com.ufv.project.controller.java.UpdateUserController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.SubjectDB;
 import com.ufv.project.db.UserDB;
@@ -20,9 +22,6 @@ public class UpdateUserControllerFX
 {
     @FXML
     private VBox mainPane;
-
-    @FXML
-    private VBox personalInfo;
 
     @FXML
     private TextField usernameTextField;
@@ -66,21 +65,25 @@ public class UpdateUserControllerFX
     @FXML
     private ProgressIndicator progressIndicator;
 
-    @FXML
-    private PersonalInfoControllerFX personalInfoControllerFX;
-
     private final DataModel dataModel;
 
+    /**
+     * Constructor for UpdateUserControllerFX.
+     */
     public UpdateUserControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }
 
+    /**
+     * Runs upon initialization.
+     */
     @FXML
     public void initialize()
     {
         usernameTextField.setText(dataModel.getUsername());
         nameTextField.setText(dataModel.getName());
+
         UserTypesEnum userType = dataModel.getUserType();
 
         if (userType == UserTypesEnum.ADMIN)
@@ -150,7 +153,7 @@ public class UpdateUserControllerFX
             professorSubjects.setVisible(true);
         }
 
-        final Task<Void> task = new Task<Void>()
+        final Task<Void> updateUserTask = new Task<Void>()
         {
             @Override
             protected Void call() throws SQLException
@@ -189,15 +192,27 @@ public class UpdateUserControllerFX
             }
         };
 
-        task.setOnSucceeded(workerStateEvent -> onSelectSubject());
+        updateUserTask.setOnSucceeded(workerStateEvent -> onSelectSubject());
 
-        new Thread(task).start();
+        updateUserTask.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
+                "Couldn't get data for user: " + updateUserTask.getException().getMessage(),
+                ButtonType.OK));
+
+        progressIndicator.progressProperty().bind(updateUserTask.progressProperty());
+        progressIndicator.visibleProperty().bind(Bindings.when(updateUserTask.runningProperty())
+                .then(true)
+                .otherwise(false));
+        progressIndicator.managedProperty().bind(Bindings.when(updateUserTask.runningProperty())
+                .then(true)
+                .otherwise(false));
+
+        new Thread(updateUserTask).start();
     }
 
     @FXML
     public void onUpdateButtonClicked()
     {
-        if (!arePasswordsEqual())
+        if (!UpdateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()))
         {
             // Display error style on password input boxes.
             return;
@@ -295,15 +310,21 @@ public class UpdateUserControllerFX
             Main.loadStageWithDataModel("update-user-page-view.fxml", dataModel, "Update User");
         });
 
-        task.setOnFailed(workerStateEvent -> task.getException().printStackTrace());
+        task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
+                "Couldn't get data to update: " + task.getException().getMessage(),
+                ButtonType.OK));
 
-        new Thread(task).start();
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         updateUserButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+
+        new Thread(task).start();
     }
 
+    /**
+     * Shows the number of subject selected.
+     */
     @FXML
     public void onSelectSubject()
     {
@@ -312,11 +333,12 @@ public class UpdateUserControllerFX
                 .count() + " subject(s) selected");
     }
 
-    public boolean arePasswordsEqual()
-    {
-        return passwordField.getText().equals(confirmPasswordField.getText());
-    }
-
+    /**
+     * Initializes a list of MenuItems from a list of Subjects.
+     *
+     * @param subjectList list containing the Subject to be displayed on the MenuItems.
+     * @return list containing initialized MenuItems from a list of Subjects.
+     */
     public List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList)
     {
         List<MenuItem> items = new ArrayList<>();

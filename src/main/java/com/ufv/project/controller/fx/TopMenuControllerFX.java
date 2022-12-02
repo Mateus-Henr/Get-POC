@@ -3,7 +3,6 @@ package com.ufv.project.controller.fx;
 import com.ufv.project.Main;
 import com.ufv.project.model.DataModel;
 import com.ufv.project.model.UserTypesEnum;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -15,7 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class TopMenuController
+public class TopMenuControllerFX
 {
     @FXML
     private BorderPane mainPane;
@@ -44,12 +43,17 @@ public class TopMenuController
 
     private final DataModel dataModel;
 
-
-    public TopMenuController(DataModel dataModel)
+    /**
+     * Constructor for TopMenuControllerFX.
+     */
+    public TopMenuControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }
 
+    /**
+     * Runs upon initialization.
+     */
     @FXML
     public void initialize()
     {
@@ -93,30 +97,45 @@ public class TopMenuController
         }
     }
 
+    /**
+     * Closes current page and opens up Search POC page.
+     */
     public void onSearchPOCButtonAction()
     {
         Main.loadStageWithDataModel("search-poc-page-view.fxml", dataModel, "Search POC");
         Main.closeCurrentStage(mainPane);
     }
 
+    /**
+     * Closes current page and opens up Create POC page.
+     */
     public void onCreatePOCButtonAction()
     {
         Main.loadStageWithDataModel("create-poc-page-view.fxml", dataModel, "Search POC");
         Main.closeCurrentStage(mainPane);
     }
 
+    /**
+     * Closes current page and goes back to Login page.
+     */
     public void onLogoutButtonAction()
     {
         Main.loadStageWithDataModel("login-page-view.fxml", dataModel, "Get-POC App");
         Main.closeCurrentStage(mainPane);
     }
 
+    /**
+     * Closes current page and opens up Search User page.
+     */
     public void onSearchUserButtonAction()
     {
         Main.loadStageWithDataModel("search-user-page-view.fxml", dataModel, "Get-POC App");
         Main.closeCurrentStage(mainPane);
     }
 
+    /**
+     * Closes current page and opens up Create User page.
+     */
     public void onCreateUserButtonAction()
     {
         Main.loadStageWithDataModel("create-user-page-view.fxml", dataModel, "Get-POC App");

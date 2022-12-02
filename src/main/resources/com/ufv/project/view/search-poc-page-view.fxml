@@ -11,9 +11,9 @@
       fx:controller="com.ufv.project.controller.fx.SearchPOCControllerFX"
       styleClass="background">
 
-    <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
+    <fx:include source="top-menu-page-view.fxml"/>
 
-    <fx:include fx:id="personalInfo" source="personal-info-page-view.fxml"/>
+    <fx:include source="personal-info-page-view.fxml"/>
 
     <HBox>
         <TextField fx:id="searchPOCTextField" promptText="Search" styleClass="search"/>

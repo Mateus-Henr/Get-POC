@@ -9,7 +9,7 @@
       fx:controller="com.ufv.project.controller.fx.AnalyzePOCControllerFX"
       prefHeight="400.0" prefWidth="600.0">
 
-    <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
+    <fx:include source="top-menu-page-view.fxml"/>
 
     <Label labelFor="$titleText" text="Title: "/>
     <Text fx:id="titleText"/>

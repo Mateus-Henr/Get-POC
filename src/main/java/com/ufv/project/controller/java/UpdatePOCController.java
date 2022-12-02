@@ -5,7 +5,8 @@ import com.ufv.project.model.User;
 
 import java.util.List;
 
-public class UpdatePOCController {
+public class UpdatePOCController
+{
     public static int findIndex(List<? extends User> userList, User user)
     {
         for (int i = 0; i < userList.size(); i++)
@@ -31,4 +32,5 @@ public class UpdatePOCController {
 
         return -1;
     }
+
 }

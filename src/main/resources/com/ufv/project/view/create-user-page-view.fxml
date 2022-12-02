@@ -10,7 +10,7 @@
           fx:controller="com.ufv.project.controller.fx.CreateUserControllerFX"
           prefHeight="400.0" prefWidth="600.0">
 
-    <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
+    <fx:include source="top-menu-page-view.fxml"/>
 
     <Label labelFor="$usernameTextField" text="Username"/>
     <TextField fx:id="usernameTextField"/>

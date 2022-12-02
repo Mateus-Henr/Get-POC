@@ -10,9 +10,9 @@
       fx:id="mainPane"
       styleClass="background">
 
-    <fx:include fx:id="topMenu" source="top-menu-page-view.fxml"/>
+    <fx:include source="top-menu-page-view.fxml"/>
 
-    <fx:include fx:id="userData" source="personal-info-page-view.fxml"/>
+    <fx:include source="personal-info-page-view.fxml"/>
 
     <Label>Create POC</Label>
     <GridPane fx:id="gridPane" styleClass="create-background">

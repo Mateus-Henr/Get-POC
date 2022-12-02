@@ -7,6 +7,8 @@ import com.ufv.project.model.DataModel;
 import com.ufv.project.model.Subject;
 import com.ufv.project.model.UserTypesEnum;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
@@ -50,11 +52,17 @@ public class PersonalInfoControllerFX
 
     private final DataModel dataModel;
 
+    /**
+     * Constructor for PersonalInfoControllerFX.
+     */
     public PersonalInfoControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }
 
+    /**
+     * Runs upon initialization.
+     */
     @FXML
     public void initialize()
     {
@@ -123,7 +131,9 @@ public class PersonalInfoControllerFX
             }
             catch (SQLException e)
             {
-                System.out.println("ERROR: Couldn't get subjects for professor: " + e.getMessage());
+                new Alert(Alert.AlertType.ERROR,
+                        "Couldn't get subjects for professor: " + e.getMessage(),
+                        ButtonType.OK);
             }
         }
         else if (userType == UserTypesEnum.ADMIN)

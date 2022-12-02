@@ -7,7 +7,7 @@
 //import java.io.FileInputStream;
 //import java.io.IOException;
 //
-//public class TopMenuController
+//public class TopMenuControllerFX
 //{
 //
 //    public static final String IMAGE_STORAGE_FOLDER = "src" + File.separator +
@@ -20,7 +20,7 @@
 //    private final DataModel dataModel;
 //
 //
-//    public TopMenuController(DataModel dataModel)
+//    public TopMenuControllerFX(DataModel dataModel)
 //    {
 //        this.dataModel = dataModel;
 //    }
