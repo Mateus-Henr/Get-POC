@@ -1,7 +1,7 @@
 package com.ufv.project.controller.fx;
 
-import com.ufv.project.controller.java.UpdatePOCController;
 import com.ufv.project.Main;
+import com.ufv.project.controller.java.UpdatePOCController;
 import com.ufv.project.db.*;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
@@ -28,30 +28,12 @@ import java.util.List;
 
 public class UpdatePOCControllerFX
 {
-    // ---------- MainPane ----------
     @FXML
     private VBox mainPane;
-    // ------------------------------
 
-    // ----------- Layout -----------
     @FXML
     private GridPane gridPane;
-    // ------------------------------
 
-    // ---------- Top Menu ----------
-    @FXML
-    private TopMenuControllerFX topMenuControllerFX;
-    // ------------------------------
-
-    // ---- Personal information ----
-    @FXML
-    private VBox userData;
-
-    @FXML
-    private PersonalInfoControllerFX userDataController;
-    // ------------------------------
-
-    // --------- Create POC ---------
     @FXML
     private TextField title;
 
@@ -87,7 +69,6 @@ public class UpdatePOCControllerFX
 
     @FXML
     private ProgressIndicator progressIndicator;
-    // ------------------------------
 
     private final DataModel dataModel;
 
@@ -102,29 +83,35 @@ public class UpdatePOCControllerFX
             "ufv" + File.separator +
             "project" + File.separator + "pdfs" + File.separator;
 
+    /**
+     * Constructor for UpdatePOCControllerFX.
+     */
     public UpdatePOCControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }
 
-    @FXML
-    public void initialize()
-    {
-
-    }
-
+    /**
+     * Displays number of co-advisors selected.
+     */
     @FXML
     public void onSelectCoAdvisors()
     {
         coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " co-advisor(s) selected");
     }
 
+    /**
+     * Displays number of authors selected.
+     */
     @FXML
     public void onSelectAuthors()
     {
         coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " author(s) selected");
     }
 
+    /**
+     * Updates POC with given data.
+     */
     @FXML
     public void onUpdateButtonClicked()
     {
@@ -186,21 +173,21 @@ public class UpdatePOCControllerFX
             Main.closeCurrentStage(mainPane);
         });
 
-        task.setOnFailed(workerStateEvent ->
-        {
-            if (task.getException() != null)
-            {
-                task.getException().printStackTrace();
-            }
-        });
+        task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
+                "Couldn't get data to update: " + task.getException().getMessage(),
+                ButtonType.OK));
 
-        new Thread(task).start();
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         updatePOCButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+
+        new Thread(task).start();
     }
 
+    /**
+     * Opens up file manager to select PDF.
+     */
     @FXML
     public void handlePDFChoosing()
     {
@@ -221,6 +208,12 @@ public class UpdatePOCControllerFX
         }
     }
 
+    /**
+     * Initializes a list of MenuItems from a list of Users.
+     *
+     * @param userList list containing the Users to be displayed on the MenuItems.
+     * @return list containing initialized MenuItems from a list of Users.
+     */
     public List<MenuItem> initializeCheckMenuItemsFromList(List<? extends User> userList)
     {
         List<MenuItem> items = new ArrayList<>();
@@ -238,7 +231,12 @@ public class UpdatePOCControllerFX
         return items;
     }
 
-    public void setPOCData(POC poc)
+    /**
+     * Sets up data for the POC to be updated.
+     *
+     * @param poc poc to set up data.
+     */
+    public void setUpPOCData(POC poc)
     {
         this.poc = poc;
 
@@ -273,7 +271,6 @@ public class UpdatePOCControllerFX
             System.out.println("Couldn't get data to update POC: " + e.getMessage());
         }
     }
-
 
 
     private void checkMenuItemUser(List<MenuItem> allItems, List<? extends User> userList)

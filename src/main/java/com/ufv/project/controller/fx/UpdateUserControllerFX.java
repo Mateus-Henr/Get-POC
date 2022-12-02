@@ -1,7 +1,6 @@
 package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
-import com.ufv.project.controller.java.UpdatePOCController;
 import com.ufv.project.controller.java.UpdateUserController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.SubjectDB;
@@ -11,7 +10,6 @@ import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
@@ -153,7 +151,7 @@ public class UpdateUserControllerFX
             professorSubjects.setVisible(true);
         }
 
-        final Task<Void> updateUserTask = new Task<Void>()
+        final Task<Void> updateUserTask = new Task<>()
         {
             @Override
             protected Void call() throws SQLException
@@ -209,6 +207,9 @@ public class UpdateUserControllerFX
         new Thread(updateUserTask).start();
     }
 
+    /**
+     * Updates User with given data.
+     */
     @FXML
     public void onUpdateButtonClicked()
     {

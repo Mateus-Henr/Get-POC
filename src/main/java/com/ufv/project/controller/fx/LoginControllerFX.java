@@ -1,10 +1,11 @@
 package com.ufv.project.controller.fx;
 
-import com.ufv.project.controller.java.LoginController;
 import com.ufv.project.Main;
+import com.ufv.project.controller.java.LoginController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
-import com.ufv.project.model.*;
+import com.ufv.project.model.DataModel;
+import com.ufv.project.model.User;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -37,6 +38,9 @@ public class LoginControllerFX
 
     private static final String INVALID_BOX_CSS_CLASS = "username-password-fields-invalid";
 
+    /**
+     * Runs upon initialization.
+     */
     @FXML
     public void initialize()
     {
@@ -55,18 +59,27 @@ public class LoginControllerFX
         loginButton.setFocusTraversable(false);
     }
 
+    /**
+     * Adds styling when login button is pressed.
+     */
     @FXML
     protected void onLoginButtonPressed()
     {
         loginButton.getStyleClass().add("login-button-clicked");
     }
 
+    /**
+     * Removes styling when login button is released.
+     */
     @FXML
     protected void onLoginButtonReleased()
     {
         loginButton.getStyleClass().remove("login-button-clicked");
     }
 
+    /**
+     * Performs login.
+     */
     @FXML
     protected void onLoginButtonAction()
     {
@@ -111,11 +124,11 @@ public class LoginControllerFX
             Main.closeCurrentStage(mainPane);
         });
 
-        new Thread(task).start();
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         loginButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        new Thread(task).start();
     }
 
 }

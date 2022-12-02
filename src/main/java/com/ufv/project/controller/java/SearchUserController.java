@@ -3,7 +3,7 @@ package com.ufv.project.controller.java;
 import com.ufv.project.model.*;
 
 public class SearchUserController {
-    public static DataModel setDatamodelFromUserType(User user){
+    public static DataModel setDataModelFromUserType(User user){
         UserTypesEnum userType = user.getUserType();
 
         DataModel dataModel = null;

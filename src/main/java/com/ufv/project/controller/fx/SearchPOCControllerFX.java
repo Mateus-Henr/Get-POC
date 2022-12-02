@@ -6,39 +6,22 @@ import com.ufv.project.db.POCDB;
 import com.ufv.project.db.POCSearchTypesEnum;
 import com.ufv.project.model.DataModel;
 import com.ufv.project.model.POC;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.List;
 
 public class SearchPOCControllerFX
 {
-    // ----------- Layout -----------
-    @FXML
-    private VBox mainPane;
-    // ------------------------------
-
-    // ---------- Top Menu ----------
-    @FXML
-    private BorderPane topMenu;
-
-    @FXML
-    private TopMenuControllerFX topMenuControllerFX;
-    // ------------------------------
-
-    // --------- Search POC ---------
     @FXML
     private TextField searchPOCTextField;
 
@@ -50,9 +33,7 @@ public class SearchPOCControllerFX
 
     @FXML
     private ProgressIndicator progressIndicator;
-    // ------------------------------
 
-    // --------- Search POC ---------
     @FXML
     private CheckBox searchByTitleCheckBox;
 
@@ -67,15 +48,20 @@ public class SearchPOCControllerFX
 
     @FXML
     private CheckBox searchByFieldCheckBox;
-    // ------------------------------
 
     private final DataModel dataModel;
 
+    /**
+     * Constructor for SearchPOCControllerFX.
+     */
     public SearchPOCControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
     }
 
+    /**
+     * Runs upon initialization.
+     */
     @FXML
     public void initialize()
     {
@@ -91,48 +77,62 @@ public class SearchPOCControllerFX
         // Take away focus from the box.
         searchPOCTextField.setFocusTraversable(false);
 
-        // Hide list while user has not searched for the poc.
-        pocListView.setVisible(false);
-
         pocListView.getSelectionModel().selectedItemProperty().addListener((observableValue, poc, t1) ->
-        {
-            ((AnalyzePOCControllerFX) Main.loadStageWithDataModel("analyze-poc-page-view.fxml", dataModel, "Analyze POC"))
-                    .setUpPOCData(pocListView.getSelectionModel().getSelectedItem());
-        });
+                ((AnalyzePOCControllerFX) Main.loadStageWithDataModel("analyze-poc-page-view.fxml", dataModel, "Analyze POC"))
+                        .setUpPOCData(pocListView.getSelectionModel().getSelectedItem()));
     }
 
+    /**
+     * Searches for POC.
+     */
     @FXML
     public void handlePOCSearching()
     {
-        // Load items from database.
-        ObservableList<POC> pocList = null;
-        HashSet<POCSearchTypesEnum> pocSearchTypes = getSearchTypes();
-
-        try (ConnectDB connectDB = new ConnectDB())
+        final Task<List<POC>> searchPOCTask = new Task<>()
         {
-            pocList = FXCollections.observableList(new POCDB(connectDB.getConnection()).queryPOCsByType(pocSearchTypes,
-                    searchPOCTextField.getText().trim()));
-        }
-        catch (SQLException e)
+            @Override
+            protected List<POC> call() throws SQLException
+            {
+                try (ConnectDB connectDB = new ConnectDB())
+                {
+                    return new POCDB(connectDB.getConnection()).queryPOCsByType(getSearchTypes(),
+                            searchPOCTextField.getText().trim());
+                }
+            }
+        };
+
+        searchPOCTask.setOnSucceeded(workerStateEvent ->
         {
-            e.printStackTrace();
-        }
+            List<POC> pocList = searchPOCTask.getValue();
 
-        if (pocList == null || pocList.isEmpty())
-        {
-            File file = new File("src/main/resources/com/ufv/project/images/anonymous_user.png");
+            if (pocList == null || pocList.isEmpty())
+            {
+                File file = new File("src/main/resources/com/ufv/project/images/anonymous_user.png");
 
-            noPOCImage.setImage(new Image(file.toURI().toString()));
-            return;
-        }
+                noPOCImage.setImage(new Image(file.toURI().toString()));
+                return;
+            }
 
-        // Transfer items to list in the view.
-        pocListView.setItems(pocList);
+            // Transfer items to list in the view.
+            pocListView.setItems(FXCollections.observableList(pocList));
+        });
 
-        // Shows up list with the results.
-        pocListView.setVisible(true);
+        searchPOCTask.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
+                "Couldn't get POCs: " + searchPOCTask.getException().getMessage(),
+                ButtonType.OK));
+
+        progressIndicator.progressProperty().bind(searchPOCTask.progressProperty());
+        progressIndicator.visibleProperty().bind(Bindings.when(searchPOCTask.runningProperty()).then(true).otherwise(false));
+        progressIndicator.managedProperty().bind(Bindings.when(searchPOCTask.runningProperty()).then(true).otherwise(false));
+
+        new Thread(searchPOCTask).start();
     }
 
+    /**
+     * Gets search types.
+     *
+     * @return list containing search types.
+     */
     private HashSet<POCSearchTypesEnum> getSearchTypes()
     {
         HashSet<POCSearchTypesEnum> searchTypes = new HashSet<>();

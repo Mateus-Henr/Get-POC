@@ -1,7 +1,7 @@
 package com.ufv.project.controller.fx;
 
-import com.ufv.project.controller.java.CreateUserController;
 import com.ufv.project.Main;
+import com.ufv.project.controller.java.CreateUserController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.SubjectDB;
 import com.ufv.project.db.UserDB;
@@ -15,8 +15,6 @@ import javafx.scene.layout.FlowPane;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.util.regex.*;
 
 public class CreateUserControllerFX
 {
@@ -74,8 +72,11 @@ public class CreateUserControllerFX
     @FXML
     private ProgressIndicator progressIndicator;
 
-    private DataModel dataModel;
+    private final DataModel dataModel;
 
+    /**
+     * Constructor for CreateUserControllerFX.
+     */
     public CreateUserControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;

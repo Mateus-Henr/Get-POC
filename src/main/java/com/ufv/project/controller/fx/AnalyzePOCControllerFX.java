@@ -7,8 +7,10 @@ import com.ufv.project.model.Professor;
 import com.ufv.project.model.Student;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -94,7 +96,7 @@ public class AnalyzePOCControllerFX
         }
 
         Main.closeCurrentStage(mainPane);
-        ((UpdatePOCControllerFX) Main.loadStageWithDataModel("update-poc-page-view.fxml", dataModel, "Update POC")).setPOCData(poc);
+        ((UpdatePOCControllerFX) Main.loadStageWithDataModel("update-poc-page-view.fxml", dataModel, "Update POC")).setUpPOCData(poc);
     }
 
     /**

@@ -4,23 +4,18 @@ import com.ufv.project.Main;
 import com.ufv.project.controller.java.SearchUserController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
-import com.ufv.project.model.*;
+import com.ufv.project.model.DataModel;
+import com.ufv.project.model.User;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class SearchUserControllerFX
 {
-    @FXML
-    private VBox mainPane;
-
     @FXML
     private TextField searchUsernameTextField;
 
@@ -30,16 +25,9 @@ public class SearchUserControllerFX
     @FXML
     private ProgressIndicator progressIndicator;
 
-    private final DataModel dataModel;
-
     /**
-     * Constructor for SearchUserControllerFX.
+     * Searches for User with given id.
      */
-    public SearchUserControllerFX(DataModel dataModel)
-    {
-        this.dataModel = dataModel;
-    }
-
     @FXML
     public void onSearchUserButtonClicked()
     {
@@ -76,6 +64,9 @@ public class SearchUserControllerFX
         new Thread(task).start();
     }
 
+    /**
+     * Opens up update page to update User.
+     */
     @FXML
     public void onSelectedRow()
     {
@@ -86,7 +77,7 @@ public class SearchUserControllerFX
             return;
         }
 
-        DataModel dataModel1 = SearchUserController.setDatamodelFromUserType(user);
+        DataModel dataModel = SearchUserController.setDataModelFromUserType(user);
 
         Main.loadStageWithDataModel("update-user-page-view.fxml", dataModel, "Update User");
     }

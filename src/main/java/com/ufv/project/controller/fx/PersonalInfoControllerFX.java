@@ -2,7 +2,6 @@ package com.ufv.project.controller.fx;
 
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.Professor_has_subjectDB;
-import com.ufv.project.db.StudentDB;
 import com.ufv.project.model.DataModel;
 import com.ufv.project.model.Subject;
 import com.ufv.project.model.UserTypesEnum;

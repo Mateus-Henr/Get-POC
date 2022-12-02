@@ -48,10 +48,6 @@ public class ControllerFactoryFX
             {
                 return new UpdatePOCControllerFX(dataModel);
             }
-            else if (type == SearchUserControllerFX.class)
-            {
-                return new SearchUserControllerFX(dataModel);
-            }
             else if (type == CreateUserControllerFX.class)
             {
                 return new CreateUserControllerFX(dataModel);

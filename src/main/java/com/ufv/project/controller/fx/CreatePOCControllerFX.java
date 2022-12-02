@@ -3,7 +3,6 @@ package com.ufv.project.controller.fx;
 import com.ufv.project.Main;
 import com.ufv.project.db.*;
 import com.ufv.project.model.*;
-import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,8 +24,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CreatePOCControllerFX
 {
@@ -139,18 +136,27 @@ public class CreatePOCControllerFX
         coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
     }
 
+    /**
+     * Displays number of selected co-advisors.
+     */
     @FXML
     public void onSelectCoAdvisors()
     {
         coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " co-advisor(s) selected");
     }
 
+    /**
+     * Displays number of selected authors.
+     */
     @FXML
     public void onSelectAuthors()
     {
         coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " author(s) selected");
     }
 
+    /**
+     * Adds new POC.
+     */
     @FXML
     public void handlePOCAdding()
     {
@@ -212,21 +218,16 @@ public class CreatePOCControllerFX
             Main.closeCurrentStage(mainPane);
         });
 
-        task.setOnFailed(workerStateEvent ->
-        {
-            if (task.getException() != null)
-            {
-                new Alert(Alert.AlertType.ERROR,
-                        "Couldn't insert POC: " + task.getException().getMessage(),
-                        ButtonType.OK);
-            }
-        });
+        task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
+                "Couldn't insert POC: " + task.getException().getMessage(),
+                ButtonType.OK));
 
-        new Thread(task).start();
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
         addPOCButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+
+        new Thread(task).start();
     }
 
     /**

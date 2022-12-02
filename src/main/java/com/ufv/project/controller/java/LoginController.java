@@ -1,5 +1,4 @@
 package com.ufv.project.controller.java;
-import com.ufv.project.db.UserDB;
 
 import com.ufv.project.model.*;
 public class LoginController {

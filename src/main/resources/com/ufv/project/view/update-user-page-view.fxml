@@ -7,7 +7,7 @@
       fx:id="mainPane"
       fx:controller="com.ufv.project.controller.fx.UpdateUserControllerFX"
       prefHeight="400.0" prefWidth="600.0">
-    <fx:include fx:id="personalInfo" source="personal-info-page-view.fxml"/>
+    <fx:include source="personal-info-page-view.fxml"/>
 
     <Label text="Update User"/>
 
