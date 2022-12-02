@@ -12,27 +12,37 @@ import java.sql.SQLException;
 
 public class ConnectDB implements AutoCloseable
 {
+    // Database config.
     private static final String DB_NAME = "get_poc";
     private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/";
     private static final String USER = "root";
     private static final String PASSWORD = "123456";
 
-    private static final String SET_UP_FOLDER = "src/main/resources/com/ufv/project/db";
+    // File to set up database.
+    private static final String DB_SET_UP_FILE = "src/main/resources/com/ufv/project/db/get_poc_tables.sql";
 
     private Connection conn;
 
-    public ConnectDB()
-    {
-    }
-
-    public static void initializeDB() throws SQLException
+    /**
+     * Initializes database.
+     *
+     * @throws SQLException          if it doesn't manage to connect to the database.
+     * @throws FileNotFoundException if it doesn't find the file to set up the database.
+     */
+    public static void initializeDB() throws SQLException, FileNotFoundException
     {
         try (Connection conn = DriverManager.getConnection(CONNECTION_STRING, USER, PASSWORD))
         {
-            executeSQLFilesFromFolder(conn, new File(SET_UP_FOLDER));
+            executeSQLScript(conn, new File(DB_SET_UP_FILE));
         }
     }
 
+    /**
+     * Gets a Connection object.
+     *
+     * @return Connection object.
+     * @throws SQLException if it doesn't manage to get the Connection object.
+     */
     public Connection getConnection() throws SQLException
     {
         if (conn != null)
@@ -43,6 +53,11 @@ public class ConnectDB implements AutoCloseable
         return DriverManager.getConnection(CONNECTION_STRING + DB_NAME, USER, PASSWORD);
     }
 
+    /**
+     * Initializes database.
+     *
+     * @throws SQLException if it doesn't manage to close the connection.
+     */
     @Override
     public void close() throws SQLException
     {
@@ -52,31 +67,26 @@ public class ConnectDB implements AutoCloseable
         }
     }
 
-    public static void executeSQLFilesFromFolder(Connection conn, final File folder)
+    /**
+     * Executes a SQL script using ScriptRunner class.
+     *
+     * @param conn      Connection object.
+     * @param SQLScript script file to be run.
+     */
+    public static void executeSQLScript(Connection conn, final File SQLScript) throws FileNotFoundException
     {
-        File[] files = folder.listFiles();
-
-        if (files == null)
+        if (SQLScript == null)
         {
             return;
         }
 
-        for (final File fileEntry : files)
-        {
-            ScriptRunner sr = new ScriptRunner(conn);
+        ScriptRunner sr = new ScriptRunner(conn);
 
-            sr.setLogWriter(null);
-            sr.setErrorLogWriter(null);
+        // Disables error messages.
+        sr.setLogWriter(null);
+        sr.setErrorLogWriter(null);
 
-            try
-            {
-                sr.runScript(new BufferedReader(new FileReader(fileEntry.getAbsoluteFile())));
-            }
-            catch (FileNotFoundException e)
-            {
-                e.printStackTrace();
-            }
-        }
+        sr.runScript(new BufferedReader(new FileReader(SQLScript.getAbsoluteFile())));
     }
 
 }

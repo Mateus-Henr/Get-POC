@@ -8,34 +8,23 @@ import java.util.List;
 
 public class FieldDB
 {
-    /*
-    * Table Field constants.
-    */
-
+    //Table Field constants.
     private static final String TABLE_FIELD = "tb_field";
     private static final String COLUMN_FIELD_ID = "ID";
     private static final String COLUMN_FIELD_NAME = "Name";
 
-    /*
-    * Table Field constants indexes.
-    */
-
+    // Table Field constants indexes.
     private static final int COLUMN_FIELD_ID_INDEX = 1;
     private static final int COLUMN_FIELD_NAME_INDEX = 2;
 
-    /*
-    * Table Field queries.
-    */
-
+    // Table Field queries.
     private static final String QUERY_FIELD = "SELECT * FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
     private static final String QUERY_FIELDS = "SELECT * FROM " + TABLE_FIELD;
     private static final String INSERT_FIELD = "INSERT INTO " + TABLE_FIELD + " (" + COLUMN_FIELD_ID + ", " + COLUMN_FIELD_NAME + ") VALUES (?, ?)";
     private static final String UPDATE_FIELD_NAME = "UPDATE " + TABLE_FIELD + " SET " + COLUMN_FIELD_NAME + " = ? WHERE " + COLUMN_FIELD_ID + " = ?";
     private static final String DELETE_FIELD = "DELETE FROM " + TABLE_FIELD + " WHERE " + COLUMN_FIELD_ID + " = ?";
 
-    /*
-    * Connection to the database.
-    */
+    // Connection to the database.
     private final Connection conn;
 
     public FieldDB(Connection conn)
@@ -43,12 +32,12 @@ public class FieldDB
         this.conn = conn;
     }
 
-    /*
-    * Query a field by its ID.
-    *
-    * @param    id     ID of the field to query.
-    * @return   field with the given ID.
-    */
+    /**
+     * Query a field by its ID.
+     *
+     * @param id ID of the field to query.
+     * @return field with the given ID.
+     */
 
     public Field queryFieldByID(int id) throws SQLException
     {
@@ -69,12 +58,11 @@ public class FieldDB
         }
     }
 
-    /*
-    * Query all fields.
-    *
-    * @return   a list with all fields.
-    */
-
+    /**
+     * Query all Fields from the database.
+     *
+     * @return a list with all Fields.
+     */
     public List<Field> queryFields() throws SQLException
     {
         try (PreparedStatement queryFields = conn.prepareStatement(QUERY_FIELDS);
@@ -92,13 +80,12 @@ public class FieldDB
         }
     }
 
-    /*
-    * Insert a new field object into the database.
-    *
-    * @param    field   field to insert
-    * @return   the id of the inserted field.
-    */
-
+    /**
+     * Inserts a new Field into the database.
+     *
+     * @param field field to insert
+     * @return the id of the inserted Field.
+     */
     public int insertField(Field field) throws SQLException
     {
         try (PreparedStatement insertField = conn.prepareStatement(INSERT_FIELD, Statement.RETURN_GENERATED_KEYS))
@@ -123,12 +110,12 @@ public class FieldDB
         }
     }
 
-    /*
-    * Delete a Field object from the database.
-    *
-    * @param    field   field to delete.
-    * @returns  id of the deleted field.
-    */
+    /**
+     * Deletes a Field from the database.
+     *
+     * @param id Field's id to delete.
+     * @return id of the deleted Field.
+     */
 
     public Field deleteFieldByID(int id) throws SQLException
     {
@@ -152,12 +139,12 @@ public class FieldDB
         }
     }
 
-    /*
-    * Update a field object in the database.
-    *
-    * @param    newField   field to update.
-    * @return   Field before the update.
-    */
+    /**
+     * Updates a Field in the database.
+     *
+     * @param newField Field to update.
+     * @return Field before the update.
+     */
 
     public Field updateField(Field newField) throws SQLException
     {
