@@ -7,4 +7,26 @@
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
     -fx-prompt-text-fill: #FFFFFF;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 16.0;
+}
+.label {
+    -fx-text-fill: #001524;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 16.0;
+}
+.button {
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+}
+.check-box .box{
+    -fx-background-color: #FFECD1;
+    -fx-border-color: #001524;
+    -fx-border-radius: 15.0;
+    -fx-border-width: 2.0;
+}
+.check-box:selected .mark {
+    -fx-background-color: #15616D;
+    -fx-shape: "M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0";
 }

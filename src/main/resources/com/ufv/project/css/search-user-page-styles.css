@@ -1,0 +1,40 @@
+.background {
+    -fx-pref-height: 400.0;
+    -fx-pref-width: 600.0;
+    -fx-background-color: #FFECD1;
+}
+.label {
+    -fx-text-fill: #001524;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 16.0;
+}
+.search {
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+    -fx-prompt-text-fill: #FFFFFF;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 16.0;
+}
+.button {
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+}
+.list-view .list-cell,
+.list-view {
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 16.0;
+    -fx-text-fill: #FFFFFF;
+}
+.list-view .list-cell:selected {
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 16.0;
+    -fx-text-fill: #FF7D00;
+}
+.progress-indicator {
+    -fx-progress-color: #FF7D00;
+}

@@ -28,3 +28,29 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
+.list-view .list-cell,
+.list-view {
+    -fx-background-color: #FFECD1;
+    -fx-background-radius: 15.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 16.0;
+    -fx-text-fill: #001524;
+}
+.list-view .scroll-bar {
+    -fx-background-color: transparent;
+}
+.list-view .scroll-bar .increment-button,
+.list-view .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+.list-view .scroll-bar .increment-arrow,
+.list-view .scroll-bar .decrement-arrow {
+    -fx-background-color: #001524;
+}
+.list-view .scroll-bar .thumb {
+    -fx-background-color: #001524;
+    -fx-background-radius: 5.0;
+}
+.list-view .corner {
+    -fx-background-color: transparent;
+}

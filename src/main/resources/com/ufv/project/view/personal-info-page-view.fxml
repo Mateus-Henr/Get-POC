@@ -40,7 +40,7 @@
             <Text fx:id="POCIDText" styleClass="info-text"/>
         </HBox>
         <HBox>
-            <Label fx:id="professorSubjectsLabel" styleClass="info-text" text="Subjects: "/>
+            <Label fx:id="professorSubjectsLabel" prefHeight="300" styleClass="info-text" text="Subjects: "/>
             <ListView fx:id="professorSubjectListView"/>
         </HBox>
         <HBox.margin>

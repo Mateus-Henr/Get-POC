@@ -1,40 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import java.net.URL?>
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.ufv.project.controller.fx.SearchPOCControllerFX"
-      styleClass="background">
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-    <fx:include source="top-menu-page-view.fxml"/>
+<VBox styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.SearchPOCControllerFX">
 
-    <fx:include source="personal-info-page-view.fxml"/>
+    <fx:include source="top-menu-page-view.fxml" />
 
-    <HBox>
-        <TextField fx:id="searchPOCTextField" promptText="Search" styleClass="search"/>
-        <Button onMouseClicked="#handlePOCSearching">Search</Button>
-    </HBox>
-    <ImageView fx:id="noPOCImage" visible="false"/>
-    <ListView fx:id="pocListView"/>
+    <fx:include source="personal-info-page-view.fxml" />
 
-    <Label text="Search by:"/>
-
-    <Label labelFor="$searchByTitleCheckBox" text="Title"/>
-    <CheckBox fx:id="searchByTitleCheckBox"/>
-    <Label labelFor="$searchBySummaryCheckBox" text="Summary"/>
-    <CheckBox fx:id="searchBySummaryCheckBox"/>
-    <Label labelFor="$searchByAuthorCheckBox" text="Author"/>
-    <CheckBox fx:id="searchByAuthorCheckBox"/>
-    <Label labelFor="$searchByAdvisorCheckBox" text="Advisor"/>
-    <CheckBox fx:id="searchByAdvisorCheckBox"/>
-    <Label labelFor="$searchByFieldCheckBox" text="Field"/>
-    <CheckBox fx:id="searchByFieldCheckBox"/>
-    <ProgressIndicator fx:id="progressIndicator"/>
+    <VBox>
+        <HBox>
+            <TextField fx:id="searchPOCTextField" promptText="Search" styleClass="search">
+                <HBox.margin>
+                    <Insets right="5.0" />
+                </HBox.margin>
+            </TextField>
+            <Button onMouseClicked="#handlePOCSearching" styleClass="button">
+                <graphic>
+                    <ImageView fitHeight="18.0" fitWidth="18.0">
+                        <Image url="@../images/search.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+        <ImageView fx:id="noPOCImage" visible="false" />
+        <ListView fx:id="pocListView" prefWidth="520.0" />
+        <Label text="Search by:">
+            <VBox.margin>
+                <Insets top="5.0" />
+            </VBox.margin>
+        </Label>
+        <HBox>
+            <CheckBox fx:id="searchByTitleCheckBox" styleClass="check-box">
+                <HBox.margin>
+                    <Insets right="5.0" />
+                </HBox.margin>
+            </CheckBox>
+            <Label styleClass="label" text="Title" />
+            <VBox.margin>
+                <Insets left="20.0" top="5.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox>
+            <CheckBox fx:id="searchBySummaryCheckBox" styleClass="check-box">
+                <HBox.margin>
+                    <Insets right="5.0" />
+                </HBox.margin>
+            </CheckBox>
+            <Label styleClass="label" text="Summary" />
+            <VBox.margin>
+                <Insets left="20.0" top="5.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox>
+            <CheckBox fx:id="searchByAuthorCheckBox" styleClass="check-box">
+                <HBox.margin>
+                    <Insets right="5.0" />
+                </HBox.margin>
+            </CheckBox>
+            <Label styleClass="label" text="Author" />
+            <VBox.margin>
+                <Insets left="20.0" top="5.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox>
+            <CheckBox fx:id="searchByAdvisorCheckBox" styleClass="check-box">
+                <HBox.margin>
+                    <Insets right="5.0" />
+                </HBox.margin>
+            </CheckBox>
+            <Label styleClass="label" text="Advisor" />
+            <VBox.margin>
+                <Insets left="20.0" top="5.0" />
+            </VBox.margin>
+        </HBox>
+        <HBox>
+            <CheckBox fx:id="searchByFieldCheckBox" styleClass="check-box">
+                <HBox.margin>
+                    <Insets right="5.0" />
+                </HBox.margin>
+            </CheckBox>
+            <Label styleClass="label" text="Field" />
+            <VBox.margin>
+                <Insets left="20.0" top="5.0" />
+            </VBox.margin>
+        </HBox>
+        <ProgressIndicator fx:id="progressIndicator" />
+        <VBox.margin>
+            <Insets left="40.0" right="40.0" />
+        </VBox.margin>
+    </VBox>
+    <padding>
+        <Insets bottom="40.0" />
+    </padding>
     <stylesheets>
-        <URL value="@../css/search-poc-page-styles.css"/>
+        <URL value="@../css/search-poc-page-styles.css" />
     </stylesheets>
 </VBox>
