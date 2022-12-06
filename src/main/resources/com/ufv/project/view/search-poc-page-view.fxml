@@ -92,7 +92,7 @@
                 <Insets left="20.0" top="5.0" />
             </VBox.margin>
         </HBox>
-        <ProgressIndicator fx:id="progressIndicator" styleClass="progress-indicator" />
+        <ProgressIndicator fx:id="progressIndicator" styleClass="progress-indicator" managed="false" visible="false"/>
         <VBox.margin>
             <Insets left="40.0" right="40.0" />
         </VBox.margin>

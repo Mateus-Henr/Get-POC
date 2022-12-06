@@ -33,7 +33,7 @@
         <Button fx:id="updatePOCButton" text="Add POC" onMouseClicked="#onUpdateButtonClicked" GridPane.rowIndex="2"
                 GridPane.columnIndex="2"/>
     </GridPane>
-    <ProgressIndicator fx:id="progressIndicator"/>
+    <ProgressIndicator fx:id="progressIndicator" managed="false" visible="false"/>
     <stylesheets>
         <URL value="@../css/create-poc-page-styles.css"/>
     </stylesheets>
