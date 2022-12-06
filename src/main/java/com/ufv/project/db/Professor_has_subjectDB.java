@@ -36,9 +36,12 @@ public class Professor_has_subjectDB
         this.conn = conn;
     }
 
-    /* Query a subject by its ID.
-     * @param    professorID     ID of the professor to query subjects from him.
-     * @return   subjects with the given professor ID.
+    /**
+     * Queries the database for all the subjects of a professor.
+     *
+     * @param professorID the professor's ID.
+     * @return a list of subjects of the professor with the given ID.
+     * @throws SQLException if an error occurs while querying the database.
      */
 
     public List<Subject> querySubjectsByProfessor(String professorID) throws SQLException
@@ -62,9 +65,12 @@ public class Professor_has_subjectDB
         }
     }
 
-    /* Insert a new professor has subject.
-     * @param    professorID     ID of the professor to insert in relation.
-     * @param    subjectID       ID of the subject to insert in relation.
+    /**
+     * Inserts a new professor_has_subject relation in the database.
+     *
+     * @param professorID the professor's ID to be inserted.
+     * @param subjectID the subject's ID to be inserted.
+     * @throws SQLException if an error occurs while inserting the professor_has_subject relation.
      */
 
     public void insertProfessorHasSubject(String professorID, int subjectID) throws SQLException
@@ -81,9 +87,12 @@ public class Professor_has_subjectDB
         }
     }
 
-    /* Delete a professor has subject.
-     * @param    professorID     ID of the professor to delete in relation.
-     * @param    subjectID       ID of the subject to delete in relation.
+    /**
+     * Deletes a professor_has_subject relation from the database.
+     *
+     * @param professorID the professor's ID to be deleted.
+     * @param subjectID the subject's ID to be deleted.
+     * @throws SQLException if an error occurs while deleting the professor_has_subject relation.
      */
 
     public void deleteProfessorHasSubject(String professorID, int subjectID) throws SQLException
@@ -100,12 +109,14 @@ public class Professor_has_subjectDB
         }
     }
 
-    /* Update a professor has subject.
+    /**
+     * Updates a professor_has_subject relation in the database.
      *
-     * @param    oldProfessorID  ID of the professor to update in relation.
-     * @param    oldSubjectID    ID of the subject to update in relation.
-     * @param    newProfessorID  ID of the professor to update in relation.
-     * @param    newSubjectID    ID of the subject to update in relation.
+     * @param oldProfessorID the old professor's ID.
+     * @param oldSubjectID the old subject's ID.
+     * @param newProfessorID the new professor's ID.
+     * @param newSubjectID the new subject's ID.
+     * @throws SQLException if an error occurs while updating the professor_has_subject relation.
      */
 
 

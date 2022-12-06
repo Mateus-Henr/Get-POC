@@ -32,11 +32,13 @@ public class POC_has_KeywordDB {
         this.conn = conn;
     }
 
-    /* Query all keywords by POC id.
-    *
-    * @param    POCID    id of the POC to query.
-    * @return   list of all keywords by POC id.
-    */
+    /**
+     * Query all keywords by POC ID.
+     *
+     * @param POCID POC ID of the keywords to query.
+     * @return list of all keywords by POC ID.
+     * @throws SQLException if the query fails.
+     */
 
     public List<String> queryKeywordsByPOCID(int POCID) throws SQLException {
         try (PreparedStatement queryKeywordsByPOCId = conn.prepareStatement(QUERY_KEYWORDS_BY_POC_ID)) {
@@ -55,10 +57,12 @@ public class POC_has_KeywordDB {
         }
     }
 
-    /* Query all POC_has_Keyword.
-    *
-    * @return   all ids of POC_has_Keyword.
-    */
+    /**
+     * Query all POC_has_Keyword relations.
+     *
+     * @return list of all POC_has_Keyword relations.
+     * @throws SQLException if the query fails.
+     */
 
     public List<Integer> queryAllPOC_has_Keyword() throws SQLException {
         try (PreparedStatement queryAllPOC_has_Keyword = conn.prepareStatement(QUERY_ALL_POC_HAS_KEYWORD);
@@ -73,12 +77,13 @@ public class POC_has_KeywordDB {
         }
     }
 
-    /* Insert a new POC_has_Keyword.
-    *
-    * @param    POCID    id of the POC to insert.
-    * @param    keyword  id of the keyword to insert.
-    */
-
+    /**
+     *  Insert a new POC_has_Keyword relation into the database.
+     *
+     * @param POCID POC ID of the POC_has_Keyword relation to insert.
+     * @param keyword keyword of the POC_has_Keyword relation to insert.
+     * @throws SQLException if the insert fails.
+     */
     public void insertPOC_has_Keyword(int POCID, String keyword) throws SQLException {
         try (PreparedStatement insertPOC_has_Keyword = conn.prepareStatement(INSERT_POC_HAS_KEYWORD, Statement.RETURN_GENERATED_KEYS)) {
             insertPOC_has_Keyword.setInt(1, POCID);
@@ -90,10 +95,12 @@ public class POC_has_KeywordDB {
         }
     }
 
-    /* Delete a POC_has_Keyword.
-    *
-    * @param    POCID    id of the POC-has-keyword relation to delete.
-    */
+    /**
+     * Delete a POC_has_Keyword relation from the database.
+     *
+     * @param POCID POC ID of the POC_has_Keyword relation to delete.
+     * @throws SQLException if deletion fails.
+     */
 
     public void deletePOC_has_Keyword(int POCID) throws SQLException {
         try (PreparedStatement deletePOC_has_Keyword = conn.prepareStatement(DELETE_POC_HAS_KEYWORD)) {
@@ -105,13 +112,15 @@ public class POC_has_KeywordDB {
         }
     }
 
-    /* Update a POC_has_Keyword.
-    *
-    * @param    oldPOCID    id of the POC to update in the relation.
-    * @param    oldKeyword  id of the keyword to update in the relation.
-    * @param    newPOCID    id of the new POC to update in the relation.
-    * @param    newKeyword  id of the new keyword to update in the relation.
-    */
+    /**
+     * Update a POC_has_Keyword relation in the database.
+     *
+     * @param oldPOCID old POC ID of the POC_has_Keyword relation to update.
+     * @param oldKeyword old keyword of the POC_has_Keyword relation to update.
+     * @param newPOCID new POC ID of the POC_has_Keyword relation to update.
+     * @param newKeyword new keyword of the POC_has_Keyword relation to update.
+     * @throws SQLException if the update fails.
+     */
 
     public void updatePOC_has_Keyword(int oldPOCID, String oldKeyword, int newPOCID, String newKeyword) throws SQLException {
         try (PreparedStatement updatePOC_has_Keyword = conn.prepareStatement(UPDATE_POC_HAS_KEYWORD)) {

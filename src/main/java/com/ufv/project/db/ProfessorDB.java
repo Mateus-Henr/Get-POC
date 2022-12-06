@@ -36,12 +36,14 @@ public class ProfessorDB
         this.conn = conn;
     }
 
-    /* Query a Professor by its ID.
+    /**
+     * Query a professor by its ID, password and name.
      *
-     * @param   username    ID of the Professor to query.
-     * @param   password    password of the Professor to query.
-     * @param   name        name of the Professor to query.
-     * @return  Professor with the given parameters.
+     * @param username ID of the professor to query.
+     * @param password password of the professor to query.
+     * @param name name of the professor to query.
+     * @return professor with the given ID, password and name.
+     * @throws SQLException if an error occurs while querying the database.
      */
 
     protected Professor queryProfessor(String username, String password, String name) throws SQLException
@@ -68,9 +70,12 @@ public class ProfessorDB
         }
     }
 
-    /* Insert a Professor into the database.
+    /**
+     * Insert a professor into the database.
      *
-     * @param   professor   Professor to insert.
+     * @param professor professor to insert.
+     * @return inserted professor.
+     * @throws SQLException if there is an error while inserting the professor.
      */
 
     protected String insertProfessor(Professor professor) throws SQLException
@@ -96,12 +101,14 @@ public class ProfessorDB
         }
     }
 
-    /* Delete a Professor from the database.
+    /**
+     * Delete a professor from the database.
      *
-     * @param   username    ID of the Professor to delete.
-     * @param   password    password of the Professor to delete.
-     * @param   name        name of the Professor to delete.
-     * @return  Professor with the given parameters.
+     * @param username ID of the professor to delete.
+     * @param name name of the professor to delete.
+     * @param password password of the professor to delete.
+     * @return deleted professor with the given ID, password and name.
+     * @throws SQLException if there is an error while deleting the professor.
      */
 
     protected Professor deleteProfessor(String username, String name, String password) throws SQLException
@@ -133,10 +140,12 @@ public class ProfessorDB
         }
     }
 
-    /* Update a Professor from the database.
+    /**
+     * Update a professor in the database.
      *
-     * @param   professor   Professor to update.
-     * @return  updated Professor.
+     * @param newProfessor professor to update.
+     * @return updated professor.
+     * @throws SQLException if there is an error while updating the professor.
      */
     protected Professor updateProfessor(Professor newProfessor) throws SQLException
     {
@@ -184,9 +193,11 @@ public class ProfessorDB
         }
     }
 
-    /* Query all Professors from the database.
+    /**
+     * Query all professors from the database.
      *
-     * @return  List of all Professors.
+     * @return list of professors.
+     * @throws SQLException if there is an error while querying the database.
      */
 
     public List<Professor> queryProfessors() throws SQLException

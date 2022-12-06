@@ -41,10 +41,12 @@ public class UserDB {
         this.conn = conn;
     }
 
-    /* Query user by ID.
-    *
-    * @param    id     username of the user to query.
-    * @return   user with the given ID.
+    /**
+     * Query a user by its ID.
+     *
+     * @param id ID of the user to query.
+     * @return user with the given ID.
+     * @throws SQLException if there is an error while querying the database.
      */
 
     public User queryUserByID(String id) throws SQLException {
@@ -75,10 +77,12 @@ public class UserDB {
         }
     }
 
-    /* Insert user.
-    *
-    * @param    user     user to insert.
-    * @return   username of the inserted user.
+    /**
+     * Insert a user into the database.
+     *
+     * @param user user to insert.
+     * @return inserted user.
+     * @throws SQLException if there is an error while inserting the user.
      */
 
     public String insertUser(User user) throws SQLException {
@@ -118,10 +122,12 @@ public class UserDB {
         }
     }
 
-    /* Delete user.
-    *
-    * @param    id     username of the user to delete.
-    * @return   Deleted user.
+    /**
+     * Delete a user from the database.
+     *
+     * @param id ID of the user to delete.
+     * @return deleted user.
+     * @throws SQLException if there is an error while deleting the user.
      */
 
     public User deleteUserByID(String id) throws SQLException {
@@ -161,10 +167,12 @@ public class UserDB {
         }
     }
 
-    /* Update user.
-    *
-    * @param    newUser     user to update.
-    * @return   Updated user.
+    /**
+     * Update a user in the database.
+     *
+     * @param newUser new user to update.
+     * @return updated user.
+     * @throws SQLException if there is an error while updating the user.
      */
 
     public User updateUser(User newUser) throws SQLException {
@@ -213,9 +221,11 @@ public class UserDB {
         }
     }
 
-    /* Query all users.
-    *
-    * @return   List of all users.
+    /**
+     * Query all users from the database.
+     *
+     * @return list of all users.
+     * @throws SQLException if there is an error while querying the users.
      */
     public List<User> queryUsers() throws SQLException {
         try (PreparedStatement queryUsers = conn.prepareStatement(QUERY_USERS);
@@ -245,10 +255,11 @@ public class UserDB {
         }
     }
 
-    /* Query users by username
-    *
-    * @param    id     username of the user to query.
-    * @return   User with the given username.
+    /**
+     * Query a user from the database by username.
+     * @param username username of the user to query.
+     * @return user with the given username.
+     * @throws SQLException if there is an error while querying the user.
      */
 
     public List<User> queryUsersByContainsID(String username) throws SQLException {

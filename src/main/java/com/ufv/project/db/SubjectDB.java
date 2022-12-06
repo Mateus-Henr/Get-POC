@@ -6,8 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubjectDB
-{
+public class SubjectDB {
     /* Table Subject constants. */
     private static final String TABLE_SUBJECT = "TB_Subject";
     private static final String COLUMN_SUBJECT_ID = "ID";
@@ -31,26 +30,24 @@ public class SubjectDB
 
     private final Connection conn;
 
-    public SubjectDB(Connection conn)
-    {
+    public SubjectDB(Connection conn) {
         this.conn = conn;
     }
 
-    /* Query a subject by its ID.
-    * @param    id     ID of the subject to query.
-    * @return   subject with the given ID.
-    */
+    /**
+     * Query a subject by its ID.
+     *
+     * @param id ID of the subject to query.
+     * @return subject with the given ID.
+     * @throws SQLException if there is an error while querying the database.
+     */
 
-    public Subject querySubjectByID(int id) throws SQLException
-    {
-        try (PreparedStatement querySubject = conn.prepareStatement(QUERY_SUBJECT))
-        {
+    public Subject querySubjectByID(int id) throws SQLException {
+        try (PreparedStatement querySubject = conn.prepareStatement(QUERY_SUBJECT)) {
             querySubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
 
-            try (ResultSet resultSet = querySubject.executeQuery())
-            {
-                if (resultSet.next())
-                {
+            try (ResultSet resultSet = querySubject.executeQuery()) {
+                if (resultSet.next()) {
                     return new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX), resultSet.getString(COLUMN_SUBJECT_NAME_INDEX), resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX));
                 }
             }
@@ -59,19 +56,19 @@ public class SubjectDB
         }
     }
 
-    /* Query all subjects.
-    * @return   list of all subjects.
+    /**
+     * Query all subjects from the database.
+     *
+     * @return list of all subjects.
+     * @throws SQLException if there is an error while querying the database.
      */
 
-    public List<Subject> querySubjects() throws SQLException
-    {
+    public List<Subject> querySubjects() throws SQLException {
         try (PreparedStatement querySubjects = conn.prepareStatement(QUERY_SUBJECTS);
-             ResultSet resultSet = querySubjects.executeQuery())
-        {
+             ResultSet resultSet = querySubjects.executeQuery()) {
             List<Subject> subjects = new ArrayList<>();
 
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 subjects.add(new Subject(resultSet.getInt(COLUMN_SUBJECT_ID_INDEX), resultSet.getString(COLUMN_SUBJECT_NAME_INDEX), resultSet.getString(COLUMN_SUBJECT_DESCRIPTION_INDEX)));
             }
 
@@ -79,28 +76,26 @@ public class SubjectDB
         }
     }
 
-    /* Insert a new subject.
-    * @param    new_subject     subject to insert.
-    * @return   id of the inserted subject.
+    /**
+     * Insert a subject into the database.
+     *
+     * @param new_subject subject to insert.
+     * @return inserted subject.
+     * @throws SQLException if there is an error while querying the database.
      */
 
-    public int insertSubject(Subject new_subject) throws SQLException
-    {
-        try (PreparedStatement insertSubject = conn.prepareStatement(INSERT_SUBJECT, Statement.RETURN_GENERATED_KEYS))
-        {
+    public int insertSubject(Subject new_subject) throws SQLException {
+        try (PreparedStatement insertSubject = conn.prepareStatement(INSERT_SUBJECT, Statement.RETURN_GENERATED_KEYS)) {
             insertSubject.setInt(COLUMN_SUBJECT_ID_INDEX, new_subject.getId());
             insertSubject.setString(COLUMN_SUBJECT_NAME_INDEX, new_subject.getName());
             insertSubject.setString(COLUMN_SUBJECT_DESCRIPTION_INDEX, new_subject.getDescription());
 
-            if (insertSubject.executeUpdate() != 1)
-            {
+            if (insertSubject.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't insert subject with ID: '" + new_subject.getId() + "'.");
             }
 
-            try (ResultSet generatedKeys = insertSubject.getGeneratedKeys())
-            {
-                if (generatedKeys.next())
-                {
+            try (ResultSet generatedKeys = insertSubject.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
                     return generatedKeys.getInt(1);
                 }
 
@@ -109,26 +104,25 @@ public class SubjectDB
         }
     }
 
-    /* Delete a subject.
-    * @param    id     ID of the subject to delete.
-    * @return   Subject deleted.
+    /**
+     * Delete a subject from the database.
+     *
+     * @param id ID of the subject to delete.
+     * @return deleted subject.
+     * @throws SQLException if there is an error while querying the database.
      */
 
-    public Subject deleteSubject(int id) throws SQLException
-    {
+    public Subject deleteSubject(int id) throws SQLException {
         Subject foundSubject = querySubjectByID(id);
 
-        if (foundSubject == null)
-        {
+        if (foundSubject == null) {
             throw new SQLException("ERROR: Subject with ID: '" + id + "' doesn't exist.");
         }
 
-        try (PreparedStatement deleteSubject = conn.prepareStatement(DELETE_SUBJECT))
-        {
+        try (PreparedStatement deleteSubject = conn.prepareStatement(DELETE_SUBJECT)) {
             deleteSubject.setInt(COLUMN_SUBJECT_ID_INDEX, id);
 
-            if (deleteSubject.executeUpdate() != 1)
-            {
+            if (deleteSubject.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't delete subject with ID: '" + id + "'.");
             }
 
@@ -136,56 +130,46 @@ public class SubjectDB
         }
     }
 
-    /* Update a subject.
-    *
-    * @param    newSubject     subject to update.
-    * @return   Subject updated.
+    /**
+     * Update a subject in the database.
+     *
+     * @param newSubject subject to update.
+     * @return updated subject.
+     * @throws SQLException if there is an error while querying the database.
      */
 
-    public Subject updateSubject(Subject newSubject) throws SQLException
-    {
+    public Subject updateSubject(Subject newSubject) throws SQLException {
         Subject foundSubject = querySubjectByID(newSubject.getId());
 
-        if (foundSubject == null)
-        {
+        if (foundSubject == null) {
             throw new SQLException("ERROR: Subject with ID: '" + newSubject.getId() + "' doesn't exist.");
         }
 
-        try (PreparedStatement updateSubject = conn.prepareStatement(UPDATE_SUBJECT))
-        {
+        try (PreparedStatement updateSubject = conn.prepareStatement(UPDATE_SUBJECT)) {
             conn.setAutoCommit(false);
 
-            if (newSubject.getName() != null)
-            {
+            if (newSubject.getName() != null) {
                 updateSubject.setString(1, newSubject.getName());
-            }
-            else
-            {
+            } else {
                 updateSubject.setString(1, foundSubject.getName());
             }
 
-            if (newSubject.getDescription() != null)
-            {
+            if (newSubject.getDescription() != null) {
                 updateSubject.setString(2, newSubject.getDescription());
-            }
-            else
-            {
+            } else {
                 updateSubject.setString(2, foundSubject.getDescription());
             }
 
             updateSubject.setInt(3, newSubject.getId());
 
-            if (updateSubject.executeUpdate() != 1)
-            {
+            if (updateSubject.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't delete subject with ID: '" + newSubject.getId() + "'.");
             }
 
             conn.setAutoCommit(true);
+            return newSubject;
 
-            return foundSubject;
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             conn.rollback();
             conn.setAutoCommit(true);
 

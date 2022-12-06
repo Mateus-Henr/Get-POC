@@ -6,8 +6,7 @@ import com.ufv.project.model.UserTypesEnum;
 import java.sql.*;
 import java.util.List;
 
-public class StudentDB
-{
+public class StudentDB {
     /* Table Student constants. */
     public static final String TABLE_STUDENT = "TB_Student";
     private static final String COLUMN_STUDENT_EMAIL = "Email";
@@ -25,13 +24,9 @@ public class StudentDB
     /* Table Student queries. */
 
     private static final String QUERY_STUDENT = "SELECT * FROM " + TABLE_STUDENT + " WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
-    private static final String QUERY_STUDENTS = "SELECT * FROM " + TABLE_STUDENT;
-
-    private static final String QUERY_STUDENT_BY_POC_ID = "SELECT * FROM " + TABLE_STUDENT + " WHERE " + COLUMN_STUDENT_POC + " = ?";
     private static final String INSERT_STUDENT = "INSERT INTO " + TABLE_STUDENT + " (" + COLUMN_STUDENT_EMAIL + ", " + COLUMN_STUDENT_REGISTRATION + ", " + COLUMN_STUDENT_POC + ", " + COLUMN_USER_STUDENT_ID + ") VALUES (?, ?, ?, ?)";
     private static final String UPDATE_STUDENT = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_REGISTRATION + " = ?, " + COLUMN_STUDENT_EMAIL + " = ?, " + COLUMN_STUDENT_POC + " = ? WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
     private static final String DELETE_STUDENT = "DELETE FROM " + TABLE_STUDENT + " WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
-
     private static final String SET_STUDENT_POC_NULL = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_POC + " = NULL WHERE " + COLUMN_STUDENT_POC + " = ?";
     private static final String SET_STUDENT_POC = "UPDATE " + TABLE_STUDENT + " SET " + COLUMN_STUDENT_POC + " = ? WHERE " + COLUMN_USER_STUDENT_ID + " = ?";
 
@@ -39,27 +34,25 @@ public class StudentDB
     private final Connection conn;
 
 
-    public StudentDB(Connection conn)
-    {
+    public StudentDB(Connection conn) {
         this.conn = conn;
     }
 
-    /* Query a Student.
-     * @param   username   username of the Student to query.
-     * @param   password   password of the Student to query.
-     * @param   name       name of the Student to query.
-     * @return  Student with the given username, password and name.
+    /**
+     * Query a student by ID, name and password.
+     *
+     * @param username the username of the student.
+     * @param name     the name of the student.
+     * @param password the password of the student.
+     * @return student with the given ID, name and password.
+     * @throws SQLException if an error occurs while querying the database.
      */
-    protected Student queryStudent(String username, String name, String password) throws SQLException
-    {
-        try (PreparedStatement queryStudent = conn.prepareStatement(QUERY_STUDENT))
-        {
+    protected Student queryStudent(String username, String name, String password) throws SQLException {
+        try (PreparedStatement queryStudent = conn.prepareStatement(QUERY_STUDENT)) {
             queryStudent.setString(1, username);
 
-            try (ResultSet resultSet = queryStudent.executeQuery())
-            {
-                if (resultSet.next())
-                {
+            try (ResultSet resultSet = queryStudent.executeQuery()) {
+                if (resultSet.next()) {
                     return new Student(username,
                             name,
                             password,
@@ -74,13 +67,15 @@ public class StudentDB
         }
     }
 
-    /* Query Students by POC ID.
-     * @param   POCID   id of the poc that the students are associated with.
-     * @return  List of Students with the given POC ID.
+    /**
+     * Query students by POC ID.
+     *
+     * @param POCID the ID of the POC.
+     * @return students with the given POC ID.
+     * @throws SQLException if an error occurs while querying the database.
      */
 
-    public List<Student> queryStudentsByPocID(int POCID) throws SQLException
-    {
+    public List<Student> queryStudentsByPocID(int POCID) throws SQLException {
         return new UserDB(conn).queryUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)
                 .map(user -> (Student) user)
@@ -88,31 +83,28 @@ public class StudentDB
                 .toList();
     }
 
-    /* Insert a Student.
-     * @param   student   Student to insert.
-     * @return  username of the inserted Student.
+    /**
+     * Insert a student into the database.
+     *
+     * @param student the student to be inserted.
+     * @return inserted student.
+     * @throws SQLException if an error occurs while inserting the student.
      */
 
-    protected String insertStudent(Student student) throws SQLException
-    {
-        try (PreparedStatement insertStudent = conn.prepareStatement(INSERT_STUDENT))
-        {
+    protected String insertStudent(Student student) throws SQLException {
+        try (PreparedStatement insertStudent = conn.prepareStatement(INSERT_STUDENT)) {
             insertStudent.setString(COLUMN_STUDENT_EMAIL_INDEX, student.getEmail());
             insertStudent.setString(COLUMN_STUDENT_REGISTRATION_INDEX, student.getRegistration());
 
-            if (student.getPOCID() == 0)
-            {
+            if (student.getPOCID() == 0) {
                 insertStudent.setNull(COLUMN_STUDENT_POC_INDEX, Types.INTEGER);
-            }
-            else
-            {
+            } else {
                 insertStudent.setInt(COLUMN_STUDENT_POC_INDEX, student.getPOCID());
             }
 
             insertStudent.setString(COLUMN_USER_STUDENT_ID_INDEX, student.getUsername());
 
-            if (insertStudent.executeUpdate() != 1)
-            {
+            if (insertStudent.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't insert student with username: '" + student.getUsername() + "'.");
             }
 
@@ -120,28 +112,27 @@ public class StudentDB
         }
     }
 
-    /* Delete a Student.
-     * @param   username   username of the Student to delete.
-     * @param   password   password of the Student to delete.
-     * @param   name       name of the Student to delete.
-     * @return  Deleted Student.
+    /**
+     * Delete a student from the database.
+     *
+     * @param username the username of the student to be deleted.
+     * @param name     the name of the student to be deleted.
+     * @param password the password of the student to be deleted.
+     * @return deleted student.
+     * @throws SQLException if an error occurs while deleting the student.
      */
 
-    protected Student deleteStudent(String username, String name, String password) throws SQLException
-    {
+    protected Student deleteStudent(String username, String name, String password) throws SQLException {
         Student foundStudent = queryStudent(username, name, password);
 
-        if (foundStudent == null)
-        {
+        if (foundStudent == null) {
             throw new SQLException("ERROR: Student with username: '" + username + "' doesn't exist.");
         }
 
-        try (PreparedStatement deleteStudent = conn.prepareStatement(DELETE_STUDENT))
-        {
+        try (PreparedStatement deleteStudent = conn.prepareStatement(DELETE_STUDENT)) {
             deleteStudent.setString(1, username);
 
-            if (deleteStudent.executeUpdate() != 1)
-            {
+            if (deleteStudent.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't delete student with username: '" + username + "'.");
             }
 
@@ -149,38 +140,34 @@ public class StudentDB
         }
     }
 
-    /* Update a Student.
-     * @param   newStudent   Student to update.
-     * @return  Updated Student.
+    /**
+     * Update a student in the database.
+     *
+     * @param newStudent the new student to be updated.
+     * @return updated student.
+     * @throws SQLException if an error occurs while updating the student.
      */
 
-    protected Student updateStudent(Student newStudent) throws SQLException
-    {
+    protected Student updateStudent(Student newStudent) throws SQLException {
         Student oldStudent = queryStudent(newStudent.getUsername(), newStudent.getName(), newStudent.getPassword());
 
-        if (oldStudent == null)
-        {
+        if (oldStudent == null) {
             throw new SQLException("ERROR: Student with username: '" + newStudent.getUsername() + "' doesn't exist.");
         }
 
-        try (PreparedStatement updateStudent = conn.prepareStatement(UPDATE_STUDENT))
-        {
-            if (newStudent.getEmail() != null)
-            {
+        try (PreparedStatement updateStudent = conn.prepareStatement(UPDATE_STUDENT)) {
+            if (newStudent.getEmail() != null) {
                 oldStudent.setEmail(newStudent.getEmail());
             }
 
-            if (newStudent.getRegistration() != null)
-            {
+            if (newStudent.getRegistration() != null) {
                 oldStudent.setRegistration(newStudent.getRegistration());
             }
-            if (newStudent.getPOCID() != 0)
-            {
+            if (newStudent.getPOCID() != 0) {
                 oldStudent.setPOCID(newStudent.getPOCID());
             }
 
-            if (newStudent.getUsername() != null)
-            {
+            if (newStudent.getUsername() != null) {
                 oldStudent.setUsername(newStudent.getUsername());
             }
 
@@ -189,8 +176,7 @@ public class StudentDB
             updateStudent.setInt(3, oldStudent.getPOCID());
             updateStudent.setString(4, oldStudent.getUsername());
 
-            if (updateStudent.executeUpdate() != 1)
-            {
+            if (updateStudent.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't update student with username: '" + newStudent.getUsername() + "'.");
             }
 
@@ -198,49 +184,50 @@ public class StudentDB
         }
     }
 
-    /* Set a Student POC null.
-     * @param   POCID      id of the POC to set.
+    /**
+     * Set student POC ID null.
+     *
+     * @param POCID the ID of the POC.
+     * @throws SQLException if an error occurs while setting the student POC ID null.
      */
 
-    protected void setStudentPOCNull(int POCID) throws SQLException
-    {
-        try (PreparedStatement setStudentPOCNull = conn.prepareStatement(SET_STUDENT_POC_NULL))
-        {
+    protected void setStudentPOCNull(int POCID) throws SQLException {
+        try (PreparedStatement setStudentPOCNull = conn.prepareStatement(SET_STUDENT_POC_NULL)) {
             setStudentPOCNull.setInt(1, POCID);
 
-            if (setStudentPOCNull.executeUpdate() != 1)
-            {
+            if (setStudentPOCNull.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't set POC with ID: '" + POCID + "' to null.");
             }
         }
     }
 
-    /* Set a Student POC.
-     * @param   POCID      id of the POC to set.
-     * @param   studentID  id of the student to set.
+    /**
+     * Set student POC ID.
+     *
+     * @param studentID the ID of the student.
+     * @param POCID     the ID of the POC.
+     * @throws SQLException if an error occurs while setting the student POC ID.
      */
 
-    protected void setStudentPOC(String studentID, int POCID) throws SQLException
-    {
-        try (PreparedStatement setStudentPOC = conn.prepareStatement(SET_STUDENT_POC))
-        {
+    protected void setStudentPOC(String studentID, int POCID) throws SQLException {
+        try (PreparedStatement setStudentPOC = conn.prepareStatement(SET_STUDENT_POC)) {
             setStudentPOC.setInt(1, POCID);
             setStudentPOC.setString(2, studentID);
 
-            if (setStudentPOC.executeUpdate() != 1)
-            {
+            if (setStudentPOC.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't set POC with ID: '" + POCID + "' to student with ID: '" + studentID + "'.");
             }
         }
     }
 
-    /* Query Students by POC ID.
-     * @param   POCID   id of the poc that the students are associated with.
-     * @return  List of Students with the given POC ID.
+    /**
+     * Query students by POC ID.
+     *
+     * @return list of students.
+     * @throws SQLException if an error occurs while querying the students.
      */
 
-    public List<Student> querStudents() throws SQLException
-    {
+    public List<Student> querStudents() throws SQLException {
         return new UserDB(conn).queryUsers().stream()
                 .filter(user -> user.getUserType() == UserTypesEnum.STUDENT)
                 .map(user -> (Student) user)

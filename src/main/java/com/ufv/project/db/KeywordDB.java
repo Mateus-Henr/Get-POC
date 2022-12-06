@@ -4,8 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeywordDB
-{
+public class KeywordDB {
 
     /* Table Keyword constants. */
     private static final String TABLE_KEYWORD = "TB_keyword";
@@ -25,27 +24,23 @@ public class KeywordDB
     /* Connection to the database. */
     private final Connection conn;
 
-    public KeywordDB(Connection conn)
-    {
+    public KeywordDB(Connection conn) {
         this.conn = conn;
     }
 
-    /* Query a keyword by its id.
-    *
-    * @param    word     word of the keyword to query.
-    * @return   keyword with the given word.
-    */
-
-    public String queryKeywordByID(String word) throws SQLException
-    {
-        try (PreparedStatement queryKeyword = conn.prepareStatement(QUERY_KEYWORD))
-        {
+    /**
+     * Query a keyword by its word.
+     *
+     * @param word word of the keyword to query.
+     * @return keyword with the given word.
+     * @throws SQLException if the query fails.
+     */
+    public String queryKeywordByID(String word) throws SQLException {
+        try (PreparedStatement queryKeyword = conn.prepareStatement(QUERY_KEYWORD)) {
             queryKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, word);
 
-            try (ResultSet resultSet = queryKeyword.executeQuery())
-            {
-                if (resultSet.next())
-                {
+            try (ResultSet resultSet = queryKeyword.executeQuery()) {
+                if (resultSet.next()) {
                     return resultSet.getString(COLUMN_KEYWORDS_WORD_INDEX);
                 }
 
@@ -54,20 +49,19 @@ public class KeywordDB
         }
     }
 
-    /* Query all keywords.
-    *
-    * @return   list of all keywords.
-    */
+    /**
+     * Query all keywords.
+     *
+     * @return list of all keywords.
+     * @throws SQLException if the query fails.
+     */
 
-    public List<String> queryKeywords() throws SQLException
-    {
+    public List<String> queryKeywords() throws SQLException {
         try (PreparedStatement queryKeywords = conn.prepareStatement(QUERY_KEYWORDS);
-             ResultSet resultSet = queryKeywords.executeQuery())
-        {
+             ResultSet resultSet = queryKeywords.executeQuery()) {
             List<String> keywords = new ArrayList<>();
 
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 keywords.add(resultSet.getString(COLUMN_KEYWORDS_WORD_INDEX));
             }
 
@@ -75,20 +69,19 @@ public class KeywordDB
         }
     }
 
-    /* Insert a keyword.
-    *
-    * @param    keyword     word of the keyword to insert.
-    * @return   a word of the inserted keyword.
+    /**
+     * Insert a new keyword.
+     *
+     * @param keyword keyword to insert.
+     * @return keyword inserted.
+     * @throws SQLException if the insert fails.
      */
 
-    public String insertKeyword(String keyword) throws SQLException
-    {
-        try (PreparedStatement insertKeyword = conn.prepareStatement(INSERT_KEYWORD, Statement.RETURN_GENERATED_KEYS))
-        {
+    public String insertKeyword(String keyword) throws SQLException {
+        try (PreparedStatement insertKeyword = conn.prepareStatement(INSERT_KEYWORD, Statement.RETURN_GENERATED_KEYS)) {
             insertKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, keyword);
 
-            if (insertKeyword.executeUpdate() != 1)
-            {
+            if (insertKeyword.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't insert keyword with value: '" + keyword + "'.");
             }
 
@@ -96,21 +89,19 @@ public class KeywordDB
         }
     }
 
-    /*
-    * Delete a keyword.
-    *
-    * @param    id     id string of the keyword to delete.
-    * @return   deleted keyword.
+    /**
+     * Delete a keyword.
+     *
+     * @param id keyword to delete.
+     * @return keyword deleted.
+     * @throws SQLException if delete fails.
      */
 
-    public String deleteKeyword(String id) throws SQLException
-    {
-        try (PreparedStatement deleteKeyword = conn.prepareStatement(DELETE_KEYWORD))
-        {
+    public String deleteKeyword(String id) throws SQLException {
+        try (PreparedStatement deleteKeyword = conn.prepareStatement(DELETE_KEYWORD)) {
             deleteKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, id);
 
-            if (deleteKeyword.executeUpdate() != 1)
-            {
+            if (deleteKeyword.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Couldn't delete keyword with ID: '" + id + "'.");
             }
 
@@ -118,27 +109,24 @@ public class KeywordDB
         }
     }
 
-    /*
-    * Update a keyword.
-    *
-    * @param    oldKeyword     old word of the keyword to update.
-    * @param    newKeyword     new word of the keyword to update.
-    * @return   updated keyword.
-    */
+    /**
+     * Update a keyword.
+     *
+     * @param oldKeyword old word of the keyword to update.
+     * @param newKeyword new word of the keyword to update.
+     * @return updated keyword.
+     * @throws SQLException if update fails.
+     */
 
-    public String updateKeyword(String oldKeyword, String newKeyword) throws SQLException
-    {
-        try (PreparedStatement updateKeyword = conn.prepareStatement(UPDATE_KEYWORD))
-        {
+    public String updateKeyword(String oldKeyword, String newKeyword) throws SQLException {
+        try (PreparedStatement updateKeyword = conn.prepareStatement(UPDATE_KEYWORD)) {
             updateKeyword.setString(COLUMN_KEYWORDS_WORD_INDEX, newKeyword);
             updateKeyword.setString(2, oldKeyword);
 
-            if (updateKeyword.executeUpdate() != 1)
-            {
+            if (updateKeyword.executeUpdate() != 1) {
                 throw new SQLException("ERROR: Could not update keyword with value: '" + oldKeyword + "'.");
             }
-
-            return oldKeyword;
+            return newKeyword;
         }
     }
 

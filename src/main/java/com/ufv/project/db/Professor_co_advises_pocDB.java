@@ -37,11 +37,13 @@ public class Professor_co_advises_pocDB
         this.conn = conn;
     }
 
-    /* Query professors by POC ID.
-    *
-    * @param    pocId    ID of the POC to query.
-    * @return   list of professors that co-advises the POC with the given ID.
-    */
+    /**
+     * Query professors by POC id.
+     *
+     * @param pocId POC id to query.
+     * @return List of professors that co-advises the POC.
+     * @throws SQLException If an error occurs while querying the database.
+     */
 
     public List<Professor> queryProfessorsByPocId(int pocId) throws SQLException
     {
@@ -64,11 +66,13 @@ public class Professor_co_advises_pocDB
         }
     }
 
-    /* Insert a new professor co-advises-POC relation.
-    *
-    * @param    professorId    ID of the professor.
-    * @param    POCID         ID of the POC.
-    */
+    /**
+     * Insert a new professor co-advises POC relation.
+     *
+     * @param professorID Professor id to insert in the relation.
+     * @param POCID POC id to insert in the relation.
+     * @throws SQLException If an error occurs while inserting the relation.
+     */
 
     public void insertProfessor_co_advises_poc(String professorID, int POCID) throws SQLException
     {
@@ -84,10 +88,12 @@ public class Professor_co_advises_pocDB
         }
     }
 
-    /* Delete a professor co-advises-POC relation.
-    *
-    * @param    POCID    ID of the POC.
-    */
+    /**
+     * Delete a professor co-advises POC relation.
+     *
+     * @param POCID POC id to delete the relation.
+     * @throws SQLException If an error occurs while deleting the relation.
+     */
 
     public void deleteProfessor_co_advises_poc(int POCID) throws SQLException
     {
@@ -102,12 +108,14 @@ public class Professor_co_advises_pocDB
         }
     }
 
-    /* Update a professor co-advises-POC relation.
-    *
-    * @param    oldProfessorId    ID of the old professor.
-    * @param    oldPOCID         ID of the old POC.
-    * @param    newProfessorId    ID of the new professor.
-    * @param    newPOCID         ID of the new POC.
+    /**
+     * Update a professor co-advises POC relation.
+     *
+     * @param oldProfessorID old professor id to update the relation.
+     * @param oldPOCID old POC id to update the relation.
+     * @param newProfessorID new professor id to update the relation.
+     * @param newPOCID new POC id to update the relation.
+     * @throws SQLException If an error occurs while updating the relation.
      */
 
     public void updateProfessor_co_advises_poc(String oldProfessorID, int oldPOCID, String newProfessorID, int newPOCID) throws SQLException
