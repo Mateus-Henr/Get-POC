@@ -1,43 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
-<?import java.net.URL?>
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:id="mainPane"
-      fx:controller="com.ufv.project.controller.fx.AnalyzePOCControllerFX"
-      styleClass="background">
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-    <fx:include source="top-menu-page-view.fxml"/>
+<VBox fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.AnalyzePOCControllerFX">
 
-    <Label labelFor="$titleText" text="Title: "/>
-    <Text fx:id="titleText"/>
+    <fx:include source="top-menu-page-view.fxml" />
 
-    <Label labelFor="$authorListView" text="Author(s): "/>
-    <ListView fx:id="authorListView"/>
+    <Label text="Title: " />
+    <Text fx:id="titleText" text="Title"/>
 
-    <Label labelFor="$advisorText" text="Advisor: "/>
-    <Text fx:id="advisorText"/>
+    <Label text="Author(s): " />
+    <ListView fx:id="authorListView" />
 
-    <Label labelFor="$coAdvisorListView" text="Co-Advisors: "/>
-    <ListView fx:id="coAdvisorListView"/>
+    <Label text="Advisor: " />
+    <Text fx:id="advisorText" text="Advisor"/>
 
-    <Label labelFor="$fieldText" text="Field: "/>
-    <Text fx:id="fieldText"/>
+    <Label text="Co-Advisors: " />
+    <ListView fx:id="coAdvisorListView" />
 
-    <Label labelFor="$dateText" text="Date: "/>
-    <Text fx:id="dateText"/>
+    <Label text="Field: " />
+    <Text fx:id="fieldText" text="Field"/>
 
-    <Label labelFor="$keywordList" text="Keywords: "/>
-    <ListView fx:id="keywordList"/>
+    <Label text="Date: " />
+    <Text fx:id="dateText" text="Date"/>
 
-    <Label labelFor="$pdfFilepathText" text="PDF file: "/>
-    <Hyperlink fx:id="pdfFilepathText" onAction="#onDisplayPDF"/>
+    <Label text="Keywords: " />
+    <ListView fx:id="keywordList" />
 
-    <Button text="Update" onMouseClicked="#onUpdatePOCButtonClicked"/>
+    <Label text="PDF file: " />
+    <Hyperlink fx:id="pdfFilepathText" onAction="#onDisplayPDF" />
+
+    <Button onMouseClicked="#onUpdatePOCButtonClicked" text="Update" />
     <stylesheets>
-        <URL value="@../css/search-user-page-styles.css"/>
+        <URL value="@../css/search-user-page-styles.css" />
     </stylesheets>
 </VBox>
