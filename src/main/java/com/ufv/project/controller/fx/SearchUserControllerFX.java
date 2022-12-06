@@ -9,6 +9,7 @@ import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
@@ -33,6 +34,22 @@ public class SearchUserControllerFX
     public SearchUserControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
+    }
+
+    /**
+     * Runs upon initialization.
+     */
+    @FXML
+    public void initialize()
+    {
+        // Set event handling to text box when pressing the "ENTER" key.
+        searchUsernameTextField.setOnKeyPressed(keyEvent ->
+        {
+            if (keyEvent.getCode().equals(KeyCode.ENTER))
+            {
+                onSearchUserButtonClicked();
+            }
+        });
     }
 
     /**

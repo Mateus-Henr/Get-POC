@@ -6,6 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+<?import javafx.scene.text.Text?>
 <VBox fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.SearchUserControllerFX">
 
@@ -35,6 +36,7 @@
         <padding>
             <Insets left="40.0" right="40.0" top="5.0"/>
         </padding>
+        <Text text="In case of no matches, returns all."/>
     </HBox>
     <ProgressIndicator fx:id="progressIndicator" managed="false" styleClass="progress-indicator" visible="false"/>
     <ListView fx:id="userList" onMouseClicked="#onSelectedRow" styleClass="list-view">

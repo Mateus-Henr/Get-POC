@@ -72,7 +72,7 @@ public class SearchPOCControllerFX
         {
             if (keyEvent.getCode().equals(KeyCode.ENTER))
             {
-                handlePOCSearching();
+                onSearchPOCButtonClicked();
             }
         });
 
@@ -94,7 +94,7 @@ public class SearchPOCControllerFX
      * Searches for POC.
      */
     @FXML
-    public void handlePOCSearching()
+    public void onSearchPOCButtonClicked()
     {
         final Task<List<POC>> searchPOCTask = new Task<>()
         {

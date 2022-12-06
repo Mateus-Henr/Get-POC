@@ -21,7 +21,7 @@
                     <Insets right="5.0"/>
                 </HBox.margin>
             </TextField>
-            <Button onMouseClicked="#handlePOCSearching" styleClass="button">
+            <Button onMouseClicked="#onSearchPOCButtonClicked" styleClass="button">
                 <graphic>
                     <ImageView fitHeight="18.0" fitWidth="18.0">
                         <Image url="@../images/search.png"/>
