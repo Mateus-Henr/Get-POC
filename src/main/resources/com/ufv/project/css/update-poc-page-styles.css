@@ -1,33 +1,46 @@
-.background {
+.background
+{
     -fx-pref-height: 400.0;
     -fx-pref-width: 600.0;
     -fx-background-color: #FFECD1;
 }
-.update-background {
+
+.update-background
+{
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
 }
-.update-title {
+
+.update-title
+{
     -fx-fill: #001524;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-.label {
+
+.label
+{
     -fx-text-fill: #FFFFFF;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-.progress-indicator {
+
+.progress-indicator
+{
     -fx-progress-color: #FF7D00;
 }
-.button {
+
+.button
+{
     -fx-background-color: #FFECD1;
     -fx-background-radius: 20.0;
     -fx-fill: #001524;
     -fx-font-size: 16.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
-.text-field {
+
+.text-field
+{
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
     -fx-border-width: 2.0;
@@ -37,7 +50,9 @@
     -fx-font-size: 14.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
-.update-menu-button {
+
+.update-menu-button
+{
     -fx-background-color: #001524;
     -fx-background-radius: 20.0;
     -fx-border-width: 2.0;
@@ -47,23 +62,35 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-prompt-text-fill: #FFFFFF;
 }
-.update-menu-button .context-menu {
+
+.update-menu-button .context-menu
+{
     -fx-background-color: #FFECD1;
     -fx-background-radius: 15.0;
 }
-.update-menu-button .check-menu-item {
+
+.update-menu-button .check-menu-item
+{
     -fx-background-radius: 15.0;
     -fx-background-color: #FFECD1;
 }
-.update-menu-button .check-menu-item .label {
+
+.update-menu-button .check-menu-item .label
+{
     -fx-text-fill: #001524;
 }
-.update-menu-button .check-menu-item:focused .label {
+
+.update-menu-button .check-menu-item:focused .label
+{
     -fx-text-fill: #78290F;
 }
-.update-menu-button .check-menu-item {
+
+.update-menu-button .check-menu-item
+{
     -fx-mark-color: #FF7D00;
 }
-.update-menu-button .check-menu-item:focused{
+
+.update-menu-button .check-menu-item:focused
+{
     -fx-mark-color: #78290F;
 }

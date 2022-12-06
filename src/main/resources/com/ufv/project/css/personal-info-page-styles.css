@@ -1,62 +1,87 @@
-@font-face {
+@font-face
+{
     font-family: 'Ubuntu Mono Bold';
     src: url('../fonts/UbuntuMono-B.ttf');
 }
-.background  {
+
+.background
+{
     -fx-alignment: center;
     -fx-background-color: #FFECD1;
     -fx-padding: 20 20 20 20;
 }
-.info-background {
+
+.info-background
+{
     -fx-background-color: #001524;
     -fx-pref-width: 560.0;
     -fx-background-radius: 15.0;
 }
-.username {
+
+.username
+{
     -fx-fill: #001524;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 32.0;
 }
-.info-text{
+
+.info-text
+{
     -fx-fill: #FFFFFF;
     -fx-text-fill: #FFFFFF;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-.info-title {
+
+.info-title
+{
     -fx-fill: #001524;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
+
 .list-view .list-cell,
-.list-view {
+.list-view
+{
     -fx-background-color: #FFECD1;
     -fx-background-radius: 15.0;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
     -fx-text-fill: #001524;
 }
-.list-view .scroll-bar {
+
+.list-view .scroll-bar
+{
     -fx-background-color: transparent;
 }
+
 .list-view .scroll-bar .increment-button,
-.list-view .scroll-bar .decrement-button {
+.list-view .scroll-bar .decrement-button
+{
     -fx-background-color: transparent;
 }
+
 .list-view .scroll-bar .increment-arrow,
-.list-view .scroll-bar .decrement-arrow {
+.list-view .scroll-bar .decrement-arrow
+{
     -fx-background-color: #001524;
 }
-.list-view .scroll-bar .thumb {
+
+.list-view .scroll-bar .thumb
+{
     -fx-background-color: #001524;
     -fx-background-radius: 5.0;
 }
+
 .list-view .scroll-bar:horizontal .increment-arrow,
 .list-view .scroll-bar:horizontal .decrement-arrow,
 .list-view .scroll-bar:horizontal .increment-button,
-.list-view .scroll-bar:horizontal .decrement-button {
-    -fx-padding:0;
+.list-view .scroll-bar:horizontal .decrement-button
+{
+    -fx-padding: 0;
 }
-.list-view .corner {
+
+.list-view .corner
+{
     -fx-background-color: transparent;
 }

@@ -1,8 +1,11 @@
-.background {
+.background
+{
     -fx-pref-width: 600.0;
     -fx-background-color: #FFECD1;
 }
-.search {
+
+.search
+{
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
     -fx-prompt-text-fill: #FFFFFF;
@@ -10,57 +13,81 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-.label {
+
+.label
+{
     -fx-text-fill: #001524;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-.button {
+
+.button
+{
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
 }
-.check-box .box{
+
+.check-box .box
+{
     -fx-background-color: #FFECD1;
     -fx-border-color: #001524;
     -fx-border-radius: 15.0;
     -fx-border-width: 2.0;
 }
-.check-box:selected .mark {
+
+.check-box:selected .mark
+{
     -fx-background-color: #15616D;
     -fx-shape: "M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0";
 }
-.progress-indicator {
+
+.progress-indicator
+{
     -fx-progress-color: #FF7D00;
 }
+
 .list-view .list-cell,
-.list-view {
+.list-view
+{
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
     -fx-text-fill: #FFFFFF;
 }
-.list-view .scroll-bar {
+
+.list-view .scroll-bar
+{
     -fx-background-color: transparent;
 }
+
 .list-view .scroll-bar .increment-button,
-.list-view .scroll-bar .decrement-button {
+.list-view .scroll-bar .decrement-button
+{
     -fx-background-color: transparent;
 }
+
 .list-view .scroll-bar .increment-arrow,
-.list-view .scroll-bar .decrement-arrow {
+.list-view .scroll-bar .decrement-arrow
+{
     -fx-background-color: #FFECD1;
 }
-.list-view .scroll-bar .thumb {
+
+.list-view .scroll-bar .thumb
+{
     -fx-background-color: #FFECD1;
     -fx-background-radius: 5.0;
 }
+
 .list-view .scroll-bar:horizontal .increment-arrow,
 .list-view .scroll-bar:horizontal .decrement-arrow,
 .list-view .scroll-bar:horizontal .increment-button,
-.list-view .scroll-bar:horizontal .decrement-button {
-    -fx-padding:0;
+.list-view .scroll-bar:horizontal .decrement-button
+{
+    -fx-padding: 0;
 }
-.list-view .corner {
+
+.list-view .corner
+{
     -fx-background-color: transparent;
 }

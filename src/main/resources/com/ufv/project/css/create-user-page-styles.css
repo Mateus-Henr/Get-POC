@@ -1,14 +1,19 @@
-.background {
+.background
+{
     -fx-pref-width: 600.0;
     -fx-background-color: #FFECD1;
 }
-.create-background {
+
+.create-background
+{
     -fx-pref-width: 520.0;
     -fx-alignment: center;
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
 }
-.create-text-field {
+
+.create-text-field
+{
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
     -fx-border-width: 2.0;
@@ -18,12 +23,16 @@
     -fx-font-size: 14.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
-.create-label {
+
+.create-label
+{
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 16.0;
 }
-.create-menu-button {
+
+.create-menu-button
+{
     -fx-background-color: #001524;
     -fx-background-radius: 20.0;
     -fx-border-width: 2.0;
@@ -35,25 +44,37 @@
     -fx-prompt-text-fill: #FFFFFF;
     -fx-text-fill: #FFFFFF;
 }
-.create-menu-button .context-menu {
+
+.create-menu-button .context-menu
+{
     -fx-background-color: #FFECD1;
     -fx-background-radius: 15.0;
 }
-.create-menu-button .check-menu-item {
+
+.create-menu-button .check-menu-item
+{
     -fx-background-radius: 15.0;
     -fx-background-color: #FFECD1;
     -fx-text-fill: #001524;
 }
-.create-menu-button .check-menu-item:focused .label {
+
+.create-menu-button .check-menu-item:focused .label
+{
     -fx-text-fill: #78290F;
 }
-.create-menu-button .check-menu-item {
+
+.create-menu-button .check-menu-item
+{
     -fx-mark-color: #FF7D00;
 }
-.create-menu-button .check-menu-item:focused{
+
+.create-menu-button .check-menu-item:focused
+{
     -fx-mark-color: #78290F;
 }
-.create-button {
+
+.create-button
+{
     -fx-background-color: #FFECD1;
     -fx-fill: #001524;
     -fx-background-radius: 19.0;
@@ -62,20 +83,28 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-.radio-button {
+
+.radio-button
+{
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 16.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
-.radio-button .radio{
+
+.radio-button .radio
+{
     -fx-background-color: #001524;
     -fx-border-color: #FFECD1;
     -fx-border-radius: 15.0;
     -fx-border-width: 2.0;
 }
-.radio-button:selected .radio .dot   {
+
+.radio-button:selected .radio .dot
+{
     -fx-background-color: #FF7D00;
 }
-.progress-indicator {
+
+.progress-indicator
+{
     -fx-progress-color: #FF7D00;
 }
