@@ -117,8 +117,8 @@ public class CreateUserControllerFX
         if (studentRadioButton.isSelected())
         {
             POCIDLabel.setManaged(true);
-            POCIDLabel.setManaged(true);
-            POCIDTextField.setVisible(true);
+            POCIDTextField.setManaged(true);
+            POCIDLabel.setVisible(true);
             POCIDTextField.setVisible(true);
 
             professorSubjectsLabel.setManaged(false);
@@ -139,8 +139,8 @@ public class CreateUserControllerFX
         else if (professorRadioButton.isSelected())
         {
             POCIDLabel.setManaged(false);
-            POCIDLabel.setManaged(false);
-            POCIDTextField.setVisible(false);
+            POCIDTextField.setManaged(false);
+            POCIDLabel.setVisible(false);
             POCIDTextField.setVisible(false);
 
             registrationLabel.setManaged(false);
@@ -182,8 +182,8 @@ public class CreateUserControllerFX
         else if (adminRadioButton.isSelected())
         {
             POCIDLabel.setManaged(false);
-            POCIDLabel.setManaged(false);
-            POCIDTextField.setVisible(false);
+            POCIDTextField.setManaged(false);
+            POCIDLabel.setVisible(false);
             POCIDTextField.setVisible(false);
 
             professorSubjectsLabel.setManaged(false);
