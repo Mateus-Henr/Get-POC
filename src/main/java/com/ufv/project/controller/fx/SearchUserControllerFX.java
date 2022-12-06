@@ -1,8 +1,6 @@
 package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
-import com.ufv.project.controller.java.SearchUserController;
-import com.ufv.project.controller.java.UpdateUserController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.model.DataModel;

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
 <VBox fx:id="mainPane" maxHeight="600.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.SearchPOCControllerFX">
 
@@ -27,10 +28,10 @@
                     </ImageView>
                 </graphic>
             </Button>
+            <Text text="In case of no matches, returns all."/>
         </HBox>
         <HBox>
             <VBox>
-                <ImageView fx:id="noPOCImage" visible="false"/>
                 <ListView fx:id="pocListView" maxHeight="150.0" maxWidth="400.0" prefHeight="150.0" prefWidth="400.0"
                           styleClass="list-view">
                     <VBox.margin>
