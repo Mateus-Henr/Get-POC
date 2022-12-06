@@ -33,6 +33,10 @@
     -fx-font-size: 16.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
+.button:hover
+{
+    -fx-background-color: #00223B;
+}
 
 .list-view
 {

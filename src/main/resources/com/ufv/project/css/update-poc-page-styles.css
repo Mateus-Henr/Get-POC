@@ -11,7 +11,7 @@
     -fx-background-radius: 15.0;
 }
 
-.update-title
+.title
 {
     -fx-fill: #001524;
     -fx-font-family: "Ubuntu Mono Bold";
@@ -28,15 +28,6 @@
 .progress-indicator
 {
     -fx-progress-color: #FF7D00;
-}
-
-.button
-{
-    -fx-background-color: #FFECD1;
-    -fx-background-radius: 20.0;
-    -fx-fill: #001524;
-    -fx-font-size: 16.0;
-    -fx-font-family: "Ubuntu Mono Bold";
 }
 
 .text-field
@@ -62,7 +53,12 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-prompt-text-fill: #FFFFFF;
 }
-
+.update-menu-button .arrow {
+    -fx-background-color: #15616D;
+}
+.update-menu-button .arrow:hover {
+    -fx-background-color: #112A3B;
+}
 .update-menu-button .context-menu
 {
     -fx-background-color: #FFECD1;
@@ -93,4 +89,167 @@
 .update-menu-button .check-menu-item:focused
 {
     -fx-mark-color: #78290F;
+}
+.pdf-button {
+    -fx-background-color: #FFECD1;
+    -fx-fill: #001524;
+    -fx-background-radius: 19.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 14.0;
+}
+.pdf-button:hover {
+    -fx-background-color: #DCCEB9;
+}
+.update-button {
+    -fx-background-color: #FFECD1;
+    -fx-fill: #001524;
+    -fx-background-radius: 19.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-font-size: 16.0;
+}
+.update-button:hover {
+    -fx-background-color: #DCCEB9;
+}
+.pdf-text {
+    -fx-font-family: "Ubuntu Mono Bold";
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 12.0;
+}
+.combo-box {
+    -fx-background-color: #001524;
+    -fx-background-radius: 20.0;
+    -fx-border-width: 2.0;
+    -fx-border-color: #FFECD1;
+    -fx-border-radius: 20.0;
+    -fx-font-size: 14.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+}
+.combo-box .arrow {
+    -fx-background-color: #15616D;
+}
+.combo-box .arrow:hover {
+    -fx-background-color: #112A3B;
+}
+.combo-box .list-view {
+    -fx-background-color: #FFECD1;
+    -fx-background-radius: 15.0;
+}
+.combo-box .list-view .list-cell {
+    -fx-background-radius: 15.0;
+    -fx-background-color: #FFECD1;
+    -fx-text-fill: #001524;
+}
+.combo-box .list-view .list-cell:hover {
+    -fx-text-fill: #78290F;
+}
+.text-field {
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+    -fx-border-width: 2.0;
+    -fx-border-color: #FFECD1;
+    -fx-border-radius: 15.0;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+}
+.date-picker {
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+    -fx-border-width: 2.0;
+    -fx-border-color: #FFECD1;
+    -fx-border-radius: 15.0;
+    -fx-font-size: 14.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+}
+.date-picker .arrow-button {
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+}
+.date-picker .arrow-button .arrow {
+    -fx-background-color: #FFECD1;
+}
+.date-picker .arrow-button:hover .arrow {
+    -fx-background-color: #DCCEB9;
+}
+.date-picker .cell {
+    -fx-background-color: #FFECD1;
+}
+.date-picker .cell:hover {
+    -fx-background-color: #FF7D00;
+    -fx-text-fill: #FFECD1;
+}
+.date-picker .cell:focused {
+    -fx-background-color: #FF7D00;
+    -fx-text-fill: #FFECD1;
+}
+.date-picker .date-picker-popup {
+    -fx-background-color: #FFECD1;
+}
+.date-picker .date-picker-popup .month-year-pane {
+    -fx-background-color: #FFECD1;
+}
+.date-picker .text-field {
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+    -fx-text-fill: #FFFFFF;
+    -fx-prompt-text-fill: #FFFFFF;
+}
+.date-picker .date-picker-popup {
+    -fx-background-color: #FFECD1;
+}
+.date-picker .date-picker-popup .month-year-pane{
+    -fx-background-color: #001524;
+    -fx-text-fill: #001524;
+}
+.date-picker .date-picker-popup .month-year-pane .label{
+    -fx-text-fill: #FFFFFF;
+}
+.date-picker-popup .spinner .button,
+.date-picker-popup .spinner .button {
+    -fx-background-color: transparent;
+}
+.date-picker-popup .spinner .button .left-arrow,
+.date-picker-popup .spinner .button .right-arrow {
+    -fx-background-color: #15616D;
+}
+.date-picker-popup .spinner .button:hover .left-arrow,
+.date-picker-popup .spinner .button:hover .right-arrow {
+    -fx-background-color: #112A3B;
+}
+.text-area {
+    -fx-background-radius: 10.0;
+    -fx-background-color: #001524;
+    -fx-border-radius: 10.0;
+    -fx-border-color: #FFECD1;
+    -fx-border-width: 2.0;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Ubuntu Mono Bold";
+}
+.text-area .content{
+    -fx-background-radius: 10.0;
+    -fx-background-color: #001524;
+}
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+.text-area .scroll-bar {
+    -fx-background-color: transparent;
+}
+.text-area .scroll-bar .increment-button,
+.text-area .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+.text-area .scroll-bar .increment-arrow,
+.text-area .scroll-bar .decrement-arrow {
+    -fx-background-color: #FFECD1;
+}
+.text-area .scroll-bar .thumb {
+    -fx-background-color: #FFECD1;
+    -fx-background-radius: 5.0;
 }

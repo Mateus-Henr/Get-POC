@@ -1,45 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
-<?import java.net.URL?>
+<?import javafx.scene.text.*?>
+
 <VBox fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" styleClass="background"
       xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.ufv.project.controller.fx.UpdatePOCControllerFX">
     <fx:include source="top-menu-page-view.fxml"/>
     <VBox>
-        <Text styleClass="update-title" text="Update POC"/>
+        <Text styleClass="title" text="Update POC">
+            <VBox.margin>
+                <Insets left="20.0"/>
+            </VBox.margin>
+        </Text>
         <GridPane fx:id="gridPane" styleClass="update-background">
             <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
                 <Label text="Title"/>
-                <TextField fx:id="title" styleClass="text-field"/>
+                <TextField fx:id="title" styleClass="text-field">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </TextField>
+                <padding>
+                    <Insets left="20.0" top="10.0"/>
+                </padding>
             </VBox>
-            <VBox>
-
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <Label text="Field"/>
+                <ComboBox fx:id="fieldComboBox" promptText="Choose...">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </ComboBox>
+                <padding>
+                    <Insets left="10.0" top="10.0"/>
+                </padding>
             </VBox>
-            <MenuButton fx:id="authorMenuButton" onHiding="#onSelectAuthors" styleClass="menu-button" text="Author(s)"
-                        GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <ComboBox fx:id="advisorComboBox" promptText="Advisor" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <MenuButton fx:id="coAdvisorMenuButton" onHiding="#onSelectCoAdvisors" styleClass="menu-button"
-                        text="Co-Advisors" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <ComboBox fx:id="fieldComboBox" promptText="Field" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-            <DatePicker fx:id="datePicker" editable="false" styleClass="date-picker" GridPane.columnIndex="1"
-                        GridPane.rowIndex="1"/>
-            <TextArea fx:id="keywordsTextArea" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-            <TextArea fx:id="summaryTextArea" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
-            <ComboBox fx:id="registrantComboBox" promptText="Registrant" GridPane.columnIndex="2"
-                      GridPane.rowIndex="4"/>
-            <Button onMouseClicked="#handlePDFChoosing" text="Choose..." GridPane.columnIndex="2"
-                    GridPane.rowIndex="0"/>
-            <Text fx:id="pdfFilepathText" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-            <Button fx:id="updatePOCButton" onMouseClicked="#onUpdateButtonClicked" text="Add POC"
-                    GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">
+                <Label text="Author(s)"/>
+                <MenuButton fx:id="authorMenuButton" onHiding="#onSelectAuthors" styleClass="update-menu-button"
+                            text="Choose...">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </MenuButton>
+                <padding>
+                    <Insets left="10.0" right="20.0" top="10.0"/>
+                </padding>
+            </VBox>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <Label text="Advisor"/>
+                <ComboBox fx:id="advisorComboBox" promptText="Choose...">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </ComboBox>
+                <padding>
+                    <Insets left="20.0" top="5.0"/>
+                </padding>
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label text="Co-Advisors"/>
+                <MenuButton fx:id="coAdvisorMenuButton" onHiding="#onSelectCoAdvisors" styleClass="update-menu-button"
+                            text="Choose...">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </MenuButton>
+                <padding>
+                    <Insets left="10.0" top="5.0"/>
+                </padding>
+            </VBox>
+            <VBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <Label text="Registrant"/>
+                <ComboBox fx:id="registrantComboBox" promptText="Choose...">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </ComboBox>
+                <padding>
+                    <Insets left="10.0" right="20.0" top="5.0"/>
+                </padding>
+            </VBox>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+                <Label text="Defense Date"/>
+                <DatePicker fx:id="datePicker" editable="false" styleClass="date-picker">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </DatePicker>
+                <padding>
+                    <Insets left="20.0" top="5.0"/>
+                </padding>
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <Label text="PDF"/>
+                <Button onMouseClicked="#handlePDFChoosing" text="Choose..." styleClass="pdf-button">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </Button>
+                <Text fx:id="pdfFilepathText" text="..." styleClass="pdf-text">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </Text>
+                <padding>
+                    <Insets left="10.0" top="5.0"/>
+                </padding>
+                <GridPane.margin>
+                    <Insets/>
+                </GridPane.margin>
+            </VBox>
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="3">
+                <Label text="Keywords"/>
+                <TextArea fx:id="keywordsTextArea">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </TextArea>
+                <padding>
+                    <Insets bottom="10.0" left="20.0" top="5.0"/>
+                </padding>
+                <GridPane.margin>
+                    <Insets/>
+                </GridPane.margin>
+            </VBox>
+            <VBox prefWidth="520.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <Label text="Summary"/>
+                <TextArea fx:id="summaryTextArea">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                </TextArea>
+                <padding>
+                    <Insets bottom="10.0" left="10.0" top="5.0"/>
+                </padding>
+            </VBox>
+            <HBox alignment="BOTTOM_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                <Button fx:id="updatePOCButton" onMouseClicked="#onUpdateButtonClicked" text="Add POC" styleClass="update-button"/>
+                <padding>
+                    <Insets bottom="10.0" right="20.0"/>
+                </padding>
+            </HBox>
             <columnConstraints>
-                <ColumnConstraints/>
-                <ColumnConstraints/>
-                <ColumnConstraints/>
+                <ColumnConstraints prefWidth="173.0"/>
+                <ColumnConstraints prefWidth="170.0"/>
+                <ColumnConstraints prefWidth="174.0"/>
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints/>

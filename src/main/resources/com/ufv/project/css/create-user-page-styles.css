@@ -44,6 +44,12 @@
     -fx-prompt-text-fill: #FFFFFF;
     -fx-text-fill: #FFFFFF;
 }
+.create-menu-button .arrow {
+    -fx-background-color: #15616D;
+}
+.create-menu-button .arrow:hover {
+    -fx-background-color: #112A3B;
+}
 
 .create-menu-button .context-menu
 {
@@ -83,7 +89,9 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-
+.create-button:hover{
+    -fx-background-color: #00223B;
+}
 .radio-button
 {
     -fx-text-fill: #FFFFFF;

@@ -27,6 +27,9 @@
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
 }
+.button:hover {
+    -fx-background-color: #00223B;
+}
 
 .progress-indicator
 {

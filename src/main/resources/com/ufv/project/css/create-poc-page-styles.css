@@ -1,39 +1,18 @@
-.input .text-field
-{
+.input .text-field {
     -fx-prompt-text-fill: #FFFFFF;
 }
-
-.background
-{
+.background {
     -fx-pref-width: 600.0;
     -fx-alignment: center;
     -fx-background-color: #FFECD1;
 }
-
-.create-background
-{
+.create-background {
     -fx-pref-width: 520.0;
     -fx-alignment: center;
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
 }
-
-.scroll-pane
-{
-    -fx-pref-width: 520.0;
-    -fx-alignment: center;
-    -fx-background-color: #001524;
-    -fx-background-radius: 15.0;
-}
-
-.scroll-pane .content
-{
-    -fx-background-color: #001524;
-    -fx-background-radius: 15.0;
-}
-
-.create-menu-button
-{
+.create-menu-button {
     -fx-background-color: #001524;
     -fx-background-radius: 20.0;
     -fx-border-width: 2.0;
@@ -45,37 +24,31 @@
     -fx-prompt-text-fill: #FFFFFF;
     -fx-text-fill: #FFFFFF;
 }
-
-.create-menu-button .context-menu
-{
-    -fx-background-color: #FFECD1;
-    -fx-background-radius: 15.0;
+.create-menu-button .arrow {
+    -fx-background-color: #15616D;
 }
-
-.create-menu-button .check-menu-item
-{
+.create-menu-button .arrow:hover {
+    -fx-background-color: #112A3B;
+}
+.create-menu-button .context-menu {
+     -fx-background-color: #FFECD1;
+     -fx-background-radius: 15.0;
+ }
+.create-menu-button .check-menu-item {
     -fx-background-radius: 15.0;
     -fx-background-color: #FFECD1;
     -fx-text-fill: #001524;
 }
-
-.create-menu-button .check-menu-item:focused .label
-{
+.create-menu-button .check-menu-item:focused .label {
     -fx-text-fill: #78290F;
 }
-
-.create-menu-button .check-menu-item
-{
+.create-menu-button .check-menu-item {
     -fx-mark-color: #FF7D00;
 }
-
-.create-menu-button .check-menu-item:focused
-{
+.create-menu-button .check-menu-item:focused{
     -fx-mark-color: #78290F;
 }
-
-.create-combo-box
-{
+.create-combo-box {
     -fx-background-color: #001524;
     -fx-background-radius: 20.0;
     -fx-border-width: 2.0;
@@ -84,27 +57,25 @@
     -fx-font-size: 14.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
-
-.create-combo-box .list-view
-{
+.create-combo-box .arrow{
+    -fx-background-color: #15616D;
+}
+.create-combo-box .arrow:hover{
+    -fx-background-color: #112A3B;
+}
+.create-combo-box .list-view {
     -fx-background-color: #FFECD1;
     -fx-background-radius: 15.0;
 }
-
-.create-combo-box .list-view .list-cell
-{
+.create-combo-box .list-view .list-cell {
     -fx-background-radius: 15.0;
     -fx-background-color: #FFECD1;
     -fx-text-fill: #001524;
 }
-
-.create-combo-box .list-view .list-cell:hover
-{
+.create-combo-box .list-view .list-cell:hover {
     -fx-text-fill: #78290F;
 }
-
-.create-text-field
-{
+.create-text-field {
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
     -fx-border-width: 2.0;
@@ -114,9 +85,7 @@
     -fx-font-size: 14.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
-
-.date-picker
-{
+.date-picker {
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
     -fx-border-width: 2.0;
@@ -127,126 +96,97 @@
     -fx-text-fill: #FFFFFF;
     -fx-font-family: "Ubuntu Mono Bold";
 }
-
-.date-picker .arrow-button
-{
+.date-picker .arrow-button {
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
 }
-
-.date-picker .arrow-button .arrow
-{
+.date-picker .arrow-button .arrow {
     -fx-background-color: #FFECD1;
 }
-
-.date-picker .cell
-{
+.date-picker .arrow-button:hover .arrow {
+    -fx-background-color: #DCCEB9;
+}
+.date-picker .cell {
     -fx-background-color: #FFECD1;
 }
-
-.date-picker .cell:hover
-{
+.date-picker .cell:hover {
     -fx-background-color: #FF7D00;
     -fx-text-fill: #FFECD1;
 }
-
-.date-picker .cell:focused
-{
+.date-picker .cell:focused {
     -fx-background-color: #FF7D00;
     -fx-text-fill: #FFECD1;
 }
-
-.date-picker .date-picker-popup
-{
+.date-picker .date-picker-popup {
     -fx-border-radius: 20.0;
     -fx-background-color: #FFECD1;
 }
-
-.date-picker .date-picker-popup .month-year-pane
-{
+.date-picker .date-picker-popup .month-year-pane {
     -fx-background-color: #FFECD1;
 }
-
-.date-picker .text-field
-{
+.date-picker .text-field {
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
     -fx-text-fill: #FFFFFF;
     -fx-prompt-text-fill: #FFFFFF;
 }
-
-.date-picker-popup
-{
+.date-picker .date-picker-popup {
     -fx-background-color: #FFECD1;
 }
-
+.date-picker .date-picker-popup .month-year-pane{
+    -fx-background-color: #001524;
+}
+.date-picker .date-picker-popup .month-year-pane .label{
+    -fx-text-fill: #FFFFFF;
+}
 .date-picker-popup .spinner .button,
-.date-picker-popup .spinner .button
-{
+.date-picker-popup .spinner .button {
     -fx-background-color: transparent;
 }
-
 .date-picker-popup .spinner .button .left-arrow,
-.date-picker-popup .spinner .button .right-arrow
-{
-    -fx-background-color: #FF7D00;
+.date-picker-popup .spinner .button .right-arrow {
+    -fx-background-color: #15616D;
 }
-
 .date-picker-popup .spinner .button:hover .left-arrow,
-.date-picker-popup .spinner .button:hover .right-arrow
-{
-    -fx-background-color: #78290F;
+.date-picker-popup .spinner .button:hover .right-arrow {
+    -fx-background-color: #112A3B;
 }
-
-.create-button
-{
-    -fx-background-color: #FFECD1;
-    -fx-background-radius: 20.0;
-    -fx-fill: #001524;
-    -fx-font-family: "Ubuntu Mono Bold";
-}
-
-.title
-{
+.title {
     -fx-text-fill: #001524;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-
-.create-label
-{
+.create-label {
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 16.0;
 }
-
-.pdf-text
-{
+.pdf-text {
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-fill: #FFFFFF;
     -fx-font-size: 12.0;
 }
-
-.pdf-button
-{
+.pdf-button {
     -fx-background-color: #FFECD1;
     -fx-fill: #001524;
     -fx-background-radius: 19.0;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 14.0;
 }
-
-.add-button
-{
+.pdf-button:hover {
+    -fx-background-color: #DCCEB9;
+}
+.add-button {
     -fx-background-color: #FFECD1;
     -fx-fill: #001524;
     -fx-background-radius: 19.0;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-
-.create-text-area
-{
+.add-button:hover {
+    -fx-background-color: #DCCEB9;
+}
+.text-area {
     -fx-background-radius: 10.0;
     -fx-background-color: #001524;
     -fx-border-radius: 10.0;
@@ -255,58 +195,34 @@
     -fx-text-fill: #FFFFFF;
     -fx-font-family: "Ubuntu Mono Bold";
 }
-
-.create-text-area .content
-{
+.text-area .content{
     -fx-background-radius: 10.0;
     -fx-background-color: #001524;
 }
-
-.text-area .scroll-pane
-{
+.text-area .scroll-pane {
     -fx-background-color: transparent;
 }
-
-.text-area .scroll-pane .viewport
-{
+.text-area .scroll-pane .viewport{
     -fx-background-color: transparent;
 }
-
-.text-area .scroll-pane .content
-{
+.text-area .scroll-pane .content{
     -fx-background-color: transparent;
 }
-
-.scroll-pane .scroll-bar,
-.text-area .scroll-bar
-{
+.text-area .scroll-bar {
     -fx-background-color: transparent;
 }
-
-.scroll-pane .scroll-bar .increment-button,
-.scroll-pane .scroll-bar .decrement-button,
 .text-area .scroll-bar .increment-button,
-.text-area .scroll-bar .decrement-button
-{
+.text-area .scroll-bar .decrement-button {
     -fx-background-color: transparent;
 }
-
-.scroll-pane .scroll-bar .increment-arrow,
-.scroll-pane .scroll-bar .decrement-arrow,
 .text-area .scroll-bar .increment-arrow,
-.text-area .scroll-bar .decrement-arrow
-{
+.text-area .scroll-bar .decrement-arrow {
     -fx-background-color: #FFECD1;
 }
-
-.scroll-pane .scroll-bar .thumb,
-.text-area .scroll-bar .thumb
-{
+.text-area .scroll-bar .thumb {
     -fx-background-color: #FFECD1;
     -fx-background-radius: 5.0;
 }
-
-.progress-indicator
-{
+.progress-indicator {
     -fx-progress-color: #FF7D00;
 }
