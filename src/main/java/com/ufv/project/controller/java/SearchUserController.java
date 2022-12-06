@@ -2,9 +2,11 @@ package com.ufv.project.controller.java;
 
 import com.ufv.project.model.*;
 
-public class SearchUserController {
+public class SearchUserController
+{
     //Função para pesquisar e retornar a lista de usuarios a partir da inserção de uma string
-    public static DataModel setDataModelFromUserType(User user){
+    public static DataModel setDataModelFromUserType(User user)
+    {
         UserTypesEnum userType = user.getUserType();
 
         DataModel dataModel = null;
@@ -24,4 +26,5 @@ public class SearchUserController {
 
         return dataModel;
     }
+
 }
