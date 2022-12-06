@@ -32,7 +32,7 @@ Projeto finalizado. O controle foi feito como especificado, alguns testes unitá
 
 O projeto, implementado ao longo do período foi um desafio para o grupo. Tivemos que aprender várias tecnologias que nunca haviam usados antes, além de projetar um programa complexo, com muitas funcionalidades. Detalho a seguir, alguns detalhes das nossas implementações.
 
-# Armazenamento persistente
+### Armazenamento persistente
 
 A parte de armazenamento to projeto foi projetada utilizando o banco de dados MySQL. O modelo Entidade-Relacionamento foi feito usando a ferramento MySQL Workbench, buscamos deixar as relações simples, mas completas, além de criarmos algumas que não foram pedidas na especificação. Após a criação do modelo, uma engenharia reversa foi feita e o esquema foi importado para o projeto GetPOC. A conexão com JAVA foi criada na pasta package com.ufv.project.db, juntamente com todos os querys necessários. Foi criado uma classe para cada tabela, e os querys, implementados dentro das mesmas.
 
