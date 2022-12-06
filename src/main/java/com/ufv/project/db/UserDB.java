@@ -311,7 +311,6 @@ public class UserDB
      * @return user with the given username.
      * @throws SQLException if there is an error while querying the user.
      */
-
     public List<User> queryUsersByContainsID(String username) throws SQLException
     {
         try (PreparedStatement queryUsers = conn.prepareStatement(SEARCH_USERS_BY_CONTAINS_ID))
