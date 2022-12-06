@@ -44,7 +44,6 @@ public class Professor_co_advises_pocDB
      * @return List of professors that co-advises the POC.
      * @throws SQLException If an error occurs while querying the database.
      */
-
     public List<Professor> queryProfessorsByPocId(int pocId) throws SQLException
     {
         try (PreparedStatement queryProfessorsByPocId = conn.prepareStatement(QUERY_PROFESSORS_BY_POC_ID))
@@ -70,10 +69,9 @@ public class Professor_co_advises_pocDB
      * Insert a new professor co-advises POC relation.
      *
      * @param professorID Professor id to insert in the relation.
-     * @param POCID POC id to insert in the relation.
+     * @param POCID       POC id to insert in the relation.
      * @throws SQLException If an error occurs while inserting the relation.
      */
-
     public void insertProfessor_co_advises_poc(String professorID, int POCID) throws SQLException
     {
         try (PreparedStatement insertProfessor_co_advises_poc = conn.prepareStatement(INSERT_PROFESSOR_CO_ADVISES_POC))
@@ -94,7 +92,6 @@ public class Professor_co_advises_pocDB
      * @param POCID POC id to delete the relation.
      * @throws SQLException If an error occurs while deleting the relation.
      */
-
     public void deleteProfessor_co_advises_poc(int POCID) throws SQLException
     {
         try (PreparedStatement deleteProfessor_co_advises_poc = conn.prepareStatement(DELETE_PROFESSOR_CO_ADVISES_POC))
@@ -112,12 +109,11 @@ public class Professor_co_advises_pocDB
      * Update a professor co-advises POC relation.
      *
      * @param oldProfessorID old professor id to update the relation.
-     * @param oldPOCID old POC id to update the relation.
+     * @param oldPOCID       old POC id to update the relation.
      * @param newProfessorID new professor id to update the relation.
-     * @param newPOCID new POC id to update the relation.
+     * @param newPOCID       new POC id to update the relation.
      * @throws SQLException If an error occurs while updating the relation.
      */
-
     public void updateProfessor_co_advises_poc(String oldProfessorID, int oldPOCID, String newProfessorID, int newPOCID) throws SQLException
     {
         try (PreparedStatement updateProfessor_co_advises_poc = conn.prepareStatement(UPDATE_PROFESSOR_CO_ADVISES_POC))

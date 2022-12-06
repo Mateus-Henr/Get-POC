@@ -43,7 +43,6 @@ public class Professor_has_subjectDB
      * @return a list of subjects of the professor with the given ID.
      * @throws SQLException if an error occurs while querying the database.
      */
-
     public List<Subject> querySubjectsByProfessor(String professorID) throws SQLException
     {
         try (PreparedStatement querySubjectsByProfessor = conn.prepareStatement(QUERY_SUBJECTS_BY_PROFESSOR))
@@ -69,10 +68,9 @@ public class Professor_has_subjectDB
      * Inserts a new professor_has_subject relation in the database.
      *
      * @param professorID the professor's ID to be inserted.
-     * @param subjectID the subject's ID to be inserted.
+     * @param subjectID   the subject's ID to be inserted.
      * @throws SQLException if an error occurs while inserting the professor_has_subject relation.
      */
-
     public void insertProfessorHasSubject(String professorID, int subjectID) throws SQLException
     {
         try (PreparedStatement insertProfessor_has_subject = conn.prepareStatement(INSERT_PROFESSOR_HAS_SUBJECT, PreparedStatement.RETURN_GENERATED_KEYS))
@@ -91,10 +89,9 @@ public class Professor_has_subjectDB
      * Deletes a professor_has_subject relation from the database.
      *
      * @param professorID the professor's ID to be deleted.
-     * @param subjectID the subject's ID to be deleted.
+     * @param subjectID   the subject's ID to be deleted.
      * @throws SQLException if an error occurs while deleting the professor_has_subject relation.
      */
-
     public void deleteProfessorHasSubject(String professorID, int subjectID) throws SQLException
     {
         try (PreparedStatement deleteProfessor_has_subject = conn.prepareStatement(DELETE_PROFESSOR_HAS_SUBJECT))
@@ -113,13 +110,11 @@ public class Professor_has_subjectDB
      * Updates a professor_has_subject relation in the database.
      *
      * @param oldProfessorID the old professor's ID.
-     * @param oldSubjectID the old subject's ID.
+     * @param oldSubjectID   the old subject's ID.
      * @param newProfessorID the new professor's ID.
-     * @param newSubjectID the new subject's ID.
+     * @param newSubjectID   the new subject's ID.
      * @throws SQLException if an error occurs while updating the professor_has_subject relation.
      */
-
-
     public void updateProfessorHasSubject(String oldProfessorID, int oldSubjectID, String newProfessorID, int newSubjectID) throws SQLException
     {
         try (PreparedStatement updateProfessor_has_subject = conn.prepareStatement(UPDATE_PROFESSOR_HAS_SUBJECT))

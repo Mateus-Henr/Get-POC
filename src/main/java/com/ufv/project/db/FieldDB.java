@@ -6,7 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldDB {
+public class FieldDB
+{
     /* Table Field constants. */
     private static final String TABLE_FIELD = "tb_field";
     private static final String COLUMN_FIELD_ID = "ID";
@@ -26,7 +27,8 @@ public class FieldDB {
     /* Connection to the database.*/
     private final Connection conn;
 
-    public FieldDB(Connection conn) {
+    public FieldDB(Connection conn)
+    {
         this.conn = conn;
     }
 
@@ -37,13 +39,16 @@ public class FieldDB {
      * @return field with the given ID.
      * @throws SQLException if there is an error with the database.
      */
-
-    public Field queryFieldByID(int id) throws SQLException {
-        try (PreparedStatement queryField = conn.prepareStatement(QUERY_FIELD)) {
+    public Field queryFieldByID(int id) throws SQLException
+    {
+        try (PreparedStatement queryField = conn.prepareStatement(QUERY_FIELD))
+        {
             queryField.setInt(COLUMN_FIELD_ID_INDEX, id);
 
-            try (ResultSet resultSet = queryField.executeQuery()) {
-                if (resultSet.next()) {
+            try (ResultSet resultSet = queryField.executeQuery())
+            {
+                if (resultSet.next())
+                {
                     return new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX),
                             resultSet.getString(COLUMN_FIELD_NAME_INDEX));
                 }
@@ -59,12 +64,15 @@ public class FieldDB {
      * @return a list with all Fields.
      * @throws SQLException if there is an error while querying the database.
      */
-    public List<Field> queryFields() throws SQLException {
+    public List<Field> queryFields() throws SQLException
+    {
         try (PreparedStatement queryFields = conn.prepareStatement(QUERY_FIELDS);
-             ResultSet resultSet = queryFields.executeQuery()) {
+             ResultSet resultSet = queryFields.executeQuery())
+        {
             List<Field> fields = new ArrayList<>();
 
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 fields.add(new Field(resultSet.getInt(COLUMN_FIELD_ID_INDEX),
                         resultSet.getString(COLUMN_FIELD_NAME_INDEX)));
             }
@@ -80,17 +88,22 @@ public class FieldDB {
      * @return the id of the inserted Field.
      * @throws SQLException if the insertion fails.
      */
-    public int insertField(Field field) throws SQLException {
-        try (PreparedStatement insertField = conn.prepareStatement(INSERT_FIELD, Statement.RETURN_GENERATED_KEYS)) {
+    public int insertField(Field field) throws SQLException
+    {
+        try (PreparedStatement insertField = conn.prepareStatement(INSERT_FIELD, Statement.RETURN_GENERATED_KEYS))
+        {
             insertField.setInt(COLUMN_FIELD_ID_INDEX, field.getId());
             insertField.setString(COLUMN_FIELD_NAME_INDEX, field.getName());
 
-            if (insertField.executeUpdate() != 1) {
+            if (insertField.executeUpdate() != 1)
+            {
                 throw new SQLException("ERROR: Couldn't insert field with ID: '" + field.getId() + "'.");
             }
 
-            try (ResultSet generatedKeys = insertField.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
+            try (ResultSet generatedKeys = insertField.getGeneratedKeys())
+            {
+                if (generatedKeys.next())
+                {
                     return generatedKeys.getInt(COLUMN_FIELD_ID_INDEX);
                 }
 
@@ -106,18 +119,21 @@ public class FieldDB {
      * @return id of the deleted Field.
      * @throws SQLException if the deletion fails.
      */
-
-    public Field deleteFieldByID(int id) throws SQLException {
+    public Field deleteFieldByID(int id) throws SQLException
+    {
         Field oldField = queryFieldByID(id);
 
-        if (oldField == null) {
+        if (oldField == null)
+        {
             throw new SQLException("ERROR: Field with ID: '" + id + "' doesn't exist.");
         }
 
-        try (PreparedStatement deleteField = conn.prepareStatement(DELETE_FIELD)) {
+        try (PreparedStatement deleteField = conn.prepareStatement(DELETE_FIELD))
+        {
             deleteField.setInt(1, id);
 
-            if (deleteField.executeUpdate() != 1) {
+            if (deleteField.executeUpdate() != 1)
+            {
                 throw new SQLException("ERROR: Couldn't delete field with ID: '" + id + "'.");
             }
 
@@ -132,24 +148,30 @@ public class FieldDB {
      * @return Field after the update.
      * @throws SQLException if the update fails.
      */
-
-    public Field updateField(Field newField) throws SQLException {
+    public Field updateField(Field newField) throws SQLException
+    {
         Field oldField = queryFieldByID(newField.getId());
 
-        if (oldField == null) {
+        if (oldField == null)
+        {
             throw new SQLException("ERROR: Field with name '" + newField.getName() + "' doesn't exist.");
         }
 
-        try (PreparedStatement updateField = conn.prepareStatement(UPDATE_FIELD_NAME)) {
+        try (PreparedStatement updateField = conn.prepareStatement(UPDATE_FIELD_NAME))
+        {
             updateField.setInt(2, newField.getId());
 
-            if (newField.getName() == null) {
+            if (newField.getName() == null)
+            {
                 updateField.setString(1, oldField.getName());
-            } else {
+            }
+            else
+            {
                 updateField.setString(1, newField.getName());
             }
 
-            if (updateField.executeUpdate() != 1) {
+            if (updateField.executeUpdate() != 1)
+            {
                 throw new SQLException("ERROR: Couldn't update field whit name '" + oldField + "'");
             }
 

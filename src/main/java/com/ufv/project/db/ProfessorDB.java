@@ -41,11 +41,10 @@ public class ProfessorDB
      *
      * @param username ID of the professor to query.
      * @param password password of the professor to query.
-     * @param name name of the professor to query.
+     * @param name     name of the professor to query.
      * @return professor with the given ID, password and name.
      * @throws SQLException if an error occurs while querying the database.
      */
-
     protected Professor queryProfessor(String username, String password, String name) throws SQLException
     {
         try (PreparedStatement queryProfessor = conn.prepareStatement(QUERY_PROFESSOR))
@@ -77,7 +76,6 @@ public class ProfessorDB
      * @return inserted professor.
      * @throws SQLException if there is an error while inserting the professor.
      */
-
     protected String insertProfessor(Professor professor) throws SQLException
     {
         try (PreparedStatement insertProfessor = conn.prepareStatement(INSERT_PROFESSOR))
@@ -105,12 +103,11 @@ public class ProfessorDB
      * Delete a professor from the database.
      *
      * @param username ID of the professor to delete.
-     * @param name name of the professor to delete.
+     * @param name     name of the professor to delete.
      * @param password password of the professor to delete.
      * @return deleted professor with the given ID, password and name.
      * @throws SQLException if there is an error while deleting the professor.
      */
-
     protected Professor deleteProfessor(String username, String name, String password) throws SQLException
     {
         Professor foundProfessor = queryProfessor(username, name, password);
@@ -199,7 +196,6 @@ public class ProfessorDB
      * @return list of professors.
      * @throws SQLException if there is an error while querying the database.
      */
-
     public List<Professor> queryProfessors() throws SQLException
     {
         return new UserDB(conn).queryUsers().stream()
