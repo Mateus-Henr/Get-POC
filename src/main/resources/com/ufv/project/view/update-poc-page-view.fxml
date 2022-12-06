@@ -1,40 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
-<?import java.net.URL?>
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.ufv.project.controller.fx.UpdatePOCControllerFX"
-      fx:id="mainPane"
-      styleClass="background">
+<?import javafx.scene.text.*?>
 
-    <Label>Update POC</Label>
-    <GridPane fx:id="gridPane" styleClass="create-background">
-        <TextField fx:id="title" promptText="Title" GridPane.rowIndex="0" GridPane.columnIndex="0"
-                   styleClass="text-field"/>
-        <MenuButton fx:id="authorMenuButton" text="Author(s)" onHiding="#onSelectAuthors" GridPane.rowIndex="1"
-                    GridPane.columnIndex="0"
-                    styleClass="menu-button"/>
-        <ComboBox fx:id="advisorComboBox" promptText="Advisor" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <MenuButton fx:id="coAdvisorMenuButton" text="Co-Advisors" onHiding="#onSelectCoAdvisors" GridPane.rowIndex="3"
-                    GridPane.columnIndex="0"
-                    styleClass="menu-button"/>
-        <ComboBox fx:id="fieldComboBox" promptText="Field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-        <DatePicker fx:id="datePicker" editable="false" GridPane.rowIndex="1" GridPane.columnIndex="1"
-                    styleClass="date-picker"/>
-        <TextArea fx:id="keywordsTextArea" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-        <TextArea fx:id="summaryTextArea" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
-        <ComboBox fx:id="registrantComboBox" promptText="Registrant" GridPane.rowIndex="4" GridPane.columnIndex="2"/>
-        <Button text="Choose..." onMouseClicked="#handlePDFChoosing" GridPane.rowIndex="0"
-                GridPane.columnIndex="2"/>
-        <Text fx:id="pdfFilepathText" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
-        <Button fx:id="updatePOCButton" text="Add POC" onMouseClicked="#onUpdateButtonClicked" GridPane.rowIndex="2"
-                GridPane.columnIndex="2"/>
-    </GridPane>
-    <ProgressIndicator fx:id="progressIndicator" managed="false" visible="false"/>
+<VBox fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.UpdatePOCControllerFX">
+    <fx:include source="top-menu-page-view.fxml" />
+    <VBox>
+        <Text styleClass="update-title" text="Update POC" />
+        <GridPane fx:id="gridPane" styleClass="update-background">
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <Label text="Title"/>
+                <TextField fx:id="title" styleClass="text-field"  />
+            </VBox>
+            <VBox>
+
+            </VBox>
+            <MenuButton fx:id="authorMenuButton" onHiding="#onSelectAuthors" styleClass="menu-button" text="Author(s)" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <ComboBox fx:id="advisorComboBox" promptText="Advisor" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <MenuButton fx:id="coAdvisorMenuButton" onHiding="#onSelectCoAdvisors" styleClass="menu-button" text="Co-Advisors" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <ComboBox fx:id="fieldComboBox" promptText="Field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <DatePicker fx:id="datePicker" editable="false" styleClass="date-picker" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextArea fx:id="keywordsTextArea" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextArea fx:id="summaryTextArea" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <ComboBox fx:id="registrantComboBox" promptText="Registrant" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Button onMouseClicked="#handlePDFChoosing" text="Choose..." GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <Text fx:id="pdfFilepathText" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="updatePOCButton" onMouseClicked="#onUpdateButtonClicked" text="Add POC" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints />
+                <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+        </GridPane>
+        <ProgressIndicator fx:id="progressIndicator" managed="false" visible="false" />
+      <padding>
+         <Insets bottom="40.0" left="40.0" right="40.0" top="10.0" />
+      </padding>
+      <VBox.margin>
+         <Insets />
+      </VBox.margin>
+    </VBox>
     <stylesheets>
-        <URL value="@../css/create-poc-page-styles.css"/>
+        <URL value="@../css/update-poc-page-styles.css" />
     </stylesheets>
 </VBox>

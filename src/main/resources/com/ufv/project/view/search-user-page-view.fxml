@@ -6,44 +6,42 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.ufv.project.controller.fx.SearchUserControllerFX">
+<VBox fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.SearchUserControllerFX">
 
-    <fx:include source="top-menu-page-view.fxml"/>
+    <fx:include source="top-menu-page-view.fxml" />
 
     <Label styleClass="label" text="Search for username">
         <VBox.margin>
-            <Insets left="40.0"/>
+            <Insets left="40.0" top="10.0" />
         </VBox.margin>
     </Label>
     <HBox>
         <TextField fx:id="searchUsernameTextField" promptText="Search" styleClass="search">
             <HBox.margin>
-                <Insets right="5.0"/>
+                <Insets right="5.0" />
             </HBox.margin>
         </TextField>
         <Button onMouseClicked="#onSearchUserButtonClicked" styleClass="button">
             <graphic>
                 <ImageView fitHeight="18.0" fitWidth="18.0">
-                    <Image url="@../images/search.png"/>
+                    <Image url="@../images/search.png" />
                 </ImageView>
             </graphic>
         </Button>
         <HBox.margin>
-            <Insets right="5.0"/>
+            <Insets right="5.0" />
         </HBox.margin>
         <padding>
-            <Insets left="40.0" right="40.0" top="5.0"/>
+            <Insets left="40.0" right="40.0" top="5.0" />
         </padding>
     </HBox>
-    <ProgressIndicator fx:id="progressIndicator" managed="false" visible="false" styleClass="progress-indicator"/>
+    <ProgressIndicator fx:id="progressIndicator" managed="false" styleClass="progress-indicator" visible="false" />
     <ListView fx:id="userList" onMouseClicked="#onSelectedRow" styleClass="list-view">
         <VBox.margin>
-            <Insets bottom="40.0" left="40.0" right="40.0" top="10.0"/>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="10.0" />
         </VBox.margin>
     </ListView>
     <stylesheets>
-        <URL value="@../css/search-user-page-styles.css"/>
+        <URL value="@../css/search-user-page-styles.css" />
     </stylesheets>
 </VBox>

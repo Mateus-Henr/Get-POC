@@ -10,7 +10,7 @@
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.TopMenuControllerFX">
     <left>
         <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER_LEFT">
-            <MenuButton mnemonicParsing="false" styleClass="menu-button">
+            <MenuButton mnemonicParsing="false" styleClass="top-menu-button">
                 <graphic>
                     <ImageView fitWidth="15.0" fitHeight="15.0">
                         <Image url="@../images/menu.png"/>
