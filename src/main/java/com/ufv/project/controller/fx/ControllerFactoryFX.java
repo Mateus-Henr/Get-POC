@@ -52,6 +52,10 @@ public class ControllerFactoryFX
             {
                 return new CreateUserControllerFX(dataModel);
             }
+            else if (type == SearchUserControllerFX.class)
+            {
+                return new SearchUserControllerFX(dataModel);
+            }
             else
             {
                 try
