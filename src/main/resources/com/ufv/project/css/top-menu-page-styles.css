@@ -1,46 +1,71 @@
-@font-face {
+@font-face
+{
     font-family: 'Ubuntu Mono Bold';
     src: url('../fonts/UbuntuMono-B.ttf');
 }
-.background {
+
+.background
+{
     -fx-pref-height: 30.0;
     -fx-pref-width: 600.0;
     -fx-background-color: #112A3B;
 }
-.user-role {
+
+.user-role
+{
     -fx-fill: #FFECD1;
     -fx-font-family: "Ubuntu Mono Bold";
 }
-.menu-button {
+
+.menu-button
+{
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-background-color: #112A3B;
     -fx-background-radius: 15.0;
 }
-.menu-button:hover {
+
+.menu-button:hover
+{
     -fx-background-color: #001524;
 }
-.menu-button .label {
+
+.menu-button .label
+{
     -fx-text-fill: #FFECD1;
 }
-.context-menu {
+
+.context-menu
+{
     -fx-background-color: #FFECD1;
     -fx-background-radius: 5.0;
 }
-.context-menu .label{
+
+.context-menu .label
+{
     -fx-text-fill: #112A3B;
 }
-.menu-item {
+
+.menu-item
+{
     -fx-background-radius: 15.0;
 }
-.menu-item:focused {
+
+.menu-item:focused
+{
     -fx-background-color: #FFECD1;
 }
-.menu-item:focused .label {
+
+.menu-item:focused .label
+{
     -fx-text-fill: #78290F;
 }
-.menu-button .arrow-button {
+
+.menu-button .arrow-button
+{
     -fx-padding: 0;
 }
-.menu-button .arrow-button .arrow{
+
+.menu-button .arrow-button .arrow
+{
     -fx-padding: 0;
 }

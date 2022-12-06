@@ -110,7 +110,7 @@ public class TopMenuControllerFX
      */
     public void onCreatePOCButtonAction()
     {
-        Main.loadNewSceneWithDataModel(mainPane, "create-poc-page-view.fxml", dataModel, "Search POC");
+        Main.loadNewSceneWithDataModel(mainPane, "create-poc-page-view.fxml", dataModel, "Create POC");
     }
 
     /**
@@ -126,7 +126,7 @@ public class TopMenuControllerFX
      */
     public void onSearchUserButtonAction()
     {
-        Main.loadNewSceneWithDataModel(mainPane, "search-user-page-view.fxml", dataModel, "Get-POC App");
+        Main.loadNewSceneWithDataModel(mainPane, "search-user-page-view.fxml", dataModel, "Search User");
     }
 
     /**
@@ -134,7 +134,7 @@ public class TopMenuControllerFX
      */
     public void onCreateUserButtonAction()
     {
-        Main.loadNewSceneWithDataModel(mainPane, "create-user-page-view.fxml", dataModel, "Get-POC App");
+        Main.loadNewSceneWithDataModel(mainPane, "create-user-page-view.fxml", dataModel, "Create User");
     }
 
 }

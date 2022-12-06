@@ -6,101 +6,103 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="mainPane" maxHeight="600.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.SearchPOCControllerFX">
+<VBox fx:id="mainPane" maxHeight="600.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.SearchPOCControllerFX">
 
-    <fx:include source="top-menu-page-view.fxml" />
+    <fx:include source="top-menu-page-view.fxml"/>
 
-    <fx:include source="personal-info-page-view.fxml" />
+    <fx:include source="personal-info-page-view.fxml"/>
 
     <VBox>
         <HBox>
             <TextField fx:id="searchPOCTextField" promptText="Search" styleClass="search">
                 <HBox.margin>
-                    <Insets right="5.0" />
+                    <Insets right="5.0"/>
                 </HBox.margin>
             </TextField>
             <Button onMouseClicked="#handlePOCSearching" styleClass="button">
                 <graphic>
                     <ImageView fitHeight="18.0" fitWidth="18.0">
-                        <Image url="@../images/search.png" />
+                        <Image url="@../images/search.png"/>
                     </ImageView>
                 </graphic>
             </Button>
         </HBox>
-        <ImageView fx:id="noPOCImage" visible="false" />
+        <ImageView fx:id="noPOCImage" visible="false"/>
         <ListView fx:id="pocListView" maxHeight="80.0" prefWidth="520.0" styleClass="list-view">
-         <VBox.margin>
-            <Insets top="5.0" />
-         </VBox.margin></ListView>
+            <VBox.margin>
+                <Insets top="5.0"/>
+            </VBox.margin>
+        </ListView>
         <Label text="Search by:">
             <VBox.margin>
-                <Insets top="5.0" />
+                <Insets top="5.0"/>
             </VBox.margin>
         </Label>
         <HBox>
             <CheckBox fx:id="searchByTitleCheckBox" styleClass="check-box">
                 <HBox.margin>
-                    <Insets right="5.0" />
+                    <Insets right="5.0"/>
                 </HBox.margin>
             </CheckBox>
-            <Label styleClass="label" text="Title" />
+            <Label styleClass="label" text="Title"/>
             <VBox.margin>
-                <Insets left="20.0" top="5.0" />
+                <Insets left="20.0" top="5.0"/>
             </VBox.margin>
         </HBox>
         <HBox>
             <CheckBox fx:id="searchBySummaryCheckBox" styleClass="check-box">
                 <HBox.margin>
-                    <Insets right="5.0" />
+                    <Insets right="5.0"/>
                 </HBox.margin>
             </CheckBox>
-            <Label styleClass="label" text="Summary" />
+            <Label styleClass="label" text="Summary"/>
             <VBox.margin>
-                <Insets left="20.0" top="5.0" />
+                <Insets left="20.0" top="5.0"/>
             </VBox.margin>
         </HBox>
         <HBox>
             <CheckBox fx:id="searchByAuthorCheckBox" styleClass="check-box">
                 <HBox.margin>
-                    <Insets right="5.0" />
+                    <Insets right="5.0"/>
                 </HBox.margin>
             </CheckBox>
-            <Label styleClass="label" text="Author" />
+            <Label styleClass="label" text="Author"/>
             <VBox.margin>
-                <Insets left="20.0" top="5.0" />
+                <Insets left="20.0" top="5.0"/>
             </VBox.margin>
         </HBox>
         <HBox>
             <CheckBox fx:id="searchByAdvisorCheckBox" styleClass="check-box">
                 <HBox.margin>
-                    <Insets right="5.0" />
+                    <Insets right="5.0"/>
                 </HBox.margin>
             </CheckBox>
-            <Label styleClass="label" text="Advisor" />
+            <Label styleClass="label" text="Advisor"/>
             <VBox.margin>
-                <Insets left="20.0" top="5.0" />
+                <Insets left="20.0" top="5.0"/>
             </VBox.margin>
         </HBox>
         <HBox>
             <CheckBox fx:id="searchByFieldCheckBox" styleClass="check-box">
                 <HBox.margin>
-                    <Insets right="5.0" />
+                    <Insets right="5.0"/>
                 </HBox.margin>
             </CheckBox>
-            <Label styleClass="label" text="Field" />
+            <Label styleClass="label" text="Field"/>
             <VBox.margin>
-                <Insets left="20.0" top="5.0" />
+                <Insets left="20.0" top="5.0"/>
             </VBox.margin>
         </HBox>
         <ProgressIndicator fx:id="progressIndicator" styleClass="progress-indicator" managed="false" visible="false"/>
         <VBox.margin>
-            <Insets left="40.0" right="40.0" />
+            <Insets left="40.0" right="40.0"/>
         </VBox.margin>
     </VBox>
     <padding>
-        <Insets bottom="40.0" />
+        <Insets bottom="40.0"/>
     </padding>
     <stylesheets>
-        <URL value="@../css/search-poc-page-styles.css" />
+        <URL value="@../css/search-poc-page-styles.css"/>
     </stylesheets>
 </VBox>

@@ -5,36 +5,37 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.AnalyzePOCControllerFX">
+<VBox fx:id="mainPane" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.AnalyzePOCControllerFX">
 
-    <fx:include source="top-menu-page-view.fxml" />
+    <fx:include source="top-menu-page-view.fxml"/>
 
-    <Label text="Title: " />
+    <Label text="Title: "/>
     <Text fx:id="titleText" text="Title"/>
 
-    <Label text="Author(s): " />
-    <ListView fx:id="authorListView" />
+    <Label text="Author(s): "/>
+    <ListView fx:id="authorListView"/>
 
-    <Label text="Advisor: " />
+    <Label text="Advisor: "/>
     <Text fx:id="advisorText" text="Advisor"/>
 
-    <Label text="Co-Advisors: " />
-    <ListView fx:id="coAdvisorListView" />
+    <Label text="Co-Advisors: "/>
+    <ListView fx:id="coAdvisorListView"/>
 
-    <Label text="Field: " />
+    <Label text="Field: "/>
     <Text fx:id="fieldText" text="Field"/>
 
-    <Label text="Date: " />
+    <Label text="Date: "/>
     <Text fx:id="dateText" text="Date"/>
 
-    <Label text="Keywords: " />
-    <ListView fx:id="keywordList" />
+    <Label text="Keywords: "/>
+    <ListView fx:id="keywordList"/>
 
-    <Label text="PDF file: " />
-    <Hyperlink fx:id="pdfFilepathText" onAction="#onDisplayPDF" />
+    <Label text="PDF file: "/>
+    <Hyperlink fx:id="pdfFilepathText" onAction="#onDisplayPDF"/>
 
-    <Button onMouseClicked="#onUpdatePOCButtonClicked" text="Update" />
+    <Button onMouseClicked="#onUpdatePOCButtonClicked" text="Update"/>
     <stylesheets>
-        <URL value="@../css/search-user-page-styles.css" />
+        <URL value="@../css/search-user-page-styles.css"/>
     </stylesheets>
 </VBox>
