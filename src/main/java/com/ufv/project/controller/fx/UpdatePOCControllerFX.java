@@ -248,11 +248,13 @@ public class UpdatePOCControllerFX
         {
             authorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(new StudentDB(connectDB.getConnection()).querStudents()));
             checkMenuItemUser(authorMenuButton.getItems(), poc.getAuthors());
+            onSelectAuthors();
 
             ObservableList<Professor> professors = FXCollections.observableList(new ProfessorDB(connectDB.getConnection()).queryProfessors());
 
             coAdvisorMenuButton.getItems().setAll(initializeCheckMenuItemsFromList(professors));
             checkMenuItemUser(coAdvisorMenuButton.getItems(), poc.getCoAdvisors());
+            onSelectCoAdvisors();
 
             advisorComboBox.setItems(professors);
             advisorComboBox.getSelectionModel().select(UpdatePOCController.findIndex(advisorComboBox.getItems(), poc.getAdvisor()));

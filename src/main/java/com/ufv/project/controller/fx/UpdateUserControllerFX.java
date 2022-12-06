@@ -181,7 +181,7 @@ public class UpdateUserControllerFX
     {
         professorSubjects.setText(professorSubjects.getItems().stream()
                 .filter(menuItem -> ((CheckMenuItem) menuItem).isSelected())
-                .count() + " subject(s) selected");
+                .count() + " selected");
     }
 
     /**
