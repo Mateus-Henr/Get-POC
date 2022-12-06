@@ -2,7 +2,6 @@
     -fx-prompt-text-fill: #FFFFFF;
 }
 .background {
-    -fx-pref-height: 400.0;
     -fx-pref-width: 600.0;
     -fx-alignment: center;
     -fx-background-color: #FFECD1;

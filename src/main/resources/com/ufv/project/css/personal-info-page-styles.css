@@ -23,7 +23,7 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-.info-title{
+.info-title {
     -fx-fill: #001524;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
@@ -50,6 +50,12 @@
 .list-view .scroll-bar .thumb {
     -fx-background-color: #001524;
     -fx-background-radius: 5.0;
+}
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
 }
 .list-view .corner {
     -fx-background-color: transparent;

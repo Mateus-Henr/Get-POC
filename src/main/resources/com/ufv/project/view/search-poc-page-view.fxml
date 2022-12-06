@@ -6,7 +6,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.SearchPOCControllerFX">
+<VBox maxHeight="600.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.SearchPOCControllerFX">
 
     <fx:include source="top-menu-page-view.fxml" />
 
@@ -28,7 +28,10 @@
             </Button>
         </HBox>
         <ImageView fx:id="noPOCImage" visible="false" />
-        <ListView fx:id="pocListView" prefWidth="520.0" />
+        <ListView fx:id="pocListView" maxHeight="80.0" prefWidth="520.0" styleClass="list-view">
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin></ListView>
         <Label text="Search by:">
             <VBox.margin>
                 <Insets top="5.0" />
@@ -89,7 +92,7 @@
                 <Insets left="20.0" top="5.0" />
             </VBox.margin>
         </HBox>
-        <ProgressIndicator fx:id="progressIndicator" />
+        <ProgressIndicator fx:id="progressIndicator" styleClass="progress-indicator" />
         <VBox.margin>
             <Insets left="40.0" right="40.0" />
         </VBox.margin>

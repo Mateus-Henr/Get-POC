@@ -3,11 +3,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
+<?import java.net.URL?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:id="mainPane"
       fx:controller="com.ufv.project.controller.fx.AnalyzePOCControllerFX"
-      prefHeight="400.0" prefWidth="600.0">
+      styleClass="background">
 
     <fx:include source="top-menu-page-view.fxml"/>
 
@@ -36,4 +37,7 @@
     <Hyperlink fx:id="pdfFilepathText" onAction="#onDisplayPDF"/>
 
     <Button text="Update" onMouseClicked="#onUpdatePOCButtonClicked"/>
+    <stylesheets>
+        <URL value="@../css/search-user-page-styles.css"/>
+    </stylesheets>
 </VBox>
