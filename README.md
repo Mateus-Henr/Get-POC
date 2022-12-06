@@ -23,3 +23,8 @@ Foi definido que cada integrante do grupo começaria diferentes partes do trabal
 ## Detalhamento, segunda entrega:
 
 O controle está bem encaminhado, com heranças, alguns testes (não unitários) e com tratamento de exceção simples, sua finalização e testes por completo depende apenas da parte da visualização, que ainda está em desenvolvimento, pois se trata de algo que nunca havíamos usado antes, CSS e HTML. A parte de banco de dados, está praticamente completa. O Database, com os testes, está na pasta models/db juntamente com todos os scripts relacionados a ele. As funções referentes ao banco, está na pasta db, na main. Como havia dito, não fizemos testes unitários ainda, por dependência de outras partes do projeto, mas todas as funções criadas, até agora, foram testadas.
+
+## Detalhamento, terceira entrega:
+
+Projeto finalizado. O controle foi feito como especificado, alguns testes unitários foram feitos e tratamento de exceções mais elaborados. A parte da visualização está completa, juntamente com a parte de Banco de Dados.
+
