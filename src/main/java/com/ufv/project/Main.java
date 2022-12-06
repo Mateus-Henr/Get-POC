@@ -41,9 +41,25 @@ public class Main extends Application
 
         // If it succeeds then shows login page.
         setUpDB.setOnSucceeded(workerStateEvent ->
-                loadStageWithDataModel("login-page-view.fxml",
-                        null,
-                        "Get-POC App")
+                {
+                    FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(PATH_TO_VIEW_FOLDER + "login-page-view.fxml"));
+
+                    try
+                    {
+                        Scene scene = new Scene(fxmlLoader.load());
+
+                        stage.setScene(scene);
+                        stage.setTitle("Get-POC App");
+                        stage.setResizable(false);
+                        stage.show();
+                    }
+                    catch (IOException e)
+                    {
+                        new Alert(Alert.AlertType.ERROR,
+                                "Couldn't load scene. Please close the app and try again.",
+                                ButtonType.OK).showAndWait();
+                    }
+                }
         );
 
         // If it fails shows dialog.
@@ -68,15 +84,23 @@ public class Main extends Application
     }
 
     /**
-     * Loads a new stage with a controller factory using a specific data passed in.
+     * Loads a new scene with a controller factory from existing Stage.
      *
+     * @param pane         pane to get Stage from.
      * @param FXMLFilename filename of the FXML file to be loaded up.
      * @param dataModel    data to be passed to the controller.
      * @param stageTitle   title for the stage.
      * @return controller loaded up with the stage.
      */
-    public static Object loadStageWithDataModel(String FXMLFilename, DataModel dataModel, String stageTitle)
+    public static Object loadNewSceneWithDataModel(Pane pane, String FXMLFilename, DataModel dataModel, String stageTitle)
     {
+        Stage stage = getStageFromPane(pane);
+
+        if (stage == null)
+        {
+            return null;
+        }
+
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(PATH_TO_VIEW_FOLDER + FXMLFilename));
 
         // Controller factory.
@@ -84,43 +108,40 @@ public class Main extends Application
 
         try
         {
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = new Stage();
-
-            stage.setScene(scene);
+            stage.setScene(new Scene(fxmlLoader.load()));
             stage.setTitle(stageTitle);
-            stage.setResizable(false);
-            stage.show();
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,
+                    "Couldn't load scene. Please close the app and try again.",
+                    ButtonType.OK).showAndWait();
         }
 
         return fxmlLoader.getController();
     }
 
-
     /**
-     * Closes current stage.
+     * Gets Stage object from pane.
      *
-     * @param pane parent pane to close stage up.
+     * @param pane object of type Pane.
+     * @return Stage object got from the pane.
      */
-    public static void closeCurrentStage(Pane pane)
+    public static Stage getStageFromPane(Pane pane)
     {
         if (pane == null)
         {
-            return;
+            return null;
         }
 
         Scene scene = pane.getScene();
 
         if (scene == null)
         {
-            return;
+            return null;
         }
 
-        ((Stage) scene.getWindow()).close();
+        return (Stage) scene.getWindow();
     }
 
 }

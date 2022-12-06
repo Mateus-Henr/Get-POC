@@ -120,8 +120,8 @@ public class LoginControllerFX
                 return;
             }
 
-            Main.loadStageWithDataModel("search-poc-page-view.fxml", dataModel, "Search POC");
-            Main.closeCurrentStage(mainPane);
+            Main.loadNewSceneWithDataModel(mainPane, "search-poc-page-view.fxml", dataModel, "Search POC");
+//            Main.closeCurrentStage(mainPane);
         });
 
         progressIndicator.progressProperty().bind(task.progressProperty());

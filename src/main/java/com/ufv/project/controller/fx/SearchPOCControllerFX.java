@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -22,6 +23,9 @@ import java.util.List;
 
 public class SearchPOCControllerFX
 {
+    @FXML
+    private VBox mainPane;
+
     @FXML
     private TextField searchPOCTextField;
 
@@ -78,8 +82,14 @@ public class SearchPOCControllerFX
         searchPOCTextField.setFocusTraversable(false);
 
         pocListView.getSelectionModel().selectedItemProperty().addListener((observableValue, poc, t1) ->
-                ((AnalyzePOCControllerFX) Main.loadStageWithDataModel("analyze-poc-page-view.fxml", dataModel, "Analyze POC"))
-                        .setUpPOCData(pocListView.getSelectionModel().getSelectedItem()));
+        {
+            AnalyzePOCControllerFX newScene = (AnalyzePOCControllerFX) Main.loadNewSceneWithDataModel(mainPane, "analyze-poc-page-view.fxml", dataModel, "Analyze POC");
+
+            if (newScene != null)
+            {
+                newScene.setUpPOCData(pocListView.getSelectionModel().getSelectedItem());
+            }
+        });
     }
 
     /**

@@ -290,8 +290,6 @@ public class UpdateUserControllerFX
 
         task.setOnSucceeded(workerStateEvent ->
         {
-            Main.closeCurrentStage(mainPane);
-
             UserTypesEnum userType = dataModel.getUserType();
             DataModel dataModel = null;
 
@@ -308,7 +306,7 @@ public class UpdateUserControllerFX
                 dataModel = new DataModel((Professor) task.getValue());
             }
 
-            Main.loadStageWithDataModel("update-user-page-view.fxml", dataModel, "Update User");
+            Main.loadNewSceneWithDataModel(mainPane, "update-user-page-view.fxml", dataModel, "Update User");
         });
 
         task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,

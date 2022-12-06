@@ -102,8 +102,7 @@ public class TopMenuControllerFX
      */
     public void onSearchPOCButtonAction()
     {
-        Main.loadStageWithDataModel("search-poc-page-view.fxml", dataModel, "Search POC");
-        Main.closeCurrentStage(mainPane);
+        Main.loadNewSceneWithDataModel(mainPane, "search-poc-page-view.fxml", dataModel, "Search POC");
     }
 
     /**
@@ -111,8 +110,7 @@ public class TopMenuControllerFX
      */
     public void onCreatePOCButtonAction()
     {
-        Main.loadStageWithDataModel("create-poc-page-view.fxml", dataModel, "Search POC");
-        Main.closeCurrentStage(mainPane);
+        Main.loadNewSceneWithDataModel(mainPane, "create-poc-page-view.fxml", dataModel, "Search POC");
     }
 
     /**
@@ -120,8 +118,7 @@ public class TopMenuControllerFX
      */
     public void onLogoutButtonAction()
     {
-        Main.loadStageWithDataModel("login-page-view.fxml", dataModel, "Get-POC App");
-        Main.closeCurrentStage(mainPane);
+        Main.loadNewSceneWithDataModel(mainPane, "login-page-view.fxml", dataModel, "Get-POC App");
     }
 
     /**
@@ -129,8 +126,7 @@ public class TopMenuControllerFX
      */
     public void onSearchUserButtonAction()
     {
-        Main.loadStageWithDataModel("search-user-page-view.fxml", dataModel, "Get-POC App");
-        Main.closeCurrentStage(mainPane);
+        Main.loadNewSceneWithDataModel(mainPane, "search-user-page-view.fxml", dataModel, "Get-POC App");
     }
 
     /**
@@ -138,8 +134,7 @@ public class TopMenuControllerFX
      */
     public void onCreateUserButtonAction()
     {
-        Main.loadStageWithDataModel("create-user-page-view.fxml", dataModel, "Get-POC App");
-        Main.closeCurrentStage(mainPane);
+        Main.loadNewSceneWithDataModel(mainPane, "create-user-page-view.fxml", dataModel, "Get-POC App");
     }
 
 }

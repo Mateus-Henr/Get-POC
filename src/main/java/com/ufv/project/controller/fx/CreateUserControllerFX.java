@@ -275,10 +275,7 @@ public class CreateUserControllerFX
         };
 
         task.setOnSucceeded(workerStateEvent ->
-        {
-            Main.closeCurrentStage(mainPane);
-            Main.loadStageWithDataModel("search-user-page-view.fxml", dataModel, "Search User");
-        });
+                Main.loadNewSceneWithDataModel(mainPane, "search-user-page-view.fxml", dataModel, "Search User"));
 
         task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
                 "Couldn't create user: " + task.getException().getMessage(),

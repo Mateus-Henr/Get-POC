@@ -213,10 +213,7 @@ public class CreatePOCControllerFX
         };
 
         task.setOnSucceeded(workerStateEvent ->
-        {
-            Main.loadStageWithDataModel("search-poc-page-view.fxml", dataModel, "Search POC");
-            Main.closeCurrentStage(mainPane);
-        });
+                Main.loadNewSceneWithDataModel(mainPane, "search-poc-page-view.fxml", dataModel, "Search POC"));
 
         task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
                 "Couldn't insert POC: " + task.getException().getMessage(),

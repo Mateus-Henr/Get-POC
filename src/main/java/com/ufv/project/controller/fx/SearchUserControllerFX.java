@@ -4,18 +4,21 @@ import com.ufv.project.Main;
 import com.ufv.project.controller.java.SearchUserController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
-import com.ufv.project.model.DataModel;
 import com.ufv.project.model.User;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class SearchUserControllerFX
 {
+    @FXML
+    private VBox mainPane;
+
     @FXML
     private TextField searchUsernameTextField;
 
@@ -77,9 +80,7 @@ public class SearchUserControllerFX
             return;
         }
 
-        DataModel dataModel = SearchUserController.setDataModelFromUserType(user);
-
-        Main.loadStageWithDataModel("update-user-page-view.fxml", dataModel, "Update User");
+        Main.loadNewSceneWithDataModel(mainPane, "update-user-page-view.fxml", SearchUserController.setDataModelFromUserType(user), "Update User");
     }
 
 }

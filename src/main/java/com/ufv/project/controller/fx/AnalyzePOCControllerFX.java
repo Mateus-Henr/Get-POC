@@ -95,8 +95,12 @@ public class AnalyzePOCControllerFX
             return;
         }
 
-        Main.closeCurrentStage(mainPane);
-        ((UpdatePOCControllerFX) Main.loadStageWithDataModel("update-poc-page-view.fxml", dataModel, "Update POC")).setUpPOCData(poc);
+        UpdatePOCControllerFX newScene = (UpdatePOCControllerFX) Main.loadNewSceneWithDataModel(mainPane, "update-poc-page-view.fxml", dataModel, "Update POC");
+
+        if (newScene != null)
+        {
+            newScene.setUpPOCData(poc);
+        }
     }
 
     /**
