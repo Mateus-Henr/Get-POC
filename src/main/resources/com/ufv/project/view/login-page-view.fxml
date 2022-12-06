@@ -35,7 +35,7 @@
     </ImageView>
     <ProgressIndicator fx:id="progressIndicator" minWidth="30.0" progress="0.0" visible="false"
                        AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="156.0" AnchorPane.rightAnchor="468.0"
-                       AnchorPane.topAnchor="300.0" styleClass="progress-indicator"/>
+                       AnchorPane.topAnchor="300.0" styleClass="progress-indicator" managed="false"/>
     <stylesheets>
         <URL value="@../css/login-page-styles.css"/>
     </stylesheets>

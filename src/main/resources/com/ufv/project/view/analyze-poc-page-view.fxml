@@ -6,82 +6,85 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.AnalyzePOCControllerFX">
-    <fx:include source="top-menu-page-view.fxml" />
+<VBox fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.AnalyzePOCControllerFX">
+    <fx:include source="top-menu-page-view.fxml"/>
     <VBox styleClass="background">
         <HBox>
-            <Label styleClass="label" text="Title: " />
-            <Text fx:id="titleText" styleClass="texts" text="Title" />
+            <Label styleClass="label" text="Title: "/>
+            <Text fx:id="titleText" styleClass="texts" text="Title"/>
         </HBox>
         <HBox>
-            <Label styleClass="label" text="Author(s): " />
-            <ListView fx:id="authorListView" />
+            <Label styleClass="label" text="Author(s): "/>
+            <ListView fx:id="authorListView"/>
             <VBox.margin>
-                <Insets top="5.0" />
+                <Insets top="5.0"/>
             </VBox.margin>
         </HBox>
         <HBox>
-            <Label styleClass="label" text="Advisor: " />
-            <Text fx:id="advisorText" styleClass="texts" text="Advisor" />
+            <Label styleClass="label" text="Advisor: "/>
+            <Text fx:id="advisorText" styleClass="texts" text="Advisor"/>
             <VBox.margin>
-                <Insets top="5.0" />
+                <Insets top="5.0"/>
             </VBox.margin>
         </HBox>
         <HBox>
-            <Label styleClass="label" text="Co-Advisors: " />
-            <ListView fx:id="coAdvisorListView" />
+            <Label styleClass="label" text="Co-Advisors: "/>
+            <ListView fx:id="coAdvisorListView"/>
             <VBox.margin>
-                <Insets top="5.0" />
+                <Insets top="5.0"/>
             </VBox.margin>
         </HBox>
         <HBox>
-            <Label styleClass="label" text="Field: " />
-            <Text fx:id="fieldText" styleClass="texts" text="Field" />
+            <Label styleClass="label" text="Field: "/>
+            <Text fx:id="fieldText" styleClass="texts" text="Field"/>
             <VBox.margin>
-                <Insets top="5.0" />
+                <Insets top="5.0"/>
             </VBox.margin>
         </HBox>
         <HBox>
-            <Label styleClass="label" text="Date: " />
-            <Text fx:id="dateText" styleClass="texts" text="Date" />
+            <Label styleClass="label" text="Date: "/>
+            <Text fx:id="dateText" styleClass="texts" text="Date"/>
             <VBox.margin>
-                <Insets top="5.0" />
+                <Insets top="5.0"/>
             </VBox.margin>
         </HBox>
         <HBox>
-            <Label styleClass="label" text="Keywords: " />
-            <ListView fx:id="keywordList" />
+            <Label styleClass="label" text="Keywords: "/>
+            <ListView fx:id="keywordList"/>
             <VBox.margin>
-                <Insets top="5.0" />
+                <Insets top="5.0"/>
             </VBox.margin>
         </HBox>
         <HBox>
             <Label styleClass="label" text="PDF file: ">
-            <HBox.margin>
-               <Insets top="5.0" />
-            </HBox.margin></Label>
+                <HBox.margin>
+                    <Insets top="5.0"/>
+                </HBox.margin>
+            </Label>
             <Hyperlink fx:id="pdfFilepathText" onAction="#onDisplayPDF" styleClass="hyperlink" text="link">
-            <HBox.margin>
-               <Insets top="1.0" />
-            </HBox.margin></Hyperlink>
+                <HBox.margin>
+                    <Insets top="1.0"/>
+                </HBox.margin>
+            </Hyperlink>
             <VBox.margin>
-                <Insets />
+                <Insets/>
             </VBox.margin>
         </HBox>
         <HBox alignment="CENTER_RIGHT">
-            <Button onMouseClicked="#onUpdatePOCButtonClicked" text="Update" />
+            <Button onMouseClicked="#onUpdatePOCButtonClicked" text="Update"/>
         </HBox>
         <VBox.margin>
-            <Insets />
+            <Insets/>
         </VBox.margin>
         <padding>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
         </padding>
         <stylesheets>
-            <URL value="@../css/analyze-poc-page-styles.css" />
+            <URL value="@../css/analyze-poc-page-styles.css"/>
         </stylesheets>
         <padding>
-            <Insets bottom="40.0" left="40.0" right="40.0" top="10.0" />
+            <Insets bottom="40.0" left="40.0" right="40.0" top="10.0"/>
         </padding>
     </VBox>
 </VBox>

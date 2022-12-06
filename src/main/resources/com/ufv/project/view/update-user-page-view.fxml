@@ -6,114 +6,131 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.UpdateUserControllerFX">
-    <fx:include source="top-menu-page-view.fxml" />
-    <fx:include source="personal-info-page-view.fxml" />
+<VBox fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" styleClass="background"
+      xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.ufv.project.controller.fx.UpdateUserControllerFX">
+    <fx:include source="top-menu-page-view.fxml"/>
 
     <Text styleClass="update-title" text="Update User">
         <VBox.margin>
-            <Insets left="60.0" />
+            <Insets left="60.0"/>
         </VBox.margin>
     </Text>
     <GridPane styleClass="update-background">
-        <Label styleClass="label" text="Username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label styleClass="label" text="Username" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
         <TextField fx:id="usernameTextField" editable="false" GridPane.columnIndex="0" GridPane.rowIndex="1">
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin></TextField>
+            <GridPane.margin>
+                <Insets top="5.0"/>
+            </GridPane.margin>
+        </TextField>
         <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin></Label>
+            <GridPane.margin>
+                <Insets top="5.0"/>
+            </GridPane.margin>
+        </Label>
         <TextField fx:id="nameTextField" GridPane.columnIndex="0" GridPane.rowIndex="3">
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin></TextField>
+            <GridPane.margin>
+                <Insets top="5.0"/>
+            </GridPane.margin>
+        </TextField>
         <Label text="Password" GridPane.columnIndex="0" GridPane.rowIndex="4">
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin></Label>
+            <GridPane.margin>
+                <Insets top="5.0"/>
+            </GridPane.margin>
+        </Label>
         <PasswordField fx:id="passwordField" GridPane.columnIndex="0" GridPane.rowIndex="5">
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin></PasswordField>
+            <GridPane.margin>
+                <Insets top="5.0"/>
+            </GridPane.margin>
+        </PasswordField>
         <Label text="Confirm password" GridPane.columnIndex="0" GridPane.rowIndex="6">
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin></Label>
+            <GridPane.margin>
+                <Insets top="5.0"/>
+            </GridPane.margin>
+        </Label>
         <PasswordField fx:id="confirmPasswordField" GridPane.columnIndex="0" GridPane.rowIndex="7">
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin></PasswordField>
+            <GridPane.margin>
+                <Insets top="5.0"/>
+            </GridPane.margin>
+        </PasswordField>
         <Label fx:id="emailLabel" text="Email" GridPane.columnIndex="1" GridPane.rowIndex="0">
-         <GridPane.margin>
-            <Insets left="10.0" />
-         </GridPane.margin></Label>
+            <GridPane.margin>
+                <Insets left="10.0"/>
+            </GridPane.margin>
+        </Label>
         <TextField fx:id="emailTextField" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <GridPane.margin>
-            <Insets left="10.0" top="5.0" />
-         </GridPane.margin></TextField>
+            <GridPane.margin>
+                <Insets left="10.0" top="5.0"/>
+            </GridPane.margin>
+        </TextField>
         <Label fx:id="registrationLabel" text="Registration" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets left="10.0" top="5.0" />
-         </GridPane.margin></Label>
+            <GridPane.margin>
+                <Insets left="10.0" top="5.0"/>
+            </GridPane.margin>
+        </Label>
         <TextField fx:id="registrationTextField" GridPane.columnIndex="1" GridPane.rowIndex="3">
-         <GridPane.margin>
-            <Insets left="10.0" top="5.0" />
-         </GridPane.margin></TextField>
+            <GridPane.margin>
+                <Insets left="10.0" top="5.0"/>
+            </GridPane.margin>
+        </TextField>
         <Label fx:id="POCIDLabel" text="POC ID" GridPane.columnIndex="1" GridPane.rowIndex="4">
-         <GridPane.margin>
-            <Insets left="10.0" top="5.0" />
-         </GridPane.margin></Label>
+            <GridPane.margin>
+                <Insets left="10.0" top="5.0"/>
+            </GridPane.margin>
+        </Label>
         <TextField fx:id="POCIDTextField" GridPane.columnIndex="1" GridPane.rowIndex="5">
-         <GridPane.margin>
-            <Insets left="10.0" top="5.0" />
-         </GridPane.margin></TextField>
+            <GridPane.margin>
+                <Insets left="10.0" top="5.0"/>
+            </GridPane.margin>
+        </TextField>
         <Label fx:id="professorSubjectsLabel" text="Subjects" GridPane.columnIndex="1" GridPane.rowIndex="6">
-         <GridPane.margin>
-            <Insets left="10.0" top="5.0" />
-         </GridPane.margin></Label>
-        <MenuButton fx:id="professorSubjects" onHiding="#onSelectSubject" styleClass="update-menu-button" text="Select" GridPane.columnIndex="1" GridPane.rowIndex="7">
-         <GridPane.margin>
-            <Insets left="10.0" top="5.0" />
-         </GridPane.margin></MenuButton>
+            <GridPane.margin>
+                <Insets left="10.0" top="5.0"/>
+            </GridPane.margin>
+        </Label>
+        <MenuButton fx:id="professorSubjects" onHiding="#onSelectSubject" styleClass="update-menu-button" text="Select"
+                    GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <GridPane.margin>
+                <Insets left="10.0" top="5.0"/>
+            </GridPane.margin>
+        </MenuButton>
         <HBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="8">
             <Button fx:id="updateUserButton" onMouseClicked="#onUpdateButtonClicked" text="Update">
                 <VBox.margin>
-                    <Insets top="10.0" />
+                    <Insets top="10.0"/>
                 </VBox.margin>
             </Button>
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin>
-         <padding>
-            <Insets top="5.0" />
-         </padding>
+            <GridPane.margin>
+                <Insets top="5.0"/>
+            </GridPane.margin>
+            <padding>
+                <Insets top="5.0"/>
+            </padding>
         </HBox>
         <padding>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
         </padding>
-      <columnConstraints>
-         <ColumnConstraints prefWidth="235.0" />
-         <ColumnConstraints prefWidth="245.0" />
-      </columnConstraints>
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-      </rowConstraints>
-      <VBox.margin>
-         <Insets bottom="40.0" left="40.0" right="40.0" />
-      </VBox.margin>
+        <columnConstraints>
+            <ColumnConstraints prefWidth="235.0"/>
+            <ColumnConstraints prefWidth="245.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+        </rowConstraints>
+        <VBox.margin>
+            <Insets bottom="40.0" left="40.0" right="40.0"/>
+        </VBox.margin>
     </GridPane>
-    <ProgressIndicator fx:id="progressIndicator" managed="false" styleClass="progress-indicator" visible="false" />
+    <ProgressIndicator fx:id="progressIndicator" managed="false" styleClass="progress-indicator" visible="false"/>
     <stylesheets>
-        <URL value="@../css/update-user-page-styles.css" />
+        <URL value="@../css/update-user-page-styles.css"/>
     </stylesheets>
 </VBox>

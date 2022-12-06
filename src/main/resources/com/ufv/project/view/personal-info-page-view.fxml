@@ -6,72 +6,73 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufv.project.controller.fx.PersonalInfoControllerFX">
-    <Text fx:id="nameText" styleClass="username" text="Name" />
+<VBox styleClass="background" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.ufv.project.controller.fx.PersonalInfoControllerFX">
+    <Text fx:id="nameText" styleClass="username" text="Name"/>
     <HBox>
         <Text styleClass="info-title" text="Personal information:">
             <HBox.margin>
-                <Insets left="20.0" />
+                <Insets left="20.0"/>
             </HBox.margin>
         </Text>
         <VBox.margin>
-            <Insets top="10.0" />
+            <Insets top="10.0"/>
         </VBox.margin>
     </HBox>
     <VBox maxHeight="200.0" styleClass="info-background">
         <HBox>
-            <Label styleClass="info-text" text="Username: " />
-            <Text fx:id="usernameText" styleClass="info-text" />
+            <Label styleClass="info-text" text="Username: "/>
+            <Text fx:id="usernameText" styleClass="info-text"/>
         </HBox>
         <HBox>
-            <Label styleClass="info-text" text="User type: " />
-            <Text fx:id="userTypeText" styleClass="info-text" />
-         <VBox.margin>
-            <Insets top="5.0" />
-         </VBox.margin>
+            <Label styleClass="info-text" text="User type: "/>
+            <Text fx:id="userTypeText" styleClass="info-text"/>
+            <VBox.margin>
+                <Insets top="5.0"/>
+            </VBox.margin>
         </HBox>
         <HBox>
-            <Label fx:id="emailLabel" styleClass="info-text" text="E-mail: " />
-            <Text fx:id="emailText" styleClass="info-text" />
-         <VBox.margin>
-            <Insets top="5.0" />
-         </VBox.margin>
+            <Label fx:id="emailLabel" styleClass="info-text" text="E-mail: "/>
+            <Text fx:id="emailText" styleClass="info-text"/>
+            <VBox.margin>
+                <Insets top="5.0"/>
+            </VBox.margin>
         </HBox>
         <HBox>
-            <Label fx:id="registrationLabel" styleClass="info-text" text="Registration: " />
-            <Text fx:id="registrationText" styleClass="info-text" />
-         <VBox.margin>
-            <Insets top="5.0" />
-         </VBox.margin>
+            <Label fx:id="registrationLabel" styleClass="info-text" text="Registration: "/>
+            <Text fx:id="registrationText" styleClass="info-text"/>
+            <VBox.margin>
+                <Insets top="5.0"/>
+            </VBox.margin>
         </HBox>
         <HBox>
-            <Label fx:id="POCIDLabel" styleClass="info-text" text="POC ID: " />
-            <Text fx:id="POCIDText" styleClass="info-text" />
-         <VBox.margin>
-            <Insets top="5.0" />
-         </VBox.margin>
+            <Label fx:id="POCIDLabel" styleClass="info-text" text="POC ID: "/>
+            <Text fx:id="POCIDText" styleClass="info-text"/>
+            <VBox.margin>
+                <Insets top="5.0"/>
+            </VBox.margin>
         </HBox>
         <HBox>
-            <Label fx:id="professorSubjectsLabel" alignment="TOP_LEFT" styleClass="info-text" text="Subjects: " />
-            <ListView fx:id="professorSubjectListView" maxHeight="80.0" minHeight="30.0" prefWidth="400.0" />
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
+            <Label fx:id="professorSubjectsLabel" alignment="TOP_LEFT" styleClass="info-text" text="Subjects: "/>
+            <ListView fx:id="professorSubjectListView" maxHeight="80.0" minHeight="30.0" prefWidth="400.0"/>
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
         </HBox>
         <HBox.margin>
-            <Insets bottom="20.0" top="15.0" />
+            <Insets bottom="20.0" top="15.0"/>
         </HBox.margin>
         <VBox.margin>
-            <Insets top="5.0" />
+            <Insets top="5.0"/>
         </VBox.margin>
         <padding>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
         </padding>
     </VBox>
     <VBox.margin>
-        <Insets left="20.0" right="20.0" />
+        <Insets left="20.0" right="20.0"/>
     </VBox.margin>
     <stylesheets>
-        <URL value="@../css/personal-info-page-styles.css" />
+        <URL value="@../css/personal-info-page-styles.css"/>
     </stylesheets>
 </VBox>
