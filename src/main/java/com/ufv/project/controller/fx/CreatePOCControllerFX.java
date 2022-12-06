@@ -1,5 +1,6 @@
 package com.ufv.project.controller.fx;
 
+import com.ufv.project.controller.java.CreatePOCController;
 import com.ufv.project.Main;
 import com.ufv.project.db.*;
 import com.ufv.project.model.*;
@@ -160,6 +161,15 @@ public class CreatePOCControllerFX
     @FXML
     public void handlePOCAdding()
     {
+        if(!CreatePOCController.checkStringMax(title.getText())){
+            if(!title.getStyleClass().contains("create-text-field-invalid")) {
+                title.getStyleClass().add("create-text-field-invalid");
+            }
+            return;
+        }else{
+            title.getStyleClass().removeAll("create-text-field-invalid");
+        }
+
         final Task<Integer> task = new Task<>()
         {
             @Override

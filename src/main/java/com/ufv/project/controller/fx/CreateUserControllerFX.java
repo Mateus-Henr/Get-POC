@@ -7,6 +7,8 @@ import com.ufv.project.db.SubjectDB;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -103,6 +105,22 @@ public class CreateUserControllerFX
                                                         confirmPasswordField.getText().trim().isEmpty(),
                                                 confirmPasswordField.textProperty()))
                                 )));
+
+        POCIDTextField.textProperty().addListener((ov, oldValue, newValue) ->
+        {
+            if (!newValue.matches("\\d*"))
+            {
+                POCIDTextField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        registrationTextField.textProperty().addListener((ov, oldValue, newValue) ->
+        {
+            if (!newValue.matches("\\d{0,4}"))
+            {
+                registrationTextField.setText(newValue.replaceAll("[^\\d{0,4}]", ""));
+            }
+        });
 
         // Set up page according to the selected one.
         onRadioButtonChanged();
@@ -220,12 +238,46 @@ public class CreateUserControllerFX
     @FXML
     public void onCreateButtonPressed()
     {
-        if (!CreateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()) &&
-                !CreateUserController.checkEmail(emailTextField.getText()) &&
-                !CreateUserController.checkRegistration(registrationTextField.getText()))
-        {
-            // Display error style on password input boxes.
+        if(!CreateUserController.checkStringMax(nameTextField.getText())){
+            if(!nameTextField.getStyleClass().contains("create-text-field-invalid")) {
+                nameTextField.getStyleClass().add("create-text-field-invalid");
+            }
             return;
+        } else{nameTextField.getStyleClass().removeAll("create-text-field-invalid");}
+        if (!CreateUserController.checkStringMax(usernameTextField.getText())) {
+            if(!usernameTextField.getStyleClass().contains("create-text-field-invalid")) {
+                usernameTextField.getStyleClass().add("create-text-field-invalid");
+            }
+            return;
+
+        } else{usernameTextField.getStyleClass().removeAll("create-text-field-invalid");}
+
+        if (!CreateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()))
+        {if (!passwordField.getStyleClass().contains("create-text-field-invalid")){
+            passwordField.getStyleClass().add("create-text-field-invalid");
+            confirmPasswordField.getStyleClass().add("create-text-field-invalid");}
+            return;
+        } else {
+            passwordField.getStyleClass().removeAll("create-text-field-invalid");
+            confirmPasswordField.getStyleClass().removeAll("create-text-field-invalid");
+        }
+
+        if (!CreateUserController.checkEmail(emailTextField.getText())){
+            if(!emailTextField.getStyleClass().contains("create-text-field-invalid")){
+            emailTextField.getStyleClass().add("create-text-field-invalid");
+            }
+            return;
+        }else {
+            emailTextField.getStyleClass().removeAll("create-text-field-invalid");
+        }
+
+        if(!CreateUserController.checkRegistration(registrationTextField.getText())){
+            if(!emailTextField.getStyleClass().contains("create-text-field-invalid")) {
+                registrationTextField.getStyleClass().add("create-text-field-invalid");
+            }
+            return;
+        } else {
+            registrationTextField.getStyleClass().removeAll("create-text-field-invalid");
         }
 
 

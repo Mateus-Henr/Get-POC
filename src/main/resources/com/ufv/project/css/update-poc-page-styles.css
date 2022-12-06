@@ -41,6 +41,16 @@
     -fx-font-size: 14.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
+.text-field-invalid{
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+    -fx-border-width: 2.0;
+    -fx-border-color: #E92927;
+    -fx-border-radius: 15.0;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+}
 
 .update-menu-button
 {
@@ -127,7 +137,7 @@
 .combo-box .arrow {
     -fx-background-color: #15616D;
 }
-.combo-box .arrow:hover {
+.combo-box .arrow-button:hover .arrow {
     -fx-background-color: #112A3B;
 }
 .combo-box .list-view {

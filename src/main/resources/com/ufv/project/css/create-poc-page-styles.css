@@ -20,7 +20,6 @@
     -fx-border-radius: 20.0;
     -fx-font-size: 14.0;
     -fx-font-family: "Ubuntu Mono Bold";
-    -fx-fill: #FFFFFF;
     -fx-prompt-text-fill: #FFFFFF;
     -fx-text-fill: #FFFFFF;
 }
@@ -60,7 +59,7 @@
 .create-combo-box .arrow{
     -fx-background-color: #15616D;
 }
-.create-combo-box .arrow:hover{
+.create-combo-box .arrow-button:hover .arrow{
     -fx-background-color: #112A3B;
 }
 .create-combo-box .list-view {
@@ -80,6 +79,16 @@
     -fx-background-radius: 15.0;
     -fx-border-width: 2.0;
     -fx-border-color: #FFECD1;
+    -fx-border-radius: 15.0;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14.0;
+    -fx-font-family: "Ubuntu Mono Bold";
+}
+.create-text-field-invalid {
+    -fx-background-color: #001524;
+    -fx-background-radius: 15.0;
+    -fx-border-width: 2.0;
+    -fx-border-color: #E92927;
     -fx-border-radius: 15.0;
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 14.0;

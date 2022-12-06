@@ -115,6 +115,15 @@ public class UpdatePOCControllerFX
     @FXML
     public void onUpdateButtonClicked()
     {
+        if(!UpdatePOCController.checkStringMax(title.getText())){
+            if(!title.getStyleClass().contains("text-field-invalid")) {
+                title.getStyleClass().add("text-field-invalid");
+            }
+            return;
+        }else{
+            title.getStyleClass().removeAll("text-field-invalid");
+        }
+
         final Task<POC> task = new Task<>()
         {
             @Override

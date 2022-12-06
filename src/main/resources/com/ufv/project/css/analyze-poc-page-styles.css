@@ -37,8 +37,8 @@
 {
     -fx-background-color: #00223B;
 }
-
-.list-view
+.list-view,
+.list-view .list-cell
 {
     -fx-border-color: transparent;
     -fx-background-color: #FFECD1;

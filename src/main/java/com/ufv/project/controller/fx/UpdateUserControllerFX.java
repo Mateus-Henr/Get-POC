@@ -81,10 +81,46 @@ public class UpdateUserControllerFX
     @FXML
     public void onUpdateButtonClicked()
     {
-        if (!UpdateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()))
-        {
-            // Display error style on password input boxes.
+        if(!UpdateUserController.checkStringMax(nameTextField.getText())){
+            if(!nameTextField.getStyleClass().contains("text-field-invalid")) {
+                nameTextField.getStyleClass().add("text-field-invalid");
+            }
             return;
+        } else{nameTextField.getStyleClass().removeAll("text-field-invalid");}
+        if (!UpdateUserController.checkStringMax(usernameTextField.getText())) {
+            if(!usernameTextField.getStyleClass().contains("text-field-invalid")) {
+                usernameTextField.getStyleClass().add("text-field-invalid");
+            }
+            return;
+
+        } else{usernameTextField.getStyleClass().removeAll("text-field-invalid");}
+
+        if (!UpdateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()))
+        {if (!passwordField.getStyleClass().contains("text-field-invalid")){
+            passwordField.getStyleClass().add("text-field-invalid");
+            confirmPasswordField.getStyleClass().add("text-field-invalid");}
+            return;
+        } else {
+            passwordField.getStyleClass().removeAll("text-field-invalid");
+            confirmPasswordField.getStyleClass().removeAll("text-field-invalid");
+        }
+
+        if (!UpdateUserController.checkEmail(emailTextField.getText())){
+            if(!emailTextField.getStyleClass().contains("text-field-invalid")){
+                emailTextField.getStyleClass().add("text-field-invalid");
+            }
+            return;
+        }else {
+            emailTextField.getStyleClass().removeAll("text-field-invalid");
+        }
+
+        if(!UpdateUserController.checkRegistration(registrationTextField.getText())){
+            if(!emailTextField.getStyleClass().contains("text-field-invalid")) {
+                registrationTextField.getStyleClass().add("text-field-invalid");
+            }
+            return;
+        } else {
+            registrationTextField.getStyleClass().removeAll("text-field-invalid");
         }
 
         final Task<User> task = new Task<>()
