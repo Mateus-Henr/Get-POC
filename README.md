@@ -28,3 +28,7 @@ O controle está bem encaminhado, com heranças, alguns testes (não unitários)
 
 Projeto finalizado. O controle foi feito como especificado, alguns testes unitários foram feitos e tratamento de exceções mais elaborados. A parte da visualização está completa, juntamente com a parte de Banco de Dados.
 
+###R
+##R
+#R
+
