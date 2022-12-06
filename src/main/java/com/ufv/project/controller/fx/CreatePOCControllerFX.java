@@ -142,7 +142,7 @@ public class CreatePOCControllerFX
     @FXML
     public void onSelectCoAdvisors()
     {
-        coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " co-advisor(s) selected");
+        coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " selected");
     }
 
     /**
@@ -151,7 +151,7 @@ public class CreatePOCControllerFX
     @FXML
     public void onSelectAuthors()
     {
-        coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " author(s) selected");
+        authorMenuButton.setText(getSelectedItemsNumber(authorMenuButton) + " selected");
     }
 
     /**

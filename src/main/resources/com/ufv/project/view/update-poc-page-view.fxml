@@ -10,6 +10,8 @@
       fx:id="mainPane"
       styleClass="background">
 
+    <fx:include source="top-menu-page-view.fxml"/>
+
     <Label>Update POC</Label>
     <GridPane fx:id="gridPane" styleClass="create-background">
         <TextField fx:id="title" promptText="Title" GridPane.rowIndex="0" GridPane.columnIndex="0"

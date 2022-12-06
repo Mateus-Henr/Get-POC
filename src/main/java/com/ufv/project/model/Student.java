@@ -59,7 +59,7 @@ public class Student extends User
     @Override
     public String toString()
     {
-        return getUserType().toString() + " -> " + getUsername() + " - " + registration + " - " + getName();
+        return getUsername() + " - " + registration + " - " + getName();
     }
 
 }

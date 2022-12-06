@@ -92,21 +92,21 @@ public class UpdatePOCControllerFX
     }
 
     /**
-     * Displays number of co-advisors selected.
+     * Displays number of selected co-advisors.
      */
     @FXML
     public void onSelectCoAdvisors()
     {
-        coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " co-advisor(s) selected");
+        coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " selected");
     }
 
     /**
-     * Displays number of authors selected.
+     * Displays number of selected authors.
      */
     @FXML
     public void onSelectAuthors()
     {
-        coAdvisorMenuButton.setText(getSelectedItemsNumber(coAdvisorMenuButton) + " author(s) selected");
+        authorMenuButton.setText(getSelectedItemsNumber(authorMenuButton) + " selected");
     }
 
     /**
@@ -265,7 +265,9 @@ public class UpdatePOCControllerFX
         }
         catch (SQLException e)
         {
-            System.out.println("Couldn't get data to update POC: " + e.getMessage());
+            new Alert(Alert.AlertType.ERROR,
+                    "Couldn't get data to update POC: " + e.getMessage(),
+                    ButtonType.OK);
         }
     }
 

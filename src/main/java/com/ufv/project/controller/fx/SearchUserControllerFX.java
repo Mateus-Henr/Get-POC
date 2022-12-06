@@ -2,8 +2,10 @@ package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
 import com.ufv.project.controller.java.SearchUserController;
+import com.ufv.project.controller.java.UpdateUserController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.UserDB;
+import com.ufv.project.model.DataModel;
 import com.ufv.project.model.User;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
@@ -27,6 +29,13 @@ public class SearchUserControllerFX
 
     @FXML
     private ProgressIndicator progressIndicator;
+
+    private final DataModel dataModel;
+
+    public SearchUserControllerFX(DataModel dataModel)
+    {
+        this.dataModel = dataModel;
+    }
 
     /**
      * Searches for User with given id.
@@ -80,7 +89,12 @@ public class SearchUserControllerFX
             return;
         }
 
-        Main.loadNewSceneWithDataModel(mainPane, "update-user-page-view.fxml", SearchUserController.setDataModelFromUserType(user), "Update User");
+        UpdateUserControllerFX newScene = ((UpdateUserControllerFX) Main.loadNewSceneWithDataModel(mainPane, "update-user-page-view.fxml", dataModel, "Update User"));
+
+        if (newScene != null)
+        {
+            newScene.setUserData(user);
+        }
     }
 
 }

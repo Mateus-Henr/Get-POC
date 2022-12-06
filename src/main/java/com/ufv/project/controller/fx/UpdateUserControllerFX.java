@@ -65,6 +65,8 @@ public class UpdateUserControllerFX
 
     private final DataModel dataModel;
 
+    private User user;
+
     /**
      * Constructor for UpdateUserControllerFX.
      */
@@ -74,15 +76,150 @@ public class UpdateUserControllerFX
     }
 
     /**
-     * Runs upon initialization.
+     * Updates User with given data.
      */
     @FXML
-    public void initialize()
+    public void onUpdateButtonClicked()
     {
-        usernameTextField.setText(dataModel.getUsername());
-        nameTextField.setText(dataModel.getName());
+        if (!UpdateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()))
+        {
+            // Display error style on password input boxes.
+            return;
+        }
 
-        UserTypesEnum userType = dataModel.getUserType();
+        final Task<User> task = new Task<>()
+        {
+            @Override
+            protected User call() throws SQLException
+            {
+                User updatedUser = null;
+
+                UserTypesEnum userType = user.getUserType();
+
+                if (userType == UserTypesEnum.STUDENT)
+                {
+                    String POCIDText = POCIDTextField.getText().trim();
+                    int POCID = 0;
+
+                    if (!POCIDText.isEmpty())
+                    {
+                        POCID = Integer.parseInt(POCIDText);
+                    }
+
+                    updatedUser = new Student(usernameTextField.getText().trim(),
+                            nameTextField.getText().trim(),
+                            passwordField.getText(),
+                            registrationTextField.getText().trim(),
+                            POCID,
+                            emailTextField.getText().trim());
+                }
+                else if (userType == UserTypesEnum.PROFESSOR)
+                {
+                    List<Integer> subjectIDList = professorSubjects
+                            .getItems()
+                            .stream()
+                            .filter(menuItem -> ((CheckMenuItem) menuItem).isSelected())
+                            .map(menuItem -> Integer.parseInt(menuItem.getId()))
+                            .toList();
+
+                    try (ConnectDB connectDB = new ConnectDB())
+                    {
+                        SubjectDB subjectDB = new SubjectDB(connectDB.getConnection());
+                        List<Subject> subjectList = new ArrayList<>();
+
+                        for (int id : subjectIDList)
+                        {
+                            subjectList.add(subjectDB.querySubjectByID(id));
+                        }
+
+                        updatedUser = new Professor(usernameTextField.getText().trim(),
+                                nameTextField.getText().trim(),
+                                passwordField.getText(),
+                                emailTextField.getText().trim(),
+                                subjectList);
+                    }
+                }
+                else if (userType == UserTypesEnum.ADMIN)
+                {
+                    updatedUser = new Administrator(usernameTextField.getText().trim(),
+                            nameTextField.getText().trim(),
+                            passwordField.getText());
+                }
+
+                if (updatedUser == null)
+                {
+                    throw new SQLException("ERROR: Couldn't get user to update.");
+                }
+
+                try (ConnectDB connectDB = new ConnectDB())
+                {
+                    return new UserDB(connectDB.getConnection()).updateUser(updatedUser);
+                }
+            }
+        };
+
+        task.setOnSucceeded(workerStateEvent ->
+                Main.loadNewSceneWithDataModel(mainPane, "search-user-page-view.fxml", dataModel, "Update User"));
+
+        task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
+                "Couldn't update user: " + task.getException().getMessage(),
+                ButtonType.OK));
+
+        progressIndicator.progressProperty().bind(task.progressProperty());
+        progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+        updateUserButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
+
+        new Thread(task).start();
+    }
+
+    /**
+     * Shows the number of subject selected.
+     */
+    @FXML
+    public void onSelectSubject()
+    {
+        professorSubjects.setText(professorSubjects.getItems().stream()
+                .filter(menuItem -> ((CheckMenuItem) menuItem).isSelected())
+                .count() + " subject(s) selected");
+    }
+
+    /**
+     * Initializes a list of MenuItems from a list of Subjects.
+     *
+     * @param subjectList list containing the Subject to be displayed on the MenuItems.
+     * @return list containing initialized MenuItems from a list of Subjects.
+     */
+    public List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList)
+    {
+        List<MenuItem> items = new ArrayList<>();
+
+        for (Subject subject : subjectList)
+        {
+            CheckMenuItem menuItem = new CheckMenuItem();
+
+            menuItem.setId(String.valueOf(subject.getId()));
+            menuItem.setText(subject.getName() + " - " + subject.getDescription());
+
+            items.add(menuItem);
+        }
+
+        return items;
+    }
+
+    /**
+     * Sets up data for the User to be updated.
+     *
+     * @param user user to set up data.
+     */
+    public void setUserData(User user)
+    {
+        this.user = user;
+
+        usernameTextField.setText(user.getUsername());
+        nameTextField.setText(user.getName());
+
+        UserTypesEnum userType = user.getUserType();
 
         if (userType == UserTypesEnum.ADMIN)
         {
@@ -151,208 +288,30 @@ public class UpdateUserControllerFX
             professorSubjects.setVisible(true);
         }
 
-        final Task<Void> updateUserTask = new Task<>()
+        if (userType == UserTypesEnum.STUDENT)
         {
-            @Override
-            protected Void call() throws SQLException
-            {
-                try (ConnectDB connectDB = new ConnectDB())
-                {
-                    User user = new UserDB(connectDB.getConnection()).queryUserByID(dataModel.getUsername());
+            Student student = (Student) user;
 
-                    if (userType == UserTypesEnum.STUDENT)
-                    {
-                        Student student = (Student) user;
-
-                        registrationTextField.setText(student.getRegistration());
-                        emailTextField.setText(student.getEmail());
-                        POCIDTextField.setText(String.valueOf(student.getPOCID()));
-                    }
-                    else if (userType == UserTypesEnum.PROFESSOR)
-                    {
-                        Professor professor = (Professor) user;
-
-                        emailTextField.setText(professor.getEmail());
-
-                        List<Subject> markedSubjects = professor.getSubjectsTaught();
-
-                        professorSubjects.getItems().setAll(initializeCheckMenuItemsFromList(new SubjectDB(connectDB.getConnection()).querySubjects()));
-
-                        for (MenuItem menuItem : professorSubjects.getItems())
-                        {
-                            markedSubjects.stream().map(Subject::getId).forEach(integer -> ((CheckMenuItem) menuItem)
-                                    .setSelected(integer == Integer.parseInt(menuItem.getId()) || ((CheckMenuItem) menuItem).isSelected()));
-                        }
-                    }
-
-                    return null;
-                }
-            }
-        };
-
-        updateUserTask.setOnSucceeded(workerStateEvent -> onSelectSubject());
-
-        updateUserTask.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
-                "Couldn't get data for user: " + updateUserTask.getException().getMessage(),
-                ButtonType.OK));
-
-        progressIndicator.progressProperty().bind(updateUserTask.progressProperty());
-        progressIndicator.visibleProperty().bind(Bindings.when(updateUserTask.runningProperty())
-                .then(true)
-                .otherwise(false));
-        progressIndicator.managedProperty().bind(Bindings.when(updateUserTask.runningProperty())
-                .then(true)
-                .otherwise(false));
-
-        new Thread(updateUserTask).start();
-    }
-
-    /**
-     * Updates User with given data.
-     */
-    @FXML
-    public void onUpdateButtonClicked()
-    {
-        if (!UpdateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()))
-        {
-            // Display error style on password input boxes.
-            return;
+            registrationTextField.setText(student.getRegistration());
+            emailTextField.setText(student.getEmail());
+            POCIDTextField.setText(String.valueOf(student.getPOCID()));
         }
-
-        final Task<User> task = new Task<>()
+        else if (userType == UserTypesEnum.PROFESSOR)
         {
-            @Override
-            protected User call() throws Exception
+            Professor professor = (Professor) user;
+
+            emailTextField.setText(professor.getEmail());
+
+            List<Subject> markedSubjects = professor.getSubjectsTaught();
+
+            professorSubjects.getItems().setAll(initializeCheckMenuItemsFromList(professor.getSubjectsTaught()));
+
+            for (MenuItem menuItem : professorSubjects.getItems())
             {
-                User user = null;
-
-                if (dataModel.getUserType() == UserTypesEnum.STUDENT)
-                {
-                    String POCIDText = POCIDTextField.getText().trim();
-                    int POCID = 0;
-
-                    if (!POCIDText.isEmpty())
-                    {
-                        POCID = Integer.parseInt(POCIDText);
-                    }
-
-                    user = new Student(usernameTextField.getText().trim(),
-                            nameTextField.getText().trim(),
-                            passwordField.getText(),
-                            registrationTextField.getText().trim(),
-                            POCID,
-                            emailTextField.getText().trim());
-                }
-                else if (dataModel.getUserType() == UserTypesEnum.PROFESSOR)
-                {
-                    List<Integer> subjectIDList = professorSubjects
-                            .getItems()
-                            .stream()
-                            .filter(menuItem -> ((CheckMenuItem) menuItem).isSelected())
-                            .map(menuItem -> Integer.parseInt(menuItem.getId()))
-                            .toList();
-
-                    try (ConnectDB connectDB = new ConnectDB())
-                    {
-                        SubjectDB subjectDB = new SubjectDB(connectDB.getConnection());
-                        List<Subject> subjectList = new ArrayList<>();
-
-                        for (int id : subjectIDList)
-                        {
-                            subjectList.add(subjectDB.querySubjectByID(id));
-                        }
-
-                        user = new Professor(usernameTextField.getText().trim(),
-                                nameTextField.getText().trim(),
-                                passwordField.getText(),
-                                emailTextField.getText().trim(),
-                                subjectList);
-                    }
-                }
-                else if (dataModel.getUserType() == UserTypesEnum.ADMIN)
-                {
-                    user = new Administrator(usernameTextField.getText().trim(),
-                            nameTextField.getText().trim(),
-                            passwordField.getText());
-                }
-
-                if (user == null)
-                {
-                    throw new IllegalAccessException("ERROR: No role was assigned.");
-                }
-
-                try (ConnectDB connectDB = new ConnectDB())
-                {
-                    return new UserDB(connectDB.getConnection()).updateUser(user);
-                }
+                markedSubjects.stream().map(Subject::getId).forEach(integer -> ((CheckMenuItem) menuItem)
+                        .setSelected(integer == Integer.parseInt(menuItem.getId()) || ((CheckMenuItem) menuItem).isSelected()));
             }
-        };
-
-        task.setOnSucceeded(workerStateEvent ->
-        {
-            UserTypesEnum userType = dataModel.getUserType();
-            DataModel dataModel = null;
-
-            if (userType == UserTypesEnum.ADMIN)
-            {
-                dataModel = new DataModel((Administrator) task.getValue());
-            }
-            else if (userType == UserTypesEnum.STUDENT)
-            {
-                dataModel = new DataModel((Student) task.getValue());
-            }
-            else if (userType == UserTypesEnum.PROFESSOR)
-            {
-                dataModel = new DataModel((Professor) task.getValue());
-            }
-
-            Main.loadNewSceneWithDataModel(mainPane, "update-user-page-view.fxml", dataModel, "Update User");
-        });
-
-        task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
-                "Couldn't get data to update: " + task.getException().getMessage(),
-                ButtonType.OK));
-
-        progressIndicator.progressProperty().bind(task.progressProperty());
-        progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
-        progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
-        updateUserButton.disableProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
-
-        new Thread(task).start();
-    }
-
-    /**
-     * Shows the number of subject selected.
-     */
-    @FXML
-    public void onSelectSubject()
-    {
-        professorSubjects.setText(professorSubjects.getItems().stream()
-                .filter(menuItem -> ((CheckMenuItem) menuItem).isSelected())
-                .count() + " subject(s) selected");
-    }
-
-    /**
-     * Initializes a list of MenuItems from a list of Subjects.
-     *
-     * @param subjectList list containing the Subject to be displayed on the MenuItems.
-     * @return list containing initialized MenuItems from a list of Subjects.
-     */
-    public List<MenuItem> initializeCheckMenuItemsFromList(List<Subject> subjectList)
-    {
-        List<MenuItem> items = new ArrayList<>();
-
-        for (Subject subject : subjectList)
-        {
-            CheckMenuItem menuItem = new CheckMenuItem();
-
-            menuItem.setId(String.valueOf(subject.getId()));
-            menuItem.setText(subject.getName() + " - " + subject.getDescription());
-
-            items.add(menuItem);
         }
-
-        return items;
     }
 
 }

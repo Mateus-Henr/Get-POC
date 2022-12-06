@@ -39,7 +39,7 @@ public class Professor extends User
     @Override
     public String toString()
     {
-        return getUserType().toString() + " -> " + getUsername() + " - " + getName();
+        return getUsername() + " - " + getName();
     }
 
 }
