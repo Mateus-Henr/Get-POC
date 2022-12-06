@@ -7,6 +7,7 @@ import java.util.List;
 
 public class UpdatePOCController
 {
+    //Função para dar um Set em todas informações do POC e retornar o novo POC
     public static int findIndex(List<? extends User> userList, User user)
     {
         for (int i = 0; i < userList.size(); i++)

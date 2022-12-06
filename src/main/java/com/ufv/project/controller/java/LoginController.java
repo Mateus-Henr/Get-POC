@@ -2,8 +2,14 @@ package com.ufv.project.controller.java;
 
 import com.ufv.project.model.*;
 
+<<<<<<< Updated upstream
 public class LoginController
 {
+=======
+    // Metodo para pesquisar no banco de dados e retornar se o login e senha estão corretos.
+    //Metodo para retornar o tipo de Usuario que faz login (Professor, Aluno, Estudante)
+
+>>>>>>> Stashed changes
 
     public static DataModel setDatamodelFromUsertype(User user)
     {
