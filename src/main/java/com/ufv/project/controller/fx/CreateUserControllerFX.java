@@ -318,13 +318,13 @@ public class CreateUserControllerFX
             {
                 if (!new POCDB(connectDB.getConnection()).checkIfPOCExists(Integer.parseInt(POCIDTextField.getText().trim())))
                 {
-                    POCIDTextField.getStyleClass().add("text-field-invalid");
+                    POCIDTextField.getStyleClass().add(INVALID_DATA_CSS_CLASS);
 
                     return;
                 }
                 else
                 {
-                    POCIDTextField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
+                    POCIDTextField.getStyleClass().removeIf(s -> s.equals(INVALID_DATA_CSS_CLASS));
                 }
             }
             catch (SQLException e)
