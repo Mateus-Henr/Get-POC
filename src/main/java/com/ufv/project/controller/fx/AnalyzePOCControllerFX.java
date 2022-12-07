@@ -116,7 +116,7 @@ public class AnalyzePOCControllerFX
         authorListView.setItems(FXCollections.observableList(poc.getAuthors()));
         advisorText.setText(poc.getAdvisor().toString());
         coAdvisorListView.setItems(FXCollections.observableList(poc.getCoAdvisors()));
-        fieldText.setText(poc.getTitle());
+        fieldText.setText(poc.getField().getName());
         dateText.setText(poc.getDefenseDate().toString());
         keywordList.setItems(FXCollections.observableList(poc.getKeywords()));
 

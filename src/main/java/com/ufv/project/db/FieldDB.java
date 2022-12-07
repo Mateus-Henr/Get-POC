@@ -9,9 +9,9 @@ import java.util.List;
 public class FieldDB
 {
     /* Table Field constants. */
-    private static final String TABLE_FIELD = "tb_field";
-    private static final String COLUMN_FIELD_ID = "ID";
-    private static final String COLUMN_FIELD_NAME = "Name";
+    public static final String TABLE_FIELD = "tb_field";
+    public static final String COLUMN_FIELD_ID = "ID";
+    public static final String COLUMN_FIELD_NAME = "Name";
 
     /* Table Field constants indexes. */
     private static final int COLUMN_FIELD_ID_INDEX = 1;

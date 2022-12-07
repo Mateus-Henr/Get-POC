@@ -4,12 +4,16 @@ import com.ufv.project.model.POC;
 import com.ufv.project.model.Professor;
 import com.ufv.project.model.Student;
 
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+
+import static com.ufv.project.db.FieldDB.*;
 import static com.ufv.project.db.StudentDB.*;
+
 
 public class POCDB
 {
@@ -46,7 +50,7 @@ public class POCDB
     private static final String SEARCH_POC_BY_TEXT_SUMMARY = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_SUMMARY + " LIKE ?";
     private static final String SEARCH_POC_BY_STUDENT = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_ID + " IN (SELECT " + COLUMN_STUDENT_POC + " FROM " + TABLE_STUDENT + " WHERE " + COLUMN_USER_STUDENT_ID + " LIKE ?)";
     private static final String SEARCH_POC_BY_ADVISOR = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_TEACHER_ADVISOR_ID + " LIKE ?";
-    private static final String SEARCH_POC_BY_FIELD = "SELECT * FROM " + TABLE_POC + " WHERE " + COLUMN_POC_FIELD_ID + " LIKE ?";
+    private static final String SEARCH_POC_BY_FIELD = "SELECT " + TABLE_POC + ".* FROM " + TABLE_POC + " JOIN " + TABLE_FIELD + " ON " + TABLE_POC + "." + COLUMN_POC_FIELD_ID + " = " + TABLE_FIELD + "." + COLUMN_FIELD_ID + " WHERE " + TABLE_FIELD + "." + COLUMN_FIELD_NAME +" LIKE ?";
     private final Connection conn;
 
     public POCDB(Connection conn)
@@ -464,6 +468,8 @@ public class POCDB
             isFirstTime = false;
         }
         fullSQLCommand.append(";");
+
+
 
         try (PreparedStatement queryPOCs = conn.prepareStatement(fullSQLCommand.toString()))
         {
