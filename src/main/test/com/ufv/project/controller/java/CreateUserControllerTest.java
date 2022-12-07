@@ -102,7 +102,7 @@ public class CreateUserControllerTest
     {
         String str1 = "1234";
         String str2 = "1234";
-        boolean resultadoEsperado = false;
+        boolean resultadoEsperado = true;
         boolean resultado = CreateUserController.arePasswordsEqual(str1, str2);
         assertEquals(resultado, resultadoEsperado);
     }

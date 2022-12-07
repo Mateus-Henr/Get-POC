@@ -10,8 +10,8 @@ public class UpdatePOCController
     /**
      * Find index of a user in a userList
      *
-     * @param userList
-     * @param user
+     * @param userList List of User's objects
+     * @param user User object
      * @return i the index of the user
      */
     public static int findIndex(List<? extends User> userList, User user)
@@ -30,8 +30,8 @@ public class UpdatePOCController
     /**
      * find index of a field in a userList
      *
-     * @param userList
-     * @param field
+     * @param userList List of User's objects
+     * @param field Field object
      * @return i index of the field
      */
     public static int findIndex(List<Field> userList, Field field)
