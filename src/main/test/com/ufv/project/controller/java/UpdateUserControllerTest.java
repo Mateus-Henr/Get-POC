@@ -1,124 +1,128 @@
 package com.ufv.project.controller.java;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class UpdateUserControllerTest
 {
     @Test
-    public void testRegistrationWord()
+    public void testRegistration1()
     {
-        String str = "CARO";
+        String str = "MEOO";
         boolean resultadoEsperado = false;
-        boolean resultado = CreateUserController.checkRegistration(str);
+        boolean resultado = UpdateUserController.checkRegistration(str);
         assertEquals(resultado, resultadoEsperado);
     }
 
     @Test
-    public void testRegistrationNumber()
+    public void testRegistration2()
     {
-        String str = "123";
+        String str = "23";
         boolean resultadoEsperado = false;
-        boolean resultado = CreateUserController.checkRegistration(str);
+        boolean resultado = UpdateUserController.checkRegistration(str);
         assertEquals(resultado, resultadoEsperado);
     }
 
     @Test
-    public void testRegistrationTrue()
+    public void testRegistration3()
     {
-        String str = "4567";
+        String str = "1423";
         boolean resultadoEsperado = true;
-        boolean resultado = CreateUserController.checkRegistration(str);
+        boolean resultado = UpdateUserController.checkRegistration(str);
         assertEquals(resultado, resultadoEsperado);
     }
 
     @Test
-    public void testRegistrationNULL()
-    {
-        String str = "";
-        boolean resultadoEsperado = false;
-        boolean resultado = CreateUserController.checkRegistration(str);
-        assertEquals(resultado, resultadoEsperado);
-    }
-
-    @Test
-    public void testRegistrationSpaces()
+    public void testRegistration4()
     {
         String str = "    ";
         boolean resultadoEsperado = false;
-        boolean resultado = CreateUserController.checkRegistration(str);
+        boolean resultado = UpdateUserController.checkRegistration(str);
         assertEquals(resultado, resultadoEsperado);
     }
 
     @Test
-    public void testEmailTrue()
+    public void testRegistration5()
     {
-        String str = "joaoandrade1@ufv.br";
+        String str = " ";
+        boolean resultadoEsperado = false;
+        boolean resultado = UpdateUserController.checkRegistration(str);
+        assertEquals(resultado, resultadoEsperado);
+    }
+
+    @Test
+    public void testEmail1()
+    {
+        String str = "macaco@monkey.lua";
         boolean resultadoEsperado = true;
-        boolean resultado = CreateUserController.checkEmail(str);
+        boolean resultado = UpdateUserController.checkEmail(str);
         assertEquals(resultado, resultadoEsperado);
     }
 
     @Test
-    public void testEmailNoUser()
+    public void testEmail2()
     {
-        String str = "@ufv.br";
+        String str = "@monkey.lua";
         boolean resultadoEsperado = false;
-        boolean resultado = CreateUserController.checkEmail(str);
+        boolean resultado = UpdateUserController.checkEmail(str);
         assertEquals(resultado, resultadoEsperado);
     }
 
     @Test
-    public void testEmailNoDomain()
+    public void testEmail3()
     {
-        String str = "joaoaandrade1@.br";
+        String str = "macaco@.lua";
         boolean resultadoEsperado = false;
-        boolean resultado = CreateUserController.checkEmail(str);
+        boolean resultado = UpdateUserController.checkEmail(str);
         assertEquals(resultado, resultadoEsperado);
     }
 
     @Test
-    public void testEmailAfterDot()
+    public void testEmail4()
     {
-        String str = "joaoandrade1@ufv.";
+        String str = "macaco@monkey.";
         boolean resultadoEsperado = false;
-        boolean resultado = CreateUserController.checkEmail(str);
+        boolean resultado = UpdateUserController.checkEmail(str);
         assertEquals(resultado, resultadoEsperado);
     }
 
     @Test
-    public void testEmailNoDot()
+    public void testEmail5()
     {
-        String str = "joaoandrade1@ufvbr";
+        String str = "macaco@monkeylua";
         boolean resultadoEsperado = false;
-        boolean resultado = CreateUserController.checkEmail(str);
+        boolean resultado = UpdateUserController.checkEmail(str);
         assertEquals(resultado, resultadoEsperado);
     }
 
     @Test
-    public void testPasswordTrue()
+    public void testPassword1()
     {
-        String str1 = "1234";
-        String str2 = "1234";
+        String str1 = "132444";
+        String str2 = "132444";
         boolean resultadoEsperado = true;
-        boolean resultado = CreateUserController.arePasswordsEqual(str1, str2);
+        boolean resultado = UpdateUserController.arePasswordsEqual(str1, str2);
         assertEquals(resultado, resultadoEsperado);
     }
 
     @Test
-    public void testPasswordOneDifferent()
+    public void testPassword2()
     {
-        String str1 = "123";
-        String str2 = "1234";
+        String str1 = "88872";
+        String str2 = "328";
         boolean resultadoEsperado = false;
-        boolean resultado = CreateUserController.arePasswordsEqual(str1, str2);
+        boolean resultado = UpdateUserController.arePasswordsEqual(str1, str2);
         assertEquals(resultado, resultadoEsperado);
     }
 
     @Test
-    public void testPasswordTwoDifferent()
+    public void testPassword3()
     {
-        String str1 = "1234";
-        String str2 = "123";
+        String str1 = "328";
+        String str2 = "88872";
         boolean resultadoEsperado = false;
-        boolean resultado = CreateUserController.arePasswordsEqual(str1, str2);
+        boolean resultado = UpdateUserController.arePasswordsEqual(str1, str2);
         assertEquals(resultado, resultadoEsperado);
     }
 }
