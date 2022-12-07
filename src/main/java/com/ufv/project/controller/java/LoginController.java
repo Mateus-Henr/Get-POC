@@ -4,9 +4,12 @@ import com.ufv.project.model.*;
 
 public class LoginController
 {
-    // Metodo para pesquisar no banco de dados e retornar se o login e senha estão corretos.
-    //Metodo para retornar o tipo de Usuario que faz login (Professor, Aluno, Estudante)
-
+    /**
+     * Create a datamodel from a User
+     *
+     * @param user
+     * @return user's dataModel
+     */
     public static DataModel setDatamodelFromUsertype(User user)
     {
         DataModel dataModel = null;
