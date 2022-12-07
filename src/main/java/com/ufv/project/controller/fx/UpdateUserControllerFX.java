@@ -63,6 +63,8 @@ public class UpdateUserControllerFX
     @FXML
     private ProgressIndicator progressIndicator;
 
+    public static final int MAX_NUMBER_CHARACTERS = 100;
+
     private final DataModel dataModel;
 
     private User user;
@@ -76,51 +78,82 @@ public class UpdateUserControllerFX
     }
 
     /**
+     * Runs upon initialization.
+     */
+    @FXML
+    public void initialize()
+    {
+        usernameTextField.textProperty().addListener((ov, oldValue, newValue) ->
+        {
+            if (usernameTextField.getText().length() > MAX_NUMBER_CHARACTERS)
+            {
+                usernameTextField.setText(usernameTextField.getText().substring(0, MAX_NUMBER_CHARACTERS));
+            }
+        });
+
+        nameTextField.textProperty().addListener((ov, oldValue, newValue) ->
+        {
+            if (nameTextField.getText().length() > MAX_NUMBER_CHARACTERS)
+            {
+                nameTextField.setText(nameTextField.getText().substring(0, MAX_NUMBER_CHARACTERS));
+            }
+        });
+
+        POCIDTextField.textProperty().addListener((ov, oldValue, newValue) ->
+        {
+            if (!newValue.matches("\\d*"))
+            {
+                POCIDTextField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+
+            if (newValue.matches("\\d{9,}"))
+            {
+                POCIDTextField.setText(newValue.substring(0, 9));
+            }
+        });
+
+        registrationTextField.textProperty().addListener((ov, oldValue, newValue) ->
+        {
+            if (!newValue.matches("\\d*"))
+            {
+                registrationTextField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+
+            if (newValue.matches("\\d{4,}"))
+            {
+                registrationTextField.setText(newValue.substring(0, 4));
+            }
+        });
+    }
+
+    /**
      * Updates User with given data.
      */
     @FXML
     public void onUpdateButtonClicked()
     {
-        if(!UpdateUserController.checkStringMax(nameTextField.getText())){
-            if(!nameTextField.getStyleClass().contains("text-field-invalid")) {
-                nameTextField.getStyleClass().add("text-field-invalid");
-            }
-            return;
-        } else{nameTextField.getStyleClass().removeAll("text-field-invalid");}
-        if (!UpdateUserController.checkStringMax(usernameTextField.getText())) {
-            if(!usernameTextField.getStyleClass().contains("text-field-invalid")) {
-                usernameTextField.getStyleClass().add("text-field-invalid");
-            }
-            return;
-
-        } else{usernameTextField.getStyleClass().removeAll("text-field-invalid");}
-
         if (!UpdateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()))
-        {if (!passwordField.getStyleClass().contains("text-field-invalid")){
+        {
             passwordField.getStyleClass().add("text-field-invalid");
-            confirmPasswordField.getStyleClass().add("text-field-invalid");}
+            confirmPasswordField.getStyleClass().add("text-field-invalid");
+
             return;
-        } else {
-            passwordField.getStyleClass().removeAll("text-field-invalid");
-            confirmPasswordField.getStyleClass().removeAll("text-field-invalid");
+        }
+        else
+        {
+            passwordField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
+            confirmPasswordField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
         }
 
-        if (!UpdateUserController.checkEmail(emailTextField.getText())){
-            if(!emailTextField.getStyleClass().contains("text-field-invalid")){
-                emailTextField.getStyleClass().add("text-field-invalid");
-            }
-            return;
-        }else {
-            emailTextField.getStyleClass().removeAll("text-field-invalid");
-        }
+        if (!UpdateUserController.checkEmail(emailTextField.getText()))
+        {
+            emailTextField.getStyleClass().add("text-field-invalid");
 
-        if(!UpdateUserController.checkRegistration(registrationTextField.getText())){
-            if(!emailTextField.getStyleClass().contains("text-field-invalid")) {
-                registrationTextField.getStyleClass().add("text-field-invalid");
-            }
             return;
-        } else {
-            registrationTextField.getStyleClass().removeAll("text-field-invalid");
+        }
+        else
+        {
+            emailTextField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
         }
 
         final Task<User> task = new Task<>()

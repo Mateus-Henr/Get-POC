@@ -76,6 +76,8 @@ public class UpdatePOCControllerFX
 
     private File pdfFile;
 
+    public static final int MAX_NUMBER_CHARACTERS = 100;
+
     public static final String PDF_STORAGE_FOLDER = "src" + File.separator +
             "main" + File.separator +
             "resources" + File.separator +
@@ -89,6 +91,18 @@ public class UpdatePOCControllerFX
     public UpdatePOCControllerFX(DataModel dataModel)
     {
         this.dataModel = dataModel;
+    }
+
+    @FXML
+    public void initialize()
+    {
+        title.textProperty().addListener((ov, oldValue, newValue) ->
+        {
+            if (title.getText().length() > MAX_NUMBER_CHARACTERS)
+            {
+                title.setText(title.getText().substring(0, MAX_NUMBER_CHARACTERS));
+            }
+        });
     }
 
     /**
@@ -115,15 +129,6 @@ public class UpdatePOCControllerFX
     @FXML
     public void onUpdateButtonClicked()
     {
-        if(!UpdatePOCController.checkStringMax(title.getText())){
-            if(!title.getStyleClass().contains("text-field-invalid")) {
-                title.getStyleClass().add("text-field-invalid");
-            }
-            return;
-        }else{
-            title.getStyleClass().removeAll("text-field-invalid");
-        }
-
         final Task<POC> task = new Task<>()
         {
             @Override

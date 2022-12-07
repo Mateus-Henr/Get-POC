@@ -74,6 +74,8 @@ public class CreatePOCControllerFX
 
     private File pdfFile;
 
+    public static final int MAX_NUMBER_CHARACTERS = 100;
+
     public static final String PDF_STORAGE_FOLDER = "src" + File.separator +
             "main" + File.separator +
             "resources" + File.separator +
@@ -135,6 +137,14 @@ public class CreatePOCControllerFX
         advisorComboBox.setItems(professors);
         registrantComboBox.setItems(professors);
         coAdvisorMenuButton.getItems().addAll(initializeCheckMenuItemsFromList(professors));
+
+        title.textProperty().addListener((ov, oldValue, newValue) ->
+        {
+            if (title.getText().length() > MAX_NUMBER_CHARACTERS)
+            {
+                title.setText(title.getText().substring(0, MAX_NUMBER_CHARACTERS));
+            }
+        });
     }
 
     /**
@@ -161,15 +171,6 @@ public class CreatePOCControllerFX
     @FXML
     public void handlePOCAdding()
     {
-        if(!CreatePOCController.checkStringMax(title.getText())){
-            if(!title.getStyleClass().contains("create-text-field-invalid")) {
-                title.getStyleClass().add("create-text-field-invalid");
-            }
-            return;
-        }else{
-            title.getStyleClass().removeAll("create-text-field-invalid");
-        }
-
         final Task<Integer> task = new Task<>()
         {
             @Override

@@ -76,6 +76,8 @@ public class CreateUserControllerFX
 
     private final DataModel dataModel;
 
+    public static final int MAX_NUMBER_CHARACTERS = 100;
+
     /**
      * Constructor for CreateUserControllerFX.
      */
@@ -106,19 +108,45 @@ public class CreateUserControllerFX
                                                 confirmPasswordField.textProperty()))
                                 )));
 
+        usernameTextField.textProperty().addListener((ov, oldValue, newValue) ->
+        {
+            if (usernameTextField.getText().length() > MAX_NUMBER_CHARACTERS)
+            {
+                usernameTextField.setText(usernameTextField.getText().substring(0, MAX_NUMBER_CHARACTERS));
+            }
+        });
+
+        nameTextField.textProperty().addListener((ov, oldValue, newValue) ->
+        {
+            if (nameTextField.getText().length() > MAX_NUMBER_CHARACTERS)
+            {
+                nameTextField.setText(nameTextField.getText().substring(0, MAX_NUMBER_CHARACTERS));
+            }
+        });
+
         POCIDTextField.textProperty().addListener((ov, oldValue, newValue) ->
         {
             if (!newValue.matches("\\d*"))
             {
                 POCIDTextField.setText(newValue.replaceAll("[^\\d]", ""));
             }
+
+            if (newValue.matches("\\d{9,}"))
+            {
+                POCIDTextField.setText(newValue.substring(0, 9));
+            }
         });
 
         registrationTextField.textProperty().addListener((ov, oldValue, newValue) ->
         {
-            if (!newValue.matches("\\d{0,4}"))
+            if (!newValue.matches("\\d*"))
             {
-                registrationTextField.setText(newValue.replaceAll("[^\\d{0,4}]", ""));
+                registrationTextField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+
+            if (newValue.matches("\\d{4,}"))
+            {
+                registrationTextField.setText(newValue.substring(0, 4));
             }
         });
 
@@ -238,48 +266,40 @@ public class CreateUserControllerFX
     @FXML
     public void onCreateButtonPressed()
     {
-        if(!CreateUserController.checkStringMax(nameTextField.getText())){
-            if(!nameTextField.getStyleClass().contains("create-text-field-invalid")) {
-                nameTextField.getStyleClass().add("create-text-field-invalid");
-            }
-            return;
-        } else{nameTextField.getStyleClass().removeAll("create-text-field-invalid");}
-        if (!CreateUserController.checkStringMax(usernameTextField.getText())) {
-            if(!usernameTextField.getStyleClass().contains("create-text-field-invalid")) {
-                usernameTextField.getStyleClass().add("create-text-field-invalid");
-            }
-            return;
-
-        } else{usernameTextField.getStyleClass().removeAll("create-text-field-invalid");}
-
         if (!CreateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()))
-        {if (!passwordField.getStyleClass().contains("create-text-field-invalid")){
+        {
             passwordField.getStyleClass().add("create-text-field-invalid");
-            confirmPasswordField.getStyleClass().add("create-text-field-invalid");}
+            confirmPasswordField.getStyleClass().add("create-text-field-invalid");
+
             return;
-        } else {
+        }
+        else
+        {
             passwordField.getStyleClass().removeAll("create-text-field-invalid");
             confirmPasswordField.getStyleClass().removeAll("create-text-field-invalid");
         }
 
-        if (!CreateUserController.checkEmail(emailTextField.getText())){
-            if(!emailTextField.getStyleClass().contains("create-text-field-invalid")){
+        if (!CreateUserController.checkEmail(emailTextField.getText()))
+        {
             emailTextField.getStyleClass().add("create-text-field-invalid");
-            }
+
             return;
-        }else {
-            emailTextField.getStyleClass().removeAll("create-text-field-invalid");
+        }
+        else
+        {
+            emailTextField.getStyleClass().removeIf(s -> s.equals("create-text-field-invalid"));
         }
 
-        if(!CreateUserController.checkRegistration(registrationTextField.getText())){
-            if(!emailTextField.getStyleClass().contains("create-text-field-invalid")) {
-                registrationTextField.getStyleClass().add("create-text-field-invalid");
-            }
-            return;
-        } else {
-            registrationTextField.getStyleClass().removeAll("create-text-field-invalid");
-        }
+        if (!CreateUserController.checkRegistration(registrationTextField.getText()))
+        {
+            registrationTextField.getStyleClass().add("create-text-field-invalid");
 
+            return;
+        }
+        else
+        {
+            registrationTextField.getStyleClass().removeIf(s -> s.equals("create-text-field-invalid"));
+        }
 
         final Task<String> task = new Task<>()
         {
