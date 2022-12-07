@@ -7,7 +7,7 @@ public class LoginController
     /**
      * Create a DataModel from a User.
      *
-     * @param user
+     * @param user User object
      * @return user's dataModel
      */
     public static DataModel setDatamodelFromUsertype(User user)
