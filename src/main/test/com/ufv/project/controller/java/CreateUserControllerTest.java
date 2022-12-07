@@ -1,6 +1,6 @@
 package com.ufv.project.controller.java;
 
-import org.junit.Test;
+import  org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -108,7 +108,7 @@ public class CreateUserControllerTest
     }
 
     @Test
-    public void testPasswordOneDiferent()
+    public void testPasswordOneDifferent()
     {
         String str1 = "123";
         String str2 = "1234";
