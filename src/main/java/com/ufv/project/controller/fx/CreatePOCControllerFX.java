@@ -128,7 +128,7 @@ public class CreatePOCControllerFX
         {
             new Alert(Alert.AlertType.ERROR,
                     "Couldn't load data from database: " + e.getMessage(),
-                    ButtonType.OK);
+                    ButtonType.OK).showAndWait();
 
             return;
         }
@@ -227,7 +227,7 @@ public class CreatePOCControllerFX
 
         task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
                 "Couldn't insert POC: " + task.getException().getMessage(),
-                ButtonType.OK));
+                ButtonType.OK).showAndWait());
 
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));

@@ -3,6 +3,8 @@ package com.ufv.project.db;
 import com.ufv.project.model.POC;
 import com.ufv.project.model.Professor;
 import com.ufv.project.model.Student;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -95,6 +97,18 @@ public class POCDB
                 return null;
             }
         }
+    }
+
+    /**
+     * Checks whether a POC ID exists in the database or not.
+     *
+     * @param POCID poc to check ID.
+     * @return whether POC with given ID exists or not.
+     * @throws SQLException if an error occurs while querying the database.
+     */
+    public boolean checkIfPOCExists(int POCID) throws SQLException
+    {
+        return queryPOC(POCID) != null;
     }
 
     /**

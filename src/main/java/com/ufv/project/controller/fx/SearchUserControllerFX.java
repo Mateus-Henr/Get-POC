@@ -82,7 +82,7 @@ public class SearchUserControllerFX
 
         task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
                 "Couldn't get user(s): " + task.getException().getMessage(),
-                ButtonType.OK));
+                ButtonType.OK).showAndWait());
 
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.managedProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));

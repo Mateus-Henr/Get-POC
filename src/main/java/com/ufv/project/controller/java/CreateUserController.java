@@ -4,9 +4,9 @@ import java.util.regex.Pattern;
 
 public class CreateUserController
 {
-    public static boolean arePasswordsEqual(String password, String secondpassword)
+    public static boolean arePasswordsEqual(String password, String secondPassword)
     {
-        return password.equals(secondpassword);
+        return password.equals(secondPassword);
     }
 
     public static boolean checkEmail(String email)

@@ -278,27 +278,62 @@ public class CreateUserControllerFX
             confirmPasswordField.getStyleClass().removeAll("create-text-field-invalid");
         }
 
-        if (!CreateUserController.checkEmail(emailTextField.getText()))
+        if (studentRadioButton.isSelected() || professorRadioButton.isSelected())
         {
-            emailTextField.getStyleClass().add("create-text-field-invalid");
+            if (!CreateUserController.checkEmail(emailTextField.getText()))
+            {
+                emailTextField.getStyleClass().add("create-text-field-invalid");
 
-            return;
-        }
-        else
-        {
-            emailTextField.getStyleClass().removeIf(s -> s.equals("create-text-field-invalid"));
+                return;
+            }
+            else
+            {
+                emailTextField.getStyleClass().removeIf(s -> s.equals("create-text-field-invalid"));
+            }
         }
 
-        if (!CreateUserController.checkRegistration(registrationTextField.getText()))
+        if (studentRadioButton.isSelected())
         {
-            registrationTextField.getStyleClass().add("create-text-field-invalid");
+            if (!CreateUserController.checkRegistration(registrationTextField.getText()))
+            {
+                registrationTextField.getStyleClass().add("create-text-field-invalid");
 
-            return;
+                return;
+            }
+            else
+            {
+                registrationTextField.getStyleClass().removeIf(s -> s.equals("create-text-field-invalid"));
+            }
         }
-        else
+
+        int POCID = 0;
+
+        if (!POCIDTextField.getText().trim().isEmpty() && studentRadioButton.isSelected())
         {
-            registrationTextField.getStyleClass().removeIf(s -> s.equals("create-text-field-invalid"));
+            POCID = Integer.parseInt(POCIDTextField.getText().trim());
+
+            try (ConnectDB connectDB = new ConnectDB())
+            {
+                if (!new POCDB(connectDB.getConnection()).checkIfPOCExists(Integer.parseInt(POCIDTextField.getText().trim())))
+                {
+                    POCIDTextField.getStyleClass().add("text-field-invalid");
+
+                    return;
+                }
+                else
+                {
+                    POCIDTextField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
+                }
+            }
+            catch (SQLException e)
+            {
+                new Alert(Alert.AlertType.ERROR,
+                        "Couldn't get POC from database: " + e.getMessage(),
+                        ButtonType.OK).showAndWait();
+            }
         }
+
+        int finalPOCID = POCID;
 
         final Task<String> task = new Task<>()
         {
@@ -309,28 +344,11 @@ public class CreateUserControllerFX
 
                 if (studentRadioButton.isSelected())
                 {
-                    String POCIDText = POCIDTextField.getText().trim();
-
-                    int POCID = 0;
-
-                    if (!POCIDText.isEmpty())
-                    {
-                        POCID = Integer.parseInt(POCIDText);
-
-                        try (ConnectDB connectDB = new ConnectDB())
-                        {
-                            if (new POCDB(connectDB.getConnection()).queryPOC(POCID) == null)
-                            {
-                                throw new SQLException("Couldn't find POC with ID: " + POCID);
-                            }
-                        }
-                    }
-
                     user = new Student(usernameTextField.getText().trim(),
                             nameTextField.getText().trim(),
                             passwordField.getText(),
                             registrationTextField.getText().trim(),
-                            POCID,
+                            finalPOCID,
                             emailTextField.getText().trim());
                 }
                 else if (professorRadioButton.isSelected())

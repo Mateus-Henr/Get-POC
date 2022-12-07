@@ -115,7 +115,7 @@ public class SearchPOCControllerFX
 
         searchPOCTask.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
                 "Couldn't get POCs: " + searchPOCTask.getException().getMessage(),
-                ButtonType.OK));
+                ButtonType.OK).showAndWait());
 
         progressIndicator.progressProperty().bind(searchPOCTask.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(searchPOCTask.runningProperty()).then(true).otherwise(false));

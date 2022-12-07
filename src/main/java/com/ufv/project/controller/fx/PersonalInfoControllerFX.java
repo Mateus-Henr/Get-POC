@@ -132,7 +132,7 @@ public class PersonalInfoControllerFX
             {
                 new Alert(Alert.AlertType.ERROR,
                         "Couldn't get subjects for professor: " + e.getMessage(),
-                        ButtonType.OK);
+                        ButtonType.OK).showAndWait();
             }
         }
         else if (userType == UserTypesEnum.ADMIN)

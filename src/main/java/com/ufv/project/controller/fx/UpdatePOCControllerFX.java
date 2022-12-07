@@ -186,7 +186,7 @@ public class UpdatePOCControllerFX
 
         task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
                 "Couldn't get data to update: " + task.getException().getMessage(),
-                ButtonType.OK));
+                ButtonType.OK).showAndWait());
 
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));

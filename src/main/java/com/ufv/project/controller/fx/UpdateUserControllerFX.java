@@ -1,6 +1,7 @@
 package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
+import com.ufv.project.controller.java.CreateUserController;
 import com.ufv.project.controller.java.UpdateUserController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.POCDB;
@@ -146,16 +147,64 @@ public class UpdateUserControllerFX
             confirmPasswordField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
         }
 
-        if (!UpdateUserController.checkEmail(emailTextField.getText()))
-        {
-            emailTextField.getStyleClass().add("text-field-invalid");
+        UserTypesEnum userType = user.getUserType();
 
-            return;
-        }
-        else
+        if (userType == UserTypesEnum.PROFESSOR || userType == UserTypesEnum.STUDENT)
         {
-            emailTextField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
+            if (!UpdateUserController.checkEmail(emailTextField.getText()))
+            {
+                emailTextField.getStyleClass().add("text-field-invalid");
+
+                return;
+            }
+            else
+            {
+                emailTextField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
+            }
         }
+
+        if (userType == UserTypesEnum.STUDENT)
+        {
+            if (!CreateUserController.checkRegistration(registrationTextField.getText()))
+            {
+                registrationTextField.getStyleClass().add("create-text-field-invalid");
+
+                return;
+            }
+            else
+            {
+                registrationTextField.getStyleClass().removeIf(s -> s.equals("create-text-field-invalid"));
+            }
+        }
+
+        int POCID = 0;
+
+        if (!POCIDTextField.getText().trim().isEmpty() && user.getUserType() == UserTypesEnum.STUDENT)
+        {
+            POCID = Integer.parseInt(POCIDTextField.getText().trim());
+
+            try (ConnectDB connectDB = new ConnectDB())
+            {
+                if (!new POCDB(connectDB.getConnection()).checkIfPOCExists(Integer.parseInt(POCIDTextField.getText().trim())))
+                {
+                    POCIDTextField.getStyleClass().add("text-field-invalid");
+
+                    return;
+                }
+                else
+                {
+                    POCIDTextField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
+                }
+            }
+            catch (SQLException e)
+            {
+                new Alert(Alert.AlertType.ERROR,
+                        "Couldn't get POC from database: " + e.getMessage(),
+                        ButtonType.OK).showAndWait();
+            }
+        }
+
+        int finalPOCID = POCID;
 
         final Task<User> task = new Task<>()
         {
@@ -168,28 +217,11 @@ public class UpdateUserControllerFX
 
                 if (userType == UserTypesEnum.STUDENT)
                 {
-                    String POCIDText = POCIDTextField.getText().trim();
-
-                    int POCID = 0;
-
-                    if (!POCIDText.isEmpty())
-                    {
-                        POCID = Integer.parseInt(POCIDText);
-
-                        try (ConnectDB connectDB = new ConnectDB())
-                        {
-                            if (new POCDB(connectDB.getConnection()).queryPOC(POCID) == null)
-                            {
-                                throw new SQLException("Couldn't find POC with ID: " + POCID);
-                            }
-                        }
-                    }
-
                     updatedUser = new Student(usernameTextField.getText().trim(),
                             nameTextField.getText().trim(),
                             passwordField.getText(),
                             registrationTextField.getText().trim(),
-                            POCID,
+                            finalPOCID,
                             emailTextField.getText().trim());
                 }
                 else if (userType == UserTypesEnum.PROFESSOR)
@@ -242,7 +274,7 @@ public class UpdateUserControllerFX
 
         task.setOnFailed(workerStateEvent -> new Alert(Alert.AlertType.ERROR,
                 "Couldn't update user: " + task.getException().getMessage(),
-                ButtonType.OK));
+                ButtonType.OK).showAndWait());
 
         progressIndicator.progressProperty().bind(task.progressProperty());
         progressIndicator.visibleProperty().bind(Bindings.when(task.runningProperty()).then(true).otherwise(false));
