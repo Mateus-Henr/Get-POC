@@ -19,7 +19,4 @@ public class CreateUserController
         return Pattern.matches("\\d\\d\\d\\d", registration);
     }
 
-    public static boolean checkStringMax(String string){
-        return string.length() <= 100;
-    }
 }
