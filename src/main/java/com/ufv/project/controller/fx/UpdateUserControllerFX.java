@@ -1,7 +1,6 @@
 package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
-import com.ufv.project.controller.java.CreateUserController;
 import com.ufv.project.controller.java.UpdateUserController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.POCDB;
@@ -165,7 +164,7 @@ public class UpdateUserControllerFX
 
         if (userType == UserTypesEnum.STUDENT)
         {
-            if (!CreateUserController.checkRegistration(registrationTextField.getText()))
+            if (!UpdateUserController.checkRegistration(registrationTextField.getText()))
             {
                 registrationTextField.getStyleClass().add("create-text-field-invalid");
 
