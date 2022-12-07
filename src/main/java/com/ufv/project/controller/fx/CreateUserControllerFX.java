@@ -77,6 +77,8 @@ public class CreateUserControllerFX
 
     public static final int MAX_NUMBER_CHARACTERS = 100;
 
+    public static final String INVALID_DATA_CSS_CLASS = "create-text-field-invalid";
+
     /**
      * Constructor for CreateUserControllerFX.
      */
@@ -267,28 +269,28 @@ public class CreateUserControllerFX
     {
         if (!CreateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()))
         {
-            passwordField.getStyleClass().add("create-text-field-invalid");
-            confirmPasswordField.getStyleClass().add("create-text-field-invalid");
+            passwordField.getStyleClass().add(INVALID_DATA_CSS_CLASS);
+            confirmPasswordField.getStyleClass().add(INVALID_DATA_CSS_CLASS);
 
             return;
         }
         else
         {
-            passwordField.getStyleClass().removeAll("create-text-field-invalid");
-            confirmPasswordField.getStyleClass().removeAll("create-text-field-invalid");
+            passwordField.getStyleClass().removeAll(INVALID_DATA_CSS_CLASS);
+            confirmPasswordField.getStyleClass().removeAll(INVALID_DATA_CSS_CLASS);
         }
 
         if (studentRadioButton.isSelected() || professorRadioButton.isSelected())
         {
             if (!CreateUserController.checkEmail(emailTextField.getText()))
             {
-                emailTextField.getStyleClass().add("create-text-field-invalid");
+                emailTextField.getStyleClass().add(INVALID_DATA_CSS_CLASS);
 
                 return;
             }
             else
             {
-                emailTextField.getStyleClass().removeIf(s -> s.equals("create-text-field-invalid"));
+                emailTextField.getStyleClass().removeIf(s -> s.equals(INVALID_DATA_CSS_CLASS));
             }
         }
 
@@ -296,13 +298,13 @@ public class CreateUserControllerFX
         {
             if (!CreateUserController.checkRegistration(registrationTextField.getText()))
             {
-                registrationTextField.getStyleClass().add("create-text-field-invalid");
+                registrationTextField.getStyleClass().add(INVALID_DATA_CSS_CLASS);
 
                 return;
             }
             else
             {
-                registrationTextField.getStyleClass().removeIf(s -> s.equals("create-text-field-invalid"));
+                registrationTextField.getStyleClass().removeIf(s -> s.equals(INVALID_DATA_CSS_CLASS));
             }
         }
 
@@ -316,13 +318,13 @@ public class CreateUserControllerFX
             {
                 if (!new POCDB(connectDB.getConnection()).checkIfPOCExists(Integer.parseInt(POCIDTextField.getText().trim())))
                 {
-                    POCIDTextField.getStyleClass().add("text-field-invalid");
+                    POCIDTextField.getStyleClass().add(INVALID_DATA_CSS_CLASS);
 
                     return;
                 }
                 else
                 {
-                    POCIDTextField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
+                    POCIDTextField.getStyleClass().removeIf(s -> s.equals(INVALID_DATA_CSS_CLASS));
                 }
             }
             catch (SQLException e)

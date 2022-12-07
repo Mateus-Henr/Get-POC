@@ -1,7 +1,6 @@
 package com.ufv.project.controller.fx;
 
 import com.ufv.project.Main;
-import com.ufv.project.controller.java.CreateUserController;
 import com.ufv.project.controller.java.UpdateUserController;
 import com.ufv.project.db.ConnectDB;
 import com.ufv.project.db.POCDB;
@@ -64,6 +63,8 @@ public class UpdateUserControllerFX
 
     @FXML
     private ProgressIndicator progressIndicator;
+
+    public static final String INVALID_DATA_CSS_CLASS = "text-field-invalid";
 
     public static final int MAX_NUMBER_CHARACTERS = 100;
 
@@ -136,15 +137,15 @@ public class UpdateUserControllerFX
     {
         if (!UpdateUserController.arePasswordsEqual(passwordField.getText(), confirmPasswordField.getText()))
         {
-            passwordField.getStyleClass().add("text-field-invalid");
-            confirmPasswordField.getStyleClass().add("text-field-invalid");
+            passwordField.getStyleClass().add(INVALID_DATA_CSS_CLASS);
+            confirmPasswordField.getStyleClass().add(INVALID_DATA_CSS_CLASS);
 
             return;
         }
         else
         {
-            passwordField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
-            confirmPasswordField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
+            passwordField.getStyleClass().removeIf(s -> s.equals(INVALID_DATA_CSS_CLASS));
+            confirmPasswordField.getStyleClass().removeIf(s -> s.equals(INVALID_DATA_CSS_CLASS));
         }
 
         UserTypesEnum userType = user.getUserType();
@@ -153,27 +154,27 @@ public class UpdateUserControllerFX
         {
             if (!UpdateUserController.checkEmail(emailTextField.getText()))
             {
-                emailTextField.getStyleClass().add("text-field-invalid");
+                emailTextField.getStyleClass().add(INVALID_DATA_CSS_CLASS);
 
                 return;
             }
             else
             {
-                emailTextField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
+                emailTextField.getStyleClass().removeIf(s -> s.equals(INVALID_DATA_CSS_CLASS));
             }
         }
 
         if (userType == UserTypesEnum.STUDENT)
         {
-            if (!CreateUserController.checkRegistration(registrationTextField.getText()))
+            if (!UpdateUserController.checkRegistration(registrationTextField.getText()))
             {
-                registrationTextField.getStyleClass().add("create-text-field-invalid");
+                registrationTextField.getStyleClass().add(INVALID_DATA_CSS_CLASS);
 
                 return;
             }
             else
             {
-                registrationTextField.getStyleClass().removeIf(s -> s.equals("create-text-field-invalid"));
+                registrationTextField.getStyleClass().removeIf(s -> s.equals(INVALID_DATA_CSS_CLASS));
             }
         }
 
@@ -187,13 +188,13 @@ public class UpdateUserControllerFX
             {
                 if (!new POCDB(connectDB.getConnection()).checkIfPOCExists(Integer.parseInt(POCIDTextField.getText().trim())))
                 {
-                    POCIDTextField.getStyleClass().add("text-field-invalid");
+                    POCIDTextField.getStyleClass().add(INVALID_DATA_CSS_CLASS);
 
                     return;
                 }
                 else
                 {
-                    POCIDTextField.getStyleClass().removeIf(s -> s.equals("text-field-invalid"));
+                    POCIDTextField.getStyleClass().removeIf(s -> s.equals(INVALID_DATA_CSS_CLASS));
                 }
             }
             catch (SQLException e)

@@ -38,9 +38,12 @@
     -fx-font-size: 16.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
-.button:hover {
+
+.button:hover
+{
     -fx-background-color: #DCCEB9;
 }
+
 .text-field
 {
     -fx-background-color: #001524;
@@ -52,6 +55,7 @@
     -fx-font-size: 14.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
+
 .text-field-invalid
 {
     -fx-background-color: #001524;
@@ -63,6 +67,7 @@
     -fx-font-size: 14.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
+
 .update-menu-button
 {
     -fx-background-color: #001524;
@@ -74,12 +79,17 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-prompt-text-fill: #FFFFFF;
 }
-.update-menu-button .arrow {
+
+.update-menu-button .arrow
+{
     -fx-background-color: #15616D;
 }
-.update-menu-button .arrow:hover {
+
+.update-menu-button .arrow:hover
+{
     -fx-background-color: #112A3B;
 }
+
 .update-menu-button .context-menu
 {
     -fx-background-color: #FFECD1;

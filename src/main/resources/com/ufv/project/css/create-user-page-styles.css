@@ -3,11 +3,14 @@
     -fx-pref-width: 600.0;
     -fx-background-color: #FFECD1;
 }
-.create-title {
+
+.create-title
+{
     -fx-text-fill: #001524;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
+
 .create-background
 {
     -fx-pref-width: 520.0;
@@ -27,6 +30,7 @@
     -fx-font-size: 14.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
+
 .create-text-field-invalid
 {
     -fx-background-color: #001524;
@@ -38,6 +42,7 @@
     -fx-font-size: 14.0;
     -fx-font-family: "Ubuntu Mono Bold";
 }
+
 .create-label
 {
     -fx-font-family: "Ubuntu Mono Bold";
@@ -58,10 +63,14 @@
     -fx-prompt-text-fill: #FFFFFF;
     -fx-text-fill: #FFFFFF;
 }
-.create-menu-button .arrow {
+
+.create-menu-button .arrow
+{
     -fx-background-color: #15616D;
 }
-.create-menu-button .arrow:hover {
+
+.create-menu-button .arrow:hover
+{
     -fx-background-color: #112A3B;
 }
 
@@ -103,9 +112,12 @@
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 16.0;
 }
-.create-button:hover{
+
+.create-button:hover
+{
     -fx-background-color: #DCCEB9;
 }
+
 .radio-button
 {
     -fx-text-fill: #FFFFFF;
