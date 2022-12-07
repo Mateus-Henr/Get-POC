@@ -27,14 +27,19 @@
     -fx-background-color: #001524;
     -fx-background-radius: 15.0;
 }
-.button:hover {
+
+.button:hover
+{
     -fx-background-color: #00223B;
 }
-.noMatch {
+
+.noMatch
+{
     -fx-text-fill: #001524;
     -fx-font-family: "Ubuntu Mono Bold";
     -fx-font-size: 14.0;
 }
+
 .progress-indicator
 {
     -fx-progress-color: #FF7D00;
