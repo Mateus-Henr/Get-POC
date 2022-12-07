@@ -4,7 +4,6 @@ import com.ufv.project.model.Field;
 import com.ufv.project.model.User;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class UpdatePOCController
 {

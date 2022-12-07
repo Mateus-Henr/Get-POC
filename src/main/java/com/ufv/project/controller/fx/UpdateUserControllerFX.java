@@ -3,6 +3,7 @@ package com.ufv.project.controller.fx;
 import com.ufv.project.Main;
 import com.ufv.project.controller.java.UpdateUserController;
 import com.ufv.project.db.ConnectDB;
+import com.ufv.project.db.POCDB;
 import com.ufv.project.db.SubjectDB;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.model.*;
@@ -168,11 +169,20 @@ public class UpdateUserControllerFX
                 if (userType == UserTypesEnum.STUDENT)
                 {
                     String POCIDText = POCIDTextField.getText().trim();
+
                     int POCID = 0;
 
                     if (!POCIDText.isEmpty())
                     {
                         POCID = Integer.parseInt(POCIDText);
+
+                        try (ConnectDB connectDB = new ConnectDB())
+                        {
+                            if (new POCDB(connectDB.getConnection()).queryPOC(POCID) == null)
+                            {
+                                throw new SQLException("Couldn't find POC with ID: " + POCID);
+                            }
+                        }
                     }
 
                     updatedUser = new Student(usernameTextField.getText().trim(),
