@@ -24,7 +24,7 @@ public class CreateUserController
      */
     public static boolean checkEmail(String email)
     {
-        return Pattern.matches("[a-zA-Z0-9]{1,}[@]{1}[a-z]{5,}[.]{1}+[a-z]{3}", email);
+        return Pattern.matches("[a-zA-Z0-9]{1,}[@]{1}[a-z]{5,}[.]{1}+[a-z]{2}", email);
     }
 
     /**
