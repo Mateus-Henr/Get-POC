@@ -3,6 +3,7 @@ package com.ufv.project.controller.java;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.Test;
 
+
 class CreateUserControllerTest
 {
 
@@ -62,13 +63,6 @@ class CreateUserControllerTest
 
     public void testEmailNoDomain(){
         String str = "joaoaandrade1@.br";
-        boolean resultadoEsperado = false;
-        boolean resultado = CreateUserController.checkEmail(str);
-        assertTrue(resultado==resultadoEsperado);
-    }
-
-    public void testEmailNoUser(){
-        String str = "@ufv.br";
         boolean resultadoEsperado = false;
         boolean resultado = CreateUserController.checkEmail(str);
         assertTrue(resultado==resultadoEsperado);

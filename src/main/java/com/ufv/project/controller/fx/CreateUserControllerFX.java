@@ -3,12 +3,11 @@ package com.ufv.project.controller.fx;
 import com.ufv.project.Main;
 import com.ufv.project.controller.java.CreateUserController;
 import com.ufv.project.db.ConnectDB;
+import com.ufv.project.db.POCDB;
 import com.ufv.project.db.SubjectDB;
 import com.ufv.project.db.UserDB;
 import com.ufv.project.model.*;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -310,11 +309,28 @@ public class CreateUserControllerFX
 
                 if (studentRadioButton.isSelected())
                 {
+                    String POCIDText = POCIDTextField.getText().trim();
+
+                    int POCID = 0;
+
+                    if (!POCIDText.isEmpty())
+                    {
+                        POCID = Integer.parseInt(POCIDText);
+
+                        try (ConnectDB connectDB = new ConnectDB())
+                        {
+                            if (new POCDB(connectDB.getConnection()).queryPOC(POCID) == null)
+                            {
+                                throw new SQLException("Couldn't find POC with ID: " + POCID);
+                            }
+                        }
+                    }
+
                     user = new Student(usernameTextField.getText().trim(),
                             nameTextField.getText().trim(),
                             passwordField.getText(),
                             registrationTextField.getText().trim(),
-                            0,
+                            POCID,
                             emailTextField.getText().trim());
                 }
                 else if (professorRadioButton.isSelected())

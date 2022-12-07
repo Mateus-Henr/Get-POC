@@ -1,6 +1,5 @@
 package com.ufv.project.controller.fx;
 
-import com.ufv.project.controller.java.CreatePOCController;
 import com.ufv.project.Main;
 import com.ufv.project.db.*;
 import com.ufv.project.model.*;
