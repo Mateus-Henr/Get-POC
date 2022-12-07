@@ -36,5 +36,7 @@ O projeto, implementado ao longo do período foi um desafio para o grupo. Tivemo
 
 A parte de armazenamento do projeto foi projetada utilizando o banco de dados MySQL. O modelo Entidade-Relacionamento foi feito usando a ferramento MySQL Workbench, buscamos deixar as relações simples, mas completas, além de criarmos algumas que não foram pedidas na especificação. Após a criação do modelo, uma engenharia reversa foi feita e o esquema foi importado para o projeto GetPOC. A conexão com JAVA foi criada na pasta package com.ufv.project.db, juntamente com todos os querys necessários. Foi criado uma classe para cada tabela, e os querys, implementados dentro das mesmas.
 
+### View - Interface gráfica
 
+A interação com o usuário, ou seja, a parte de View do programa, foi feita por meio de uma interface gráfica, usando JavaFX e FXML para os elementos gráficos do programa em sí, e CSS para os estilos da GUI. Todos os recursos usados no View (arquivos .fxml, .css, arquivos de imagens e arquivos de fontes) foram organizados na pasta src/main//resources/com/ufv/project, sendo que há uma grande integração entre esses recursos. Os arquivos FXML também estão fortemente interligaods com os seus respectivos controles, que por sua vez estão no pacote src/main/java/com/ufv/project/controller/fx. Foi um grade desafio usar essa tecnologia para a realização da visão do projeto, já que nenhum dos integrantes do grupo tiveram expreriência prévia com essas ferramentas, o que também fez com que fosse uma ótima oportunidade de aprendizado.
 
