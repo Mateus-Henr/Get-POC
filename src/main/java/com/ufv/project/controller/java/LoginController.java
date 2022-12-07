@@ -5,7 +5,7 @@ import com.ufv.project.model.*;
 public class LoginController
 {
     /**
-     * Create a datamodel from a User
+     * Create a DataModel from a User.
      *
      * @param user
      * @return user's dataModel

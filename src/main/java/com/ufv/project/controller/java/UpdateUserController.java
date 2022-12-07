@@ -19,12 +19,23 @@ public class UpdateUserController
      * Function to compare 2 passwords
      *
      * @param password
-     * @param secondpassword
+     * @param secondPassword
      * @return password == second password
      */
     public static boolean arePasswordsEqual(String password, String secondPassword)
     {
         return password.equals(secondPassword);
+    }
+
+    /**
+     * Check if a registration is valid
+     *
+     * @param registration
+     * @return if the patern is a string with 4 numbers
+     */
+    public static boolean checkRegistration(String registration)
+    {
+        return Pattern.matches("\\d\\d\\d\\d", registration);
     }
 
 }
